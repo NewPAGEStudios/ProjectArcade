@@ -251,7 +251,6 @@ public class pController : MonoBehaviour
         }
         //        rb.AddForce(Slope(moveDir) * moveSpeed * Time.fixedDeltaTime, ForceMode.Force);
 
-        /*bugged on slope
 
         Vector3 temp = new Vector3(rb.velocity.x, rb.velocity.y, rb.velocity.z);
 
@@ -262,9 +261,17 @@ public class pController : MonoBehaviour
         {
             Vector3 liimitedVec = temp.normalized * maxSpeed;
 
-            rb.velocity = new Vector3(liimitedVec.x, rb.velocity.y, liimitedVec.z);
+            switch (actiontg)
+            {
+                case actionStateDependecyToGround.slope:
+                    rb.velocity = new Vector3(liimitedVec.x, liimitedVec.y, liimitedVec.z);
+                    break;
+                default:
+                    rb.velocity = new Vector3(liimitedVec.x, rb.velocity.y, liimitedVec.z);
+                    break;
+
+            }
         }
-        */
     }
 
 
