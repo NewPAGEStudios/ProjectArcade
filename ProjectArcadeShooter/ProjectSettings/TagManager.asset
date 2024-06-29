@@ -6,16 +6,17 @@ TagManager:
   tags:
   - Ground
   - Enemy
+  - duvar
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - handModel
+  - 
   - Water
   - UI
   - player
   - ammo
-  - 
+  - handModel
   - 
   - 
   - 

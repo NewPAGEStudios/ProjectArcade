@@ -33,10 +33,6 @@ public class WeaponManager : MonoBehaviour
     private weaponRuntimeHolder[] holder;
 
 
-    //WeaponActiveReferance
-    private GameObject activeWeaponParent;
-
-
     [SerializeField]
     private float smooth = 10f;
     [SerializeField]
@@ -70,10 +66,14 @@ public class WeaponManager : MonoBehaviour
 
     [Header("InverseKinematics For Right Hand Refs")]
     public GameObject targetR;
+    public GameObject targetL;
     private Vector3 targetRNormalPos;
     private Vector3 targetRNormalRot;
     private Vector3 targetRNormalScale;
 
+    [Header("Active/Inactive Weapon's Refs")]
+    public GameObject activeWeapon;
+    public GameObject inActiveWeapon;
 
     //ActionStates
     private enum actionStateOFHands
@@ -94,8 +94,6 @@ public class WeaponManager : MonoBehaviour
         //init
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
-        //init of active WQeapon Parent
-        activeWeaponParent = gc.getHandObject().transform.GetChild(0).gameObject;//activeWeaponGAMEOBJECT
 
         //objectInit
         currentHP = startHP;
@@ -396,22 +394,22 @@ public class WeaponManager : MonoBehaviour
     //weapon nonFunctional events
     private void changeWeaponModel(int weaponIndex)
     {
-        for(int i = 0; i < gc.getHandObject().transform.childCount; i++)
+        for(int i = 0; i < inActiveWeapon.transform.childCount; i++)
         {
-            if (findWeapon(weaponIndex).WeaponName == gc.getHandObject().transform.GetChild(i).name)
+            if (findWeapon(weaponIndex).WeaponName == inActiveWeapon.transform.GetChild(i).name)
             {
-                if (activeWeaponParent.transform.childCount <= 0)
+                if (activeWeapon.transform.childCount <= 0)
                 {
-                    gc.getHandObject().transform.GetChild(i).gameObject.SetActive(true);
-                    gc.getHandObject().transform.GetChild(i).parent = activeWeaponParent.transform;
-                    for (int j = 0; j < gc.getHandObject().transform.GetChild(i).childCount; j++)
+                    inActiveWeapon.transform.GetChild(i).gameObject.SetActive(true);
+                    inActiveWeapon.transform.GetChild(i).parent = activeWeapon.transform;
+                    for (int j = 0; j < inActiveWeapon.transform.GetChild(i).childCount; j++)
                     {
-                        if (gc.getHandObject().transform.GetChild(i).GetChild(j).name == "TargetR")
+                        if (inActiveWeapon.transform.GetChild(i).GetChild(j).name == "TargetR")
                         {
-                            targetR.transform.position = gc.getHandObject().transform.GetChild(i).GetChild(j).position;
+                            targetR.transform.position = inActiveWeapon.transform.GetChild(i).GetChild(j).position;
                             break;
                         }
-                        else if (gc.getHandObject().transform.GetChild(i).GetChild(j).name == "TargetL")
+                        else if (inActiveWeapon.transform.GetChild(i).GetChild(j).name == "TargetL")
                         {
                             break;
                         }
@@ -420,26 +418,27 @@ public class WeaponManager : MonoBehaviour
                 }
                 else
                 {
-                    GameObject go = activeWeaponParent.transform.GetChild(0).gameObject;
+                    GameObject go = activeWeapon.transform.GetChild(0).gameObject;
 
 
 
-                    activeWeaponParent.transform.GetChild(0).parent = gc.getHandObject().transform;
+                    activeWeapon.transform.GetChild(0).parent = inActiveWeapon.transform;
 
                     go.SetActive(false);
-                    gc.getHandObject().transform.GetChild(i).gameObject.SetActive(true);
+                    inActiveWeapon.transform.GetChild(i).gameObject.SetActive(true);
 
-                    gc.getHandObject().transform.GetChild(i).parent = activeWeaponParent.transform;
+                    inActiveWeapon.transform.GetChild(i).parent = activeWeapon.transform;
 
-                    for (int j = 0; j < gc.getHandObject().transform.GetChild(i).childCount; j++)
+                    for (int j = 0; j < inActiveWeapon.transform.GetChild(i).childCount; j++)
                     {
-                        if(gc.getHandObject().transform.GetChild(i).GetChild(j).name == "TargetR")
+                        if(inActiveWeapon.transform.GetChild(i).GetChild(j).name == "TargetR")
                         {
-                            targetR.transform.position = gc.getHandObject().transform.GetChild(i).GetChild(j).position;
+                            targetR.transform.position = inActiveWeapon.transform.GetChild(i).GetChild(j).position;
                             break;
                         }
-                        else if (gc.getHandObject().transform.GetChild(i).GetChild(j).name == "TargetL")
+                        else if (inActiveWeapon.transform.GetChild(i).GetChild(j).name == "TargetL")
                         {
+                            targetL.transform.position = inActiveWeapon.transform.GetChild(i).GetChild(j).position;
                             break;
                         }
                     }

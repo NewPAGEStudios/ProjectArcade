@@ -17,9 +17,6 @@ public class GameController : MonoBehaviour
     public Weapon[] weapons;
     public Enemy[] enemies;
     public Consumable[] consumables;
-    //player Init
-    public GameObject handObj;
-    public Vector3 handObjInit;
     //UI Ref
     public GameObject playerPanel;
     //Map parent Ref
@@ -27,6 +24,9 @@ public class GameController : MonoBehaviour
     //spawnPoint Variables
     public GameObject spawnPointParent;
     private float spawnTimer;
+
+
+    public GameObject inActiveWeapon;
 
     private void Awake()
     {
@@ -41,10 +41,11 @@ public class GameController : MonoBehaviour
 
         for(int i = 0; i < weapons.Length; i++)
         {
-            GameObject weaponGO = Instantiate(weapons[i].modelGameObject, handObj.transform);
+            GameObject weaponGO = Instantiate(weapons[i].modelGameObject, inActiveWeapon.transform);
             weaponGO.name = weapons[i].WeaponName;
             weaponGO.SetActive(false);
         }
+
 
 
     }
@@ -149,6 +150,9 @@ public class GameController : MonoBehaviour
         }
     }
 
+
+
+
     public void resumeGame()
     {
         state = gameState.inGame;
@@ -190,6 +194,5 @@ public class GameController : MonoBehaviour
     }
 
     //GETTER
-    public GameObject getHandObject() { return handObj; }
 
 }
