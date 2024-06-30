@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8989082683203848620}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: coltModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 3699264177078109735}
   - component: {fileID: 3934059609797226680}
   - component: {fileID: 2239407510032901176}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: lower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,8 +62,8 @@ Transform:
   m_GameObject: {fileID: 2769334010163733849}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.25000006, z: -0.39999998}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.5}
+  m_LocalPosition: {x: -0, y: -0.3138, z: -0.4}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.62765}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8989082683203848620}
@@ -127,7 +127,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4499675237266225175}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: TargetL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,7 +160,7 @@ GameObject:
   - component: {fileID: 6280424719891712033}
   - component: {fileID: 8933676298883915463}
   - component: {fileID: 5665107125656105560}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: upper1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -243,7 +243,7 @@ GameObject:
   - component: {fileID: 5757507233449437957}
   - component: {fileID: 693007953251032308}
   - component: {fileID: 2999904193930673162}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: upper2
   m_TagString: Untagged
   m_Icon: {fileID: 0}

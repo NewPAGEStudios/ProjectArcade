@@ -152,6 +152,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "handMap",
+            "id": "c6fe7e3b-a0ab-4766-bb18-3ec28d8b46c7",
+            "actions": [
+                {
+                    "name": "ReaponReload",
+                    "type": "Button",
+                    "id": "695ab68f-0ef5-4e29-8cbe-32e01a73797a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a95fa133-3824-4e0a-8195-844f665372d5",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ReaponReload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

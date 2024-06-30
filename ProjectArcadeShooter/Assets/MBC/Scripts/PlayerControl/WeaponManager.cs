@@ -15,6 +15,8 @@ public class WeaponManager : MonoBehaviour
 
     //Reference
     private GameController gc;
+    public Animator hand_Animator;
+
 
     //RuntimeObject
     private int currWeaponID;
@@ -114,7 +116,7 @@ public class WeaponManager : MonoBehaviour
         attackTime = -1;
         attackRecoil = -1;
         currWeaponID = -1;
-        //        getWeapon(bombaGuy);
+        //getWeapon(bombaGuy);
 
         //Animation IK
         targetRNormalPos = targetR.transform.localPosition;
@@ -125,11 +127,12 @@ public class WeaponManager : MonoBehaviour
     }
     private void Update()
     {
-        // sway and bobbing with movement
+        //nonweaponedFunctiond
         if (currWeaponID == -1)
         {
             return;
         }
+        //weaponedFunctions
         if (/*currWeaponMag <= 0 || */Input.GetKeyDown(KeyCode.R))
         {
             reload();
@@ -284,6 +287,7 @@ public class WeaponManager : MonoBehaviour
         
         ammo.AddComponent<Rigidbody>();
         ammo.GetComponent<Rigidbody>().useGravity = false;
+
         //ManuelAdding
         if(ammo.TryGetComponent<ReflectBulletFunctions>(out ReflectBulletFunctions rbf))
         {
@@ -300,27 +304,40 @@ public class WeaponManager : MonoBehaviour
 
 
         Debug.Log("Current Ammo " + currWeaponMag + "/FullMag " + magmax + "/Ammo Amount " + currWeaponAmmoAmount);
-        //recoil animation
+/*        //recoil animation
         StopCoroutine("recoilCoroutineKickback");
         StartCoroutine(recoilCoroutineDegree());
-        StartCoroutine(recoilCoroutineKickback());
+        StartCoroutine(recoilCoroutineKickback());*/
     }
-
-    private void reload()
+    IEnumerator reload()
     {
         //block reload if there is not ammoAmount
         if (currWeaponAmmoAmount <= 0)
         {
             Debug.Log("You don't have enough ammo");
-            return;
+            StopCoroutine(reload());
         }
         else if(currWeaponMag == magmax)
         {
             Debug.Log("Full Ammo");
-            return;
+            StopCoroutine(reload());
         }
+        hand_Animator.SetBool("reload", true);
+        hand_Animator.SetBool("reload", false);
+        while (true)
+        {
+            if(hand_Animator.GetCurrentAnimatorStateInfo(0).IsName("idle_weap" + currWeaponID))
+            {
+                break;
+            }
+        }
+        reloadFucntion();
+        yield return null;
+    }
+    private void reloadFucntion()
+    {
         int toMakeFullMag = magmax - currWeaponMag;
-        //reload section
+
         if (toMakeFullMag <= currWeaponAmmoAmount)
         {
             currWeaponMag = magmax;
@@ -402,19 +419,6 @@ public class WeaponManager : MonoBehaviour
                 {
                     inActiveWeapon.transform.GetChild(i).gameObject.SetActive(true);
                     inActiveWeapon.transform.GetChild(i).parent = activeWeapon.transform;
-                    for (int j = 0; j < inActiveWeapon.transform.GetChild(i).childCount; j++)
-                    {
-                        if (inActiveWeapon.transform.GetChild(i).GetChild(j).name == "TargetR")
-                        {
-                            targetR.transform.position = inActiveWeapon.transform.GetChild(i).GetChild(j).position;
-                            break;
-                        }
-                        else if (inActiveWeapon.transform.GetChild(i).GetChild(j).name == "TargetL")
-                        {
-                            break;
-                        }
-                    }
-
                 }
                 else
                 {
@@ -428,26 +432,14 @@ public class WeaponManager : MonoBehaviour
                     inActiveWeapon.transform.GetChild(i).gameObject.SetActive(true);
 
                     inActiveWeapon.transform.GetChild(i).parent = activeWeapon.transform;
-
-                    for (int j = 0; j < inActiveWeapon.transform.GetChild(i).childCount; j++)
-                    {
-                        if(inActiveWeapon.transform.GetChild(i).GetChild(j).name == "TargetR")
-                        {
-                            targetR.transform.position = inActiveWeapon.transform.GetChild(i).GetChild(j).position;
-                            break;
-                        }
-                        else if (inActiveWeapon.transform.GetChild(i).GetChild(j).name == "TargetL")
-                        {
-                            targetL.transform.position = inActiveWeapon.transform.GetChild(i).GetChild(j).position;
-                            break;
-                        }
-                    }
-
-
                 }
                 //gc.getHandObject().transform.GetChild(i).getComponent<Animator>().setBool("Silah«ekimi"))
             }
         }
+        //AnimationStart
+        hand_Animator.SetInteger("weapon", weaponIndex);
+
+
     }
     private Weapon findWeapon(int searchIndex)
     {
@@ -473,6 +465,7 @@ public class WeaponManager : MonoBehaviour
         Application.Quit();
         return null;
     }
+    /*
     IEnumerator recoilCoroutineDegree()
     {
         GameObject changerGORef = targetR;
@@ -538,6 +531,7 @@ public class WeaponManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
     }
+    */
 }
 public class weaponRuntimeHolder
 {

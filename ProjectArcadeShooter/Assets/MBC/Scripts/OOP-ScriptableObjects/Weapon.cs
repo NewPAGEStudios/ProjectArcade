@@ -10,7 +10,6 @@ public class Weapon : ScriptableObject
     public string WeaponName;
     [Header(header: "Referances")]
     public GameObject modelGameObject;
-    public GameObject targetPosL;
     public Ammo usedAmmo;
     [Header(header: "EnemyObjectProperties")]
     public float attackRatio;

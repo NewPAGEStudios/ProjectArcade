@@ -174,6 +174,34 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""handMap"",
+            ""id"": ""c6fe7e3b-a0ab-4766-bb18-3ec28d8b46c7"",
+            ""actions"": [
+                {
+                    ""name"": ""ReaponReload"",
+                    ""type"": ""Button"",
+                    ""id"": ""695ab68f-0ef5-4e29-8cbe-32e01a73797a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a95fa133-3824-4e0a-8195-844f665372d5"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ReaponReload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -202,6 +230,9 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
         m_playerMap_Crouch = m_playerMap.FindAction("Crouch", throwIfNotFound: true);
         m_playerMap_Slide = m_playerMap.FindAction("Slide", throwIfNotFound: true);
         m_playerMap_Look = m_playerMap.FindAction("Look", throwIfNotFound: true);
+        // handMap
+        m_handMap = asset.FindActionMap("handMap", throwIfNotFound: true);
+        m_handMap_ReaponReload = m_handMap.FindAction("ReaponReload", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -337,6 +368,52 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
         }
     }
     public PlayerMapActions @playerMap => new PlayerMapActions(this);
+
+    // handMap
+    private readonly InputActionMap m_handMap;
+    private List<IHandMapActions> m_HandMapActionsCallbackInterfaces = new List<IHandMapActions>();
+    private readonly InputAction m_handMap_ReaponReload;
+    public struct HandMapActions
+    {
+        private @PlayerActionMaps m_Wrapper;
+        public HandMapActions(@PlayerActionMaps wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ReaponReload => m_Wrapper.m_handMap_ReaponReload;
+        public InputActionMap Get() { return m_Wrapper.m_handMap; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(HandMapActions set) { return set.Get(); }
+        public void AddCallbacks(IHandMapActions instance)
+        {
+            if (instance == null || m_Wrapper.m_HandMapActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_HandMapActionsCallbackInterfaces.Add(instance);
+            @ReaponReload.started += instance.OnReaponReload;
+            @ReaponReload.performed += instance.OnReaponReload;
+            @ReaponReload.canceled += instance.OnReaponReload;
+        }
+
+        private void UnregisterCallbacks(IHandMapActions instance)
+        {
+            @ReaponReload.started -= instance.OnReaponReload;
+            @ReaponReload.performed -= instance.OnReaponReload;
+            @ReaponReload.canceled -= instance.OnReaponReload;
+        }
+
+        public void RemoveCallbacks(IHandMapActions instance)
+        {
+            if (m_Wrapper.m_HandMapActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IHandMapActions instance)
+        {
+            foreach (var item in m_Wrapper.m_HandMapActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_HandMapActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public HandMapActions @handMap => new HandMapActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -353,5 +430,9 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
         void OnCrouch(InputAction.CallbackContext context);
         void OnSlide(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
+    }
+    public interface IHandMapActions
+    {
+        void OnReaponReload(InputAction.CallbackContext context);
     }
 }
