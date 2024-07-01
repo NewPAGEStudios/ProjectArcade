@@ -23,16 +23,11 @@ public class WeaponManager : MonoBehaviour
     private int currWeaponMag; //runtime ammo in Mag
     private int currWeaponAmmoAmount;
 
-    //objectWeapon
-    private float attackTime;
-    private float attackRecoil;
     private int magmax;
 
-    //timerWeapon
-    private float attackTimer;
 
     //ObjectWeaponRuntime
-    private weaponRuntimeHolder[] holder;
+    private WeaponRuntimeHolder[] holder;
 
 
     [SerializeField]
@@ -54,8 +49,8 @@ public class WeaponManager : MonoBehaviour
     public Vector3 multiplier;
 
     public float speedCurve;
-    float curveSin { get => Mathf.Sin(speedCurve); }
-    float curveCos { get => Mathf.Cos(speedCurve); }
+    float CurveSin { get => Mathf.Sin(speedCurve); }
+    float CurveCos { get => Mathf.Cos(speedCurve); }
 
     public Vector3 travelLimit = Vector3.one * 0.025f;
     public Vector3 bobLimit = Vector3.one * 0.01f;
@@ -66,33 +61,25 @@ public class WeaponManager : MonoBehaviour
     [Header("Ref of Sway n Bob Apllier")]
     public GameObject sb_apllier;
 
-    [Header("InverseKinematics For Right Hand Refs")]
-    public GameObject targetR;
-    public GameObject targetL;
-    private Vector3 targetRNormalPos;
-    private Vector3 targetRNormalRot;
-    private Vector3 targetRNormalScale;
-
     [Header("Active/Inactive Weapon's Refs")]
     public GameObject activeWeapon;
     public GameObject inActiveWeapon;
 
     //ActionStates
-    private enum actionStateOFHands
+    private enum ActionStateOFHands
     {
         idle,
-        weaponed,
         inFire,
+        onChange,
         inReload,
-        inUnsheate
     }
-    actionStateOFHands handStates;
+    ActionStateOFHands handStates;
 
 
 
     private void Start()
     {
-        handStates = actionStateOFHands.idle;
+        handStates = ActionStateOFHands.idle;
         //init
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
@@ -101,29 +88,23 @@ public class WeaponManager : MonoBehaviour
         currentHP = startHP;
         
         //holder init
-        holder = new weaponRuntimeHolder[gc.weapons.Length];
+        holder = new WeaponRuntimeHolder[gc.weapons.Length];
         for (int i = 0; i < holder.Length; i++)
         {
-            holder[i] = new weaponRuntimeHolder();
-            holder[i].weaponTypeID = gc.weapons[i].WeaponTypeID;
-            holder[i].maxMagAmount = gc.weapons[i].magSize;
-            holder[i].isOwned = false;
+            holder[i] = new WeaponRuntimeHolder
+            {
+                weaponTypeID = gc.weapons[i].WeaponTypeID,
+                maxMagAmount = gc.weapons[i].magSize,
+                isOwned = false
+            };
         }
         //currentWeaponID init -for now we will use it on global variable init
 
         //weaponStart
         magmax = -1;
-        attackTime = -1;
-        attackRecoil = -1;
         currWeaponID = -1;
         //getWeapon(bombaGuy);
 
-        //Animation IK
-        targetRNormalPos = targetR.transform.localPosition;
-        targetRNormalRot = targetR.transform.localEulerAngles;
-        targetRNormalScale = targetR.transform.localScale;
-
-        Debug.Log(targetRNormalRot);
     }
     private void Update()
     {
@@ -135,28 +116,28 @@ public class WeaponManager : MonoBehaviour
         //weaponedFunctions
         if (/*currWeaponMag <= 0 || */Input.GetKeyDown(KeyCode.R))
         {
-            reload();
+            if(handStates == ActionStateOFHands.idle)
+            {
+                StartCoroutine(Reload());
+            }
         }
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            changeWeapon(currWeaponID + 1);
+            ChangeWeapon(currWeaponID + 1);
         }
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            if (attackTimer <= 0)
+            if(handStates == ActionStateOFHands.idle)
             {
-                fire();
+                Fire();
+
             }
         }
         //timer init
-        if (attackTimer > 0)
-        {
-            attackTimer -= Time.deltaTime;
-        }
 
     }
 
-    public void takeDMG(float dmgAmmount, GameObject dmgTakenFrom)
+    public void TakeDMG(float dmgAmmount, GameObject dmgTakenFrom)
     {
         currentHP -= dmgAmmount;
         if (currentHP <= 0)
@@ -168,44 +149,44 @@ public class WeaponManager : MonoBehaviour
             Debug.Log("Damaged From " + dmgTakenFrom.name + "damage is " + dmgAmmount +" currentHP = " + currentHP);
         }
     }
-    public void getWeapon(int weaponID)
+    public void GetWeapon(int weaponID)
     {
         if (weaponID >= gc.weapons.Length)//wil be deleted
         {
             return;
         }
-        if (findWeaponOnRuntime(weaponID).isOwned)
+        if (FindWeaponOnRuntime(weaponID).isOwned)
         {
             Debug.Log("You get " + weaponID + "id weapon Ammo");
-            getAmmo(weaponID,findWeapon(weaponID).magSize);
+            GetAmmo(weaponID,FindWeapon(weaponID).magSize);
         }
         else
         {
             Debug.Log("You get " + weaponID + "id weapon");
-            findWeaponOnRuntime(weaponID).isOwned = true;
-            getAmmo(weaponID, findWeapon(weaponID).magSize);
+            FindWeaponOnRuntime(weaponID).isOwned = true;
+            GetAmmo(weaponID, FindWeapon(weaponID).magSize);
         }
         if (currWeaponID == -1)
         {
-            changeWeapon(weaponID);
+            ChangeWeapon(weaponID);
         }
     }
-    public void getAmmo(int weaponTypeIndex, int ammoAmount)
+    public void GetAmmo(int weaponTypeIndex, int ammoAmount)
     {
         if (weaponTypeIndex != currWeaponID)
         {
-            findWeaponOnRuntime(weaponTypeIndex).ammoAmount += ammoAmount;
+            FindWeaponOnRuntime(weaponTypeIndex).ammoAmount += ammoAmount;
             return;
         }
         else
         {
             currWeaponAmmoAmount += ammoAmount;
-            gc.changeAmmoText(currWeaponAmmoAmount);
+            gc.ChangeAmmoText(currWeaponAmmoAmount);
             return;
         }
         //delete Returns and show a feedback for getting ammo like sound or effect
     }
-    private void changeWeapon(int weaponID)
+    private void ChangeWeapon(int weaponID)
     {
         if (weaponID >= gc.weapons.Length)
         {
@@ -215,7 +196,7 @@ public class WeaponManager : MonoBehaviour
         {
             weaponID = gc.weapons.Length - 1;
         }
-        while (!findWeaponOnRuntime(weaponID).isOwned)
+        while (!FindWeaponOnRuntime(weaponID).isOwned)
         {
             weaponID += 1;
             if (weaponID >= gc.weapons.Length)
@@ -227,43 +208,39 @@ public class WeaponManager : MonoBehaviour
                 weaponID = gc.weapons.Length - 1;
             }
         }
-        if (findWeaponOnRuntime(weaponID).weaponTypeID == currWeaponID)
+        if (FindWeaponOnRuntime(weaponID).weaponTypeID == currWeaponID)
         {
             Debug.Log("You only have current weapon");
             return;
         }
         if (currWeaponID != -1)
         {
-            findWeaponOnRuntime(currWeaponID).magInAmmoAmount = currWeaponMag;
-            findWeaponOnRuntime(currWeaponID).ammoAmount = currWeaponAmmoAmount;
+            FindWeaponOnRuntime(currWeaponID).magInAmmoAmount = currWeaponMag;
+            FindWeaponOnRuntime(currWeaponID).ammoAmount = currWeaponAmmoAmount;
         }
 
-        currWeaponMag = findWeaponOnRuntime(weaponID).magInAmmoAmount;
-        currWeaponAmmoAmount = findWeaponOnRuntime(weaponID).ammoAmount;
-        magmax = findWeaponOnRuntime(weaponID).maxMagAmount;
+        currWeaponMag = FindWeaponOnRuntime(weaponID).magInAmmoAmount;
+        currWeaponAmmoAmount = FindWeaponOnRuntime(weaponID).ammoAmount;
+        magmax = FindWeaponOnRuntime(weaponID).maxMagAmount;
 
-        gc.changeAmmoText(currWeaponMag);
-        gc.changefullAmmoText(currWeaponAmmoAmount);
+        gc.ChangeAmmoText(currWeaponMag);
+        gc.ChangefullAmmoText(currWeaponAmmoAmount);
 
-        attackTime = findWeapon(weaponID).attackRatio;
-        attackRecoil = findWeapon(weaponID).attackRecoil;
-        attackTimer = 0;
 
         if (currWeaponID == -1)//special state it means you don't have any weapon
         {
-            changeWeaponModel(weaponID);
+            ChangeWeaponModel(weaponID);
         }
         else
         {
-            changeWeaponModel(weaponID);
+            ChangeWeaponModel(weaponID);
         }
         currWeaponID = weaponID;
-        Debug.Log("Current weapon has changed to " +  weaponID + " id number");
     }
 
-    private void fire()
+    private void Fire()
     {
-        Weapon w = findWeapon(currWeaponID);
+        Weapon w = FindWeapon(currWeaponID);
         if (currWeaponMag <= 0)
         {
             //soundManager.noAmmoFX.Play()
@@ -273,15 +250,12 @@ public class WeaponManager : MonoBehaviour
         Debug.Log("Weapon ID = " + currWeaponID + " -- Fired");
         currWeaponMag -= w.usingAmmoPerAttack;
 
-        gc.changeAmmoText(currWeaponMag);
-        gc.changefullAmmoText(currWeaponAmmoAmount);
-
-        attackTimer = attackTime;
+        gc.ChangeAmmoText(currWeaponMag);
+        gc.ChangefullAmmoText(currWeaponAmmoAmount);
 
         //spawnBullet()
-        GameObject ammo = new GameObject();
-        ammo.transform.position = firePos.transform.position;
-        ammo.transform.rotation = firePos.transform.rotation;
+        GameObject ammo = new();
+        ammo.transform.SetPositionAndRotation(firePos.transform.position, firePos.transform.rotation);
         ammo.name = "Ammo";
         ammo.AddComponent(w.usedAmmo.function.GetClass());
         
@@ -304,23 +278,43 @@ public class WeaponManager : MonoBehaviour
 
 
         Debug.Log("Current Ammo " + currWeaponMag + "/FullMag " + magmax + "/Ammo Amount " + currWeaponAmmoAmount);
-/*        //recoil animation
-        StopCoroutine("recoilCoroutineKickback");
-        StartCoroutine(recoilCoroutineDegree());
-        StartCoroutine(recoilCoroutineKickback());*/
+        //recoil animation
+        StartCoroutine(FireAnim());
+
+
+        /*        StopCoroutine("recoilCoroutineKickback");
+                StartCoroutine(recoilCoroutineDegree());
+                StartCoroutine(recoilCoroutineKickback());*/
     }
-    IEnumerator reload()
+    IEnumerator FireAnim()
     {
+        hand_Animator.SetBool("fired", true);
+        hand_Animator.SetBool("fired", false);
+        while (true) 
+        {
+            if(hand_Animator.GetCurrentAnimatorStateInfo(0).IsName("idleweap" + currWeaponID))
+            {
+                break;
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        yield return null;
+    }
+
+
+    IEnumerator Reload()
+    {
+        handStates = ActionStateOFHands.inReload;
         //block reload if there is not ammoAmount
         if (currWeaponAmmoAmount <= 0)
         {
             Debug.Log("You don't have enough ammo");
-            StopCoroutine(reload());
+            StopCoroutine(Reload());
         }
         else if(currWeaponMag == magmax)
         {
             Debug.Log("Full Ammo");
-            StopCoroutine(reload());
+            StopCoroutine(Reload());
         }
         hand_Animator.SetBool("reload", true);
         hand_Animator.SetBool("reload", false);
@@ -328,13 +322,15 @@ public class WeaponManager : MonoBehaviour
         {
             if(hand_Animator.GetCurrentAnimatorStateInfo(0).IsName("idle_weap" + currWeaponID))
             {
+                Debug.Log("Reload Anim");
                 break;
             }
+            yield return new WaitForEndOfFrame();
         }
-        reloadFucntion();
+        ReloadFucntion();
         yield return null;
     }
-    private void reloadFucntion()
+    private void ReloadFucntion()
     {
         int toMakeFullMag = magmax - currWeaponMag;
 
@@ -349,12 +345,12 @@ public class WeaponManager : MonoBehaviour
             currWeaponAmmoAmount = 0;
         }
 
-        gc.changeAmmoText(currWeaponMag);
-        gc.changefullAmmoText(currWeaponAmmoAmount);
-
+        gc.ChangeAmmoText(currWeaponMag);
+        gc.ChangefullAmmoText(currWeaponAmmoAmount);
+        handStates = ActionStateOFHands.idle;
     }
     //swayNBobbing
-    public void sway(Vector3 inputCam)
+    public void Sway(Vector3 inputCam)
     {
         Vector3 invertLook = inputCam * -0.01f;
         invertLook.x = Mathf.Clamp(invertLook.x, -0.06f, 0.06f);
@@ -362,7 +358,7 @@ public class WeaponManager : MonoBehaviour
     
         swayPos = invertLook;
     }
-    public void swayRotation(Vector3 inputCam)
+    public void SwayRotation(Vector3 inputCam)
     {
         Vector2 invertLook = inputCam * -4f;
         invertLook.x = Mathf.Clamp(invertLook.x, -5f, 5f);
@@ -370,28 +366,28 @@ public class WeaponManager : MonoBehaviour
 
         swayEulorRot = new Vector3(invertLook.y, invertLook.x, invertLook.x);
     }
-    public void bobOffset(pController player,Vector2 moveDir)
+    public void BobOffset(PController player,Vector2 moveDir)
     {
-        if (player.actiontg == pController.actionStateDependecyToGround.flat || player.actiontg == pController.actionStateDependecyToGround.slope)
+        if (player.actiontg == PController.ActionStateDependecyToGround.flat || player.actiontg == PController.ActionStateDependecyToGround.slope)
         {
             speedCurve += (Time.deltaTime * (moveDir.x + moveDir.y) * bobExaggeration) + 0.01f;
-            bobPos.x = (curveCos * bobLimit.x * 1) - (moveDir.x * travelLimit.x);
+            bobPos.x = (CurveCos * bobLimit.x * 1) - (moveDir.x * travelLimit.x);
         }
         else
         {
             speedCurve += (Time.deltaTime * 1) + 0.01f;
-            bobPos.x = (curveCos * bobLimit.x * 0) - (moveDir.x * travelLimit.x);
+            bobPos.x = (CurveCos * bobLimit.x * 0) - (moveDir.x * travelLimit.x);
         }
-        bobPos.y = (curveSin * bobLimit.y) - (moveDir.y * travelLimit.y);
+        bobPos.y = (CurveSin * bobLimit.y) - (moveDir.y * travelLimit.y);
         bobPos.z = -(moveDir.y * travelLimit.z);
     }
-    public void bobRotation(pController player, Vector2 moveDir)
+    public void BobRotation(Vector2 moveDir)
     {
         if(moveDir != Vector2.zero)
         {
             bobEulorRot.x = multiplier.x * (Mathf.Sin(2 * speedCurve));
-            bobEulorRot.y = multiplier.y * curveCos;
-            bobEulorRot.z = multiplier.z * curveCos * moveDir.x;
+            bobEulorRot.y = multiplier.y * CurveCos;
+            bobEulorRot.z = multiplier.z * CurveCos * moveDir.x;
         }
         else
         {
@@ -402,18 +398,17 @@ public class WeaponManager : MonoBehaviour
     }
 
 
-    public void conpositePositionRotation()
+    public void ConpositePositionRotation()
     {
-        sb_apllier.transform.localPosition = Vector3.Lerp(sb_apllier.transform.localPosition, swayPos + bobPos, Time.deltaTime*smooth);
-        sb_apllier.transform.localRotation = Quaternion.Slerp(sb_apllier.transform.localRotation, Quaternion.Euler(swayEulorRot) * Quaternion.Euler(bobEulorRot), Time.deltaTime*smoothRot);
+        sb_apllier.transform.SetLocalPositionAndRotation(Vector3.Lerp(sb_apllier.transform.localPosition, swayPos + bobPos, Time.deltaTime*smooth), Quaternion.Slerp(sb_apllier.transform.localRotation, Quaternion.Euler(swayEulorRot) * Quaternion.Euler(bobEulorRot), Time.deltaTime*smoothRot));
     }
 
     //weapon nonFunctional events
-    private void changeWeaponModel(int weaponIndex)
+    private void ChangeWeaponModel(int weaponIndex)
     {
         for(int i = 0; i < inActiveWeapon.transform.childCount; i++)
         {
-            if (findWeapon(weaponIndex).WeaponName == inActiveWeapon.transform.GetChild(i).name)
+            if (FindWeapon(weaponIndex).WeaponName == inActiveWeapon.transform.GetChild(i).name)
             {
                 if (activeWeapon.transform.childCount <= 0)
                 {
@@ -437,11 +432,10 @@ public class WeaponManager : MonoBehaviour
             }
         }
         //AnimationStart
+        hand_Animator.SetTrigger("changeWeaponInterrupt");
         hand_Animator.SetInteger("weapon", weaponIndex);
-
-
     }
-    private Weapon findWeapon(int searchIndex)
+    private Weapon FindWeapon(int searchIndex)
     {
         for(int i = 0; i < gc.weapons.Length; i++)
         {
@@ -453,7 +447,7 @@ public class WeaponManager : MonoBehaviour
         Application.Quit();//make a error
         return null;
     }
-    private weaponRuntimeHolder findWeaponOnRuntime(int searchIndex) 
+    private WeaponRuntimeHolder FindWeaponOnRuntime(int searchIndex) 
     {
         for (int i = 0; i < holder.Length; i++)
         {
@@ -533,7 +527,7 @@ public class WeaponManager : MonoBehaviour
     }
     */
 }
-public class weaponRuntimeHolder
+public class WeaponRuntimeHolder
 {
     public int weaponTypeID;
     public int ammoAmount = 0;

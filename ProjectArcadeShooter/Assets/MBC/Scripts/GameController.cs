@@ -7,12 +7,12 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     //Game Main Init
-    private enum gameState
+    private enum GameState
     {
         pause,
         inGame
     }
-    private gameState state;
+    private GameState state;
     public Ammo[] ammos;
     public Weapon[] weapons;
     public Enemy[] enemies;
@@ -75,21 +75,22 @@ public class GameController : MonoBehaviour
     }
     private void Start()
     {
-        spawnCons(0);
+        SpawnCons(0);
     }
 
     //    spawners
-    private void spawnCons(int consID)
+    private void SpawnCons(int consID)
     {
         int r = Random.Range(0, spawnPointParent.transform.childCount);
 
         Vector3 vec = spawnPointParent.transform.GetChild(r).position;
 
-        Vector3 posOFC = new Vector3(vec.x, vec.y + 1f, vec.z);
+        Vector3 posOFC = new(vec.x, vec.y + 1f, vec.z);
 
-        GameObject consumableobject = new GameObject();
-
-        consumableobject.name = consumables[consID].nameOfC;
+        GameObject consumableobject = new()
+        {
+            name = consumables[consID].nameOfC
+        };
 
         consumableobject.transform.parent = spawnPointParent.transform.GetChild(r);
 
@@ -127,20 +128,20 @@ public class GameController : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            if(state == gameState.pause)
+            if(state == GameState.pause)
             {
-                resumeGame();
+                ResumeGame();
             }
             else
             {
-                stopGame();
+                StopGame();
             }
         }
-        if(state == gameState.inGame)
+        if(state == GameState.inGame)
         {
             if (spawnTimer <= 0f)
             {
-                spawnCons(Random.Range(0, consumables.Length));
+                SpawnCons(Random.Range(0, consumables.Length));
                 spawnTimer = Random.Range(15f, 20f);
             }
             else
@@ -153,23 +154,23 @@ public class GameController : MonoBehaviour
 
 
 
-    public void resumeGame()
+    public void ResumeGame()
     {
-        state = gameState.inGame;
+        state = GameState.inGame;
     }
 
-    public void stopGame()
+    public void StopGame()
     {
-        state= gameState.pause;
+        state= GameState.pause;
     }
     //UI Events
     //player based UI Events
-    public void changeAmmoText(int newAmmo)
+    public void ChangeAmmoText(int newAmmo)
     {
         //0 = curAmmoDisplay
         playerPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = newAmmo.ToString();
     }
-    public void changefullAmmoText(int newAmmo)
+    public void ChangefullAmmoText(int newAmmo)
     {
         //0 = curAmmoDisplay
         playerPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = newAmmo.ToString();
@@ -177,7 +178,7 @@ public class GameController : MonoBehaviour
     }
 
 
-    public void spawnEnemy()
+    public void SpawnEnemy()
     {
         Debug.Log("Bomba");
         GameObject enemy = new GameObject();
@@ -188,7 +189,7 @@ public class GameController : MonoBehaviour
 
     }
 
-    public void mainMenu()
+    public void MainMenu()
     {
         //SceneManagement.LoadScene(mainMenuint)
     }

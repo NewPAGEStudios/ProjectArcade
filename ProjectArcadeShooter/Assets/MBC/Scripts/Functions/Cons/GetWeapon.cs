@@ -39,7 +39,7 @@ public class GetWeapon : MonoBehaviour
 
     private void apply(GameObject player)
     {
-        player.GetComponent<WeaponManager>().getWeapon(weaponID);
+        player.GetComponent<WeaponManager>().GetWeapon(weaponID);
         gameObject.transform.parent.parent = gc.spawnPointParent.transform;
         Destroy(gameObject);
         return;

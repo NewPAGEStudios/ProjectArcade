@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class pController : MonoBehaviour
+public class PController : MonoBehaviour
 {
     private float maxSpeed;
     [SerializeField]
@@ -52,22 +52,22 @@ public class pController : MonoBehaviour
 
     WeaponManager weaponManager;
 
-    public enum actionStateDependecyToPlayer
+    public enum ActionStateDependecyToPlayer
     {
         idle,
         crouch,
         slide,
     }
-    public enum actionStateDependecyToGround
+    public enum ActionStateDependecyToGround
     {
         flat,
         slope,
         onAir,
     }
     [HideInInspector]
-    public actionStateDependecyToPlayer actiontp;
+    public ActionStateDependecyToPlayer actiontp;
     [HideInInspector]
-    public actionStateDependecyToGround actiontg;
+    public ActionStateDependecyToGround actiontg;
 
     // Start is called before the first frame update
     void Start()
@@ -90,9 +90,9 @@ public class pController : MonoBehaviour
         Crouch();
         CrouchExit();
         Sliding();
-        camRotation();
+        CamRotation();
         CheckGround();
-        weaponManager.conpositePositionRotation();
+        weaponManager.ConpositePositionRotation();
     }
     private void FixedUpdate()
     {
@@ -103,15 +103,15 @@ public class pController : MonoBehaviour
     {
         if(iManager.getJumpedPressed())
         {
-            if(actiontg == actionStateDependecyToGround.onAir || actiontp != actionStateDependecyToPlayer.idle)
+            if(actiontg == ActionStateDependecyToGround.onAir || actiontp != ActionStateDependecyToPlayer.idle)
             {
                 return;
             }
             switch (actiontg)
             {
-                case actionStateDependecyToGround.flat:
+                case ActionStateDependecyToGround.flat:
                     break;
-                case actionStateDependecyToGround.slope:
+                case ActionStateDependecyToGround.slope:
                     break;
                 default:break;
             }
@@ -126,7 +126,7 @@ public class pController : MonoBehaviour
         {
             Transform targetScaleExchangeUnit = gameObject.transform.GetChild(0);//getchild(0) = firts child of hierarcy it will be model be sure to do that
             Transform targetPosExchangeUnit = gameObject.transform;
-            if (actiontp == actionStateDependecyToPlayer.slide)
+            if (actiontp == ActionStateDependecyToPlayer.slide)
             {
                 return;
             }
@@ -144,7 +144,7 @@ public class pController : MonoBehaviour
             }
             if(pos.y == targetPosY)
             {
-                actiontp = actionStateDependecyToPlayer.crouch;
+                actiontp = ActionStateDependecyToPlayer.crouch;
                 return;
             }
             //scale
@@ -173,12 +173,12 @@ public class pController : MonoBehaviour
                 */
                 targetPosY = pos.y + scale.y;
                 targetScale = scale.y * 2;
-                StartCoroutine(crouchExitEvent(targetScale, targetPosY));
+                StartCoroutine(CrouchExitEvent(targetScale, targetPosY));
                 crouchEvent = true;
             }
         }
     }
-    IEnumerator crouchExitEvent(float targetScale,float targetPos)
+    IEnumerator CrouchExitEvent(float targetScale,float targetPos)
     {
         Transform targetScaleExchangeUnit = gameObject.transform.GetChild(0);//getchild(0) = firts child of hierarcy it will be model be sure to do that
         Transform targetPosExchangeUnit = gameObject.transform;
@@ -197,19 +197,19 @@ public class pController : MonoBehaviour
             }
             yield return new WaitForEndOfFrame();
         }
-        actiontp = actionStateDependecyToPlayer.idle;
+        actiontp = ActionStateDependecyToPlayer.idle;
     }
     //EÐilme Bit
 
     private void Move()
     {
-        if(actiontp == actionStateDependecyToPlayer.slide)
+        if(actiontp == ActionStateDependecyToPlayer.slide)
         {//prevent movement
             return;
         }
         Vector2 moveDirVect2 = iManager.getPlayerMovement();// (x,y) (x,y,z) (x,0,y)
-        weaponManager.bobOffset(this,moveDirVect2);
-        weaponManager.bobRotation(this, moveDirVect2);
+        weaponManager.BobOffset(this,moveDirVect2);
+        weaponManager.BobRotation(moveDirVect2);
 
 
 
@@ -219,15 +219,15 @@ public class pController : MonoBehaviour
         }
 
 
-        Vector3 moveDir = new Vector3(moveDirVect2.x, 0f, moveDirVect2.y);
+        Vector3 moveDir = new(moveDirVect2.x, 0f, moveDirVect2.y);
 
         moveDir = gameObject.transform.right * moveDir.x + gameObject.transform.forward * moveDir.z;
 
         switch (actiontp)
         {
-            case actionStateDependecyToPlayer.idle:
+            case ActionStateDependecyToPlayer.idle:
                 break;
-            case actionStateDependecyToPlayer.crouch:
+            case ActionStateDependecyToPlayer.crouch:
                 break;
             default:
                 Debug.LogWarning("action State to Player Sýkýntýlý");
@@ -236,14 +236,14 @@ public class pController : MonoBehaviour
 
         switch (actiontg)
         {
-            case actionStateDependecyToGround.flat:
-                rb.AddForce(moveDir * moveSpeed * Time.fixedDeltaTime, ForceMode.Force);
+            case ActionStateDependecyToGround.flat:
+                rb.AddForce(moveSpeed * Time.fixedDeltaTime * moveDir, ForceMode.Force);
                 break;
-            case actionStateDependecyToGround.slope:
-                rb.AddForce(Slope(moveDir) * moveSpeed * Time.fixedDeltaTime, ForceMode.Force);
+            case ActionStateDependecyToGround.slope:
+                rb.AddForce(moveSpeed * Time.fixedDeltaTime * Slope(moveDir), ForceMode.Force);
                 break;
-            case actionStateDependecyToGround.onAir:
-                rb.AddForce(moveDir * moveSpeed * Time.fixedDeltaTime, ForceMode.Force);
+            case ActionStateDependecyToGround.onAir:
+                rb.AddForce(moveSpeed * Time.fixedDeltaTime * moveDir, ForceMode.Force);
                 break;
             default:
                 Debug.LogWarning("action State to Ground Sýkýntýlý");
@@ -252,7 +252,7 @@ public class pController : MonoBehaviour
         //        rb.AddForce(Slope(moveDir) * moveSpeed * Time.fixedDeltaTime, ForceMode.Force);
 
 
-        Vector3 temp = new Vector3(rb.velocity.x, rb.velocity.y, rb.velocity.z);
+        Vector3 temp = new(rb.velocity.x, rb.velocity.y, rb.velocity.z);
 
 
         float speedTemp = temp.magnitude;
@@ -263,8 +263,12 @@ public class pController : MonoBehaviour
 
             switch (actiontg)
             {
-                case actionStateDependecyToGround.slope:
+                case ActionStateDependecyToGround.slope:
                     rb.velocity = new Vector3(liimitedVec.x, liimitedVec.y, liimitedVec.z);
+                    break;
+                case ActionStateDependecyToGround.flat:
+                    break;
+                case ActionStateDependecyToGround.onAir:
                     break;
                 default:
                     rb.velocity = new Vector3(liimitedVec.x, rb.velocity.y, liimitedVec.z);
@@ -280,7 +284,7 @@ public class pController : MonoBehaviour
     {
         if (iManager.getSlidePressed())
         {
-            if(actiontp != actionStateDependecyToPlayer.idle || actiontg == actionStateDependecyToGround.onAir)
+            if(actiontp != ActionStateDependecyToPlayer.idle || actiontg == ActionStateDependecyToGround.onAir)
             {
                 return;
             }
@@ -297,16 +301,16 @@ public class pController : MonoBehaviour
 
             switch (actiontg)
             {
-                case actionStateDependecyToGround.flat:
+                case ActionStateDependecyToGround.flat:
                     rb.AddForce(transform.forward * slideForce, ForceMode.VelocityChange);
                     break;
-                case actionStateDependecyToGround.slope:
+                case ActionStateDependecyToGround.slope:
                     rb.AddForce(Slope(transform.forward) * slideForce, ForceMode.VelocityChange);
                     break;
             }
 // before actinoStateUpdate            rb.AddForce(Slope(transform.forward) * slideForce, ForceMode.VelocityChange);
 
-            actiontp = actionStateDependecyToPlayer.slide;
+            actiontp = ActionStateDependecyToPlayer.slide;
 
             Invoke(nameof(SlidingNormal), slideDuration);
         }
@@ -323,7 +327,7 @@ public class pController : MonoBehaviour
         targetPosExchangeUnit.position = new Vector3(pos.x, pos.y + scale.y, pos.z);
         targetScaleExchangeUnit.localScale = new Vector3(scale.x, scale.y * 2, scale.z);
 
-        actiontp = actionStateDependecyToPlayer.idle;
+        actiontp = ActionStateDependecyToPlayer.idle;
     }
 
 
@@ -332,7 +336,7 @@ public class pController : MonoBehaviour
         return Vector3.ProjectOnPlane(directionOnNormalPlane, slopePlaneNormal).normalized;
     }
 
-    private void camRotation()//tmmlandý
+    private void CamRotation()//tmmlandý
     {
         if(cam_StartingRotation == null)
         {
@@ -346,8 +350,8 @@ public class pController : MonoBehaviour
         gameObject.transform.localRotation = Quaternion.Euler(gameObject.transform.localRotation.x, cam_StartingRotation.x, gameObject.transform.localRotation.z);
 
         //weaponPrecadural Anim
-        weaponManager.sway(deltaInput);
-        weaponManager.swayRotation(deltaInput);
+        weaponManager.Sway(deltaInput);
+        weaponManager.SwayRotation(deltaInput);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -358,7 +362,7 @@ public class pController : MonoBehaviour
 
             if(angleOfPlane > max_angleOfPlane || angleOfPlane == 0)
             {
-                actiontg = actionStateDependecyToGround.flat;
+                actiontg = ActionStateDependecyToGround.flat;
 
 
                 slopePlaneNormal = Vector3.up;
@@ -366,7 +370,7 @@ public class pController : MonoBehaviour
             }
             else
             {//is Slope granted
-                actiontg = actionStateDependecyToGround.slope;
+                actiontg = ActionStateDependecyToGround.slope;
 
 
                 slopePlaneNormal = collision.contacts[0].normal;
@@ -381,7 +385,7 @@ public class pController : MonoBehaviour
     {
         float offsetScale = gameObject.transform.localScale.y;
         Vector3 checkGroundVector = Vector3.zero;
-        if (actiontg == actionStateDependecyToGround.onAir)
+        if (actiontg == ActionStateDependecyToGround.onAir)
         {
             checkGroundVector = -transform.up.normalized;
         }
@@ -397,7 +401,7 @@ public class pController : MonoBehaviour
         }
         else
         {
-            actiontg = actionStateDependecyToGround.onAir;
+            actiontg = ActionStateDependecyToGround.onAir;
             rb.drag = jumpDrag;
             rb.useGravity = true;
             maxSpeed = maxSpeedOutGround;

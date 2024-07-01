@@ -12,10 +12,6 @@ public class Weapon : ScriptableObject
     public GameObject modelGameObject;
     public Ammo usedAmmo;
     [Header(header: "EnemyObjectProperties")]
-    public float attackRatio;
-    public float recoilDegree;
-    public float attackRecoil;
     public int magSize;
     public int usingAmmoPerAttack;
-    public float reloadTime;
 }
