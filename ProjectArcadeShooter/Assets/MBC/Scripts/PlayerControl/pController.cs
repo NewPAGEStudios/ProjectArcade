@@ -152,7 +152,7 @@ public class PController : MonoBehaviour
             targetScaleExchangeUnit.localScale = scale;
             //position
             pos.y = Mathf.MoveTowards(pos.y, targetPosY, Time.deltaTime * crouchSpeed);
-            Debug.Log(targetPosY);
+
             targetPosExchangeUnit.position = new Vector3(targetPosExchangeUnit.position.x, pos.y, targetPosExchangeUnit.position.z);
         }
     }

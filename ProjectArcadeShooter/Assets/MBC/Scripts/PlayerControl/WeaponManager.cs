@@ -116,6 +116,7 @@ public class WeaponManager : MonoBehaviour
         //weaponedFunctions
         if (/*currWeaponMag <= 0 || */Input.GetKeyDown(KeyCode.R))
         {
+            Debug.Log("reload");
             if(handStates == ActionStateOFHands.idle)
             {
                 StartCoroutine(Reload());
@@ -130,7 +131,6 @@ public class WeaponManager : MonoBehaviour
             if(handStates == ActionStateOFHands.idle)
             {
                 Fire();
-
             }
         }
         //timer init
@@ -213,6 +213,7 @@ public class WeaponManager : MonoBehaviour
             Debug.Log("You only have current weapon");
             return;
         }
+        handStates = ActionStateOFHands.onChange;
         if (currWeaponID != -1)
         {
             FindWeaponOnRuntime(currWeaponID).magInAmmoAmount = currWeaponMag;
@@ -240,6 +241,7 @@ public class WeaponManager : MonoBehaviour
 
     private void Fire()
     {
+        handStates = ActionStateOFHands.inFire;
         Weapon w = FindWeapon(currWeaponID);
         if (currWeaponMag <= 0)
         {
@@ -298,12 +300,14 @@ public class WeaponManager : MonoBehaviour
             }
             yield return new WaitForEndOfFrame();
         }
+        handStates = ActionStateOFHands.idle;
         yield return null;
     }
 
 
     IEnumerator Reload()
     {
+        Debug.Log("bomba");
         handStates = ActionStateOFHands.inReload;
         //block reload if there is not ammoAmount
         if (currWeaponAmmoAmount <= 0)
@@ -418,7 +422,8 @@ public class WeaponManager : MonoBehaviour
                 else
                 {
                     GameObject go = activeWeapon.transform.GetChild(0).gameObject;
-
+                    activeWeapon.transform.localPosition = Vector3.zero;
+                    activeWeapon.transform.localEulerAngles = Vector3.zero;
 
 
                     activeWeapon.transform.GetChild(0).parent = inActiveWeapon.transform;
@@ -431,9 +436,23 @@ public class WeaponManager : MonoBehaviour
                 //gc.getHandObject().transform.GetChild(i).getComponent<Animator>().setBool("Silah«ekimi"))
             }
         }
+        StartCoroutine(SheateAnim(weaponIndex));
         //AnimationStart
+    }
+    IEnumerator SheateAnim(int id)
+    {
         hand_Animator.SetTrigger("changeWeaponInterrupt");
-        hand_Animator.SetInteger("weapon", weaponIndex);
+        hand_Animator.SetInteger("weapon", id);
+        while (true) 
+        {
+            if(hand_Animator.GetCurrentAnimatorStateInfo(0).IsName("idleweap" + id))
+            {
+                break;
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        handStates = ActionStateOFHands.idle;
+        yield return null;
     }
     private Weapon FindWeapon(int searchIndex)
     {
@@ -459,73 +478,6 @@ public class WeaponManager : MonoBehaviour
         Application.Quit();
         return null;
     }
-    /*
-    IEnumerator recoilCoroutineDegree()
-    {
-        GameObject changerGORef = targetR;
-        changerGORef = targetR;
-        float degreOfRotation = findWeapon(currWeaponID).recoilDegree;
-        changerGORef.transform.Rotate(+1 * Time.deltaTime * 100f, 0, 0, Space.Self);
-        while (true)
-        {
-            if(changerGORef.transform.localEulerAngles.x < targetRNormalRot.x + degreOfRotation)
-            {
-                changerGORef.transform.Rotate(+1 * Time.deltaTime * 500f, 0, 0, Space.Self);
-            }
-            else
-            {
-                break;
-            }
-            yield return new WaitForEndOfFrame();
-        }
-        Debug.Log("attackTimer between anim : " + attackTimer);
-        float remainingDegreeToNormalize = MathF.Abs(changerGORef.transform.localEulerAngles.x - targetRNormalRot.x);
-        int frameTime = (int)(attackTimer / Time.deltaTime);
-        frameTime += 1;
-        float velocityOfRotation = remainingDegreeToNormalize / frameTime;
-        Debug.Log(velocityOfRotation);
-        while (true)
-        {
-            if (frameTime <= 0)
-            {
-                break;
-            }
-            else
-            {
-                changerGORef.transform.Rotate(-velocityOfRotation * 2.3f, 0, 0, Space.Self);
-            }
-            if (remainingDegreeToNormalize > 0)
-            {
-            }
-            else
-            {
-                break;
-            }
-            yield return new WaitForEndOfFrame();
-            if (attackTimer <= attackTime / 2)
-            {
-                break;
-            }
-        }
-        changerGORef.transform.localEulerAngles = targetRNormalRot;
-    }
-    IEnumerator recoilCoroutineKickback()
-    {
-        GameObject changerGORef = targetR;
-        changerGORef.transform.localPosition = new Vector3(0, 0, targetRNormalPos.z - attackRecoil);
-//        changerGORef.transform.Translate(new Vector3(0, -attackRecoil, 0),Space.Self);
-//        changerGORef.transform.Translate(changerGORef.transform.parent.TransformDirection(0, 0, -attackRecoil), Space.Self);
-        while (true)
-        {
-            changerGORef.transform.position = Vector3.MoveTowards(changerGORef.transform.position, changerGORef.transform.parent.TransformPoint(new Vector3(0, 0, targetRNormalPos.z)), Time.deltaTime);
-            if (changerGORef.transform.position == changerGORef.transform.parent.TransformPoint(new Vector3(0, 0, targetRNormalPos.z)))
-            {
-                break;
-            }
-            yield return new WaitForEndOfFrame();
-        }
-    }
-    */
 }
 public class WeaponRuntimeHolder
 {

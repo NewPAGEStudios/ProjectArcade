@@ -181,7 +181,7 @@ public class GameController : MonoBehaviour
     public void SpawnEnemy()
     {
         Debug.Log("Bomba");
-        GameObject enemy = new GameObject();
+        GameObject enemy = new();
         enemy.AddComponent<EnemyController>();
         enemy.GetComponent<EnemyController>().m_Enemy = enemies[0];
         enemy.name = "enemy";
