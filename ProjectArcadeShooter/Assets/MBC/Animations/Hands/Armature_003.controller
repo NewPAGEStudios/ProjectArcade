@@ -285,7 +285,7 @@ AnimatorStateMachine:
     m_Position: {x: 310, y: 100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4160208342634815620}
-    m_Position: {x: 350, y: -90, z: 0}
+    m_Position: {x: 340, y: -70, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -452,7 +452,7 @@ AnimatorController:
   - serializedVersion: 5
     m_Name: skillUsageHandAnim
     m_StateMachine: {fileID: -2914683317370612405}
-    m_Mask: {fileID: 31900000, guid: e9065058cdcb9484bbb79a5f680b0bf8, type: 2}
+    m_Mask: {fileID: 31900000, guid: e78d58c63108b6544bf5e006f67c186d, type: 2}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 1
