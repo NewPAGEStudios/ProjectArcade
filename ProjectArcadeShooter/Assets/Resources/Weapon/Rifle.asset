@@ -16,11 +16,7 @@ MonoBehaviour:
   WeaponName: Rifle
   modelGameObject: {fileID: 10031008200060683, guid: 994afc0cb110305458e81e2aa423ca02,
     type: 3}
-  targetPosL: {fileID: 0}
   usedAmmo: {fileID: 0}
-  attackRatio: 0
-  recoilDegree: 0
-  attackRecoil: 0
+  type: 1
   magSize: 0
   usingAmmoPerAttack: 0
-  reloadTime: 0

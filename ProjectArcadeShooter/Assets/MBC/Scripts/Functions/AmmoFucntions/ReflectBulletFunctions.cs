@@ -42,8 +42,6 @@ public class ReflectBulletFunctions : MonoBehaviour
         GetComponent<Rigidbody>().velocity = Vector3.zero;
         //if collision tag is not functionable than reflect it
         Vector3 newfront = Vector3.Reflect(tempFWD, collision.contacts[0].normal);
-        Debug.DrawLine(collision.contacts[0].point,collision.contacts[0].normal);
-        Debug.Log(collision.contacts[0].normal);
         transform.forward = newfront;
         tempFWD = transform.forward;
         if (collision.transform.CompareTag("Enemy"))

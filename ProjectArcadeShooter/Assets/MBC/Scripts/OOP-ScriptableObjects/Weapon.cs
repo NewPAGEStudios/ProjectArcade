@@ -6,12 +6,20 @@ using UnityEngine;
 
 public class Weapon : ScriptableObject
 {
+    public enum WeaponType
+    {
+        semi,
+        auto
+    }
+
+
     public int WeaponTypeID;
     public string WeaponName;
     [Header(header: "Referances")]
     public GameObject modelGameObject;
     public Ammo usedAmmo;
     [Header(header: "EnemyObjectProperties")]
+    public WeaponType type;
     public int magSize;
     public int usingAmmoPerAttack;
 }

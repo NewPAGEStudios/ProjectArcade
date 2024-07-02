@@ -20,8 +20,8 @@ public class WeaponManager : MonoBehaviour
 
     //RuntimeObject
     private int currWeaponID;
-    private int currWeaponMag; //runtime ammo in Mag
-    private int currWeaponAmmoAmount;
+    private int currWeapon_sum_ammoAmount; //runtime ammo in Mag
+    private int currWeapon_inWeapon_ammoAmount;
 
     private int magmax;
 
@@ -114,27 +114,52 @@ public class WeaponManager : MonoBehaviour
             return;
         }
         //weaponedFunctions
+        //reload
         if (/*currWeaponMag <= 0 || */Input.GetKeyDown(KeyCode.R))
         {
-            Debug.Log("reload");
             if(handStates == ActionStateOFHands.idle)
             {
-                StartCoroutine(Reload());
+                ReloadCheck();
+            }
+            else
+            {
+                Debug.Log("calledREALOAD--> " + handStates);
             }
         }
+        //fire
+        if (FindWeapon(currWeaponID).type == Weapon.WeaponType.semi)
+        {
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                if (handStates == ActionStateOFHands.idle)
+                {
+                    Fire();
+                }
+                else
+                {
+//                    Debug.Log("calledFIRE--> " + handStates);
+                }
+            }
+        }
+        else if(FindWeapon(currWeaponID).type == Weapon.WeaponType.auto)
+        {
+            if (Input.GetKey(KeyCode.Mouse0))
+            {
+                if (handStates == ActionStateOFHands.idle)
+                {
+                    Fire();
+                }
+                else
+                {
+                    Debug.Log("calledFIRE--> " + handStates);
+                }
+            }
+        }
+        //weaponChange
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             ChangeWeapon(currWeaponID + 1);
         }
-        if (Input.GetKey(KeyCode.Mouse0))
-        {
-            if(handStates == ActionStateOFHands.idle)
-            {
-                Fire();
-            }
-        }
-        //timer init
-
     }
 
     public void TakeDMG(float dmgAmmount, GameObject dmgTakenFrom)
@@ -175,13 +200,14 @@ public class WeaponManager : MonoBehaviour
     {
         if (weaponTypeIndex != currWeaponID)
         {
-            FindWeaponOnRuntime(weaponTypeIndex).ammoAmount += ammoAmount;
+            FindWeaponOnRuntime(weaponTypeIndex).sum_ammoAmount += ammoAmount;
             return;
         }
         else
         {
-            currWeaponAmmoAmount += ammoAmount;
-            gc.ChangeAmmoText(currWeaponAmmoAmount);
+
+            currWeapon_sum_ammoAmount += ammoAmount;
+            gc.ChangefullAmmoText(currWeapon_sum_ammoAmount);
             return;
         }
         //delete Returns and show a feedback for getting ammo like sound or effect
@@ -216,16 +242,16 @@ public class WeaponManager : MonoBehaviour
         handStates = ActionStateOFHands.onChange;
         if (currWeaponID != -1)
         {
-            FindWeaponOnRuntime(currWeaponID).magInAmmoAmount = currWeaponMag;
-            FindWeaponOnRuntime(currWeaponID).ammoAmount = currWeaponAmmoAmount;
+            FindWeaponOnRuntime(currWeaponID).inWeapon_ammoAmount = currWeapon_inWeapon_ammoAmount;
+            FindWeaponOnRuntime(currWeaponID).sum_ammoAmount = currWeapon_sum_ammoAmount;
         }
 
-        currWeaponMag = FindWeaponOnRuntime(weaponID).magInAmmoAmount;
-        currWeaponAmmoAmount = FindWeaponOnRuntime(weaponID).ammoAmount;
+        currWeapon_sum_ammoAmount = FindWeaponOnRuntime(weaponID).sum_ammoAmount;
+        currWeapon_inWeapon_ammoAmount = FindWeaponOnRuntime(weaponID).inWeapon_ammoAmount;
         magmax = FindWeaponOnRuntime(weaponID).maxMagAmount;
 
-        gc.ChangeAmmoText(currWeaponMag);
-        gc.ChangefullAmmoText(currWeaponAmmoAmount);
+        gc.ChangeAmmoText(currWeapon_inWeapon_ammoAmount);
+        gc.ChangefullAmmoText(currWeapon_sum_ammoAmount);
 
 
         if (currWeaponID == -1)//special state it means you don't have any weapon
@@ -241,19 +267,18 @@ public class WeaponManager : MonoBehaviour
 
     private void Fire()
     {
-        handStates = ActionStateOFHands.inFire;
         Weapon w = FindWeapon(currWeaponID);
-        if (currWeaponMag <= 0)
+        if (currWeapon_inWeapon_ammoAmount <= 0)
         {
             //soundManager.noAmmoFX.Play()
             return;
         }
-        //Animator.SetBool("StartFire")
-        Debug.Log("Weapon ID = " + currWeaponID + " -- Fired");
-        currWeaponMag -= w.usingAmmoPerAttack;
+        handStates = ActionStateOFHands.inFire;
 
-        gc.ChangeAmmoText(currWeaponMag);
-        gc.ChangefullAmmoText(currWeaponAmmoAmount);
+        currWeapon_inWeapon_ammoAmount -= w.usingAmmoPerAttack;
+
+        gc.ChangeAmmoText(currWeapon_inWeapon_ammoAmount);
+        gc.ChangefullAmmoText(currWeapon_sum_ammoAmount);
 
         //spawnBullet()
         GameObject ammo = new();
@@ -263,6 +288,7 @@ public class WeaponManager : MonoBehaviour
         
         ammo.AddComponent<Rigidbody>();
         ammo.GetComponent<Rigidbody>().useGravity = false;
+        ammo.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
 
         //ManuelAdding
         if(ammo.TryGetComponent<ReflectBulletFunctions>(out ReflectBulletFunctions rbf))
@@ -278,79 +304,81 @@ public class WeaponManager : MonoBehaviour
             Debug.Log("Bomba!!!");
         }
 
+        Debug.Log("Current Ammo " + currWeapon_inWeapon_ammoAmount + "/FullMag " + magmax + "/Ammo Amount " + currWeapon_sum_ammoAmount);
 
-        Debug.Log("Current Ammo " + currWeaponMag + "/FullMag " + magmax + "/Ammo Amount " + currWeaponAmmoAmount);
         //recoil animation
         StartCoroutine(FireAnim());
 
-
-        /*        StopCoroutine("recoilCoroutineKickback");
-                StartCoroutine(recoilCoroutineDegree());
-                StartCoroutine(recoilCoroutineKickback());*/
     }
     IEnumerator FireAnim()
     {
         hand_Animator.SetBool("fired", true);
+        yield return new WaitForSeconds(0.01f);
         hand_Animator.SetBool("fired", false);
+        
         while (true) 
         {
-            if(hand_Animator.GetCurrentAnimatorStateInfo(0).IsName("idleweap" + currWeaponID))
+            yield return new WaitForEndOfFrame();
+            if (hand_Animator.GetCurrentAnimatorStateInfo(0).IsName("idle_weap" + currWeaponID))
             {
                 break;
             }
-            yield return new WaitForEndOfFrame();
         }
+        Debug.Log("hokro");
         handStates = ActionStateOFHands.idle;
         yield return null;
     }
 
-
-    IEnumerator Reload()
+    private void ReloadCheck()
     {
-        Debug.Log("bomba");
-        handStates = ActionStateOFHands.inReload;
-        //block reload if there is not ammoAmount
-        if (currWeaponAmmoAmount <= 0)
-        {
-            Debug.Log("You don't have enough ammo");
-            StopCoroutine(Reload());
-        }
-        else if(currWeaponMag == magmax)
+        if (currWeapon_inWeapon_ammoAmount == magmax)
         {
             Debug.Log("Full Ammo");
-            StopCoroutine(Reload());
+            return;
         }
+        else if (currWeapon_sum_ammoAmount <= 0)
+        {
+            Debug.Log("You don't have enough ammo");
+            return;
+        }
+        StartCoroutine(Reload());
+    }
+    IEnumerator Reload()
+    {
+        handStates = ActionStateOFHands.inReload;
+
         hand_Animator.SetBool("reload", true);
+        yield return new WaitForSeconds(0.01f);
         hand_Animator.SetBool("reload", false);
         while (true)
         {
-            if(hand_Animator.GetCurrentAnimatorStateInfo(0).IsName("idle_weap" + currWeaponID))
+            yield return new WaitForEndOfFrame();
+            if (hand_Animator.GetCurrentAnimatorStateInfo(0).IsName("idle_weap" + currWeaponID))
             {
-                Debug.Log("Reload Anim");
                 break;
             }
-            yield return new WaitForEndOfFrame();
         }
+
         ReloadFucntion();
         yield return null;
     }
     private void ReloadFucntion()
     {
-        int toMakeFullMag = magmax - currWeaponMag;
+        int toMakeFullMag = magmax - currWeapon_inWeapon_ammoAmount;
 
-        if (toMakeFullMag <= currWeaponAmmoAmount)
+        if (toMakeFullMag <= currWeapon_sum_ammoAmount)
         {
-            currWeaponMag = magmax;
-            currWeaponAmmoAmount -= toMakeFullMag;
+            currWeapon_inWeapon_ammoAmount = magmax;
+            currWeapon_sum_ammoAmount -= toMakeFullMag;
         }
         else
         {
-            currWeaponMag += currWeaponAmmoAmount;
-            currWeaponAmmoAmount = 0;
+            currWeapon_inWeapon_ammoAmount += currWeapon_sum_ammoAmount;
+            currWeapon_sum_ammoAmount = 0;
         }
 
-        gc.ChangeAmmoText(currWeaponMag);
-        gc.ChangefullAmmoText(currWeaponAmmoAmount);
+        gc.ChangeAmmoText(currWeapon_inWeapon_ammoAmount);
+        gc.ChangefullAmmoText(currWeapon_sum_ammoAmount);
         handStates = ActionStateOFHands.idle;
     }
     //swayNBobbing
@@ -433,7 +461,6 @@ public class WeaponManager : MonoBehaviour
 
                     inActiveWeapon.transform.GetChild(i).parent = activeWeapon.transform;
                 }
-                //gc.getHandObject().transform.GetChild(i).getComponent<Animator>().setBool("Silah«ekimi"))
             }
         }
         StartCoroutine(SheateAnim(weaponIndex));
@@ -445,11 +472,11 @@ public class WeaponManager : MonoBehaviour
         hand_Animator.SetInteger("weapon", id);
         while (true) 
         {
-            if(hand_Animator.GetCurrentAnimatorStateInfo(0).IsName("idleweap" + id))
+            yield return new WaitForEndOfFrame();
+            if (hand_Animator.GetCurrentAnimatorStateInfo(0).IsName("idle_weap" + id))
             {
                 break;
             }
-            yield return new WaitForEndOfFrame();
         }
         Debug.Log(handStates);
         handStates = ActionStateOFHands.idle;
@@ -483,8 +510,8 @@ public class WeaponManager : MonoBehaviour
 public class WeaponRuntimeHolder
 {
     public int weaponTypeID;
-    public int ammoAmount = 0;
-    public int magInAmmoAmount = 0;
+    public int sum_ammoAmount = 0;
+    public int inWeapon_ammoAmount = 0;
     public int maxMagAmount = 0;
     public bool isOwned = false;
 }

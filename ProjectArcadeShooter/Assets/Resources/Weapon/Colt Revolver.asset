@@ -16,11 +16,7 @@ MonoBehaviour:
   WeaponName: coltRevolver
   modelGameObject: {fileID: 1277444108839805437, guid: c02fe18108f6de14ca2faad4803b3685,
     type: 3}
-  targetPosL: {fileID: 0}
   usedAmmo: {fileID: 11400000, guid: 11a3b18b96a292d4ca57c0107bb46267, type: 2}
-  attackRatio: 1.2
-  recoilDegree: 30
-  attackRecoil: 0.4
+  type: 0
   magSize: 6
   usingAmmoPerAttack: 1
-  reloadTime: 0
