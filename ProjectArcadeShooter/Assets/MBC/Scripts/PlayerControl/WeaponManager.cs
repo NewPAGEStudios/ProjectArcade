@@ -451,6 +451,7 @@ public class WeaponManager : MonoBehaviour
             }
             yield return new WaitForEndOfFrame();
         }
+        Debug.Log(handStates);
         handStates = ActionStateOFHands.idle;
         yield return null;
     }
