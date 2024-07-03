@@ -65,6 +65,13 @@ public class WeaponManager : MonoBehaviour
     public GameObject activeWeapon;
     public GameObject inActiveWeapon;
 
+    private Skill active_Skill;
+    private float skillUsePreventTimer;
+    private bool skill_canbePerformed;
+    private bool skill_holdOT;
+
+
+
     //ActionStates
     private enum ActionStateOFHands
     {
@@ -74,7 +81,7 @@ public class WeaponManager : MonoBehaviour
         inReload,
     }
     ActionStateOFHands handStates;
-
+    private bool onSkillUsage;
 
 
     private void Start()
@@ -104,7 +111,11 @@ public class WeaponManager : MonoBehaviour
         magmax = -1;
         currWeaponID = -1;
         //getWeapon(bombaGuy);
-
+        //skill Initialization
+        active_Skill = null;
+        onSkillUsage = false;
+        skill_holdOT = true;
+        skillUsePreventTimer = 0f;
     }
     private void Update()
     {
@@ -119,7 +130,10 @@ public class WeaponManager : MonoBehaviour
         {
             if(handStates == ActionStateOFHands.idle)
             {
-                ReloadCheck();
+                if (!onSkillUsage)
+                {
+                    ReloadCheck();
+                }
             }
             else
             {
@@ -159,6 +173,34 @@ public class WeaponManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             ChangeWeapon(currWeaponID + 1);
+        }
+        //skillUsing
+        if (active_Skill != null)
+        {
+            if (skillUsePreventTimer <= 0)
+            {
+                if (Input.GetKey(KeyCode.Q))
+                {
+                    if (Input.GetKeyDown(KeyCode.C))
+                    {
+                        //cancel
+                    }
+                    else
+                    {
+                        //visualize
+                        skillStayOpen();
+
+                    }
+                }
+                else if (Input.GetKeyUp(KeyCode.Q))
+                {
+                    //perform
+                }
+            }
+            else
+            {
+                skillUsePreventTimer -= Time.deltaTime;
+            }
         }
     }
 
@@ -482,6 +524,70 @@ public class WeaponManager : MonoBehaviour
         handStates = ActionStateOFHands.idle;
         yield return null;
     }
+
+    //Skills
+    public void getSkill(Skill sk)
+    {
+        active_Skill = sk;
+        gc.changeSpriteOfActiveSkill(sk.sprite_HUD);
+        gc.closeSpriteOfActiveSkill(null);
+    }
+    private void skillStayOpen()
+    {
+        if (skill_holdOT)
+        {
+            hand_Animator.SetTrigger("");
+            skill_holdOT = false;
+        }
+        if (Physics.Raycast(firePos.transform.position, firePos.transform.forward,out RaycastHit hit,10f))
+        {
+            if(hit.transform.CompareTag("Ground"))
+            {
+                //indicator
+                GameObject indicator = firePos.transform.GetChild(0).gameObject;
+                indicator.SetActive(true);
+                indicator.transform.position = hit.transform.position;
+                indicator.transform.eulerAngles = Vector3.zero;
+                skill_canbePerformed = true;
+            }
+            else
+            {
+                skill_canbePerformed = false;
+            }
+        }
+        else
+        {
+            skill_canbePerformed = false;
+        }
+    }
+    private void skillPerform()
+    {
+        if (skill_canbePerformed)
+        {
+            GameObject go = new();
+            go.name = active_Skill.skillName;
+            go.AddComponent(active_Skill.function.GetClass());
+            //functioninit with trygetComponent<functionName>
+
+
+
+            skill_holdOT = true;
+            active_Skill = null;
+        }
+        else
+        {
+            skillCancel();
+        }
+    }
+    private void skillCancel()
+    {
+        skill_canbePerformed = false;
+        skillUsePreventTimer = 0.2f;
+        hand_Animator.SetBool("cancel_skill" + active_Skill.skillTypeID, true);
+        skill_holdOT = true;
+    }
+
+
     private Weapon FindWeapon(int searchIndex)
     {
         for(int i = 0; i < gc.weapons.Length; i++)

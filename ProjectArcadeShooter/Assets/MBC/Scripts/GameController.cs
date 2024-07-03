@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class GameController : MonoBehaviour
     public Weapon[] weapons;
     public Enemy[] enemies;
     public Consumable[] consumables;
+    public Skill[] skills;
     //UI Ref
     public GameObject playerPanel;
     //Map parent Ref
@@ -34,7 +36,7 @@ public class GameController : MonoBehaviour
         weapons = Resources.LoadAll<Weapon>("Weapon");
         enemies = Resources.LoadAll<Enemy>("Enemy");
         consumables = Resources.LoadAll<Consumable>("Consumable");
-
+        skills = Resources.LoadAll<Skill>("Skill");
         //leftHandTargetPosInýt
 
 
@@ -176,6 +178,17 @@ public class GameController : MonoBehaviour
         playerPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = newAmmo.ToString();
 
     }
+    public void changeSpriteOfActiveSkill(Sprite sprite)
+    {
+        playerPanel.transform.GetChild(4).GetChild(0).GetComponent<Image>().enabled = true;
+        playerPanel.transform.GetChild(4).GetChild(0).GetComponent<Image>().sprite = sprite;
+    }
+    public void closeSpriteOfActiveSkill(Sprite sprite)
+    {
+        playerPanel.transform.GetChild(4).GetChild(0).GetComponent<Image>().sprite = null;
+        playerPanel.transform.GetChild(4).GetChild(0).GetComponent<Image>().enabled = false;
+    }
+
 
 
     public void SpawnEnemy()
