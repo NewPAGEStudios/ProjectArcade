@@ -112,7 +112,7 @@ public class WeaponManager : MonoBehaviour
         currWeaponID = -1;
         //getWeapon(bombaGuy);
         //skill Initialization
-        active_Skill = null;
+        active_Skill = gc.skills[0];
         onSkillUsage = false;
         skill_holdOT = true;
         skillUsePreventTimer = 0f;
@@ -188,6 +188,7 @@ public class WeaponManager : MonoBehaviour
                     else
                     {
                         //visualize
+                        Debug.Log("Bomba");
                         skillStayOpen();
 
                     }
@@ -536,7 +537,7 @@ public class WeaponManager : MonoBehaviour
     {
         if (skill_holdOT)
         {
-            hand_Animator.SetTrigger("");
+            hand_Animator.SetTrigger("skill" + active_Skill.skillTypeID);
             skill_holdOT = false;
         }
         if (Physics.Raycast(firePos.transform.position, firePos.transform.forward,out RaycastHit hit,10f))

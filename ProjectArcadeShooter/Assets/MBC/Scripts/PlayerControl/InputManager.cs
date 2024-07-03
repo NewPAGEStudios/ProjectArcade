@@ -73,4 +73,8 @@ public class InputManager : MonoBehaviour
     {
         return inputActions.playerMap.Slide.triggered;
     }
+    public bool getDashPressed()
+    {
+        return inputActions.playerMap.Dash.triggered;
+    }
 }

@@ -71,6 +71,15 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""313e6434-0a01-435c-9068-55d61628ad97"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -172,6 +181,17 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9995c658-4517-4895-a7fb-7d01509547d7"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -230,6 +250,7 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
         m_playerMap_Crouch = m_playerMap.FindAction("Crouch", throwIfNotFound: true);
         m_playerMap_Slide = m_playerMap.FindAction("Slide", throwIfNotFound: true);
         m_playerMap_Look = m_playerMap.FindAction("Look", throwIfNotFound: true);
+        m_playerMap_Dash = m_playerMap.FindAction("Dash", throwIfNotFound: true);
         // handMap
         m_handMap = asset.FindActionMap("handMap", throwIfNotFound: true);
         m_handMap_ReaponReload = m_handMap.FindAction("ReaponReload", throwIfNotFound: true);
@@ -299,6 +320,7 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
     private readonly InputAction m_playerMap_Crouch;
     private readonly InputAction m_playerMap_Slide;
     private readonly InputAction m_playerMap_Look;
+    private readonly InputAction m_playerMap_Dash;
     public struct PlayerMapActions
     {
         private @PlayerActionMaps m_Wrapper;
@@ -308,6 +330,7 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
         public InputAction @Crouch => m_Wrapper.m_playerMap_Crouch;
         public InputAction @Slide => m_Wrapper.m_playerMap_Slide;
         public InputAction @Look => m_Wrapper.m_playerMap_Look;
+        public InputAction @Dash => m_Wrapper.m_playerMap_Dash;
         public InputActionMap Get() { return m_Wrapper.m_playerMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -332,6 +355,9 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
         }
 
         private void UnregisterCallbacks(IPlayerMapActions instance)
@@ -351,6 +377,9 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
         }
 
         public void RemoveCallbacks(IPlayerMapActions instance)
@@ -430,6 +459,7 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
         void OnCrouch(InputAction.CallbackContext context);
         void OnSlide(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
     }
     public interface IHandMapActions
     {

@@ -57,6 +57,7 @@ public class PController : MonoBehaviour
         idle,
         crouch,
         slide,
+        dash,
     }
     public enum ActionStateDependecyToGround
     {
@@ -90,6 +91,7 @@ public class PController : MonoBehaviour
         Crouch();
         CrouchExit();
         Sliding();
+        Dashing();
         CamRotation();
         CheckGround();
         weaponManager.ConpositePositionRotation();
@@ -126,7 +128,7 @@ public class PController : MonoBehaviour
         {
             Transform targetScaleExchangeUnit = gameObject.transform.GetChild(0);//getchild(0) = firts child of hierarcy it will be model be sure to do that
             Transform targetPosExchangeUnit = gameObject.transform;
-            if (actiontp == ActionStateDependecyToPlayer.slide)
+            if (actiontp == ActionStateDependecyToPlayer.slide ||actiontp == ActionStateDependecyToPlayer.dash)
             {
                 return;
             }
@@ -185,12 +187,13 @@ public class PController : MonoBehaviour
         while (true)
         {
 
-            //scale
-            scale.y = Mathf.MoveTowards(scale.y, targetScale, Time.deltaTime * crouchSpeed);
-            targetScaleExchangeUnit.localScale = scale;
             //position
             pos.y = Mathf.MoveTowards(pos.y, targetPos, Time.deltaTime * crouchSpeed);
             targetPosExchangeUnit.position = new Vector3(targetPosExchangeUnit.position.x, pos.y, targetPosExchangeUnit.position.z);
+
+            //scale
+            scale.y = Mathf.MoveTowards(scale.y, targetScale, Time.deltaTime * crouchSpeed);
+            targetScaleExchangeUnit.localScale = scale;
             if (scale.y >= targetScale && pos.y >= targetPos)
             {
                 break;
@@ -203,7 +206,7 @@ public class PController : MonoBehaviour
 
     private void Move()
     {
-        if(actiontp == ActionStateDependecyToPlayer.slide)
+        if(actiontp == ActionStateDependecyToPlayer.slide || actiontp == ActionStateDependecyToPlayer.dash)
         {//prevent movement
             return;
         }
@@ -308,12 +311,40 @@ public class PController : MonoBehaviour
                     rb.AddForce(Slope(transform.forward) * slideForce, ForceMode.VelocityChange);
                     break;
             }
-// before actinoStateUpdate            rb.AddForce(Slope(transform.forward) * slideForce, ForceMode.VelocityChange);
 
             actiontp = ActionStateDependecyToPlayer.slide;
 
             Invoke(nameof(SlidingNormal), slideDuration);
         }
+    }
+    private void Dashing()
+    {
+        if (iManager.getDashPressed())
+        {
+            if(actiontp == ActionStateDependecyToPlayer.slide || actiontp == ActionStateDependecyToPlayer.crouch)
+            {
+                Debug.Log("patladý");
+                return;
+            }
+            Debug.Log("patlamadý");
+            switch (actiontg)
+            {
+                case ActionStateDependecyToGround.flat:
+                    rb.AddForce(transform.forward * slideForce, ForceMode.VelocityChange);
+                    break;
+                case ActionStateDependecyToGround.slope:
+                    rb.AddForce(Slope(transform.forward) * slideForce, ForceMode.VelocityChange);
+                    break;
+                case ActionStateDependecyToGround.onAir:
+                    rb.AddForce(Slope(transform.forward) * slideForce, ForceMode.VelocityChange);
+                    break;
+            }
+            Invoke(nameof(DashingNormal), slideDuration - 0.03f);
+        }
+    }
+    private void DashingNormal()
+    {
+        rb.velocity = Vector3.zero;
     }
     private void SlidingNormal()
     {
