@@ -16,9 +16,15 @@ public class GameController : MonoBehaviour
     private GameState state;
     public Ammo[] ammos;
     public Weapon[] weapons;
-    public Enemy[] enemies;
+    public EnemyType[] enemies;
     public Consumable[] consumables;
     public Skill[] skills;
+
+    //to visualise skills for indicatng parent obj
+    public GameObject skillIndicatorParent;
+    public GameObject skillObject;
+    public Material skillIndicatorMaterial;
+
     //UI Ref
     public GameObject playerPanel;
     //Map parent Ref
@@ -34,7 +40,7 @@ public class GameController : MonoBehaviour
     {
         ammos = Resources.LoadAll<Ammo>("Ammo");
         weapons = Resources.LoadAll<Weapon>("Weapon");
-        enemies = Resources.LoadAll<Enemy>("Enemy");
+        enemies = Resources.LoadAll<EnemyType>("Enemy");
         consumables = Resources.LoadAll<Consumable>("Consumable");
         skills = Resources.LoadAll<Skill>("Skill");
         //leftHandTargetPosInýt

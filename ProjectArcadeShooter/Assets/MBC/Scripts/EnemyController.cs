@@ -8,7 +8,7 @@ using UnityEngine.AI;
 public class EnemyController : MonoBehaviour
 {
     [HideInInspector]
-    public Enemy m_Enemy;
+    public EnemyType m_Enemy;
     private float currentHP;
     private float moveSpeed;
     private float attackRat;

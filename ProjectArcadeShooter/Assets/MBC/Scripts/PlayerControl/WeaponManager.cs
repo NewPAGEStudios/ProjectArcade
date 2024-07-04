@@ -196,6 +196,7 @@ public class WeaponManager : MonoBehaviour
                 else if (Input.GetKeyUp(KeyCode.Q))
                 {
                     //perform
+                    skillPerform();
                 }
             }
             else
@@ -538,6 +539,10 @@ public class WeaponManager : MonoBehaviour
         if (skill_holdOT)
         {
             hand_Animator.SetTrigger("skill" + active_Skill.skillTypeID);
+            GameObject go = Instantiate(active_Skill.modelPrefab, gc.skillIndicatorParent.transform);
+            go.name = "indicator";
+            go.GetComponent<Collider>().enabled = false;
+            go.GetComponent<MeshRenderer>().material = gc.skillIndicatorMaterial;
             skill_holdOT = false;
         }
         if (Physics.Raycast(firePos.transform.position, firePos.transform.forward,out RaycastHit hit,10f))
@@ -545,19 +550,24 @@ public class WeaponManager : MonoBehaviour
             if(hit.transform.CompareTag("Ground"))
             {
                 //indicator
-                GameObject indicator = firePos.transform.GetChild(0).gameObject;
-                indicator.SetActive(true);
-                indicator.transform.position = hit.transform.position;
-                indicator.transform.eulerAngles = Vector3.zero;
+                Transform tf = gc.skillIndicatorParent.transform.Find("indicator");
+                tf.gameObject.SetActive(true);
+                tf.position = hit.point;
+                tf.forward = (tf.position - gameObject.transform.position).normalized;
+                tf.eulerAngles = new Vector3(0, tf.eulerAngles.y, tf.eulerAngles.z);
                 skill_canbePerformed = true;
             }
             else
             {
+                Transform tf = gc.skillIndicatorParent.transform.Find("indicator");
+                tf.gameObject.SetActive(false);
                 skill_canbePerformed = false;
             }
         }
         else
         {
+            Transform tf = gc.skillIndicatorParent.transform.Find("indicator");
+            tf.gameObject.SetActive(false);
             skill_canbePerformed = false;
         }
     }
@@ -565,10 +575,10 @@ public class WeaponManager : MonoBehaviour
     {
         if (skill_canbePerformed)
         {
-            GameObject go = new();
-            go.name = active_Skill.skillName;
-            go.AddComponent(active_Skill.function.GetClass());
-            //functioninit with trygetComponent<functionName>
+            Transform tf = gc.skillIndicatorParent.transform.Find("indicator");
+            Instantiate(active_Skill.modelPrefab, tf.position, tf.rotation, gc.skillObject.transform);
+            Destroy(tf.gameObject);
+
 
 
 
