@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 [CreateAssetMenu(menuName = "SCPObjects/EnemyType")]
-public class Enemy : ScriptableObject
+public class EnemyType : ScriptableObject
 {
     public int EnemyTypeID;
     
