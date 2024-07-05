@@ -17,6 +17,8 @@ public class Skill : ScriptableObject
     public string skillName;
     [TextArea(15, 20)]
     public string skillDescription;
+    [Tooltip("0:MainMat 1+:effects")]
+    public Material[] materials;
     public Sprite sprite_HUD;
     public MonoScript function;
     public GameObject modelPrefab;

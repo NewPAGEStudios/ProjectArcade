@@ -90,6 +90,6 @@ public class ReflectBulletFunctions : MonoBehaviour
             yield return new WaitForSeconds(0.001f);
         }
         GetComponent<Rigidbody>().velocity = Vector3.zero;
-        Destroy(gameObject);
+//        Destroy(gameObject);
     }
 }

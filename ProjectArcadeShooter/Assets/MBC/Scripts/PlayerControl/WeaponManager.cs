@@ -112,7 +112,7 @@ public class WeaponManager : MonoBehaviour
         currWeaponID = -1;
         //getWeapon(bombaGuy);
         //skill Initialization
-        active_Skill = gc.skills[0];
+        active_Skill = null;
         onSkillUsage = false;
         skill_holdOT = true;
         skillUsePreventTimer = 0f;
@@ -183,12 +183,11 @@ public class WeaponManager : MonoBehaviour
                 {
                     if (Input.GetKeyDown(KeyCode.C))
                     {
-                        //cancel
+                        skillCancel();
                     }
                     else
                     {
                         //visualize
-                        Debug.Log("Bomba");
                         skillStayOpen();
 
                     }
@@ -328,6 +327,7 @@ public class WeaponManager : MonoBehaviour
         GameObject ammo = new();
         ammo.transform.SetPositionAndRotation(firePos.transform.position, firePos.transform.rotation);
         ammo.name = "Ammo";
+        ammo.layer = 7;
         ammo.AddComponent(w.usedAmmo.function.GetClass());
         
         ammo.AddComponent<Rigidbody>();
@@ -341,7 +341,8 @@ public class WeaponManager : MonoBehaviour
             rbf.bulletSpeed = w.usedAmmo.bulletSpeed;
             rbf.mostHitCanBeDone = w.usedAmmo.maxReflectionTime;
             rbf.dmg = w.usedAmmo.dmg;
-            Instantiate(w.usedAmmo.modelGO, ammo.transform);
+            GameObject go = Instantiate(w.usedAmmo.modelGO, ammo.transform);
+            go.layer = 7;
         }
         else
         {
@@ -368,7 +369,6 @@ public class WeaponManager : MonoBehaviour
                 break;
             }
         }
-        Debug.Log("hokro");
         handStates = ActionStateOFHands.idle;
         yield return null;
     }
@@ -532,7 +532,6 @@ public class WeaponManager : MonoBehaviour
     {
         active_Skill = sk;
         gc.changeSpriteOfActiveSkill(sk.sprite_HUD);
-        gc.closeSpriteOfActiveSkill(null);
     }
     private void skillStayOpen()
     {
@@ -576,14 +575,21 @@ public class WeaponManager : MonoBehaviour
         if (skill_canbePerformed)
         {
             Transform tf = gc.skillIndicatorParent.transform.Find("indicator");
-            Instantiate(active_Skill.modelPrefab, tf.position, tf.rotation, gc.skillObject.transform);
+            GameObject skillOBJ = Instantiate(active_Skill.modelPrefab, tf.position, tf.rotation, gc.skillObject.transform);
             Destroy(tf.gameObject);
 
+            skillOBJ.AddComponent(active_Skill.function.GetClass());
 
+            //manuel handling
+            if(skillOBJ.TryGetComponent<wallriser>(out wallriser wr))
+            {
+                wr.skill = active_Skill;
+            }
 
 
             skill_holdOT = true;
             active_Skill = null;
+            gc.closeSpriteOfActiveSkill(null);
         }
         else
         {

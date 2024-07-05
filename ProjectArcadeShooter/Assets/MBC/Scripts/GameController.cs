@@ -19,7 +19,9 @@ public class GameController : MonoBehaviour
     public EnemyType[] enemies;
     public Consumable[] consumables;
     public Skill[] skills;
-
+    private List<Skill> activeSkills=new List<Skill>();
+    private List<Skill> passiveSkills = new List<Skill>();
+    private List<Skill> instantSkills = new List<Skill>();
     //to visualise skills for indicatng parent obj
     public GameObject skillIndicatorParent;
     public GameObject skillObject;
@@ -53,7 +55,23 @@ public class GameController : MonoBehaviour
             weaponGO.name = weapons[i].WeaponName;
             weaponGO.SetActive(false);
         }
+        for(int i = 0; i < skills.Length; i++)
+        {
+            if (skills[i].st == Skill.skillType.active)
+            {
+                activeSkills.Add(skills[i]);
+            }
+            else if (skills[i].st == Skill.skillType.instant)
+            {
+                instantSkills.Add(skills[i]);
 
+            }
+            else if (skills[i].st == Skill.skillType.passive)
+            {
+                passiveSkills.Add(skills[i]);
+
+            }
+        }
 
 
     }
@@ -105,15 +123,33 @@ public class GameController : MonoBehaviour
         consumableobject.transform.position = posOFC;
 
         consumableobject.AddComponent(consumables[consID].function.GetClass());
+        
+        
+        
         //Manuel adding
         if (consumableobject.TryGetComponent<GetWeapon>(out GetWeapon gw))
         {
             gw.weaponID = Random.Range(0, 1);// max = weapons.Length
         }
+        //skills
+        else if(consumableobject.TryGetComponent<GetActiveSkill>(out GetActiveSkill gas))
+        {
+            gas.skillId = activeSkills[Random.Range(0, activeSkills.Count)].skillTypeID;
+        }
+        else if(consumableobject.TryGetComponent<PerformInstantSkill>(out PerformInstantSkill pis))
+        {
+            pis.thisSkill = instantSkills[Random.Range(0, instantSkills.Count)];
+        }
+        else if(consumableobject.TryGetComponent<PerformPassiveSkill>(out PerformPassiveSkill pps))
+        {
+            pps.thisSkill = passiveSkills[Random.Range(0, passiveSkills.Count)];
+        }
         else
         {
             Debug.Log("Bomba");
         }
+
+
         consumableobject.AddComponent<SphereCollider>();
         consumableobject.GetComponent<SphereCollider>().isTrigger = true;
 
@@ -194,7 +230,18 @@ public class GameController : MonoBehaviour
         playerPanel.transform.GetChild(4).GetChild(0).GetComponent<Image>().sprite = null;
         playerPanel.transform.GetChild(4).GetChild(0).GetComponent<Image>().enabled = false;
     }
+    public void DashIndicator()
+    {
 
+    }
+    public void AddDashIndicator()
+    {
+
+    }
+    public void RemoveDashIndicator()
+    {
+
+    }
 
 
     public void SpawnEnemy()

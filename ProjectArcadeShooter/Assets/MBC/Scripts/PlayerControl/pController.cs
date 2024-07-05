@@ -16,6 +16,8 @@ public class PController : MonoBehaviour
     private float maxSpeedOutGround;
 
     [SerializeField]
+    private float moveSpeedOnAir;
+    [SerializeField]
     private float jumpForce;
     [SerializeField]
     private float jumpDrag;
@@ -27,6 +29,8 @@ public class PController : MonoBehaviour
     private float slideDuration;
     [SerializeField]
     private float slideForce;
+    [SerializeField]
+    private float dashForce;
 
     private InputManager iManager;
     private Rigidbody rb;
@@ -49,8 +53,10 @@ public class PController : MonoBehaviour
     private float sens;
     private Vector3 cam_StartingRotation;
 
-
+    GameController gc;
     WeaponManager weaponManager;
+    public float maxdashmeter;
+    private float currentdashMeter;
 
     public enum ActionStateDependecyToPlayer
     {
@@ -76,10 +82,12 @@ public class PController : MonoBehaviour
         iManager = InputManager.Instance;
         rb = GetComponent<Rigidbody>();
         weaponManager = GetComponent<WeaponManager>();
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
+        
 
     }
 
@@ -246,7 +254,7 @@ public class PController : MonoBehaviour
                 rb.AddForce(moveSpeed * Time.fixedDeltaTime * Slope(moveDir), ForceMode.Force);
                 break;
             case ActionStateDependecyToGround.onAir:
-                rb.AddForce(moveSpeed * Time.fixedDeltaTime * moveDir, ForceMode.Force);
+                rb.AddForce(moveSpeedOnAir * Time.fixedDeltaTime * moveDir, ForceMode.Force);
                 break;
             default:
                 Debug.LogWarning("action State to Ground Sýkýntýlý");
@@ -323,20 +331,24 @@ public class PController : MonoBehaviour
         {
             if(actiontp == ActionStateDependecyToPlayer.slide || actiontp == ActionStateDependecyToPlayer.crouch)
             {
-                Debug.Log("patladý");
                 return;
             }
-            Debug.Log("patlamadý");
+            actiontp = ActionStateDependecyToPlayer.dash;
+
+            Vector2 moveDirVect2 = iManager.getPlayerMovement();// (x,y) (x,y,z) (x,0,y)
+            Vector3 moveDir = new(moveDirVect2.x, 0f, moveDirVect2.y);
+            moveDir = gameObject.transform.right * moveDir.x + gameObject.transform.forward * moveDir.z;
+
             switch (actiontg)
             {
                 case ActionStateDependecyToGround.flat:
-                    rb.AddForce(transform.forward * slideForce, ForceMode.VelocityChange);
+                    rb.AddForce(moveDir * dashForce, ForceMode.VelocityChange);
                     break;
                 case ActionStateDependecyToGround.slope:
-                    rb.AddForce(Slope(transform.forward) * slideForce, ForceMode.VelocityChange);
+                    rb.AddForce(Slope(moveDir) * dashForce, ForceMode.VelocityChange);
                     break;
                 case ActionStateDependecyToGround.onAir:
-                    rb.AddForce(Slope(transform.forward) * slideForce, ForceMode.VelocityChange);
+                    rb.AddForce(moveDir * dashForce, ForceMode.VelocityChange);
                     break;
             }
             Invoke(nameof(DashingNormal), slideDuration - 0.03f);
@@ -345,6 +357,7 @@ public class PController : MonoBehaviour
     private void DashingNormal()
     {
         rb.velocity = Vector3.zero;
+        actiontp = ActionStateDependecyToPlayer.idle;
     }
     private void SlidingNormal()
     {
@@ -438,6 +451,16 @@ public class PController : MonoBehaviour
             maxSpeed = maxSpeedOutGround;
         }
     }
-
+    //skillHandling
+    public void SetSpeed(float multiplier, float duration)
+    {
+        moveSpeed *= multiplier;
+        StartCoroutine(SpeedMultiplierDuration(multiplier, duration));
+    }
+    IEnumerator SpeedMultiplierDuration(float multiplier,float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        moveSpeed /= multiplier;
+    }
 
 }
