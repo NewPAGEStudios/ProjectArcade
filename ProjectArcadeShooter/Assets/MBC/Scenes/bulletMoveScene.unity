@@ -2726,6 +2726,7 @@ MonoBehaviour:
   levelDesign: {fileID: 1750625358}
   spawnPointParent: {fileID: 1632954330}
   inActiveWeapon: {fileID: 2001263146}
+  player: {fileID: 1906974777}
 --- !u!4 &1203979082
 Transform:
   m_ObjectHideFlags: 0
@@ -6217,6 +6218,7 @@ MonoBehaviour:
   dashForce: 40
   max_angleOfPlane: 60
   sens: 7
+  maxdashmeter: 125
   actiontp: 0
   actiontg: 0
 --- !u!1 &1922655435
@@ -6927,6 +6929,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: dashMeter
+      objectReference: {fileID: 0}
+    - target: {fileID: 4108393517002880842, guid: 7db301e2ae62e6b4aa273ab8f7c67fe1,
+        type: 3}
+      propertyPath: m_FillAmount
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7385267753540316027, guid: 7db301e2ae62e6b4aa273ab8f7c67fe1,
         type: 3}

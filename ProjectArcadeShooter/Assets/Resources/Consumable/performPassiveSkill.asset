@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 3
   nameOfC: performPassiveSkill
   descriptionOfC: performing passive skill
-  function: {fileID: 11500000, guid: 22e27cf32a383114c9f32417e64dd710, type: 3}
+  function: {fileID: 11500000, guid: d97cf59b8af9fb1408be6513425cee78, type: 3}
   modelMesh: {fileID: -3541629673168548286, guid: 3c2c81f4f15dc174aa63610f10108c57,
     type: 3}
   mats:

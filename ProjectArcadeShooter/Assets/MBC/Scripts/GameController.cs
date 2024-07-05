@@ -19,13 +19,17 @@ public class GameController : MonoBehaviour
     public EnemyType[] enemies;
     public Consumable[] consumables;
     public Skill[] skills;
+    
     private List<Skill> activeSkills=new List<Skill>();
     private List<Skill> passiveSkills = new List<Skill>();
     private List<Skill> instantSkills = new List<Skill>();
+    
     //to visualise skills for indicatng parent obj
     public GameObject skillIndicatorParent;
     public GameObject skillObject;
     public Material skillIndicatorMaterial;
+
+
 
     //UI Ref
     public GameObject playerPanel;
@@ -37,6 +41,8 @@ public class GameController : MonoBehaviour
 
 
     public GameObject inActiveWeapon;
+
+    public GameObject player;
 
     private void Awake()
     {
@@ -101,7 +107,7 @@ public class GameController : MonoBehaviour
     }
     private void Start()
     {
-        SpawnCons(0);
+        SpawnCons(3);
     }
 
     //    spawners

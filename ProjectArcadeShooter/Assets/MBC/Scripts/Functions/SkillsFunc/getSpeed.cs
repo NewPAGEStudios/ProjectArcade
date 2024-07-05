@@ -8,7 +8,8 @@ public class getSpeed : MonoBehaviour
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().player;
+
         player.GetComponent<PController>().SetSpeed(1.2f, 4f);
     }
 }
