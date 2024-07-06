@@ -383,6 +383,7 @@ GameObject:
   m_Component:
   - component: {fileID: 117563565}
   - component: {fileID: 117563566}
+  - component: {fileID: 117563567}
   m_Layer: 0
   m_Name: Dummy
   m_TagString: Enemy
@@ -429,6 +430,27 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!95 &117563567
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 117563564}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ac432d5425837b74fa183b0bdf31599f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &120913853
 GameObject:
   m_ObjectHideFlags: 0
@@ -4230,7 +4252,7 @@ PrefabInstance:
     - target: {fileID: -7429555865854824994, guid: 0956535edf85bb44d8c761bd42a5e965,
         type: 3}
       propertyPath: m_Name
-      value: Left
+      value: Bone.023
       objectReference: {fileID: 0}
     - target: {fileID: -7429555865854824994, guid: 0956535edf85bb44d8c761bd42a5e965,
         type: 3}
@@ -4880,7 +4902,7 @@ PrefabInstance:
     - target: {fileID: 2860289212837780487, guid: 0956535edf85bb44d8c761bd42a5e965,
         type: 3}
       propertyPath: m_Name
-      value: Right
+      value: Bone
       objectReference: {fileID: 0}
     - target: {fileID: 2860289212837780487, guid: 0956535edf85bb44d8c761bd42a5e965,
         type: 3}
