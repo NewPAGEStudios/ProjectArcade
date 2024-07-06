@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -5,11 +6,15 @@ public class stunInstanSkill : MonoBehaviour
 {
     public Skill thisSkilll;
     GameObject go;
+    GameController gc;
     // Start is called before the first frame update
     void Start()
     {
         go = Instantiate(thisSkilll.modelPrefab,gameObject.transform);
         go.transform.localPosition = new(0, -1, 0);
+
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+
         performfunc();
     }
     void performfunc()
@@ -28,10 +33,16 @@ public class stunInstanSkill : MonoBehaviour
     IEnumerator endEffect()
     {
         MaterialPropertyBlock m_propertyBlock = new MaterialPropertyBlock();
+        go.GetComponent<Renderer>().SetPropertyBlock(m_propertyBlock);
         while (m_propertyBlock.GetColor("_BaseColor").a > 0)
         {
-            m_propertyBlock.SetColor("_BaseColor", new Color(0, 0, 0, m_propertyBlock.GetColor("_BaseColor").a - 0.1f));
-            yield return new WaitForSeconds(0.001f);
+            Debug.Log("Time");
+            m_propertyBlock.SetColor("_BaseColor", new Color(0, 0, 0, m_propertyBlock.GetColor("_BaseColor").a - 0.01f));
+            go.GetComponent<Renderer>().SetPropertyBlock(m_propertyBlock);
+            yield return new WaitForSeconds(0.1f);
         }
+        gameObject.transform.parent.parent = gc.spawnPointParent.transform;
+        Destroy(gameObject);
+
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class PerformPassiveSkill : MonoBehaviour
         go = Instantiate(thisSkill.modelPrefab, gameObject.transform);
         go.transform.localScale = go.transform.localScale / 4;
 
+
         player = GameObject.FindGameObjectWithTag("Player");
 
     }
@@ -29,9 +31,9 @@ public class PerformPassiveSkill : MonoBehaviour
         {
             gameObject.AddComponent(thisSkill.function.GetClass());
             //manuelHandling
-            if (gameObject.TryGetComponent<stunInstanSkill>(out stunInstanSkill sis))
+            if (gameObject.TryGetComponent<getSpeed>(out getSpeed gs))
             {
-                sis.thisSkilll = thisSkill;
+
             }
         }
         else

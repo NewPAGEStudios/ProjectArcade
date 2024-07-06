@@ -47,6 +47,7 @@ public class ReflectBulletFunctions : MonoBehaviour
         if (collision.transform.CompareTag("Enemy"))
         {
             //collision.getComponent<EnemyController>().TakeDmg(dmg);
+            Debug.Log(collision.transform.name + " named enemy got hit with " + dmg.ToString() + " and with " + numberOfCollisionHit.ToString() + " hit time");
             startDesttroyObject();
         }
         else if (numberOfCollisionHit >= mostHitCanBeDone)
@@ -90,6 +91,6 @@ public class ReflectBulletFunctions : MonoBehaviour
             yield return new WaitForSeconds(0.001f);
         }
         GetComponent<Rigidbody>().velocity = Vector3.zero;
-//        Destroy(gameObject);
+        Destroy(gameObject);
     }
 }

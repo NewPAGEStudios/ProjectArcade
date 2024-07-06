@@ -28,6 +28,7 @@ public class GameController : MonoBehaviour
     public GameObject skillIndicatorParent;
     public GameObject skillObject;
     public Material skillIndicatorMaterial;
+    public GameObject dashVisualized;
 
 
 
@@ -43,6 +44,7 @@ public class GameController : MonoBehaviour
     public GameObject inActiveWeapon;
 
     public GameObject player;
+
 
     private void Awake()
     {
@@ -107,7 +109,7 @@ public class GameController : MonoBehaviour
     }
     private void Start()
     {
-        SpawnCons(3);
+        SpawnCons(1);
     }
 
     //    spawners
@@ -119,16 +121,23 @@ public class GameController : MonoBehaviour
 
         Vector3 posOFC = new(vec.x, vec.y + 1f, vec.z);
 
-        GameObject consumableobject = new()
+        GameObject consumableobject = new();
+        int i = 0;
+        for (i = 0; i < consumables.Length; i++)
         {
-            name = consumables[consID].nameOfC
-        };
+            if (consumables[i].id == consID)
+            {
+                break;
+            }
+        }
+
+        consumableobject.name = consumables[i].nameOfC;
 
         consumableobject.transform.parent = spawnPointParent.transform.GetChild(r);
 
         consumableobject.transform.position = posOFC;
 
-        consumableobject.AddComponent(consumables[consID].function.GetClass());
+        consumableobject.AddComponent(consumables[i].function.GetClass());
         
         
         
@@ -236,13 +245,38 @@ public class GameController : MonoBehaviour
         playerPanel.transform.GetChild(4).GetChild(0).GetComponent<Image>().sprite = null;
         playerPanel.transform.GetChild(4).GetChild(0).GetComponent<Image>().enabled = false;
     }
-    public void DashIndicator()
+    public void DashIndicator(float dashMeter)
     {
-
+        float lastMeter = dashMeter % 25;
+        int opennedMeters = (int) dashMeter / 25;
+        playerPanel.transform.GetChild(5);
+        for(int i = playerPanel.transform.GetChild(5).childCount - 1; i >= 0 ; i--)
+        {
+            if (opennedMeters > 0)
+            {
+                playerPanel.transform.GetChild(5).GetChild(i).GetComponent<Image>().fillAmount = 1;
+            }
+            else if(opennedMeters == 0)
+            {
+                playerPanel.transform.GetChild(5).GetChild(i).GetComponent<Image>().fillAmount = lastMeter / 25;
+            }
+            else
+            {
+                playerPanel.transform.GetChild(5).GetChild(i).GetComponent<Image>().fillAmount = 0;
+            }
+            opennedMeters--;
+        }
     }
-    public void AddDashIndicator()
+    public void AddDashIndicator(float dashMeter)
     {
-
+        float dashNumber = Mathf.Round(dashMeter / 25);
+        float maxDashN = dashNumber;
+        while(dashNumber > 0)
+        {
+            GameObject go = Instantiate(dashVisualized, playerPanel.transform.GetChild(5));
+            go.GetComponent<RectTransform>().anchoredPosition = new Vector2(800-(200 * (maxDashN - dashNumber)),400);
+            dashNumber--;
+        }
     }
     public void RemoveDashIndicator()
     {

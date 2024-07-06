@@ -14,6 +14,8 @@ public class PerformInstantSkill : MonoBehaviour
         go = Instantiate(thisSkill.modelPrefab, gameObject.transform);
         go.transform.localScale = go.transform.localScale / 4;
 
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+
         player = GameObject.FindGameObjectWithTag("Player");
     }
 

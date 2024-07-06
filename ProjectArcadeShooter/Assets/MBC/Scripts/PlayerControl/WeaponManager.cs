@@ -120,15 +120,15 @@ public class WeaponManager : MonoBehaviour
     private void Update()
     {
         //nonweaponedFunctiond
-        if (currWeaponID == -1)
-        {
-            return;
-        }
         //weaponedFunctions
         //reload
         if (/*currWeaponMag <= 0 || */Input.GetKeyDown(KeyCode.R))
         {
-            if(handStates == ActionStateOFHands.idle)
+            if (currWeaponID == -1)
+            {
+                return;
+            }
+            if (handStates == ActionStateOFHands.idle)
             {
                 if (!onSkillUsage)
                 {
@@ -141,39 +141,41 @@ public class WeaponManager : MonoBehaviour
             }
         }
         //fire
-        if (FindWeapon(currWeaponID).type == Weapon.WeaponType.semi)
+        if (currWeaponID >= 0)
         {
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            if (FindWeapon(currWeaponID).type == Weapon.WeaponType.semi)
             {
-                if (handStates == ActionStateOFHands.idle)
+                if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
-                    Fire();
-                }
-                else
-                {
-//                    Debug.Log("calledFIRE--> " + handStates);
+                    if (handStates == ActionStateOFHands.idle)
+                    {
+                        Fire();
+                    }
+                    else
+                    {
+                    }
                 }
             }
-        }
-        else if(FindWeapon(currWeaponID).type == Weapon.WeaponType.auto)
-        {
-            if (Input.GetKey(KeyCode.Mouse0))
+            else if (FindWeapon(currWeaponID).type == Weapon.WeaponType.auto)
             {
-                if (handStates == ActionStateOFHands.idle)
+                if (Input.GetKey(KeyCode.Mouse0))
                 {
-                    Fire();
-                }
-                else
-                {
-                    Debug.Log("calledFIRE--> " + handStates);
+                    if (handStates == ActionStateOFHands.idle)
+                    {
+                        Fire();
+                    }
+                    else
+                    {
+                    }
                 }
             }
+            //weaponChange
+            if (Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                ChangeWeapon(currWeaponID + 1);
+            }
         }
-        //weaponChange
-        if (Input.GetKeyDown(KeyCode.Mouse1))
-        {
-            ChangeWeapon(currWeaponID + 1);
-        }
+
         //skillUsing
         if (active_Skill != null)
         {

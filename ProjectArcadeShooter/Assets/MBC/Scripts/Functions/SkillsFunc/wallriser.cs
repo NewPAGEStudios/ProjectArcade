@@ -21,7 +21,7 @@ public class wallriser : MonoBehaviour
     void Start()
     {
         colliderOpened = false;
-        disollveEffectscaleNumber = 0.01f;
+        disollveEffectscaleNumber = 0.5f;
 
         modelRender = GetComponent<MeshRenderer>();
         m_PropertyBlock = new MaterialPropertyBlock();
@@ -73,7 +73,7 @@ public class wallriser : MonoBehaviour
         m_PropertyBlock = new MaterialPropertyBlock();
         while (true)
         {
-            m_PropertyBlock.SetFloat("_NoiseStrength", m_PropertyBlock.GetFloat("_NoiseStrength") - disollveEffectscaleNumber * Time.deltaTime);
+            m_PropertyBlock.SetFloat("_NoiseStrength", m_PropertyBlock.GetFloat("_NoiseStrength") - disollveEffectscaleNumber);
             modelRender.SetPropertyBlock(m_PropertyBlock);
             if (m_PropertyBlock.GetFloat("_NoiseStrength") <= 0)
             {

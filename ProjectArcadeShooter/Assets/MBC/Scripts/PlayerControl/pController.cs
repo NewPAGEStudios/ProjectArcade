@@ -87,14 +87,20 @@ public class PController : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
-        
-
+        gc.AddDashIndicator(maxdashmeter);
+        currentdashMeter = maxdashmeter;
+        gc.DashIndicator(currentdashMeter);
     }
 
     // Update is called once per frame
     void Update()
     {
-//        Debug.Log("action to player = " + actiontp + " || action to ground = " + actiontg);
+        if (currentdashMeter < maxdashmeter)
+        {
+            currentdashMeter += 2.5f * Time.deltaTime;
+            gc.DashIndicator(currentdashMeter);
+        }
+
         Jump();
         Crouch();
         CrouchExit();
@@ -299,6 +305,10 @@ public class PController : MonoBehaviour
             {
                 return;
             }
+            if (currentdashMeter < 25)
+            {
+                return;
+            }
 
             Transform targetScaleExchangeUnit = gameObject.transform.GetChild(0);//getchild(0) = firts child of hierarcy it will be model be sure to do that
             Transform targetPosExchangeUnit = gameObject.transform;
@@ -322,6 +332,9 @@ public class PController : MonoBehaviour
 
             actiontp = ActionStateDependecyToPlayer.slide;
 
+            currentdashMeter -= 25;
+            gc.DashIndicator(currentdashMeter);
+
             Invoke(nameof(SlidingNormal), slideDuration);
         }
     }
@@ -333,7 +346,15 @@ public class PController : MonoBehaviour
             {
                 return;
             }
+            if (currentdashMeter < 25)
+            {
+                return;
+            }
+
             actiontp = ActionStateDependecyToPlayer.dash;
+
+            currentdashMeter -= 25;
+            gc.DashIndicator(currentdashMeter);
 
             Vector2 moveDirVect2 = iManager.getPlayerMovement();// (x,y) (x,y,z) (x,0,y)
             Vector3 moveDir = new(moveDirVect2.x, 0f, moveDirVect2.y);
@@ -455,12 +476,16 @@ public class PController : MonoBehaviour
     public void SetSpeed(float multiplier, float duration)
     {
         moveSpeed *= multiplier;
+        slideForce *= multiplier;
+        dashForce *= multiplier;
         StartCoroutine(SpeedMultiplierDuration(multiplier, duration));
     }
     IEnumerator SpeedMultiplierDuration(float multiplier,float duration)
     {
         yield return new WaitForSeconds(duration);
         moveSpeed /= multiplier;
+        slideForce /= multiplier;
+        dashForce /= multiplier;
     }
 
 }
