@@ -5184,7 +5184,8 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5866666021909216657, guid: 0956535edf85bb44d8c761bd42a5e965, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -189739545326129866, guid: 0956535edf85bb44d8c761bd42a5e965,
@@ -5682,7 +5683,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1641229421}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: 0956535edf85bb44d8c761bd42a5e965, type: 3}
   m_Controller: {fileID: 9100000, guid: 3b334f6f38e24cc4b95c0137060fa7f9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
