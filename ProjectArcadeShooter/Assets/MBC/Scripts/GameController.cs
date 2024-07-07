@@ -110,6 +110,7 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         SpawnCons(1);
+        SpawnCons(0);
     }
 
     //    spawners

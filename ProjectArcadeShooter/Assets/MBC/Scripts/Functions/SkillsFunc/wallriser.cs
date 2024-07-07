@@ -70,15 +70,13 @@ public class wallriser : MonoBehaviour
     }
     IEnumerator disolveEffectCoroutineEnd()
     {
+        modelRender.material = skill.materials[1];
         m_PropertyBlock = new MaterialPropertyBlock();
-        while (true)
+        modelRender.SetPropertyBlock(m_PropertyBlock);
+        while (m_PropertyBlock.GetFloat("_NoiseStrength") < 20f)
         {
-            m_PropertyBlock.SetFloat("_NoiseStrength", m_PropertyBlock.GetFloat("_NoiseStrength") - disollveEffectscaleNumber);
+            m_PropertyBlock.SetFloat("_NoiseStrength", m_PropertyBlock.GetFloat("_NoiseStrength") - 0.5f);
             modelRender.SetPropertyBlock(m_PropertyBlock);
-            if (m_PropertyBlock.GetFloat("_NoiseStrength") <= 0)
-            {
-                break;
-            }
             yield return new WaitForSeconds(0.001f);
         }
         colliderOpened = false;

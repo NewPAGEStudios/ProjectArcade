@@ -66,7 +66,7 @@ public class WeaponManager : MonoBehaviour
     public GameObject inActiveWeapon;
 
     private Skill active_Skill;
-    private float skillUsePreventTimer;
+    private bool skill_usageCooldown;
     private bool skill_canbePerformed;
     private bool skill_holdOT;
 
@@ -115,7 +115,7 @@ public class WeaponManager : MonoBehaviour
         active_Skill = null;
         onSkillUsage = false;
         skill_holdOT = true;
-        skillUsePreventTimer = 0f;
+        skill_usageCooldown = false;
     }
     private void Update()
     {
@@ -179,7 +179,7 @@ public class WeaponManager : MonoBehaviour
         //skillUsing
         if (active_Skill != null)
         {
-            if (skillUsePreventTimer <= 0)
+            if (!skill_usageCooldown)
             {
                 if (Input.GetKey(KeyCode.Q))
                 {
@@ -196,13 +196,16 @@ public class WeaponManager : MonoBehaviour
                 }
                 else if (Input.GetKeyUp(KeyCode.Q))
                 {
-                    //perform
+                    skill_usageCooldown = false;
                     skillPerform();
                 }
             }
             else
             {
-                skillUsePreventTimer -= Time.deltaTime;
+                if (Input.GetKeyUp(KeyCode.Q))
+                {
+                    skill_usageCooldown = false;
+                }
             }
         }
     }
@@ -544,6 +547,7 @@ public class WeaponManager : MonoBehaviour
             go.name = "indicator";
             go.GetComponent<Collider>().enabled = false;
             go.GetComponent<MeshRenderer>().material = gc.skillIndicatorMaterial;
+            onSkillUsage = true;
             skill_holdOT = false;
         }
         if (Physics.Raycast(firePos.transform.position, firePos.transform.forward,out RaycastHit hit,10f))
@@ -577,6 +581,7 @@ public class WeaponManager : MonoBehaviour
         if (skill_canbePerformed)
         {
             Transform tf = gc.skillIndicatorParent.transform.Find("indicator");
+            tf.gameObject.SetActive(false);
             GameObject skillOBJ = Instantiate(active_Skill.modelPrefab, tf.position, tf.rotation, gc.skillObject.transform);
             Destroy(tf.gameObject);
 
@@ -587,7 +592,7 @@ public class WeaponManager : MonoBehaviour
             {
                 wr.skill = active_Skill;
             }
-
+            StartCoroutine(PerformSkillAnim(active_Skill.skillTypeID));
 
             skill_holdOT = true;
             active_Skill = null;
@@ -600,12 +605,29 @@ public class WeaponManager : MonoBehaviour
     }
     private void skillCancel()
     {
+        Transform tf = gc.skillIndicatorParent.transform.Find("indicator");
+        Destroy(tf.gameObject);
+
         skill_canbePerformed = false;
-        skillUsePreventTimer = 0.2f;
-        hand_Animator.SetBool("cancel_skill" + active_Skill.skillTypeID, true);
+        skill_usageCooldown = true;
+        StartCoroutine(CancelSkillAnim(active_Skill.skillTypeID));
         skill_holdOT = true;
     }
+    IEnumerator CancelSkillAnim(int id)
+    {
+        hand_Animator.SetBool("cancel_skill" + id, true);
+        yield return new WaitForSeconds(0.01f);
+        hand_Animator.SetBool("cancel_skill" + id, false);
+        onSkillUsage = false;
 
+    }
+    IEnumerator PerformSkillAnim(int id)
+    {
+        hand_Animator.SetBool("perform_skill" + id,true);
+        yield return new WaitForSeconds(0.01f);
+        hand_Animator.SetBool("perform_skill" + id, false);
+        onSkillUsage = false;
+    }
 
     private Weapon FindWeapon(int searchIndex)
     {
