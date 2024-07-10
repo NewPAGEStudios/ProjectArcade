@@ -18,6 +18,11 @@ public class GetWeapon : MonoBehaviour
             }
         }
         GameObject go = Instantiate(gc.weapons[i].modelGameObject, gameObject.transform);
+        go.layer = 0;
+        for(int z = 0; z < go.transform.childCount; z++)
+        {
+            go.transform.GetChild(z).gameObject.layer = 0;
+        }
         go.transform.localScale = gc.transform.localScale / 2;
     }
     private void Update()

@@ -111,6 +111,7 @@ public class GameController : MonoBehaviour
     {
         SpawnCons(1);
         SpawnCons(0);
+        SpawnCons(0);
     }
 
     //    spawners
@@ -145,7 +146,7 @@ public class GameController : MonoBehaviour
         //Manuel adding
         if (consumableobject.TryGetComponent<GetWeapon>(out GetWeapon gw))
         {
-            gw.weaponID = Random.Range(0, 1);// max = weapons.Length
+            gw.weaponID = Random.Range(0, weapons.Length);
         }
         //skills
         else if(consumableobject.TryGetComponent<GetActiveSkill>(out GetActiveSkill gas))

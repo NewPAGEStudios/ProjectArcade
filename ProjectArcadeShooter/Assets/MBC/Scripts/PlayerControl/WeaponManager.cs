@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -325,6 +326,11 @@ public class WeaponManager : MonoBehaviour
 
         currWeapon_inWeapon_ammoAmount -= w.usingAmmoPerAttack;
 
+        if (FindWeapon(currWeaponID).twoStateReload)
+        {
+            activeWeapon.transform.GetChild(0).Find("ammo").GetComponent<TextMeshPro>().text = currWeapon_inWeapon_ammoAmount.ToString();
+        }
+
         gc.ChangeAmmoText(currWeapon_inWeapon_ammoAmount);
         gc.ChangefullAmmoText(currWeapon_sum_ammoAmount);
 
@@ -395,24 +401,52 @@ public class WeaponManager : MonoBehaviour
     IEnumerator Reload()
     {
         handStates = ActionStateOFHands.inReload;
-
-        hand_Animator.SetBool("reload", true);
-        yield return new WaitForSeconds(0.01f);
-        hand_Animator.SetBool("reload", false);
-        while (true)
+        if (FindWeapon(currWeaponID).twoStateReload)
         {
-            yield return new WaitForEndOfFrame();
-            if (hand_Animator.GetCurrentAnimatorStateInfo(0).IsName("idle_weap" + currWeaponID))
+            hand_Animator.SetBool("reload", true);
+            while (true)
             {
-                break;
+                yield return new WaitForEndOfFrame();
+                if (hand_Animator.GetCurrentAnimatorStateInfo(0).IsName("reload1_weap" + currWeaponID))
+                {
+                    break;
+                }
             }
+            hand_Animator.SetBool("reload", false);
+            ReloadFucntion();
+            while (true)
+            {
+                yield return new WaitForEndOfFrame();
+                if (hand_Animator.GetCurrentAnimatorStateInfo(0).IsName("idle_weap" + currWeaponID))
+                {
+                    break;
+                }
+            }
+            handStates = ActionStateOFHands.idle;
+            yield return null;
         }
+        else
+        {
+            hand_Animator.SetBool("reload", true);
+            yield return new WaitForSeconds(0.01f);
+            hand_Animator.SetBool("reload", false);
+            while (true)
+            {
+                yield return new WaitForEndOfFrame();
+                if (hand_Animator.GetCurrentAnimatorStateInfo(0).IsName("idle_weap" + currWeaponID))
+                {
+                    break;
+                }
+            }
 
-        ReloadFucntion();
-        yield return null;
+            ReloadFucntion();
+            handStates = ActionStateOFHands.idle;
+            yield return null;
+        }
     }
     private void ReloadFucntion()
     {
+        Debug.Log(FindWeapon(currWeaponID).magSize + " " + magmax);
         int toMakeFullMag = magmax - currWeapon_inWeapon_ammoAmount;
 
         if (toMakeFullMag <= currWeapon_sum_ammoAmount)
@@ -425,10 +459,12 @@ public class WeaponManager : MonoBehaviour
             currWeapon_inWeapon_ammoAmount += currWeapon_sum_ammoAmount;
             currWeapon_sum_ammoAmount = 0;
         }
-
+        if (FindWeapon(currWeaponID).twoStateReload)
+        {
+            activeWeapon.transform.GetChild(0).Find("ammo").GetComponent<TextMeshPro>().text = currWeapon_inWeapon_ammoAmount.ToString();
+        }
         gc.ChangeAmmoText(currWeapon_inWeapon_ammoAmount);
         gc.ChangefullAmmoText(currWeapon_sum_ammoAmount);
-        handStates = ActionStateOFHands.idle;
     }
     //swayNBobbing
     public void Sway(Vector3 inputCam)

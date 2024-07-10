@@ -18,6 +18,7 @@ public class Weapon : ScriptableObject
     [Header(header: "Referances")]
     public GameObject modelGameObject;
     public Ammo usedAmmo;
+    public bool twoStateReload;
     [Header(header: "EnemyObjectProperties")]
     public WeaponType type;
     public int magSize;
