@@ -81,7 +81,10 @@ public class PController : MonoBehaviour
     {
         iManager = InputManager.Instance;
         rb = GetComponent<Rigidbody>();
+
         weaponManager = GetComponent<WeaponManager>();
+        weaponManager.IManager = iManager;
+
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
         Cursor.visible = false;
@@ -95,6 +98,10 @@ public class PController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(gc.pState==GameController.PlayState.inPlayerInterrupt||gc.pState == GameController.PlayState.inCinematic)
+        {
+            return;
+        }
         if (currentdashMeter < maxdashmeter)
         {
             currentdashMeter += 2.5f * Time.deltaTime;
@@ -138,7 +145,7 @@ public class PController : MonoBehaviour
     private void Crouch()
     {
         //iManager.crouching;
-        if(Input.GetKey(KeyCode.LeftControl))
+        if(iManager.crouching)
         {
             Transform targetScaleExchangeUnit = gameObject.transform.GetChild(0);//getchild(0) = firts child of hierarcy it will be model be sure to do that
             Transform targetPosExchangeUnit = gameObject.transform;
@@ -174,9 +181,9 @@ public class PController : MonoBehaviour
     }
     private void CrouchExit()
     {
-        if (Input.GetKeyUp(KeyCode.LeftControl))
+        if (!crouchEvent)
         {
-            if (!crouchEvent)
+            if (!iManager.crouching)
             {
                 Transform targetScaleExchangeUnit = gameObject.transform.GetChild(0);//getchild(0) = firts child of hierarcy it will be model be sure to do that
                 Transform targetPosExchangeUnit = gameObject.transform;
@@ -472,6 +479,12 @@ public class PController : MonoBehaviour
             maxSpeed = maxSpeedOutGround;
         }
     }
+
+    public InputManager getIManager()
+    {
+        return iManager;
+    }
+
     //skillHandling
     public void SetSpeed(float multiplier, float duration)
     {

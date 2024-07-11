@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Colt Revolver
   m_EditorClassIdentifier: 
   WeaponTypeID: 0
-  WeaponName: coltRevolver
-  modelGameObject: {fileID: 1277444108839805437, guid: c02fe18108f6de14ca2faad4803b3685,
+  WeaponName: R6
+  modelGameObject: {fileID: 2509791117841015898, guid: 04c07dd9c17661b4aa127ed678d13193,
     type: 3}
   usedAmmo: {fileID: 11400000, guid: 11a3b18b96a292d4ca57c0107bb46267, type: 2}
+  twoStateReload: 0
   type: 0
   magSize: 6
   usingAmmoPerAttack: 1

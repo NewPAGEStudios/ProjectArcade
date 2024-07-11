@@ -71,7 +71,9 @@ public class WeaponManager : MonoBehaviour
     private bool skill_canbePerformed;
     private bool skill_holdOT;
 
-
+    [HideInInspector]
+    public InputManager IManager;
+    private PController player;
 
     //ActionStates
     private enum ActionStateOFHands
@@ -117,13 +119,19 @@ public class WeaponManager : MonoBehaviour
         onSkillUsage = false;
         skill_holdOT = true;
         skill_usageCooldown = false;
+
+
     }
     private void Update()
     {
+        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic)
+        {
+            return;
+        }
         //nonweaponedFunctiond
         //weaponedFunctions
         //reload
-        if (/*currWeaponMag <= 0 || */Input.GetKeyDown(KeyCode.R))
+        if (IManager.getReloadPressed())
         {
             if (currWeaponID == -1)
             {
@@ -146,7 +154,7 @@ public class WeaponManager : MonoBehaviour
         {
             if (FindWeapon(currWeaponID).type == Weapon.WeaponType.semi)
             {
-                if (Input.GetKeyDown(KeyCode.Mouse0))
+                if (IManager.getFirePressed())
                 {
                     if (handStates == ActionStateOFHands.idle)
                     {
@@ -159,7 +167,7 @@ public class WeaponManager : MonoBehaviour
             }
             else if (FindWeapon(currWeaponID).type == Weapon.WeaponType.auto)
             {
-                if (Input.GetKey(KeyCode.Mouse0))
+                if (IManager.fireHolding)
                 {
                     if (handStates == ActionStateOFHands.idle)
                     {
@@ -171,9 +179,13 @@ public class WeaponManager : MonoBehaviour
                 }
             }
             //weaponChange
-            if (Input.GetKeyDown(KeyCode.Mouse1))
+            if (IManager.getMouseScroll() < 0)
             {
-                ChangeWeapon(currWeaponID + 1);
+                ChangeWeapon(currWeaponID - 1);
+            }
+            else if (IManager.getMouseScroll() > 0)
+            {
+                ChangeWeapon(currWeaponID - 1);
             }
         }
 
@@ -428,6 +440,7 @@ public class WeaponManager : MonoBehaviour
         else
         {
             hand_Animator.SetBool("reload", true);
+            activeWeapon.transform.GetChild(0).GetComponent<Animator>().SetTrigger("reload");
             yield return new WaitForSeconds(0.01f);
             hand_Animator.SetBool("reload", false);
             while (true)

@@ -2,18 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
     //Game Main Init
-    private enum GameState
+    public enum GameState
     {
         pause,
         inGame
     }
-    private GameState state;
+    public enum PlayState
+    {
+        inWave,
+        inWaiting,
+        inBoss,
+        inCinematic,
+        inPlayerInterrupt
+    }
+
+    public GameState state;
+    public PlayState pState;
+
     public Ammo[] ammos;
     public Weapon[] weapons;
     public EnemyType[] enemies;
@@ -45,6 +57,12 @@ public class GameController : MonoBehaviour
 
     public GameObject player;
 
+
+    private int waveNumber;
+
+    [Header(header: "GameSettings")]
+    public float waitTime;
+    private float waitTimer;
 
     private void Awake()
     {
@@ -109,9 +127,22 @@ public class GameController : MonoBehaviour
     }
     private void Start()
     {
+        //Referances
+
+
+
         SpawnCons(1);
         SpawnCons(0);
         SpawnCons(0);
+        waveNumber = 0;
+
+        state = GameState.inGame;
+        pState = PlayState.inWaiting;
+
+
+
+        ChangeAmmoText(0);
+        ChangefullAmmoText(0);
     }
 
     //    spawners
@@ -182,6 +213,15 @@ public class GameController : MonoBehaviour
         spawnPointParent.transform.GetChild(r).parent = null;
         return;
     }
+    public void SpawnEnemy()
+    {
+        GameObject enemy = new();
+        enemy.AddComponent<EnemyController>();
+        enemy.GetComponent<EnemyController>().m_Enemy = enemies[0];
+        enemy.name = "enemy";
+        //        Instantiate(enemy,new Vector3(2,0,5),new Quaternion(0,0,0,0));
+
+    }//NOtReady
 
 
 
@@ -200,21 +240,77 @@ public class GameController : MonoBehaviour
         }
         if(state == GameState.inGame)
         {
-            if (spawnTimer <= 0f)
+            if (pState == PlayState.inWave)
             {
-                SpawnCons(Random.Range(0, consumables.Length));
-                spawnTimer = Random.Range(15f, 20f);
+                if (spawnTimer <= 0f)
+                {
+                    SpawnCons(Random.Range(0, consumables.Length));
+                    spawnTimer = Random.Range(15f, 20f);
+                }
+                else
+                {
+                    spawnTimer -= Time.deltaTime;
+                }
             }
-            else
+            else if(pState == PlayState.inWaiting)
             {
-                spawnTimer -= Time.deltaTime;
+                if (waitTimer <= 0)
+                {
+                    toWave();
+                }
+                else
+                {
+                    waitTimer -= Time.deltaTime;
+                }
+            }
+            else if(pState == PlayState.inBoss)
+            {
+                //getBoss object name and full health blah blah blahsaiþdlasþldþaslþdlþas,dal,sild komik mi ?
+            }
+            else if(pState == PlayState.inCinematic)
+            {
+
             }
         }
+    }
+
+    //PlayStateChanger
+    private void toWave()
+    {
+        waveNumber += 1;
+        pState = PlayState.inWave;
+        if (waveNumber % 10 == 0)
+        {
+            toBoss(0);
+        }
+        //difficulty
+
+
+        //Spawn Enemies
+    }
+
+    private void toWait()
+    {
+        waitTimer = 20;
+        pState = PlayState.inWaiting;
+        //Enable Shops
+    }
+
+    private void toBoss(int bossID)
+    {
+        //teleportPlayer Routine
+        //start cinematic
+    }
+
+    private void toCinematic(PlayState from)
+    {
+        //will be added later
     }
 
 
 
 
+    //GameStatesChanger
     public void ResumeGame()
     {
         state = GameState.inGame;
@@ -222,18 +318,22 @@ public class GameController : MonoBehaviour
 
     public void StopGame()
     {
-        state= GameState.pause;
+        state = GameState.pause;
     }
+
+
+
+
+
+
     //UI Events
     //player based UI Events
     public void ChangeAmmoText(int newAmmo)
     {
-        //0 = curAmmoDisplay
         playerPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = newAmmo.ToString();
     }
     public void ChangefullAmmoText(int newAmmo)
     {
-        //0 = curAmmoDisplay
         playerPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = newAmmo.ToString();
 
     }
@@ -280,22 +380,8 @@ public class GameController : MonoBehaviour
             dashNumber--;
         }
     }
-    public void RemoveDashIndicator()
-    {
-
-    }
 
 
-    public void SpawnEnemy()
-    {
-        Debug.Log("Bomba");
-        GameObject enemy = new();
-        enemy.AddComponent<EnemyController>();
-        enemy.GetComponent<EnemyController>().m_Enemy = enemies[0];
-        enemy.name = "enemy";
-//        Instantiate(enemy,new Vector3(2,0,5),new Quaternion(0,0,0,0));
-
-    }
 
     public void MainMenu()
     {

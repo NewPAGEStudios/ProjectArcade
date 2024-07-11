@@ -11,7 +11,8 @@ public class InputManager : MonoBehaviour
         get { return _instance; }
     }
 
-    public bool crouching;
+    public bool crouching = false;
+    public bool fireHolding = false;
 
 
     private PlayerActionMaps inputActions;
@@ -27,24 +28,40 @@ public class InputManager : MonoBehaviour
         }
         inputActions = new PlayerActionMaps();
 
-//        inputActions.playerMap.Crouch.performed += CrouchPerformed;
-//        inputActions.playerMap.Crouch.canceled += CrouchCanceled;
+        inputActions.playerMap.Crouch.performed += CrouchPerformed;
+        inputActions.playerMap.Crouch.canceled += CrouchCanceled;
+
+        inputActions.handMap.FireAuto.performed += FirePerformed;
+        inputActions.handMap.FireAuto.canceled += FireCanceled;
+
     }
 
-/*    private void CrouchPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    private void FirePerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        fireHolding = true;
+    }
+    private void FireCanceled(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        fireHolding = false;
+    }
+
+
+    private void CrouchPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
         crouching = true;
     }
     private void CrouchCanceled(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
-        Debug.Log("deneme");
+        Debug.Log("Deneme");
         crouching = false;
     }
+
+
     public bool getCrouch()
     {
         return crouching;
     }
-*/
+
 
     private void OnEnable()
     {
@@ -77,4 +94,21 @@ public class InputManager : MonoBehaviour
     {
         return inputActions.playerMap.Dash.triggered;
     }
+
+    //HandActionMaps
+
+    public bool getReloadPressed()
+    {
+        return inputActions.handMap.WeaponReload.triggered;
+    }
+
+    public bool getFirePressed()
+    {
+        return inputActions.handMap.FireSemi.triggered;
+    }
+    public float getMouseScroll()
+    {
+        return inputActions.handMap.Scroll.ReadValue<float>();
+    }
+
 }

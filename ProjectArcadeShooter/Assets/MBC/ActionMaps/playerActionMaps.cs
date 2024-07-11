@@ -47,7 +47,7 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Crouch"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""4630685e-7044-4cbf-abf7-c43c91db52a9"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -200,9 +200,36 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
             ""id"": ""c6fe7e3b-a0ab-4766-bb18-3ec28d8b46c7"",
             ""actions"": [
                 {
-                    ""name"": ""ReaponReload"",
+                    ""name"": ""WeaponReload"",
                     ""type"": ""Button"",
                     ""id"": ""695ab68f-0ef5-4e29-8cbe-32e01a73797a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FireSemi"",
+                    ""type"": ""Button"",
+                    ""id"": ""4c0d7d29-526b-49b6-b6a1-aa59f25f676c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FireAuto"",
+                    ""type"": ""Button"",
+                    ""id"": ""1fdaa9f3-856d-4928-b355-f370b5584013"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Scroll"",
+                    ""type"": ""Button"",
+                    ""id"": ""0a7ee08c-4179-4730-a69e-44af0c503b01"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -217,9 +244,64 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ReaponReload"",
+                    ""action"": ""WeaponReload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2dbee2f5-32a1-4515-ab6c-4f0621549d07"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FireSemi"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4568ae43-5351-41e1-aa02-1967fa6c3810"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""FireAuto"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""d394493c-58fd-476e-903e-16c130985d05"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Scroll"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""da705771-f381-4019-8c17-acbe0181bef5"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Scroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""4c8838ce-2f83-4b26-b49d-c3887b956562"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Scroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -253,7 +335,10 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
         m_playerMap_Dash = m_playerMap.FindAction("Dash", throwIfNotFound: true);
         // handMap
         m_handMap = asset.FindActionMap("handMap", throwIfNotFound: true);
-        m_handMap_ReaponReload = m_handMap.FindAction("ReaponReload", throwIfNotFound: true);
+        m_handMap_WeaponReload = m_handMap.FindAction("WeaponReload", throwIfNotFound: true);
+        m_handMap_FireSemi = m_handMap.FindAction("FireSemi", throwIfNotFound: true);
+        m_handMap_FireAuto = m_handMap.FindAction("FireAuto", throwIfNotFound: true);
+        m_handMap_Scroll = m_handMap.FindAction("Scroll", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -401,12 +486,18 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
     // handMap
     private readonly InputActionMap m_handMap;
     private List<IHandMapActions> m_HandMapActionsCallbackInterfaces = new List<IHandMapActions>();
-    private readonly InputAction m_handMap_ReaponReload;
+    private readonly InputAction m_handMap_WeaponReload;
+    private readonly InputAction m_handMap_FireSemi;
+    private readonly InputAction m_handMap_FireAuto;
+    private readonly InputAction m_handMap_Scroll;
     public struct HandMapActions
     {
         private @PlayerActionMaps m_Wrapper;
         public HandMapActions(@PlayerActionMaps wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ReaponReload => m_Wrapper.m_handMap_ReaponReload;
+        public InputAction @WeaponReload => m_Wrapper.m_handMap_WeaponReload;
+        public InputAction @FireSemi => m_Wrapper.m_handMap_FireSemi;
+        public InputAction @FireAuto => m_Wrapper.m_handMap_FireAuto;
+        public InputAction @Scroll => m_Wrapper.m_handMap_Scroll;
         public InputActionMap Get() { return m_Wrapper.m_handMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -416,16 +507,34 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_HandMapActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_HandMapActionsCallbackInterfaces.Add(instance);
-            @ReaponReload.started += instance.OnReaponReload;
-            @ReaponReload.performed += instance.OnReaponReload;
-            @ReaponReload.canceled += instance.OnReaponReload;
+            @WeaponReload.started += instance.OnWeaponReload;
+            @WeaponReload.performed += instance.OnWeaponReload;
+            @WeaponReload.canceled += instance.OnWeaponReload;
+            @FireSemi.started += instance.OnFireSemi;
+            @FireSemi.performed += instance.OnFireSemi;
+            @FireSemi.canceled += instance.OnFireSemi;
+            @FireAuto.started += instance.OnFireAuto;
+            @FireAuto.performed += instance.OnFireAuto;
+            @FireAuto.canceled += instance.OnFireAuto;
+            @Scroll.started += instance.OnScroll;
+            @Scroll.performed += instance.OnScroll;
+            @Scroll.canceled += instance.OnScroll;
         }
 
         private void UnregisterCallbacks(IHandMapActions instance)
         {
-            @ReaponReload.started -= instance.OnReaponReload;
-            @ReaponReload.performed -= instance.OnReaponReload;
-            @ReaponReload.canceled -= instance.OnReaponReload;
+            @WeaponReload.started -= instance.OnWeaponReload;
+            @WeaponReload.performed -= instance.OnWeaponReload;
+            @WeaponReload.canceled -= instance.OnWeaponReload;
+            @FireSemi.started -= instance.OnFireSemi;
+            @FireSemi.performed -= instance.OnFireSemi;
+            @FireSemi.canceled -= instance.OnFireSemi;
+            @FireAuto.started -= instance.OnFireAuto;
+            @FireAuto.performed -= instance.OnFireAuto;
+            @FireAuto.canceled -= instance.OnFireAuto;
+            @Scroll.started -= instance.OnScroll;
+            @Scroll.performed -= instance.OnScroll;
+            @Scroll.canceled -= instance.OnScroll;
         }
 
         public void RemoveCallbacks(IHandMapActions instance)
@@ -463,6 +572,9 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
     }
     public interface IHandMapActions
     {
-        void OnReaponReload(InputAction.CallbackContext context);
+        void OnWeaponReload(InputAction.CallbackContext context);
+        void OnFireSemi(InputAction.CallbackContext context);
+        void OnFireAuto(InputAction.CallbackContext context);
+        void OnScroll(InputAction.CallbackContext context);
     }
 }
