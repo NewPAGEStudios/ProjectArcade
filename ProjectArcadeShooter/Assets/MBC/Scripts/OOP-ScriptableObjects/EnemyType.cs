@@ -9,7 +9,6 @@ public class EnemyType : ScriptableObject
     
     [Header(header:"Referances")]
     public GameObject modelGameObject;
-    public Animator animator;
     public MonoScript ai;
     public Ammo ammo;
     public string agentName;
@@ -23,6 +22,6 @@ public class EnemyType : ScriptableObject
     public float attackDMG;
 
     [Header(header: "Difficulty")]
-    [Tooltip("5->walker6->drone 8->ranged 10->demolisher")]
-    public float difficultyNumber;
+    [Tooltip("2->walker 7->drone 8->ranged 10->droneRanged 10->demolisher")]
+    public int difficultyNumber;
 }

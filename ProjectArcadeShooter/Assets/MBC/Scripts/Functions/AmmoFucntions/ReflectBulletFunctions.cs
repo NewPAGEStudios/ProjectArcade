@@ -22,9 +22,11 @@ public class ReflectBulletFunctions : MonoBehaviour
     public int mostHitCanBeDone;
     public float dmg;
     // Start is called before the first frame update
+    private GameController gc;
+
     void Start()
     {
-
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
         modelRender = GetComponentInChildren<MeshRenderer>();
         m_PropertyBlock = new MaterialPropertyBlock();
@@ -46,8 +48,8 @@ public class ReflectBulletFunctions : MonoBehaviour
         tempFWD = transform.forward;
         if (collision.transform.CompareTag("Enemy"))
         {
-            //collision.getComponent<EnemyController>().TakeDmg(dmg);
-            Debug.Log(collision.transform.name + " named enemy got hit with " + dmg.ToString() + " and with " + numberOfCollisionHit.ToString() + " hit time");
+            collision.transform.parent.GetComponent<EnemyController>().takeDmg(dmg);
+            gc.ComboVombo(numberOfCollisionHit);
             startDesttroyObject();
         }
         else if (numberOfCollisionHit >= mostHitCanBeDone)
