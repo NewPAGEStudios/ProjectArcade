@@ -125,16 +125,16 @@ public class GameController : MonoBehaviour
     {
         //Referances
 
+        //mainLevelStarting
+        consumableSpawnPointParent = mainLevel.transform.Find("ConsumableCreatePos").gameObject;
+        enemySpawnPointParent = mainLevel.transform.Find("EnemySpawnPosParent").gameObject;
+        playerTeleportPoint = mainLevel.transform.Find("PlayerTeleportPoint").gameObject;
 
 
         SpawnCons(1);
         SpawnCons(0);
         SpawnCons(0);
 
-        //mainLevelStarting
-        consumableSpawnPointParent = mainLevel.transform.Find("ConsumableCreatePos").gameObject;
-        enemySpawnPointParent = mainLevel.transform.Find("EnemySpawnPosParent").gameObject;
-        playerTeleportPoint = mainLevel.transform.Find("PlayerTeleportPoint").gameObject;
 
         currentLevel = mainLevel;
 
@@ -432,17 +432,17 @@ public class GameController : MonoBehaviour
     {
         if (combo == 0)
         {
-            gamePanel.transform.GetChild(3).gameObject.SetActive(false);
+            gamePanel.transform.GetChild(2).gameObject.SetActive(false);
         }
         else
         {
-            gamePanel.transform.GetChild(3).gameObject.SetActive(true);
-            gamePanel.transform.GetChild(3).GetChild(0).GetComponent<TextMeshProUGUI>().text = combo + " Combo";
+            gamePanel.transform.GetChild(2).gameObject.SetActive(true);
+            gamePanel.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = combo + " Combo";
         }
     }
     public void ComboBG(float fa)
     {
-        gamePanel.transform.GetChild(3).GetComponent<Image>().fillAmount = fa;
+        gamePanel.transform.GetChild(2).GetComponent<Image>().fillAmount = fa;
     }
 
 

@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BossID: 0
   bossName: DummyMummy
-  boss: {fileID: 0}
-  mapParent: {fileID: 0}
+  boss: {fileID: 3289293065842348863, guid: 23296137546837145a4f0f5d10a420d4, type: 3}
+  mapParent: {fileID: 3289293065842348863, guid: 23296137546837145a4f0f5d10a420d4,
+    type: 3}
   bossController: {fileID: 0}
   bossMusic: {fileID: 0}
