@@ -58,6 +58,9 @@ public class PController : MonoBehaviour
     public float maxdashmeter;
     private float currentdashMeter;
 
+    //skill variables
+    private int extrajump;
+
     public enum ActionStateDependecyToPlayer
     {
         idle,
@@ -126,7 +129,11 @@ public class PController : MonoBehaviour
     {
         if(iManager.getJumpedPressed())
         {
-            if(actiontg == ActionStateDependecyToGround.onAir || actiontp != ActionStateDependecyToPlayer.idle)
+            if (actiontp != ActionStateDependecyToPlayer.idle)
+            {
+                return;
+            }
+            if(actiontg == ActionStateDependecyToGround.onAir && extrajump <= 0)
             {
                 return;
             }
@@ -135,6 +142,9 @@ public class PController : MonoBehaviour
                 case ActionStateDependecyToGround.flat:
                     break;
                 case ActionStateDependecyToGround.slope:
+                    break;
+                case ActionStateDependecyToGround.onAir:
+                    extrajump -= 1;
                     break;
                 default:break;
             }
@@ -499,6 +509,10 @@ public class PController : MonoBehaviour
         moveSpeed /= multiplier;
         slideForce /= multiplier;
         dashForce /= multiplier;
+    }
+    public void addExtraJump()
+    {
+        extrajump += 1;
     }
 
 }

@@ -13,13 +13,14 @@ public class EnemyController : MonoBehaviour
     private float moveSpeed;
     private float attackRat;
     private float rangeDist;
-    private void Awake()
-    {
-        Instantiate(m_Enemy.modelGameObject, Vector3.zero, new Quaternion(0, 0, 0, 0), gameObject.transform);
-        //Instantiate(gameObjectNameWhichwillbe has animator)
-    }
+
+    private GameController gc;
+    private GameObject modelObject;
     private void Start()
     {
+        modelObject = Instantiate(m_Enemy.modelGameObject, gameObject.transform.position, new Quaternion(0, 0, 0, 0), gameObject.transform);
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        modelObject.tag = "Enemy";
         //main 
         if (m_Enemy == null)
         {
@@ -43,6 +44,16 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
+            Destroy(gameObject);
+        }
+    }
+
+    public void takeDmg(float dmg)
+    {
+        currentHP -= dmg;
+        if (currentHP <= 0)
+        {
+            gc.decreseEnemyCount();
             Destroy(gameObject);
         }
     }

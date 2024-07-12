@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: Walker
   m_EditorClassIdentifier: 
   EnemyTypeID: 0
-  modelGameObject: {fileID: 0}
-  animator: {fileID: 0}
+  modelGameObject: {fileID: 3044971093522096474, guid: ada47b29950c2204bb22b0b84872bd63,
+    type: 3}
   ai: {fileID: 11500000, guid: 9c2a3c245704d9645aea151552f51f1a, type: 3}
   ammo: {fileID: 0}
   agentName: "Walk\u0131er"
   hitPoint: 100
-  moveSpeed: 0
+  moveSpeed: 2
   attackRatio: 0
   isRanged: 0
+  rangeDistance: 0
   attackDMG: 20
+  difficultyNumber: 1

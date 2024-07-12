@@ -96,7 +96,8 @@ public class WeaponManager : MonoBehaviour
 
         //objectInit
         currentHP = startHP;
-        
+        gc.changeHPOfPlayer(startHP, currentHP);
+
         //holder init
         holder = new WeaponRuntimeHolder[gc.weapons.Length];
         for (int i = 0; i < holder.Length; i++)
@@ -122,6 +123,22 @@ public class WeaponManager : MonoBehaviour
 
 
     }
+
+    public void TakeDMG(float dmgAmmount, GameObject dmgTakenFrom)
+    {
+        currentHP -= dmgAmmount;
+        if (currentHP <= 0)
+        {
+            Debug.Log("Die");
+        }
+        else
+        {
+            gc.changeHPOfPlayer(startHP, currentHP);
+        }
+    }
+
+
+
     private void Update()
     {
         if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic)
@@ -185,7 +202,7 @@ public class WeaponManager : MonoBehaviour
             }
             else if (IManager.getMouseScroll() > 0)
             {
-                ChangeWeapon(currWeaponID - 1);
+                ChangeWeapon(currWeaponID + 1);
             }
         }
 
@@ -223,18 +240,6 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
-    public void TakeDMG(float dmgAmmount, GameObject dmgTakenFrom)
-    {
-        currentHP -= dmgAmmount;
-        if (currentHP <= 0)
-        {
-            Debug.Log("Die");
-        }
-        else
-        {
-            Debug.Log("Damaged From " + dmgTakenFrom.name + "damage is " + dmgAmmount +" currentHP = " + currentHP);
-        }
-    }
     public void GetWeapon(int weaponID)
     {
         if (weaponID >= gc.weapons.Length)//wil be deleted
@@ -244,13 +249,27 @@ public class WeaponManager : MonoBehaviour
         if (FindWeaponOnRuntime(weaponID).isOwned)
         {
             Debug.Log("You get " + weaponID + "id weapon Ammo");
-            GetAmmo(weaponID,FindWeapon(weaponID).magSize);
+            if (weaponID == 0)
+            {
+                GetAmmo(weaponID, FindWeapon(weaponID).magSize * 2);
+            }
+            else
+            {
+                GetAmmo(weaponID, FindWeapon(weaponID).magSize);
+            }
         }
         else
         {
             Debug.Log("You get " + weaponID + "id weapon");
             FindWeaponOnRuntime(weaponID).isOwned = true;
-            GetAmmo(weaponID, FindWeapon(weaponID).magSize);
+            if (weaponID == 0)
+            {
+                GetAmmo(weaponID, FindWeapon(weaponID).magSize*2);
+            }
+            else
+            {
+                GetAmmo(weaponID, FindWeapon(weaponID).magSize);
+            }
         }
         if (currWeaponID == -1)
         {
@@ -511,6 +530,7 @@ public class WeaponManager : MonoBehaviour
         bobPos.y = (CurveSin * bobLimit.y) - (moveDir.y * travelLimit.y);
         bobPos.z = -(moveDir.y * travelLimit.z);
     }
+
     public void BobRotation(Vector2 moveDir)
     {
         if(moveDir != Vector2.zero)

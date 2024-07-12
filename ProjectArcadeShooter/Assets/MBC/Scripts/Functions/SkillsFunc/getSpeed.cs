@@ -12,12 +12,23 @@ public class getSpeed : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().player;
 
-        player.GetComponent<PController>().SetSpeed(1.2f, 4f);
-
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
-        gameObject.transform.parent.parent = gc.spawnPointParent.transform;
+        player.GetComponent<PController>().SetSpeed(1.2f, 4f);
+
+        gameObject.transform.parent.parent = gc.consumableSpawnPointParent.transform;
         Destroy(gameObject);
+
+
+    }
+    public void doFunctionWoutObject()
+    {
+        GameObject p = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().player;
+
+        GameController gController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+
+        p.GetComponent<PController>().SetSpeed(1.2f, 4f);
+
 
 
     }

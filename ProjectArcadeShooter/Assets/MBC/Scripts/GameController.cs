@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,8 +32,9 @@ public class GameController : MonoBehaviour
     public EnemyType[] enemies;
     public Consumable[] consumables;
     public Skill[] skills;
+    public Boss[] boss;
     
-    private List<Skill> activeSkills=new List<Skill>();
+    private List<Skill> activeSkills = new List<Skill>();
     private List<Skill> passiveSkills = new List<Skill>();
     private List<Skill> instantSkills = new List<Skill>();
     
@@ -46,10 +48,18 @@ public class GameController : MonoBehaviour
 
     //UI Ref
     public GameObject playerPanel;
+    public GameObject gamePanel;
     //Map parent Ref
-    public GameObject levelDesign;
+    public GameObject mainLevel;
+    private GameObject currentLevel;
     //spawnPoint Variables
-    public GameObject spawnPointParent;
+    [HideInInspector]
+    public GameObject consumableSpawnPointParent;
+    [HideInInspector]
+    public GameObject enemySpawnPointParent;
+    [HideInInspector]
+    public GameObject playerTeleportPoint;
+
     private float spawnTimer;
 
 
@@ -59,11 +69,14 @@ public class GameController : MonoBehaviour
 
 
     private int waveNumber;
+    private int enemyCount;
+
+    private int comboCount;
 
     [Header(header: "GameSettings")]
     public float waitTime;
     private float waitTimer;
-
+    public float comboDuration;
     private void Awake()
     {
         ammos = Resources.LoadAll<Ammo>("Ammo");
@@ -71,6 +84,7 @@ public class GameController : MonoBehaviour
         enemies = Resources.LoadAll<EnemyType>("Enemy");
         consumables = Resources.LoadAll<Consumable>("Consumable");
         skills = Resources.LoadAll<Skill>("Skill");
+        boss = Resources.LoadAll<Boss>("Boss");
         //leftHandTargetPosInýt
 
 
@@ -98,33 +112,15 @@ public class GameController : MonoBehaviour
 
             }
         }
-
-
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        for (int i = 0; i < levelDesign.transform.childCount; i++)
+        //spawnMaps;
+        for(int i = 0; i < boss.Length; i++)
         {
-            if (levelDesign.transform.GetChild(i).CompareTag("Ground"))
-            {
-                continue;
-            }
-            if (i == 15)
-            {
-                break;
-            }
-            Gizmos.color = new Color(0, 0, 0, 0.5f);
-            try
-            {
-                Gizmos.DrawCube(levelDesign.transform.GetChild(i).GetComponent<Collider>().bounds.center, levelDesign.transform.GetChild(i).GetComponent<Collider>().bounds.size);
-            }
-            catch
-            {
-                Gizmos.DrawCube(levelDesign.transform.GetChild(i).GetComponentInChildren<Collider>().bounds.center, levelDesign.transform.GetChild(i).GetComponentInChildren<Collider>().bounds.size);
-            }
+            Instantiate(boss[i].mapParent);
         }
+
+
     }
+
     private void Start()
     {
         //Referances
@@ -134,12 +130,24 @@ public class GameController : MonoBehaviour
         SpawnCons(1);
         SpawnCons(0);
         SpawnCons(0);
+
+        //mainLevelStarting
+        consumableSpawnPointParent = mainLevel.transform.Find("ConsumableCreatePos").gameObject;
+        enemySpawnPointParent = mainLevel.transform.Find("EnemySpawnPosParent").gameObject;
+        playerTeleportPoint = mainLevel.transform.Find("PlayerTeleportPoint").gameObject;
+
+        currentLevel = mainLevel;
+
+        player.transform.position = playerTeleportPoint.transform.position;
+
         waveNumber = 0;
 
         state = GameState.inGame;
         pState = PlayState.inWaiting;
 
-
+        waitTime = 20f;
+        waitTimer = 1f;
+        waitTimeVisualize(waitTimer);
 
         ChangeAmmoText(0);
         ChangefullAmmoText(0);
@@ -148,9 +156,9 @@ public class GameController : MonoBehaviour
     //    spawners
     private void SpawnCons(int consID)
     {
-        int r = Random.Range(0, spawnPointParent.transform.childCount);
+        int r = UnityEngine.Random.Range(0, consumableSpawnPointParent.transform.childCount);
 
-        Vector3 vec = spawnPointParent.transform.GetChild(r).position;
+        Vector3 vec = consumableSpawnPointParent.transform.GetChild(r).position;
 
         Vector3 posOFC = new(vec.x, vec.y + 1f, vec.z);
 
@@ -166,7 +174,7 @@ public class GameController : MonoBehaviour
 
         consumableobject.name = consumables[i].nameOfC;
 
-        consumableobject.transform.parent = spawnPointParent.transform.GetChild(r);
+        consumableobject.transform.parent = consumableSpawnPointParent.transform.GetChild(r);
 
         consumableobject.transform.position = posOFC;
 
@@ -177,20 +185,20 @@ public class GameController : MonoBehaviour
         //Manuel adding
         if (consumableobject.TryGetComponent<GetWeapon>(out GetWeapon gw))
         {
-            gw.weaponID = Random.Range(0, weapons.Length);
+            gw.weaponID = UnityEngine.Random.Range(0, weapons.Length);
         }
         //skills
         else if(consumableobject.TryGetComponent<GetActiveSkill>(out GetActiveSkill gas))
         {
-            gas.skillId = activeSkills[Random.Range(0, activeSkills.Count)].skillTypeID;
+            gas.skillId = activeSkills[UnityEngine.Random.Range(0, activeSkills.Count)].skillTypeID;
         }
         else if(consumableobject.TryGetComponent<PerformInstantSkill>(out PerformInstantSkill pis))
         {
-            pis.thisSkill = instantSkills[Random.Range(0, instantSkills.Count)];
+            pis.thisSkill = instantSkills[UnityEngine.Random.Range(0, instantSkills.Count)];
         }
         else if(consumableobject.TryGetComponent<PerformPassiveSkill>(out PerformPassiveSkill pps))
         {
-            pps.thisSkill = passiveSkills[Random.Range(0, passiveSkills.Count)];
+            pps.thisSkill = passiveSkills[UnityEngine.Random.Range(0, passiveSkills.Count)];
         }
         else
         {
@@ -210,16 +218,33 @@ public class GameController : MonoBehaviour
         //add indicator for location guide
 
 
-        spawnPointParent.transform.GetChild(r).parent = null;
+        consumableSpawnPointParent.transform.GetChild(r).parent = null;
         return;
     }
-    public void SpawnEnemy()
+    public void SpawnEnemy(int enemyID)
     {
         GameObject enemy = new();
+        enemyCount += 1;
+
+        Transform p = enemySpawnPointParent.transform.GetChild(UnityEngine.Random.Range(0, enemySpawnPointParent.transform.childCount));
+        float x = UnityEngine.Random.Range(p.transform.Find("min").position.x, p.transform.Find("max").position.x);
+        float y = p.position.y + enemies[enemyID].modelGameObject.transform.localScale.y;
+        float z = UnityEngine.Random.Range(p.transform.Find("min").position.z, p.transform.Find("max").position.z);
+
+        enemy.transform.position = new Vector3(x, y, z);
+
+        int i = 0;
+        for (i = 0; i < enemies.Length; i++)
+        {
+            if (enemies[i].EnemyTypeID == enemyID)
+            {
+                break;
+            }
+        }
+
         enemy.AddComponent<EnemyController>();
-        enemy.GetComponent<EnemyController>().m_Enemy = enemies[0];
+        enemy.GetComponent<EnemyController>().m_Enemy = enemies[i];
         enemy.name = "enemy";
-        //        Instantiate(enemy,new Vector3(2,0,5),new Quaternion(0,0,0,0));
 
     }//NOtReady
 
@@ -244,12 +269,16 @@ public class GameController : MonoBehaviour
             {
                 if (spawnTimer <= 0f)
                 {
-                    SpawnCons(Random.Range(0, consumables.Length));
-                    spawnTimer = Random.Range(15f, 20f);
+                    SpawnCons(UnityEngine.Random.Range(0, consumables.Length));
+                    spawnTimer = UnityEngine.Random.Range(15f, 20f);
                 }
                 else
                 {
                     spawnTimer -= Time.deltaTime;
+                }
+                if (enemyCount == 0)
+                {
+                    toWait();
                 }
             }
             else if(pState == PlayState.inWaiting)
@@ -261,6 +290,7 @@ public class GameController : MonoBehaviour
                 else
                 {
                     waitTimer -= Time.deltaTime;
+                    waitTimeVisualize(waitTimer);
                 }
             }
             else if(pState == PlayState.inBoss)
@@ -278,26 +308,51 @@ public class GameController : MonoBehaviour
     private void toWave()
     {
         waveNumber += 1;
-        pState = PlayState.inWave;
         if (waveNumber % 10 == 0)
         {
             toBoss(0);
+            return;
         }
+        else
+        {
+            pState = PlayState.inWave;
+        }
+        waitTimeVisualize(waitTimer);
+        waveVisualzie("Wave " + waveNumber);
         //difficulty
+        int maxDifficultyNumber = (waveNumber * 4) - 2;
+        List<EnemyType> enemyThatCanSpawn = new List<EnemyType>();
+        
+        for(int a = 0; a < enemies.Length; a++)
+        {
+            if (enemies[a].difficultyNumber <= maxDifficultyNumber)
+            {
+                enemyThatCanSpawn.Add(enemies[a]);
+            }
+        }
 
-
-        //Spawn Enemies
+        while(maxDifficultyNumber > 0)
+        {
+            int i = UnityEngine.Random.Range(0, enemyThatCanSpawn.Count);
+            SpawnEnemy(enemyThatCanSpawn[i].EnemyTypeID);
+            maxDifficultyNumber -= enemyThatCanSpawn[i].difficultyNumber;
+        }
     }
 
     private void toWait()
     {
-        waitTimer = 20;
+        waitTimer = waitTime;
         pState = PlayState.inWaiting;
+        waitTimeVisualize(waitTimer);
+        waveVisualzie("Wait");
         //Enable Shops
     }
 
     private void toBoss(int bossID)
     {
+
+
+
         //teleportPlayer Routine
         //start cinematic
     }
@@ -307,8 +362,19 @@ public class GameController : MonoBehaviour
         //will be added later
     }
 
-
-
+    //MapChanges
+    public void changeMap(GameObject mapParent)
+    {
+        currentLevel = mapParent;
+        currentLevel.SetActive(true);
+        consumableSpawnPointParent = currentLevel.transform.Find("ConsumableCreatePos").gameObject;
+        playerTeleportPoint = currentLevel.transform.Find("PlayerTeleportPoint").gameObject;
+    }
+    public void DefaultMap()
+    {
+        currentLevel.SetActive(false);
+        currentLevel = mainLevel;
+    }
 
     //GameStatesChanger
     public void ResumeGame()
@@ -323,11 +389,71 @@ public class GameController : MonoBehaviour
 
 
 
-
+    //Animations
+    IEnumerator waveStartAnim()//UI
+    {
+        TextMeshProUGUI tmp = gamePanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        tmp.rectTransform.localPosition = Vector3.zero;
+        tmp.fontSize = 144;
+        while (true)
+        {
+            tmp.rectTransform.localPosition = new Vector3(0, tmp.rectTransform.localPosition.y + 10f, 0);
+            tmp.fontSize -= 2.16f;
+            yield return new WaitForEndOfFrame();
+            if (tmp.fontSize <= 36)
+            {
+                break;
+            }
+        }
+    }
 
 
     //UI Events
+    //GameBasedUI Evvents
+    public void waitTimeVisualize(float timer)
+    {
+        if (timer < 0)
+        {
+            gamePanel.transform.GetChild(0).gameObject.SetActive(false);
+        }
+        else
+        {
+            gamePanel.transform.GetChild(0).gameObject.SetActive(true);
+        }
+        timer = Mathf.Ceil(timer);
+        gamePanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = timer.ToString();
+    }
+    public void waveVisualzie(string waveIndicator)
+    {
+        gamePanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = waveIndicator;
+        StartCoroutine(waveStartAnim());
+    }
+    public void ComboVisualize(int combo)
+    {
+        if (combo == 0)
+        {
+            gamePanel.transform.GetChild(3).gameObject.SetActive(false);
+        }
+        else
+        {
+            gamePanel.transform.GetChild(3).gameObject.SetActive(true);
+            gamePanel.transform.GetChild(3).GetChild(0).GetComponent<TextMeshProUGUI>().text = combo + " Combo";
+        }
+    }
+    public void ComboBG(float fa)
+    {
+        gamePanel.transform.GetChild(3).GetComponent<Image>().fillAmount = fa;
+    }
+
+
+
     //player based UI Events
+
+    public void changeHPOfPlayer(float maxH, float currentH)
+    {
+        playerPanel.transform.GetChild(6).GetChild(0).GetComponent<Image>().fillAmount = currentH/maxH;
+        playerPanel.transform.GetChild(6).GetChild(1).GetComponent<TextMeshProUGUI>().text = currentH.ToString() + "/" + maxH.ToString();
+    }
     public void ChangeAmmoText(int newAmmo)
     {
         playerPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = newAmmo.ToString();
@@ -388,6 +514,41 @@ public class GameController : MonoBehaviour
         //SceneManagement.LoadScene(mainMenuint)
     }
 
-    //GETTER
 
+    //functions
+
+    public void decreseEnemyCount()
+    {
+        enemyCount -= 1;
+    }
+    public void ComboVombo(int comboTime)
+    {
+        comboCount += comboTime;
+        if (comboTime > 0)
+        {
+            StopCoroutine(comboTimer());
+            StartCoroutine(comboTimer());
+        }
+        ComboVisualize(comboCount);
+    }
+    IEnumerator comboTimer()
+    {
+        float duration = comboDuration;
+        while (true)
+        {
+            duration -= Time.deltaTime;
+            ComboBG(duration / comboDuration);
+            yield return new WaitForEndOfFrame();
+            if (duration <= 0)
+            {
+                break;
+            }
+        }
+        ComboDelete();
+    }
+    public void ComboDelete()
+    {
+        comboCount = 0;
+        ComboVisualize(comboCount);
+    }
 }

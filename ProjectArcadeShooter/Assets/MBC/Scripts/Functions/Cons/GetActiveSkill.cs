@@ -48,7 +48,7 @@ public class GetActiveSkill : MonoBehaviour
     private void apply(GameObject player)
     {
         player.GetComponent<WeaponManager>().getSkill(thisSkill);
-        gameObject.transform.parent.parent = gc.spawnPointParent.transform;
+        gameObject.transform.parent.parent = gc.consumableSpawnPointParent.transform;
         Destroy(gameObject);
         return;
     }
