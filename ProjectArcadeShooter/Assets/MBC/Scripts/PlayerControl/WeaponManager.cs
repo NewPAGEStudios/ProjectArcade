@@ -9,11 +9,6 @@ using UnityEngine.XR;
 
 public class WeaponManager : MonoBehaviour
 {
-    //player object -- can be turn in to scriptableobject
-    public float startHP;
-    private float currentHP;
-
-
     //Reference
     private GameController gc;
     public Animator hand_Animator;
@@ -93,11 +88,6 @@ public class WeaponManager : MonoBehaviour
         //init
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
-
-        //objectInit
-        currentHP = startHP;
-        gc.changeHPOfPlayer(startHP, currentHP);
-
         //holder init
         holder = new WeaponRuntimeHolder[gc.weapons.Length];
         for (int i = 0; i < holder.Length; i++)
@@ -124,18 +114,6 @@ public class WeaponManager : MonoBehaviour
 
     }
 
-    public void TakeDMG(float dmgAmmount, GameObject dmgTakenFrom)
-    {
-        currentHP -= dmgAmmount;
-        if (currentHP <= 0)
-        {
-            Debug.Log("Die");
-        }
-        else
-        {
-            gc.changeHPOfPlayer(startHP, currentHP);
-        }
-    }
 
 
 

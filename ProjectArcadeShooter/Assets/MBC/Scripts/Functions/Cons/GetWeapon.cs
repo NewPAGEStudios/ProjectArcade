@@ -44,6 +44,11 @@ public class GetWeapon : MonoBehaviour
 
     private void apply(GameObject player)
     {
+        if(gc.pState == GameController.PlayState.inStart)
+        {
+            player.GetComponent<PController>().HealDMG(100, gameObject);
+            gc.escapeStart();
+        }
         player.GetComponent<WeaponManager>().GetWeapon(weaponID);
         gameObject.transform.parent.parent = gc.consumableSpawnPointParent.transform;
         Destroy(gameObject);

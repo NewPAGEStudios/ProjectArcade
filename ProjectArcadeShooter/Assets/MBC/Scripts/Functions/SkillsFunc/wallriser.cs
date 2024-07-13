@@ -72,8 +72,9 @@ public class wallriser : MonoBehaviour
     {
         modelRender.material = skill.materials[1];
         m_PropertyBlock = new MaterialPropertyBlock();
+        m_PropertyBlock.SetFloat("_NoiseStrength", 20f);
         modelRender.SetPropertyBlock(m_PropertyBlock);
-        while (m_PropertyBlock.GetFloat("_NoiseStrength") < 20f)
+        while (m_PropertyBlock.GetFloat("_NoiseStrength") > -2)
         {
             m_PropertyBlock.SetFloat("_NoiseStrength", m_PropertyBlock.GetFloat("_NoiseStrength") - 0.5f);
             modelRender.SetPropertyBlock(m_PropertyBlock);

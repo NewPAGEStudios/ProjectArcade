@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour
     }
     public enum PlayState
     {
+        inStart,
         inWave,
         inWaiting,
         inBoss,
@@ -47,9 +48,11 @@ public class GameController : MonoBehaviour
 
 
     //UI Ref
+    [Header(header: "UIReference")]
     public GameObject playerPanel;
     public GameObject gamePanel;
-    //Map parent Ref
+    [Header(header: "MapReference")]
+    public GameObject startMap;
     public GameObject mainLevel;
     private GameObject currentLevel;
     //spawnPoint Variables
@@ -62,9 +65,8 @@ public class GameController : MonoBehaviour
 
     private float spawnTimer;
 
-
+    [Header(header: "PlayerConfigiration")]
     public GameObject inActiveWeapon;
-
     public GameObject player;
 
 
@@ -77,6 +79,11 @@ public class GameController : MonoBehaviour
     public float waitTime;
     private float waitTimer;
     public float comboDuration;
+
+
+    //IEnumerators
+    private IEnumerator comboDisplayRoutine;
+
     private void Awake()
     {
         ammos = Resources.LoadAll<Ammo>("Ammo");
@@ -123,39 +130,41 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        //Referances
+        state = GameState.inGame;
+        pState = PlayState.inStart;
 
-        //mainLevelStarting
-        consumableSpawnPointParent = mainLevel.transform.Find("ConsumableCreatePos").gameObject;
-        enemySpawnPointParent = mainLevel.transform.Find("EnemySpawnPosParent").gameObject;
-        playerTeleportPoint = mainLevel.transform.Find("PlayerTeleportPoint").gameObject;
-
-
-        SpawnCons(1);
-        SpawnCons(0);
-        SpawnCons(0);
-
-
-        currentLevel = mainLevel;
+        //startLevel
+        currentLevel = startMap;
+        changeMap(currentLevel);
 
         player.transform.position = playerTeleportPoint.transform.position;
+        player.GetComponent<PController>().HealDMG(1, gameObject);
 
+        SpawnCons(0);
+        waveVisualzie("Get the weapon");
         waveNumber = 0;
 
-        state = GameState.inGame;
-        pState = PlayState.inWaiting;
+        waitTimeVisualize(-1);
 
-        waitTime = 20f;
-        waitTimer = 1f;
-        waitTimeVisualize(waitTimer);
 
+
+        //UI INIT
         ChangeAmmoText(0);
         ChangefullAmmoText(0);
+
+        ComboBG(0);
+        ComboVisualize(0);
+
+
+        //Routine Init
+        comboDisplayRoutine = comboRoutine();
     }
 
     //    spawners
     private void SpawnCons(int consID)
     {
+        Debug.Log(consumableSpawnPointParent.transform.childCount);
+
         int r = UnityEngine.Random.Range(0, consumableSpawnPointParent.transform.childCount);
 
         Vector3 vec = consumableSpawnPointParent.transform.GetChild(r).position;
@@ -265,7 +274,11 @@ public class GameController : MonoBehaviour
         }
         if(state == GameState.inGame)
         {
-            if (pState == PlayState.inWave)
+            if (pState == PlayState.inStart)
+            {
+                return;
+            }
+            else if (pState == PlayState.inWave)
             {
                 if (spawnTimer <= 0f)
                 {
@@ -305,6 +318,12 @@ public class GameController : MonoBehaviour
     }
 
     //PlayStateChanger
+    public void escapeStart()
+    {
+        DefaultMap();
+        toWave();
+    }
+
     private void toWave()
     {
         waveNumber += 1;
@@ -369,11 +388,19 @@ public class GameController : MonoBehaviour
         currentLevel.SetActive(true);
         consumableSpawnPointParent = currentLevel.transform.Find("ConsumableCreatePos").gameObject;
         playerTeleportPoint = currentLevel.transform.Find("PlayerTeleportPoint").gameObject;
+
+        player.transform.position = playerTeleportPoint.transform.position;
     }
     public void DefaultMap()
     {
         currentLevel.SetActive(false);
         currentLevel = mainLevel;
+        consumableSpawnPointParent = mainLevel.transform.Find("ConsumableCreatePos").gameObject;
+        enemySpawnPointParent = mainLevel.transform.Find("EnemySpawnPosParent").gameObject;
+        playerTeleportPoint = mainLevel.transform.Find("PlayerTeleportPoint").gameObject;
+
+        player.transform.position = playerTeleportPoint.transform.position;
+
     }
 
     //GameStatesChanger
@@ -419,9 +446,9 @@ public class GameController : MonoBehaviour
         else
         {
             gamePanel.transform.GetChild(0).gameObject.SetActive(true);
+            timer = Mathf.Ceil(timer);
+            gamePanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = timer.ToString();
         }
-        timer = Mathf.Ceil(timer);
-        gamePanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = timer.ToString();
     }
     public void waveVisualzie(string waveIndicator)
     {
@@ -430,14 +457,14 @@ public class GameController : MonoBehaviour
     }
     public void ComboVisualize(int combo)
     {
-        if (combo == 0)
+        if (comboCount <= 0)
         {
             gamePanel.transform.GetChild(2).gameObject.SetActive(false);
         }
         else
         {
             gamePanel.transform.GetChild(2).gameObject.SetActive(true);
-            gamePanel.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = combo + " Combo";
+            gamePanel.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = comboCount + " Combo";
         }
     }
     public void ComboBG(float fa)
@@ -526,18 +553,19 @@ public class GameController : MonoBehaviour
         comboCount += comboTime;
         if (comboTime > 0)
         {
-            StopCoroutine(comboTimer());
-            StartCoroutine(comboTimer());
+            StopCoroutine(comboDisplayRoutine);
+            StartCoroutine(comboDisplayRoutine);
         }
         ComboVisualize(comboCount);
     }
-    IEnumerator comboTimer()
+    IEnumerator comboRoutine()
     {
         float duration = comboDuration;
         while (true)
         {
             duration -= Time.deltaTime;
             ComboBG(duration / comboDuration);
+
             yield return new WaitForEndOfFrame();
             if (duration <= 0)
             {
@@ -546,6 +574,7 @@ public class GameController : MonoBehaviour
         }
         ComboDelete();
     }
+
     public void ComboDelete()
     {
         comboCount = 0;

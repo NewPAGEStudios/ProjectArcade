@@ -1,20 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PController : MonoBehaviour
 {
+    [Header(header: "Health Configiration")]
+    [SerializeField]
+    private float maxHP;
+    private float currentHP;
+
+
+    [Header(header: "Speed Configiration")]
     private float maxSpeed;
     [SerializeField]
     private float moveSpeed;
     [SerializeField]
     private float moveDrag;
 
+    [Header(header: "SpeedLimit Configiration")]
     [SerializeField]
     private float maxSpeedOnGround;
     [SerializeField]
     private float maxSpeedOutGround;
 
+    [Header(header: "Air Configiration")]
     [SerializeField]
     private float moveSpeedOnAir;
     [SerializeField]
@@ -22,15 +32,20 @@ public class PController : MonoBehaviour
     [SerializeField]
     private float jumpDrag;
 
+    [Header(header: "Crouch Configiration")]
     [SerializeField]
     private float crouchSpeed;
 
+    [Header(header:"Slide/Dash Configiration")]
     [SerializeField]
     private float slideDuration;
     [SerializeField]
     private float slideForce;
     [SerializeField]
     private float dashForce;
+    [SerializeField]
+    private float maxdashmeter;
+    private float currentdashMeter;
 
     private InputManager iManager;
     private Rigidbody rb;
@@ -46,17 +61,17 @@ public class PController : MonoBehaviour
     private Vector3 slopePlaneNormal = Vector3.up;
 
 
+    [Header(header: "Slope Configiration")]
     [SerializeField]
     private float max_angleOfPlane;
 
+    [Header(header: "Cam/Look Configiration")]
     [SerializeField]
     private float sens;
     private Vector3 cam_StartingRotation;
 
     GameController gc;
     WeaponManager weaponManager;
-    public float maxdashmeter;
-    private float currentdashMeter;
 
     //skill variables
     private int extrajump;
@@ -79,6 +94,15 @@ public class PController : MonoBehaviour
     [HideInInspector]
     public ActionStateDependecyToGround actiontg;
 
+
+    private void Awake()
+    {
+        //REFERANCES
+
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -88,7 +112,6 @@ public class PController : MonoBehaviour
         weaponManager = GetComponent<WeaponManager>();
         weaponManager.IManager = iManager;
 
-        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -493,6 +516,33 @@ public class PController : MonoBehaviour
     public InputManager getIManager()
     {
         return iManager;
+    }
+
+
+    //OOP Handling
+    public void TakeDMG(float dmgAmmount, GameObject dmgTakenFrom)
+    {
+        currentHP -= dmgAmmount;
+        if (currentHP <= 0)
+        {
+            Debug.Log("Die");
+        }
+        else
+        {
+            gc.changeHPOfPlayer(maxHP, currentHP);
+        }
+    }
+    public void HealDMG(float healAmount, GameObject healTakenFrom)
+    {
+        currentHP += healAmount;
+        if (currentHP > maxHP)
+        {
+            currentHP = maxHP;
+        }
+        gc.changeHPOfPlayer(maxHP, currentHP);
+
+
+
     }
 
     //skillHandling

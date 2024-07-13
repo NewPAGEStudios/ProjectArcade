@@ -33,6 +33,7 @@ public class stunInstanSkill : MonoBehaviour
     IEnumerator endEffect()
     {
         MaterialPropertyBlock m_propertyBlock = new MaterialPropertyBlock();
+        m_propertyBlock.SetColor("_BaseColor", new Color(0, 0, 0, 1));
         go.GetComponent<Renderer>().SetPropertyBlock(m_propertyBlock);
         while (m_propertyBlock.GetColor("_BaseColor").a > 0)
         {
