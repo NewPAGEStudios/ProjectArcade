@@ -7,13 +7,14 @@ public class MainMenu : MonoBehaviour
 {
     public void Play()
     {
+        Debug.Log("OK");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void Quit()
     {
-        Application.Quit();
         Debug.Log("Oyuncu Oyundan Çýktý");
+        Application.Quit();
     }
 }
 
