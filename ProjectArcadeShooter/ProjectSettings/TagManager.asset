@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - duvar
   - Boss
+  - PlayerColl
   layers:
   - Default
   - TransparentFX

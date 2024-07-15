@@ -27,7 +27,7 @@ public class PerformPassiveSkill : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("PlayerColl"))
         {
             gameObject.AddComponent(thisSkill.function.GetClass());
             //manuelHandling

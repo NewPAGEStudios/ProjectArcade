@@ -10,6 +10,7 @@ public class Boss : ScriptableObject
     [Header(header:"Bosses Object Configiration")]
     public string bossName;
     public GameObject boss;
+    public string mapName;
     public GameObject mapParent;
     [Header(header:"Bosses functional Configiration")]
     public MonoScript bossController;

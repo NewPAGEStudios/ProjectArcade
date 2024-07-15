@@ -46,6 +46,8 @@ public class PController : MonoBehaviour
     [SerializeField]
     private float maxdashmeter;
     private float currentdashMeter;
+    [SerializeField]
+    private float dashslideadder;
 
     private InputManager iManager;
     private Rigidbody rb;
@@ -68,6 +70,8 @@ public class PController : MonoBehaviour
     [Header(header: "Cam/Look Configiration")]
     [SerializeField]
     private float sens;
+    [SerializeField]
+    private Camera mainCam;
     private Vector3 cam_StartingRotation;
 
     GameController gc;
@@ -130,7 +134,7 @@ public class PController : MonoBehaviour
         }
         if (currentdashMeter < maxdashmeter)
         {
-            currentdashMeter += 2.5f * Time.deltaTime;
+            currentdashMeter += dashslideadder * Time.deltaTime;
             gc.DashIndicator(currentdashMeter);
         }
 
@@ -445,13 +449,13 @@ public class PController : MonoBehaviour
     {
         if(cam_StartingRotation == null)
         {
-            cam_StartingRotation = Camera.main.transform.localRotation.eulerAngles;
+            cam_StartingRotation = mainCam.transform.localRotation.eulerAngles;
         }
         Vector2 deltaInput = iManager.getCameraMovement();
         cam_StartingRotation.x += deltaInput.x * Time.deltaTime * sens;
         cam_StartingRotation.y += deltaInput.y * Time.deltaTime * sens;
         cam_StartingRotation.y = Mathf.Clamp(cam_StartingRotation.y, -60, 60);
-        Camera.main.transform.localRotation = Quaternion.Euler(-cam_StartingRotation.y, 0f, 0f);
+        mainCam.transform.localRotation = Quaternion.Euler(-cam_StartingRotation.y, 0f, 0f);
         gameObject.transform.localRotation = Quaternion.Euler(gameObject.transform.localRotation.x, cam_StartingRotation.x, gameObject.transform.localRotation.z);
 
         //weaponPrecadural Anim

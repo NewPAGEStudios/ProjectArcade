@@ -31,8 +31,6 @@ public class EnemyController : MonoBehaviour
         rangeDist = m_Enemy.rangeDistance;
         attackRat = m_Enemy.attackRatio;
 
-        Debug.Log(m_Enemy.ai.GetClass());
-        gameObject.AddComponent(m_Enemy.ai.GetClass());
         return;//delete this block after ai completely done
 
         //Navmesh AI Agent select by repo

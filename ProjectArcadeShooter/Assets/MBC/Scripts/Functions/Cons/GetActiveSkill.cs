@@ -36,7 +36,7 @@ public class GetActiveSkill : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("PlayerColl"))
         {
             apply(other.transform.parent.gameObject);
         }

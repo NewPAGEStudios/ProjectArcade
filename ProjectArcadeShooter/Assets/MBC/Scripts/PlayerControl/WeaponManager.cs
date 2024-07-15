@@ -294,7 +294,6 @@ public class WeaponManager : MonoBehaviour
         }
         if (FindWeaponOnRuntime(weaponID).weaponTypeID == currWeaponID)
         {
-            Debug.Log("You only have current weapon");
             return;
         }
         handStates = ActionStateOFHands.onChange;
@@ -369,7 +368,7 @@ public class WeaponManager : MonoBehaviour
             Debug.Log("Bomba!!!");
         }
 
-        Debug.Log("Current Ammo " + currWeapon_inWeapon_ammoAmount + "/FullMag " + magmax + "/Ammo Amount " + currWeapon_sum_ammoAmount);
+//        Debug.Log("Current Ammo " + currWeapon_inWeapon_ammoAmount + "/FullMag " + magmax + "/Ammo Amount " + currWeapon_sum_ammoAmount);
 
         //recoil animation
         StartCoroutine(FireAnim());
@@ -456,7 +455,6 @@ public class WeaponManager : MonoBehaviour
     }
     private void ReloadFucntion()
     {
-        Debug.Log(FindWeapon(currWeaponID).magSize + " " + magmax);
         int toMakeFullMag = magmax - currWeapon_inWeapon_ammoAmount;
 
         if (toMakeFullMag <= currWeapon_sum_ammoAmount)
@@ -574,7 +572,6 @@ public class WeaponManager : MonoBehaviour
                 break;
             }
         }
-        Debug.Log(handStates);
         handStates = ActionStateOFHands.idle;
         yield return null;
     }

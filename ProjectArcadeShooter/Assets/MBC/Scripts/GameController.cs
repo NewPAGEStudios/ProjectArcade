@@ -45,15 +45,20 @@ public class GameController : MonoBehaviour
     public Material skillIndicatorMaterial;
     public GameObject dashVisualized;
 
-
-
+    [Header(header: "Main Camera")]
+    public GameObject mainCam;
     //UI Ref
     [Header(header: "UIReference")]
     public GameObject playerPanel;
     public GameObject gamePanel;
+    public GameObject bossIntroPanel;
+    public GameObject bossPanel;
+
+
     [Header(header: "MapReference")]
     public GameObject startMap;
     public GameObject mainLevel;
+    public GameObject mapParentM;
     private GameObject currentLevel;
     //spawnPoint Variables
     [HideInInspector]
@@ -82,8 +87,7 @@ public class GameController : MonoBehaviour
 
 
     //IEnumerators
-    private IEnumerator comboDisplayRoutine;
-
+    private Coroutine comboDisplayRoutine;
     private void Awake()
     {
         ammos = Resources.LoadAll<Ammo>("Ammo");
@@ -122,7 +126,8 @@ public class GameController : MonoBehaviour
         //spawnMaps;
         for(int i = 0; i < boss.Length; i++)
         {
-            Instantiate(boss[i].mapParent);
+            GameObject go = Instantiate(boss[i].mapParent,mapParentM.transform);
+            go.name = boss[i].mapName;
         }
 
 
@@ -156,14 +161,11 @@ public class GameController : MonoBehaviour
         ComboVisualize(0);
 
 
-        //Routine Init
-        comboDisplayRoutine = comboRoutine();
     }
 
     //    spawners
     private void SpawnCons(int consID)
     {
-        Debug.Log(consumableSpawnPointParent.transform.childCount);
 
         int r = UnityEngine.Random.Range(0, consumableSpawnPointParent.transform.childCount);
 
@@ -255,7 +257,7 @@ public class GameController : MonoBehaviour
         enemy.GetComponent<EnemyController>().m_Enemy = enemies[i];
         enemy.name = "enemy";
 
-    }//NOtReady
+    }
 
 
 
@@ -308,7 +310,7 @@ public class GameController : MonoBehaviour
             }
             else if(pState == PlayState.inBoss)
             {
-                //getBoss object name and full health blah blah blahsaiþdlasþldþaslþdlþas,dal,sild komik mi ?
+
             }
             else if(pState == PlayState.inCinematic)
             {
@@ -323,11 +325,15 @@ public class GameController : MonoBehaviour
         DefaultMap();
         toWave();
     }
-
+    public void endBoss()
+    {
+        changeMap(mainLevel);
+        toWait();
+    }
     private void toWave()
     {
         waveNumber += 1;
-        if (waveNumber % 10 == 0)
+        if (waveNumber % 10 == 2)
         {
             toBoss(0);
             return;
@@ -369,16 +375,57 @@ public class GameController : MonoBehaviour
 
     private void toBoss(int bossID)
     {
+        pState = PlayState.inBoss;
+        int i;
+        for (i = 0; i < boss.Length; i++)
+        {
+            if (boss[i].BossID == bossID)
+            {
+                break;
+            }
+        }
+        GameObject map = mapParentM.transform.Find(boss[i].mapName).gameObject;
+        
+        changeMap(map);
+
+        GameObject go = Instantiate(boss[i].boss, map.transform.position + new Vector3(0,.5f,0), Quaternion.identity);
+
+        go.AddComponent(boss[i].bossController.GetClass());
+
+        //ManuelAdding
+        if(go.TryGetComponent<DummyMummyFunc>(out DummyMummyFunc dmf))
+        {
+            dmf.boss = boss[i];
+        }
+        bossIntroPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = boss[i].bossName;
 
 
+        toCinematic(pState, PlayState.inBoss, go.GetComponent<Animator>(), go.GetComponentInChildren<Camera>());
 
-        //teleportPlayer Routine
-        //start cinematic
     }
-
-    private void toCinematic(PlayState from)
+    private void toCinematic(PlayState from,PlayState to,Animator anim,Camera animCam)
     {
-        //will be added later
+        pState = PlayState.inCinematic;
+        //DisableUI
+        playerPanel.SetActive(false);
+        gamePanel.SetActive(false);
+
+
+        //cam Change to cinematic Camera
+        mainCam.GetComponent<Camera>().enabled = false;
+        animCam.enabled = true;
+        
+        
+        if(from == PlayState.inBoss && to == PlayState.inBoss)
+        {
+            anim.SetTrigger("Start");
+            StartCoroutine(bossStartAnim(anim,animCam));
+        }
+        else if(from == PlayState.inBoss && to == PlayState.inWaiting)
+        {
+            //bossEnd
+        }
+        //Addable
     }
 
     //MapChanges
@@ -433,7 +480,34 @@ public class GameController : MonoBehaviour
             }
         }
     }
+    IEnumerator bossStartAnim(Animator selectedAnim,Camera selectedCam)
+    {
+        while (true) 
+        {
+            yield return new WaitForEndOfFrame();
+            if (selectedAnim.GetCurrentAnimatorStateInfo(0).IsName("end"))
+            {
+                bossIntroPanel.SetActive(true);
+                break;
+            }
+        }
+        yield return new WaitForSeconds(0.5f);
+        //StopAnimation
 
+        selectedAnim.SetBool("end", true);
+        yield return new WaitForEndOfFrame();
+        selectedAnim.SetBool("end", false);
+
+        //UI Normalize
+        bossIntroPanel.SetActive(false);
+        gamePanel.SetActive(true);
+        playerPanel.SetActive(true);
+        //camNormalize
+        mainCam.GetComponent<Camera>().enabled = true;
+        selectedCam.enabled = false;
+        //change GameState
+        pState = PlayState.inBoss;
+    }
 
     //UI Events
     //GameBasedUI Evvents
@@ -553,13 +627,17 @@ public class GameController : MonoBehaviour
         comboCount += comboTime;
         if (comboTime > 0)
         {
-            StopCoroutine(comboDisplayRoutine);
-            StartCoroutine(comboDisplayRoutine);
+            if (comboDisplayRoutine != null)
+            {
+                StopCoroutine(comboDisplayRoutine);
+            }
+            comboDisplayRoutine = StartCoroutine(comboRoutine());
         }
         ComboVisualize(comboCount);
     }
     IEnumerator comboRoutine()
     {
+        Debug.Log("kdmtss");
         float duration = comboDuration;
         while (true)
         {
