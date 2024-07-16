@@ -5388,7 +5388,7 @@ GameObject:
   - component: {fileID: 1299756444}
   - component: {fileID: 1299756443}
   m_Layer: 5
-  m_Name: BossMaxHP
+  m_Name: BossMaxHP1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7751,12 +7751,12 @@ PrefabInstance:
     - target: {fileID: -5728292905374268493, guid: 0956535edf85bb44d8c761bd42a5e965,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.10820932
+      value: -0.10820933
       objectReference: {fileID: 0}
     - target: {fileID: -5728292905374268493, guid: 0956535edf85bb44d8c761bd42a5e965,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.026315644
+      value: -0.026315646
       objectReference: {fileID: 0}
     - target: {fileID: -5676886021798722774, guid: 0956535edf85bb44d8c761bd42a5e965,
         type: 3}
@@ -7931,12 +7931,12 @@ PrefabInstance:
     - target: {fileID: -2609902713159478865, guid: 0956535edf85bb44d8c761bd42a5e965,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.05235987
+      value: -0.052359875
       objectReference: {fileID: 0}
     - target: {fileID: -2609902713159478865, guid: 0956535edf85bb44d8c761bd42a5e965,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.06272955
+      value: -0.06272956
       objectReference: {fileID: 0}
     - target: {fileID: -2552949693646525553, guid: 0956535edf85bb44d8c761bd42a5e965,
         type: 3}
@@ -9353,7 +9353,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: BossName
+  m_text: DummyMummy
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -9547,6 +9547,7 @@ MonoBehaviour:
   max_angleOfPlane: 60
   sens: 7
   mainCam: {fileID: 330585545}
+  ccstate: 0
   actiontp: 0
   actiontg: 0
 --- !u!1 &1922655435

@@ -87,7 +87,7 @@ public class WeaponManager : MonoBehaviour
         handStates = ActionStateOFHands.idle;
         //init
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
-
+        player = GetComponent<PController>();
         //holder init
         holder = new WeaponRuntimeHolder[gc.weapons.Length];
         for (int i = 0; i < holder.Length; i++)
@@ -119,7 +119,7 @@ public class WeaponManager : MonoBehaviour
 
     private void Update()
     {
-        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic)
+        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || player.ccstate != PController.CCStateOfPlayer.normal)
         {
             return;
         }

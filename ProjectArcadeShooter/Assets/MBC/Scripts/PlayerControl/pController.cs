@@ -93,6 +93,13 @@ public class PController : MonoBehaviour
         slope,
         onAir,
     }
+    public enum CCStateOfPlayer
+    {
+        normal,
+        ccd,
+    }
+    [HideInInspector]
+    public CCStateOfPlayer ccstate;
     [HideInInspector]
     public ActionStateDependecyToPlayer actiontp;
     [HideInInspector]
@@ -128,7 +135,7 @@ public class PController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(gc.pState==GameController.PlayState.inPlayerInterrupt||gc.pState == GameController.PlayState.inCinematic)
+        if(gc.pState==GameController.PlayState.inPlayerInterrupt||gc.pState == GameController.PlayState.inCinematic || ccstate != CCStateOfPlayer.normal)
         {
             return;
         }
@@ -149,6 +156,10 @@ public class PController : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || ccstate != CCStateOfPlayer.normal)
+        {
+            return;
+        }
         Move();
 
     }
@@ -485,8 +496,19 @@ public class PController : MonoBehaviour
                 slopePlaneNormal = collision.contacts[0].normal;
                 rb.useGravity = false;
             }
+        }
+        if (collision.transform.parent.CompareTag("Boss"))
+        {
+            //manuelAdding
+            if(collision.transform.parent.parent.gameObject.TryGetComponent<DummyMummyFunc>(out DummyMummyFunc dmf))
+            {
 
-
+                if (dmf.meleeDMG_Activated)
+                {
+                    TakeDMG(dmf.meleeDMG, dmf.gameObject);
+                    ThrowPlayer(dmf.gameObject.transform.position);
+                }
+            }
         }
     }
 
@@ -522,7 +544,22 @@ public class PController : MonoBehaviour
         return iManager;
     }
 
+    //CC Handling
+    public void ThrowPlayer(Vector3 source)
+    {
+        Vector3 throwDirection = gameObject.transform.position - source;
+        throwDirection = throwDirection.normalized;
+        rb.AddForce(throwDirection * 3f, ForceMode.Impulse);
+        StartCoroutine(cced(CCStateOfPlayer.ccd, 0.2f));
+    }
 
+
+    IEnumerator cced(CCStateOfPlayer cc ,float duration)
+    {
+        ccstate = cc;
+        yield return new WaitForSeconds(duration);
+        ccstate = CCStateOfPlayer.normal;
+    }
     //OOP Handling
     public void TakeDMG(float dmgAmmount, GameObject dmgTakenFrom)
     {
@@ -544,9 +581,6 @@ public class PController : MonoBehaviour
             currentHP = maxHP;
         }
         gc.changeHPOfPlayer(maxHP, currentHP);
-
-
-
     }
 
     //skillHandling

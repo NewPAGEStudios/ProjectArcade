@@ -52,6 +52,16 @@ public class ReflectBulletFunctions : MonoBehaviour
             gc.ComboVombo(numberOfCollisionHit);
             startDesttroyObject();
         }
+        else if (collision.transform.parent.CompareTag("Boss"))
+        {
+            //Manuel Adding
+            if (collision.transform.parent.parent.TryGetComponent<DummyMummyFunc>(out DummyMummyFunc dmf))
+            {
+                dmf.GetDamage(dmg);
+            }
+            gc.ComboVombo(numberOfCollisionHit);
+            startDesttroyObject();
+        }
         else if (numberOfCollisionHit >= mostHitCanBeDone)
         {
             startDesttroyObject();

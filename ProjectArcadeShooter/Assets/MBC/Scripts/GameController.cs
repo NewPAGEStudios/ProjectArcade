@@ -327,6 +327,7 @@ public class GameController : MonoBehaviour
     }
     public void endBoss()
     {
+        bossPanel.SetActive(false);
         changeMap(mainLevel);
         toWait();
     }
@@ -398,6 +399,7 @@ public class GameController : MonoBehaviour
             dmf.boss = boss[i];
         }
         bossIntroPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = boss[i].bossName;
+        bossPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = boss[i].bossName;
 
 
         toCinematic(pState, PlayState.inBoss, go.GetComponent<Animator>(), go.GetComponentInChildren<Camera>());
@@ -502,6 +504,7 @@ public class GameController : MonoBehaviour
         bossIntroPanel.SetActive(false);
         gamePanel.SetActive(true);
         playerPanel.SetActive(true);
+        bossPanel.SetActive(true);
         //camNormalize
         mainCam.GetComponent<Camera>().enabled = true;
         selectedCam.enabled = false;
@@ -607,7 +610,10 @@ public class GameController : MonoBehaviour
             dashNumber--;
         }
     }
-
+    public void BossHPChange(float fa)
+    {
+        bossPanel.transform.GetChild(1).GetChild(0).GetComponent<Image>().fillAmount = fa;
+    }
 
 
     public void MainMenu()
