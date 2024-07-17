@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     private Vector3 lastKnowPos;
 
     public NavMeshAgent Agent {get => agent;}
-    public GameObject Player { get=> player;}
+    public GameObject Player {get=> player;}
     public Vector3 LastKnowPos { get => lastKnowPos; set => lastKnowPos = value; }
     public Animator animator;
     

@@ -10,7 +10,7 @@ public class SearchState : BaseState
     {
         enemy.Agent.SetDestination(enemy.LastKnowPos);
     }
-        public override void Perform()
+    public override void Perform()
     {
         if(enemy.CanSeePlayer()){
             stateMachine.ChangesState(new AttackState());
@@ -27,7 +27,7 @@ public class SearchState : BaseState
             }
         }
     }
-        public override void Exit()
+    public override void Exit()
     {
         
     }

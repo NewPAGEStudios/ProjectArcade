@@ -10,6 +10,7 @@ public class AttackState : BaseState
     
     public override void Enter()
     {
+
     }
 
     public override void Exit()
@@ -40,7 +41,8 @@ public class AttackState : BaseState
             }
         }
     }
-    public void  Shoot(){
+    public void  Shoot()
+    {
         enemy.animator.SetTrigger("Throw");
         
         Transform gunbarrel = enemy.gunBarrel;
