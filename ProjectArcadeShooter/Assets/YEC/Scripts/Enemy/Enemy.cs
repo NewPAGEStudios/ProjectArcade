@@ -42,7 +42,8 @@ public class Enemy : MonoBehaviour
         CanSeePlayer();
         currentState = stateMachine.activeState.ToString();
     }
-    public bool CanSeePlayer(){
+    public bool CanSeePlayer()
+    {
         if(player != null)
         {
             if(Vector3.Distance(transform.position, player.transform.position) < sightDistance)

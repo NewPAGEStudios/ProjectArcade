@@ -12,7 +12,7 @@ public class PatrolState : BaseState
     {
         // Initialize the walking animation state
         isWalking = false;
-        enemy.animator.SetBool("isWalking", isWalking);
+//        enemy.animator.SetBool("isWalking", isWalking);
     }
 
     public override void Perform()
@@ -26,7 +26,7 @@ public class PatrolState : BaseState
         else
         {
             // Update animator walking state
-            enemy.animator.SetBool("isWalking", isWalking);
+//            enemy.animator.SetBool("isWalking", isWalking);
         }
     }
 
@@ -34,7 +34,7 @@ public class PatrolState : BaseState
     {
         // Ensure walking animation state is reset
         isWalking = false;
-        enemy.animator.SetBool("isWalking", isWalking);
+//        enemy.animator.SetBool("isWalking", isWalking);
     }
 
     public void PatrolCycle()

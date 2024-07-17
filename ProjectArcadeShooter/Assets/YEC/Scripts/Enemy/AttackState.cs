@@ -43,7 +43,7 @@ public class AttackState : BaseState
     }
     public void  Shoot()
     {
-        enemy.animator.SetTrigger("Throw");
+//        enemy.animator.SetTrigger("Throw");
         
         Transform gunbarrel = enemy.gunBarrel;
 
@@ -56,15 +56,5 @@ public class AttackState : BaseState
         enemy.animator.SetTrigger("Idle");
 
         shotTimer =0;
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

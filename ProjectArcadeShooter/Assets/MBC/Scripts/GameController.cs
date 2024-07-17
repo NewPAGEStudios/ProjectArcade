@@ -159,8 +159,13 @@ public class GameController : MonoBehaviour
 
         ComboBG(0);
         ComboVisualize(0);
-
-
+        /* Save on waitState
+        check save and load it save elements =  
+        player,char's ammo,weapon,ability,hp,dashMeter,Money,,
+        gameController, pickable cons and weapons pos andID, waveNumber, 
+         
+         
+         */
     }
 
     //    spawners
@@ -367,6 +372,7 @@ public class GameController : MonoBehaviour
 
     private void toWait()
     {
+        //Save Game uzantýyý .NP dÝYE KAYDET
         waitTimer = waitTime;
         pState = PlayState.inWaiting;
         waitTimeVisualize(waitTimer);
