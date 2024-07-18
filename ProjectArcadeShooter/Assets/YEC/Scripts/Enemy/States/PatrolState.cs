@@ -10,6 +10,7 @@ public class PatrolState : BaseState
 
     public override void Enter()
     {
+        enemy.Agent.SetDestination(enemy.transform.position);
         // Initialize the walking animation state
         isWalking = false;
 //        enemy.animator.SetBool("isWalking", isWalking);

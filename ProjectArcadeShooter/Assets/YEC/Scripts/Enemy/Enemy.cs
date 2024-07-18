@@ -15,7 +15,9 @@ public class Enemy : MonoBehaviour
     public GameObject Player {get=> player;}
     public Vector3 LastKnowPos { get => lastKnowPos; set => lastKnowPos = value; }
     public Animator animator;
-    
+
+    public EnemyType enemyType;
+
     public Path path;
     [Header("Sight Values")]
     public float sightDistance = 20f;

@@ -52,7 +52,7 @@ public class ReflectBulletFunctions : MonoBehaviour
             gc.ComboVombo(numberOfCollisionHit);
             startDesttroyObject();
         }
-        else if (collision.transform.parent.CompareTag("Boss"))
+        else if (collision.gameObject.layer == 9 )//bossCollider
         {
             //Manuel Adding
             if (collision.transform.parent.parent.TryGetComponent<DummyMummyFunc>(out DummyMummyFunc dmf))

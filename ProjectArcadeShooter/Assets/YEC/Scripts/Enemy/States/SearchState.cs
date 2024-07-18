@@ -9,20 +9,25 @@ public class SearchState : BaseState
     public override void Enter()
     {
         enemy.Agent.SetDestination(enemy.LastKnowPos);
+        Debug.Log("Enemy is in Search State  " + enemy.LastKnowPos);
     }
     public override void Perform()
     {
-        if(enemy.CanSeePlayer()){
+        if(enemy.CanSeePlayer())
+        {
             stateMachine.ChangesState(new AttackState());
         }
-        if(enemy.Agent.remainingDistance < enemy.Agent.stoppingDistance){
+        if(enemy.Agent.remainingDistance < enemy.Agent.stoppingDistance)
+        {
             searchTimer += Time.deltaTime;
             moveTimer += Time.deltaTime;
-            if(moveTimer > Random.Range(3,5)){
+            if(moveTimer > Random.Range(3,5))
+            {
                 enemy.Agent.SetDestination(enemy.transform.position + (Random.insideUnitSphere * 10));
                 moveTimer = 0;
             }
-            if(searchTimer > 10){
+            if(searchTimer > 10)
+            {
                 stateMachine.ChangesState(new PatrolState());
             }
         }

@@ -6,8 +6,9 @@ public class Bullet : MonoBehaviour
 {
     private void OnCollisionEnter(Collision collision){
         Transform hitTransform = collision.transform;
-        if(hitTransform.CompareTag("Player")){
-            Debug.Log("hit");
+
+        if(hitTransform.CompareTag("PlayerColl"))
+        {
 //            hitTransform.GetComponent<HealthBar>().UpdateHealth(-10);
         }
         Destroy(gameObject);

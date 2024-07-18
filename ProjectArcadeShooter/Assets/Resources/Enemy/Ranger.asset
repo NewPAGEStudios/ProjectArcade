@@ -10,18 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 83af2c1cfa181454ab5d6314b130aec2, type: 3}
-  m_Name: Walker
+  m_Name: Ranger
   m_EditorClassIdentifier: 
-  EnemyTypeID: 0
-  modelGameObject: {fileID: 3044971093522096474, guid: ada47b29950c2204bb22b0b84872bd63,
-    type: 3}
-  ai: {fileID: 11500000, guid: 9c2a3c245704d9645aea151552f51f1a, type: 3}
+  EnemyTypeID: 1
+  modelGameObject: {fileID: 0}
+  ai: {fileID: 0}
   ammo: {fileID: 0}
-  agentName: "Walk\u0131er"
-  hitPoint: 100
-  moveSpeed: 2
+  agentName: 
+  hitPoint: 0
+  moveSpeed: 0
   attackRatio: 0
   isRanged: 0
-  rangeDistance: 3
-  attackDMG: 20
-  difficultyNumber: 1
+  rangeDistance: 0
+  attackDMG: 0
+  difficultyNumber: 10

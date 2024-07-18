@@ -242,24 +242,28 @@ public class GameController : MonoBehaviour
         GameObject enemy = new();
         enemyCount += 1;
 
-        Transform p = enemySpawnPointParent.transform.GetChild(UnityEngine.Random.Range(0, enemySpawnPointParent.transform.childCount));
-        float x = UnityEngine.Random.Range(p.transform.Find("min").position.x, p.transform.Find("max").position.x);
-        float y = p.position.y + enemies[enemyID].modelGameObject.transform.localScale.y;
-        float z = UnityEngine.Random.Range(p.transform.Find("min").position.z, p.transform.Find("max").position.z);
+        int indexOfID = 0;
 
-        enemy.transform.position = new Vector3(x, y, z);
-
-        int i = 0;
-        for (i = 0; i < enemies.Length; i++)
+        for(int i = 0; i < enemies.Length; i++)
         {
             if (enemies[i].EnemyTypeID == enemyID)
             {
+                indexOfID = i;
                 break;
             }
         }
 
+
+        Transform p = enemySpawnPointParent.transform.GetChild(UnityEngine.Random.Range(0, enemySpawnPointParent.transform.childCount));
+        float x = UnityEngine.Random.Range(p.transform.Find("min").position.x, p.transform.Find("max").position.x);
+        float y = p.position.y + enemies[indexOfID].modelGameObject.transform.localScale.y;
+        float z = UnityEngine.Random.Range(p.transform.Find("min").position.z, p.transform.Find("max").position.z);
+
+        enemy.transform.position = new Vector3(x, y, z);
+
+
         enemy.AddComponent<EnemyController>();
-        enemy.GetComponent<EnemyController>().m_Enemy = enemies[i];
+        enemy.GetComponent<EnemyController>().m_Enemy = enemies[indexOfID];
         enemy.name = "enemy";
 
     }
@@ -367,6 +371,7 @@ public class GameController : MonoBehaviour
             int i = UnityEngine.Random.Range(0, enemyThatCanSpawn.Count);
             SpawnEnemy(enemyThatCanSpawn[i].EnemyTypeID);
             maxDifficultyNumber -= enemyThatCanSpawn[i].difficultyNumber;
+            Debug.Log(maxDifficultyNumber);
         }
     }
 

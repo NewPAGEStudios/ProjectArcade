@@ -491,13 +491,15 @@ public class PController : MonoBehaviour
             else
             {//is Slope granted
                 actiontg = ActionStateDependecyToGround.slope;
-
-
                 slopePlaneNormal = collision.contacts[0].normal;
                 rb.useGravity = false;
             }
         }
-        if (collision.transform.parent.CompareTag("Boss"))
+        if (collision.transform.gameObject.layer == 7)//7 is ammo
+        {
+            return;
+        }
+        else if (collision.transform.parent.CompareTag("Boss"))
         {
             //manuelAdding
             if(collision.transform.parent.parent.gameObject.TryGetComponent<DummyMummyFunc>(out DummyMummyFunc dmf))
