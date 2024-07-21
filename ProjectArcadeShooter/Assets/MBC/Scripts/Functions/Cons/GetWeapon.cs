@@ -54,4 +54,11 @@ public class GetWeapon : MonoBehaviour
         Destroy(gameObject);
         return;
     }
+
+    public static void perform_WOUTObjected(GameObject player, GameController gc, int weaponID)
+    {
+        player.GetComponent<WeaponManager>().GetWeapon(weaponID);
+        return;
+    }
+
 }

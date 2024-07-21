@@ -6,10 +6,14 @@ public class SearchState : BaseState
 {
     private float searchTimer;
     private float moveTimer;
+
+    private bool isWalking;
     public override void Enter()
     {
         enemy.Agent.SetDestination(enemy.LastKnowPos);
-        Debug.Log("Enemy is in Search State  " + enemy.LastKnowPos);
+        isWalking = true;
+        enemy.animator.SetBool("isWalking", isWalking);
+
     }
     public override void Perform()
     {
@@ -24,6 +28,8 @@ public class SearchState : BaseState
             if(moveTimer > Random.Range(3,5))
             {
                 enemy.Agent.SetDestination(enemy.transform.position + (Random.insideUnitSphere * 10));
+                isWalking = true;
+                enemy.animator.SetBool("isWalking", isWalking);
                 moveTimer = 0;
             }
             if(searchTimer > 10)

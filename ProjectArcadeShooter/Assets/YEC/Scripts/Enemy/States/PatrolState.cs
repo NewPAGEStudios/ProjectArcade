@@ -13,7 +13,7 @@ public class PatrolState : BaseState
         enemy.Agent.SetDestination(enemy.transform.position);
         // Initialize the walking animation state
         isWalking = false;
-//        enemy.animator.SetBool("isWalking", isWalking);
+        enemy.animator.SetBool("isWalking", isWalking);
     }
 
     public override void Perform()
@@ -35,7 +35,7 @@ public class PatrolState : BaseState
     {
         // Ensure walking animation state is reset
         isWalking = false;
-//        enemy.animator.SetBool("isWalking", isWalking);
+        enemy.animator.SetBool("isWalking", isWalking);
     }
 
     public void PatrolCycle()
@@ -50,11 +50,19 @@ public class PatrolState : BaseState
                 else
                     waypointIndex = 0;
 
-                enemy.Agent.SetDestination(enemy.path.waypoints[waypointIndex].position);
+                enemy.Agent.SetDestination(enemy.path.waypoints[waypointIndex]);
+                enemy.gameObject.transform.LookAt(enemy.path.waypoints[waypointIndex]);
+                enemy.transform.eulerAngles = new Vector3(0, enemy.transform.eulerAngles.y, enemy.transform.eulerAngles.z);
                 waitTimer = 0;
 
                 // Start walking animation
                 isWalking = true;
+                enemy.animator.SetBool("isWalking", isWalking);
+            }
+            else
+            {
+                isWalking = false;
+                enemy.animator.SetBool("isWalking", isWalking);
             }
         }
     }

@@ -10,13 +10,13 @@ public class EnemyHealth : MonoBehaviour
     public float level;
     public Text txtLevel;
     public Animator animator;
-    private float deathTime;
-    private bool isDead;
+
+    private GameController gc;
 
     // Start is called before the first frame update
     void Start()
     {
-        isDead = false;
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         level = 0;
         currentHealth = maxHealth;
     }
@@ -24,21 +24,11 @@ public class EnemyHealth : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isDead)
-        {
-            deathTime += Time.deltaTime;
-            if (deathTime > 5)
-            {
-                Destroy(gameObject);
-                Debug.Log("süre doldu");
-            }
-        }
+
     }
 
     public void EnemyHealthUpdate(float amount)
     {
-        if (isDead) return; // Eğer düşman zaten ölmüşse, herhangi bir işlem yapma
-
         currentHealth += amount;
         
         if (currentHealth <= 0)
@@ -50,12 +40,7 @@ public class EnemyHealth : MonoBehaviour
 
     private void Die()
     {
-        animator.SetTrigger("Death");
-        level++;
-        if (txtLevel != null)
-        {
-            txtLevel.text = Convert.ToString(level);
-        }
-        isDead = true;
+        gc.decreseEnemyCount();
+        Destroy(gameObject);
     }
 }

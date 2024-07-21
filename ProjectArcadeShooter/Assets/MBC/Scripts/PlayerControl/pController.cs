@@ -124,9 +124,6 @@ public class PController : MonoBehaviour
         weaponManager.IManager = iManager;
 
 
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-
         gc.AddDashIndicator(maxdashmeter);
         currentdashMeter = maxdashmeter;
         gc.DashIndicator(currentdashMeter);
@@ -135,7 +132,7 @@ public class PController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(gc.pState==GameController.PlayState.inPlayerInterrupt||gc.pState == GameController.PlayState.inCinematic || ccstate != CCStateOfPlayer.normal)
+        if(gc.pState==GameController.PlayState.inPlayerInterrupt||gc.pState == GameController.PlayState.inCinematic || gc.pState==GameController.PlayState.inShop || ccstate != CCStateOfPlayer.normal)
         {
             return;
         }
@@ -156,7 +153,7 @@ public class PController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || ccstate != CCStateOfPlayer.normal)
+        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || gc.pState == GameController.PlayState.inShop || ccstate != CCStateOfPlayer.normal)
         {
             return;
         }
@@ -499,7 +496,7 @@ public class PController : MonoBehaviour
         {
             return;
         }
-        else if (collision.transform.parent.CompareTag("Boss"))
+        else if (collision.gameObject.layer == 9)
         {
             //manuelAdding
             if(collision.transform.parent.parent.gameObject.TryGetComponent<DummyMummyFunc>(out DummyMummyFunc dmf))

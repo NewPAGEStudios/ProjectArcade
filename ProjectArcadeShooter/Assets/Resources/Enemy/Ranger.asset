@@ -17,6 +17,7 @@ MonoBehaviour:
   ai: {fileID: 0}
   ammo: {fileID: 0}
   agentName: 
+  firePos: {x: 0, y: 0, z: 0.75}
   hitPoint: 0
   moveSpeed: 0
   attackRatio: 0

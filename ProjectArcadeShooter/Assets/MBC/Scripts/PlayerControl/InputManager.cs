@@ -14,7 +14,6 @@ public class InputManager : MonoBehaviour
     public bool crouching = false;
     public bool fireHolding = false;
 
-
     private PlayerActionMaps inputActions;
     private void Awake()
     {
@@ -33,6 +32,7 @@ public class InputManager : MonoBehaviour
 
         inputActions.handMap.FireAuto.performed += FirePerformed;
         inputActions.handMap.FireAuto.canceled += FireCanceled;
+
 
     }
 
@@ -111,4 +111,13 @@ public class InputManager : MonoBehaviour
         return inputActions.handMap.Scroll.ReadValue<float>();
     }
 
+
+    public bool getEscapePressed()
+    {
+        return inputActions.GameControllerMap.backSpace.triggered;
+    }
+    public bool getInterractPressed()
+    {
+        return inputActions.GameControllerMap.Interract.triggered;
+    }
 }

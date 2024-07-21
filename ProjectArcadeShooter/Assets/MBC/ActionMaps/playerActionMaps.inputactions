@@ -282,6 +282,54 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "GameControllerMap",
+            "id": "78737827-dc29-4382-ac49-080115cae399",
+            "actions": [
+                {
+                    "name": "backSpace",
+                    "type": "Button",
+                    "id": "5a3a98a2-f2c0-4668-979c-689d38e3fafc",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Interract",
+                    "type": "Button",
+                    "id": "58fc7f79-7300-4786-aacb-0688e51ee7c7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "26cb8177-b2f7-44b9-a3ca-4443a7fc3f52",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "backSpace",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "65f21f20-7cd3-4044-9248-b94548bff5f2",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Interract",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

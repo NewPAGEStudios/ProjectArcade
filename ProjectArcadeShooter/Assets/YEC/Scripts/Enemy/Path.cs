@@ -6,7 +6,7 @@ using System;
 public class Path : MonoBehaviour
 {
 
-    public List<Transform> waypoints;
+    public List<Vector3> waypoints = new List<Vector3>();
     [SerializeField]
     private bool alwaysDrawPath;
     [SerializeField]
@@ -30,14 +30,14 @@ public class Path : MonoBehaviour
             labelStyle.fontSize = 30;
             labelStyle.normal.textColor = debugColour;
             if (drawNumbers)
-                Handles.Label(waypoints[i].position, i.ToString(), labelStyle);
+                Handles.Label(waypoints[i], i.ToString(), labelStyle);
             if (i >= 1)
             {
                 Gizmos.color = debugColour;
-                Gizmos.DrawLine(waypoints[i - 1].position, waypoints[i].position);
+                Gizmos.DrawLine(waypoints[i - 1], waypoints[i]);
 
                 if (drawAsLoop)
-                    Gizmos.DrawLine(waypoints[waypoints.Count - 1].position, waypoints[0].position);
+                    Gizmos.DrawLine(waypoints[waypoints.Count - 1], waypoints[0]);
 
             }
         }

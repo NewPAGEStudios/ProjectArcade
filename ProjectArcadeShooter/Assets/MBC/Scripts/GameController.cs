@@ -21,6 +21,7 @@ public class GameController : MonoBehaviour
         inWave,
         inWaiting,
         inBoss,
+        inShop,
         inCinematic,
         inPlayerInterrupt
     }
@@ -53,7 +54,7 @@ public class GameController : MonoBehaviour
     public GameObject gamePanel;
     public GameObject bossIntroPanel;
     public GameObject bossPanel;
-
+    public GameObject shopPanel;
 
     [Header(header: "MapReference")]
     public GameObject startMap;
@@ -79,13 +80,16 @@ public class GameController : MonoBehaviour
     private int enemyCount;
 
     private int comboCount;
+    private float money;
+
 
     [Header(header: "GameSettings")]
     public float waitTime;
     private float waitTimer;
     public float comboDuration;
-
-
+    [Header(header: "UI Prefab Referances")]
+    public GameObject shopButton;
+    public GameObject shopTXT;
     //IEnumerators
     private Coroutine comboDisplayRoutine;
     private void Awake()
@@ -102,11 +106,30 @@ public class GameController : MonoBehaviour
 
         for(int i = 0; i < weapons.Length; i++)
         {
+            //weapon GO ýnstantiate
             GameObject weaponGO = Instantiate(weapons[i].modelGameObject, inActiveWeapon.transform);
             weaponGO.name = weapons[i].WeaponName;
             weaponGO.SetActive(false);
+
+            //UI Instanttiate
+            GameObject imaj = Instantiate(shopButton, shopPanel.transform.GetChild(0).GetChild(0));
+            imaj.AddComponent<Image>();
+            imaj.GetComponent<Image>().sprite = weapons[i].UIRef;
+            imaj.name = weapons[i].WeaponName + "Shop";
+            Button but = imaj.AddComponent<Button>();
+            but.targetGraphic=imaj.GetComponent<Image>();
+
+            but.onClick.AddListener(() => weaponButtonPressed(but.gameObject.name) );
+
+            GameObject imajChild = Instantiate(shopTXT, imaj.transform);
+            TextMeshProUGUI tmp = imajChild.AddComponent<TextMeshProUGUI>();
+            tmp.color = Color.white;
+            tmp.text = weapons[i].toBuyMoney.ToString();
+            tmp.fontSize = 36;
+            tmp.fontStyle = FontStyles.Bold;
+            tmp.alignment = TextAlignmentOptions.MidlineGeoAligned;
         }
-        for(int i = 0; i < skills.Length; i++)
+        for (int i = 0; i < skills.Length; i++)
         {
             if (skills[i].st == Skill.skillType.active)
             {
@@ -128,6 +151,7 @@ public class GameController : MonoBehaviour
         {
             GameObject go = Instantiate(boss[i].mapParent,mapParentM.transform);
             go.name = boss[i].mapName;
+            go.SetActive(false);
         }
 
 
@@ -159,6 +183,16 @@ public class GameController : MonoBehaviour
 
         ComboBG(0);
         ComboVisualize(0);
+
+        //Cursor Handling
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
+        //Money Handling
+        money = 400;
+        MoneyDisplay();
+
+
         /* Save on waitState
         check save and load it save elements =  
         player,char's ammo,weapon,ability,hp,dashMeter,Money,,
@@ -261,9 +295,21 @@ public class GameController : MonoBehaviour
 
         enemy.transform.position = new Vector3(x, y, z);
 
+        enemy.AddComponent<Enemy>();
+        enemy.GetComponent<Enemy>().e_type = enemies[indexOfID];
+        enemy.GetComponent<Enemy>().parentSelectedPosition = p;
 
-        enemy.AddComponent<EnemyController>();
-        enemy.GetComponent<EnemyController>().m_Enemy = enemies[indexOfID];
+        if (enemies[indexOfID].isRanged)
+        {
+            GameObject firePosGO = new();
+            firePosGO.transform.SetParent(enemy.transform);
+
+            firePosGO.transform.position = enemies[indexOfID].firePos;
+            firePosGO.transform.localEulerAngles = Vector3.zero;
+            firePosGO.transform.localScale = Vector3.one;
+
+        }
+
         enemy.name = "enemy";
 
     }
@@ -294,7 +340,7 @@ public class GameController : MonoBehaviour
                 if (spawnTimer <= 0f)
                 {
                     SpawnCons(UnityEngine.Random.Range(0, consumables.Length));
-                    spawnTimer = UnityEngine.Random.Range(15f, 20f);
+                    spawnTimer = UnityEngine.Random.Range(7.5f, 12.5f);
                 }
                 else
                 {
@@ -475,6 +521,13 @@ public class GameController : MonoBehaviour
     }
 
 
+    //SaveSystem
+    public void SaveElements()
+    {
+
+    }
+
+
 
     //Animations
     IEnumerator waveStartAnim()//UI
@@ -559,6 +612,13 @@ public class GameController : MonoBehaviour
     {
         gamePanel.transform.GetChild(2).GetComponent<Image>().fillAmount = fa;
     }
+    public void ShopOpener()
+    {
+        playerPanel.SetActive(false);
+        gamePanel.SetActive(false);
+        shopPanel.SetActive(true);
+
+    }
 
 
 
@@ -625,15 +685,54 @@ public class GameController : MonoBehaviour
     {
         bossPanel.transform.GetChild(1).GetChild(0).GetComponent<Image>().fillAmount = fa;
     }
-
-
+    public void MoneyDisplay()
+    {
+        playerPanel.transform.GetChild(7).GetChild(0).GetComponent<TextMeshProUGUI>().text = money.ToString() + " $";
+    }
     public void MainMenu()
     {
         //SceneManagement.LoadScene(mainMenuint)
     }
+    public void DisplayInstruction(bool display)
+    {
+        gamePanel.transform.GetChild(3).gameObject.SetActive(display);
+    }
 
 
     //functions
+    public void Interact(int interactID)
+    {
+        if (interactID == 0) 
+        {
+            Time.timeScale = 0;
+            pState = PlayState.inShop;
+            shopPanel.SetActive(true);
+        }
+    }
+    public void DeductMainCurrency(float amount)
+    {
+        money -= amount;
+        MoneyDisplay();
+    }
+    public void AddMainCurrency(float amount)
+    {
+        money += amount;
+        MoneyDisplay();
+    }
+
+    public void weaponButtonPressed(string nameOFWeaponName)
+    {
+        int i;
+        for (i = 0; i < weapons.Length; i++)
+        {
+            if(nameOFWeaponName == weapons[i].WeaponName + "Shop")
+            {
+                break;
+            }
+        }
+        DeductMainCurrency(weapons[i].toBuyMoney);
+        GetWeapon.perform_WOUTObjected(player, GetComponent<GameController>(), weapons[i].WeaponTypeID);
+    }
 
     public void decreseEnemyCount()
     {

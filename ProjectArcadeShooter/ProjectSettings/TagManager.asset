@@ -9,6 +9,7 @@ TagManager:
   - duvar
   - Boss
   - PlayerColl
+  - EnemyColl
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - handModel
   - BossCollider
   - Enemy
-  - 
+  - Interactable
   - 
   - 
   - 

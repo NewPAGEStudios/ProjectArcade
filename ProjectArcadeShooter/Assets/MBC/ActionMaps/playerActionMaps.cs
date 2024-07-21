@@ -304,6 +304,54 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""GameControllerMap"",
+            ""id"": ""78737827-dc29-4382-ac49-080115cae399"",
+            ""actions"": [
+                {
+                    ""name"": ""backSpace"",
+                    ""type"": ""Button"",
+                    ""id"": ""5a3a98a2-f2c0-4668-979c-689d38e3fafc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interract"",
+                    ""type"": ""Button"",
+                    ""id"": ""58fc7f79-7300-4786-aacb-0688e51ee7c7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""26cb8177-b2f7-44b9-a3ca-4443a7fc3f52"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""backSpace"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""65f21f20-7cd3-4044-9248-b94548bff5f2"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Interract"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -339,6 +387,10 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
         m_handMap_FireSemi = m_handMap.FindAction("FireSemi", throwIfNotFound: true);
         m_handMap_FireAuto = m_handMap.FindAction("FireAuto", throwIfNotFound: true);
         m_handMap_Scroll = m_handMap.FindAction("Scroll", throwIfNotFound: true);
+        // GameControllerMap
+        m_GameControllerMap = asset.FindActionMap("GameControllerMap", throwIfNotFound: true);
+        m_GameControllerMap_backSpace = m_GameControllerMap.FindAction("backSpace", throwIfNotFound: true);
+        m_GameControllerMap_Interract = m_GameControllerMap.FindAction("Interract", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -552,6 +604,60 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
         }
     }
     public HandMapActions @handMap => new HandMapActions(this);
+
+    // GameControllerMap
+    private readonly InputActionMap m_GameControllerMap;
+    private List<IGameControllerMapActions> m_GameControllerMapActionsCallbackInterfaces = new List<IGameControllerMapActions>();
+    private readonly InputAction m_GameControllerMap_backSpace;
+    private readonly InputAction m_GameControllerMap_Interract;
+    public struct GameControllerMapActions
+    {
+        private @PlayerActionMaps m_Wrapper;
+        public GameControllerMapActions(@PlayerActionMaps wrapper) { m_Wrapper = wrapper; }
+        public InputAction @backSpace => m_Wrapper.m_GameControllerMap_backSpace;
+        public InputAction @Interract => m_Wrapper.m_GameControllerMap_Interract;
+        public InputActionMap Get() { return m_Wrapper.m_GameControllerMap; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(GameControllerMapActions set) { return set.Get(); }
+        public void AddCallbacks(IGameControllerMapActions instance)
+        {
+            if (instance == null || m_Wrapper.m_GameControllerMapActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_GameControllerMapActionsCallbackInterfaces.Add(instance);
+            @backSpace.started += instance.OnBackSpace;
+            @backSpace.performed += instance.OnBackSpace;
+            @backSpace.canceled += instance.OnBackSpace;
+            @Interract.started += instance.OnInterract;
+            @Interract.performed += instance.OnInterract;
+            @Interract.canceled += instance.OnInterract;
+        }
+
+        private void UnregisterCallbacks(IGameControllerMapActions instance)
+        {
+            @backSpace.started -= instance.OnBackSpace;
+            @backSpace.performed -= instance.OnBackSpace;
+            @backSpace.canceled -= instance.OnBackSpace;
+            @Interract.started -= instance.OnInterract;
+            @Interract.performed -= instance.OnInterract;
+            @Interract.canceled -= instance.OnInterract;
+        }
+
+        public void RemoveCallbacks(IGameControllerMapActions instance)
+        {
+            if (m_Wrapper.m_GameControllerMapActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IGameControllerMapActions instance)
+        {
+            foreach (var item in m_Wrapper.m_GameControllerMapActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_GameControllerMapActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public GameControllerMapActions @GameControllerMap => new GameControllerMapActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -576,5 +682,10 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
         void OnFireSemi(InputAction.CallbackContext context);
         void OnFireAuto(InputAction.CallbackContext context);
         void OnScroll(InputAction.CallbackContext context);
+    }
+    public interface IGameControllerMapActions
+    {
+        void OnBackSpace(InputAction.CallbackContext context);
+        void OnInterract(InputAction.CallbackContext context);
     }
 }

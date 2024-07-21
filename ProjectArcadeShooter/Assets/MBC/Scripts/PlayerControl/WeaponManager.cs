@@ -119,7 +119,7 @@ public class WeaponManager : MonoBehaviour
 
     private void Update()
     {
-        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || player.ccstate != PController.CCStateOfPlayer.normal)
+        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || gc.pState == GameController.PlayState.inShop || player.ccstate != PController.CCStateOfPlayer.normal)
         {
             return;
         }
@@ -216,6 +216,27 @@ public class WeaponManager : MonoBehaviour
                 }
             }
         }
+    }
+    private void FixedUpdate()
+    {
+        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || gc.pState == GameController.PlayState.inShop || player.ccstate != PController.CCStateOfPlayer.normal)
+        {
+            return;
+        }
+        if (Physics.Raycast(firePos.transform.parent.position, firePos.transform.forward,2f,1<<11))
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                gc.Interact(0);
+            }
+            gc.DisplayInstruction(true);
+            Debug.DrawRay(firePos.transform.position, firePos.transform.forward, Color.red);
+        }
+        else
+        {
+            gc.DisplayInstruction(false);
+        }
+
     }
 
     public void GetWeapon(int weaponID)

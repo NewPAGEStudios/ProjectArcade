@@ -19,6 +19,9 @@ public class Weapon : ScriptableObject
     public GameObject modelGameObject;
     public Ammo usedAmmo;
     public bool twoStateReload;
+    [Header(header: "ShopSettings")]
+    public Sprite UIRef;
+    public float toBuyMoney;
     [Header(header: "EnemyObjectProperties")]
     public WeaponType type;
     public int magSize;

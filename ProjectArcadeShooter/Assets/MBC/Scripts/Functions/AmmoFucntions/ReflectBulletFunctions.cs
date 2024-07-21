@@ -46,9 +46,9 @@ public class ReflectBulletFunctions : MonoBehaviour
         Vector3 newfront = Vector3.Reflect(tempFWD, collision.contacts[0].normal);
         transform.forward = newfront;
         tempFWD = transform.forward;
-        if (collision.transform.CompareTag("Enemy"))
+        if (collision.transform.CompareTag("EnemyColl"))
         {
-            collision.transform.parent.GetComponent<EnemyController>().takeDmg(dmg);
+            collision.transform.parent.parent.GetComponent<EnemyHealth>().EnemyHealthUpdate(-dmg);
             gc.ComboVombo(numberOfCollisionHit);
             startDesttroyObject();
         }

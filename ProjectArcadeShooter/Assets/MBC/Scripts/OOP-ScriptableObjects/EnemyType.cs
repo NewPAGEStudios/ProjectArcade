@@ -9,13 +9,14 @@ public class EnemyType : ScriptableObject
     
     [Header(header:"Referances")]
     public GameObject modelGameObject;
-    public MonoScript ai;
     public Ammo ammo;
     public string agentName;
+    public Vector3 firePos;
 
     [Header(header: "EnemyObjectProperties")]
     public float hitPoint;
     public float moveSpeed;
+    [Range(0.1f, 10f)]
     public float attackRatio;
     public bool isRanged;
     public float rangeDistance;

@@ -18,6 +18,8 @@ MonoBehaviour:
     type: 3}
   usedAmmo: {fileID: 11400000, guid: 11a3b18b96a292d4ca57c0107bb46267, type: 2}
   twoStateReload: 0
+  UIRef: {fileID: 21300000, guid: 821fcba20e8d15447acd6f906d32b925, type: 3}
+  toBuyMoney: 100
   type: 0
   magSize: 6
   usingAmmoPerAttack: 1

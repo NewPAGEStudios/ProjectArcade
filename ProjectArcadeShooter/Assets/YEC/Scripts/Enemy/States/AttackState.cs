@@ -10,10 +10,16 @@ public class AttackState : BaseState
 
     private Quaternion targetRotation;
 
-    //NonRanged EnemyType
+    private bool isWalking;
+
+    //NonRanged e_type
     public override void Enter()
     {
         enemy.Agent.SetDestination(enemy.transform.position);
+        //Animation Handling
+        isWalking = false;
+        enemy.animator.SetBool("isWalking", isWalking);
+
     }
 
     public override void Exit()
@@ -25,27 +31,35 @@ public class AttackState : BaseState
     {
         if(enemy.CanSeePlayer())
         {
-            if (!enemy.enemyType.isRanged)
+            if (!enemy.e_type.isRanged)
             {
                 losePlayerTimer = 0;
                 shotTimer += Time.deltaTime;
                 if (shotTimer > enemy.fireRate)
                 {
-                    if(Vector3.Distance(enemy.Player.transform.position,enemy.transform.position) <= enemy.enemyType.rangeDistance)
+                    if(Vector3.Distance(enemy.Player.transform.position,enemy.transform.position) <= enemy.e_type.rangeDistance)
                     {
                         Attack();
                     }
                 }
-                if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.enemyType.rangeDistance)
+                if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.e_type.rangeDistance - 1f)
                 {
                     enemy.Agent.SetDestination(enemy.Player.transform.position);
+                    isWalking = true;
+                    enemy.animator.SetBool("isWalking", isWalking);
+
                 }
                 else
                 {
                     enemy.Agent.SetDestination(enemy.transform.position);
+
+                    isWalking = false;
+                    enemy.animator.SetBool("isWalking", isWalking);
+                    
                     targetRotation = Quaternion.LookRotation(enemy.Player.transform.position - enemy.transform.position);
-                    enemy.transform.rotation = Quaternion.Lerp(enemy.transform.rotation, targetRotation, .7f);
+                    enemy.transform.rotation = Quaternion.Lerp(enemy.transform.rotation, targetRotation, .4f);
                     enemy.transform.eulerAngles = new Vector3(0, enemy.transform.eulerAngles.y, enemy.transform.eulerAngles.z);
+                    
                 }
                 enemy.LastKnowPos = enemy.Player.transform.position;
             }
@@ -62,6 +76,8 @@ public class AttackState : BaseState
                 if (moveTimer > Random.Range(3, 7))
                 {
                     enemy.Agent.SetDestination(enemy.transform.position + (Random.insideUnitSphere * 5));
+                    isWalking = true;
+                    enemy.animator.SetBool("isWalking", isWalking);
                     moveTimer = 0;
                 }
             }
@@ -76,7 +92,7 @@ public class AttackState : BaseState
             }
         }
     }
-    public void  Shoot()
+    public void Shoot()
     {
 //        enemy.animator.SetTrigger("Throw");
         
@@ -97,16 +113,35 @@ public class AttackState : BaseState
 
     public void Attack()
     {
-        Debug.Log("Attack");
+        enemy.animator.SetTrigger("Attack");
+        enemy.animator.SetBool("AttackEnd",true);
+
+        enemy.transform.LookAt(enemy.Player.transform);
+        enemy.transform.eulerAngles = new Vector3(0, enemy.transform.eulerAngles.y, enemy.transform.eulerAngles.z);
+
     }
     IEnumerator AttackAnim_Routine()
     {
         while(true)
         {
+
             yield return new WaitForEndOfFrame();
-//            if(cartcurt){break;}
+
+            if(enemy.animator.GetCurrentAnimatorStateInfo(1).IsName("AttackEnd"))
+            {
+                if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) <= enemy.e_type.rangeDistance)
+                {
+                    enemy.Player.GetComponent<PController>().TakeDMG(20,enemy.gameObject);
+                }
+                break;
+            }
+
         }
+
+        enemy.animator.SetBool("AttackEnd", false);
+
         shotTimer = 0;
+
     }
 
 }
