@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
     public enum GameState
     {
         pause,
+        inShop,
         inGame
     }
     public enum PlayState
@@ -21,7 +22,6 @@ public class GameController : MonoBehaviour
         inWave,
         inWaiting,
         inBoss,
-        inShop,
         inCinematic,
         inPlayerInterrupt
     }
@@ -69,6 +69,17 @@ public class GameController : MonoBehaviour
     [HideInInspector]
     public GameObject playerTeleportPoint;
 
+    //Save Holders
+    [HideInInspector]
+    public List<int> activeCons = new List<int>();
+    [HideInInspector]
+    public List<int> activeConsID = new List<int>();
+    [HideInInspector]
+    public List<int> activeConsWeapID = new List<int>();
+    [HideInInspector]
+    public List<int> activeConsSkill = new List<int>();
+
+
     private float spawnTimer;
 
     [Header(header: "PlayerConfigiration")]
@@ -76,11 +87,12 @@ public class GameController : MonoBehaviour
     public GameObject player;
 
 
-    private int waveNumber;
+    public int waveNumber;
     private int enemyCount;
 
     private int comboCount;
-    private float money;
+    private float mon;
+    public float money {  get { return mon; } set { mon = value; } }
 
 
     [Header(header: "GameSettings")]
@@ -169,7 +181,7 @@ public class GameController : MonoBehaviour
         player.transform.position = playerTeleportPoint.transform.position;
         player.GetComponent<PController>().HealDMG(1, gameObject);
 
-        SpawnCons(0);
+        SpawnCons(0, 0, 0, -1);
         waveVisualzie("Get the weapon");
         waveNumber = 0;
 
@@ -185,11 +197,11 @@ public class GameController : MonoBehaviour
         ComboVisualize(0);
 
         //Cursor Handling
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
 
         //Money Handling
-        money = 400;
+        money = 0;
         MoneyDisplay();
 
 
@@ -202,13 +214,31 @@ public class GameController : MonoBehaviour
          */
     }
 
-    //    spawners
-    private void SpawnCons(int consID)
+    //spawners
+    private void SpawnCons(int pos_childID,int consID,int weaponID,int skillID)
     {
+        Vector3 vec = Vector3.zero;
+        int r;
+        if (pos_childID == -1 || activeCons.Contains(pos_childID))
+        {
+            r = UnityEngine.Random.Range(0, consumableSpawnPointParent.transform.childCount);
+            activeCons.Add(consumableSpawnPointParent.transform.GetChild(r).GetComponent<PosIDStorage>().posID);
+            vec = consumableSpawnPointParent.transform.GetChild(r).position;
+        }
+        else
+        {
+            r = pos_childID;
+            for(int count = 0; count < consumableSpawnPointParent.transform.childCount; count++)
+            {
+                if (consumableSpawnPointParent.transform.GetChild(count).GetComponent<PosIDStorage>().posID == pos_childID)
+                {
+                    activeCons.Add(pos_childID);
+                    vec = consumableSpawnPointParent.transform.GetChild(count).position;
+                }
+            }
+        }
 
-        int r = UnityEngine.Random.Range(0, consumableSpawnPointParent.transform.childCount);
 
-        Vector3 vec = consumableSpawnPointParent.transform.GetChild(r).position;
 
         Vector3 posOFC = new(vec.x, vec.y + 1f, vec.z);
 
@@ -229,26 +259,74 @@ public class GameController : MonoBehaviour
         consumableobject.transform.position = posOFC;
 
         consumableobject.AddComponent(consumables[i].function.GetClass());
-        
-        
+
+        activeConsID.Add(consID); 
         
         //Manuel adding
         if (consumableobject.TryGetComponent<GetWeapon>(out GetWeapon gw))
         {
-            gw.weaponID = UnityEngine.Random.Range(0, weapons.Length);
+            if (weaponID == -1)
+            {
+                gw.weaponID = UnityEngine.Random.Range(0, weapons.Length);
+            }
+            else
+            {
+                gw.weaponID = weaponID;
+            }
+            activeConsWeapID.Add(gw.weaponID);
+            activeConsSkill.Add(-1);
         }
         //skills
         else if(consumableobject.TryGetComponent<GetActiveSkill>(out GetActiveSkill gas))
         {
-            gas.skillId = activeSkills[UnityEngine.Random.Range(0, activeSkills.Count)].skillTypeID;
+            if (skillID == -1)
+            {
+                gas.skillId = activeSkills[UnityEngine.Random.Range(0, activeSkills.Count)].skillTypeID;
+            }
+            else
+            {
+                gas.skillId = skillID;
+            }
+            activeConsWeapID.Add(-1);
+            activeConsSkill.Add(gas.skillId);
         }
         else if(consumableobject.TryGetComponent<PerformInstantSkill>(out PerformInstantSkill pis))
         {
-            pis.thisSkill = instantSkills[UnityEngine.Random.Range(0, instantSkills.Count)];
+            if (skillID == -1)
+            {
+                pis.thisSkill = instantSkills[UnityEngine.Random.Range(0, instantSkills.Count)];
+            }
+            else
+            {
+                for(int s = 0; s < instantSkills.Count; s++)
+                {
+                    if(skillID == instantSkills[s].skillTypeID)
+                    {
+                        pis.thisSkill = instantSkills[s];
+                    }
+                }
+            }
+            activeConsWeapID.Add(-1);
+            activeConsSkill.Add(pis.thisSkill.skillTypeID);
         }
         else if(consumableobject.TryGetComponent<PerformPassiveSkill>(out PerformPassiveSkill pps))
         {
-            pps.thisSkill = passiveSkills[UnityEngine.Random.Range(0, passiveSkills.Count)];
+            if (skillID == -1)
+            {
+                pps.thisSkill = passiveSkills[UnityEngine.Random.Range(0, passiveSkills.Count)];
+            }
+            else
+            {
+                for (int s = 0; s < passiveSkills.Count; s++)
+                {
+                    if (skillID == passiveSkills[s].skillTypeID)
+                    {
+                        pps.thisSkill = passiveSkills[s];
+                    }
+                }
+            }
+            activeConsWeapID.Add(-1);
+            activeConsSkill.Add(pps.thisSkill.skillTypeID);
         }
         else
         {
@@ -324,7 +402,7 @@ public class GameController : MonoBehaviour
             {
                 ResumeGame();
             }
-            else
+            else if(state == GameState.inShop)
             {
                 StopGame();
             }
@@ -339,7 +417,7 @@ public class GameController : MonoBehaviour
             {
                 if (spawnTimer <= 0f)
                 {
-                    SpawnCons(UnityEngine.Random.Range(0, consumables.Length));
+                    SpawnCons(-1, UnityEngine.Random.Range(0, consumables.Length), -1, -1);
                     spawnTimer = UnityEngine.Random.Range(7.5f, 12.5f);
                 }
                 else
@@ -423,7 +501,7 @@ public class GameController : MonoBehaviour
 
     private void toWait()
     {
-        //Save Game uzantýyý .NP dÝYE KAYDET
+        SaveElements();
         waitTimer = waitTime;
         pState = PlayState.inWaiting;
         waitTimeVisualize(waitTimer);
@@ -524,7 +602,62 @@ public class GameController : MonoBehaviour
     //SaveSystem
     public void SaveElements()
     {
+        SaveSystem.SavePlayer(player.GetComponent<PController>(), player.GetComponent<WeaponManager>(), GetComponent<GameController>());
+    }
+    public void LoadElements()
+    {
+        DataElem de = SaveSystem.LoadPlayer();
+        if (de != null)
+        {
+            //gameController
+            for(int c = 0; c < de.consID.Length; c++)
+            {
+                SpawnCons(de.consPosID[c], de.consID[c], de.cons_weap_ID[c], de.cons_skill_ID[c]);
+            }
 
+            money = 0;
+            AddMainCurrency(de.money);
+
+            waveNumber = de.wave_Number;
+
+            //PController
+            player.GetComponent<PController>().currentHP = de.currentHP;
+            player.GetComponent<PController>().setMaxHP(de.maxHP);
+            changeHPOfPlayer(de.maxHP, de.currentHP);
+
+            player.GetComponent<PController>().currentdashMeter = de.dashMeter;
+            DashIndicator(de.dashMeter);
+
+            bool ot_event = true;
+            //weaponManager
+            for(int w = 0; w < player.GetComponent<WeaponManager>().holder.Length; w++)
+            {
+                player.GetComponent<WeaponManager>().holder[w].weaponTypeID = de.weap_wrh_id[w];
+                player.GetComponent<WeaponManager>().holder[w].sum_ammoAmount = de.weap_wrh_sumAmmo[w];
+                player.GetComponent<WeaponManager>().holder[w].inWeapon_ammoAmount = de.weap_wrh_inWeaponAmmo[w];
+                player.GetComponent<WeaponManager>().holder[w].maxMagAmount = de.weap_wrh_maxMagAmount[w];
+                if (de.weap_wrh_isOwned[w] == 1)
+                {
+                    player.GetComponent<WeaponManager>().holder[w].isOwned = true;
+                    if (ot_event)
+                    {
+                        player.GetComponent<WeaponManager>().ChangeWeapon(de.weap_wrh_id[w]);
+                    }
+                }
+                else if (de.weap_wrh_isOwned[w] == 0)
+                {
+                    player.GetComponent<WeaponManager>().holder[w].isOwned = false;
+                }
+            }
+            for(int sk = 0; sk < skills.Length; sk++)
+            {
+                if(de.activeSkill_ID == skills[sk].skillTypeID)
+                {
+                    player.GetComponent<WeaponManager>().getSkill(skills[sk]);
+                }
+            }
+
+        }
     }
 
 
@@ -617,7 +750,12 @@ public class GameController : MonoBehaviour
         playerPanel.SetActive(false);
         gamePanel.SetActive(false);
         shopPanel.SetActive(true);
-
+    }
+    public void ShopCloser()
+    {
+        playerPanel.SetActive(true);
+        gamePanel.SetActive(true);
+        shopPanel.SetActive(false);
     }
 
 
@@ -705,9 +843,20 @@ public class GameController : MonoBehaviour
         if (interactID == 0) 
         {
             Time.timeScale = 0;
-            pState = PlayState.inShop;
-            shopPanel.SetActive(true);
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            state = GameState.inShop;
+            ShopOpener();
         }
+    }
+    //function -> interactions closer function
+    public void shopCloserfunc()
+    {
+        Time.timeScale = 1f;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        state = GameState.inGame;
+        ShopCloser();
     }
     public void DeductMainCurrency(float amount)
     {
@@ -741,6 +890,31 @@ public class GameController : MonoBehaviour
     public void ComboVombo(int comboTime)
     {
         comboCount += comboTime;
+        if (comboCount % 10 == 0 && comboCount != 0)
+        {
+            float[] possibleGainMoney = new float[1000];
+            for(int i = 0; i < 1000; i++)
+            {
+                if (i < 250)
+                {
+                    possibleGainMoney[i] = 50f;
+                }
+                else if (i < 500)
+                {
+                    possibleGainMoney[i] = 70f;
+                }
+                else if (i < 750)
+                {
+                    possibleGainMoney[i] = 90f;
+                }
+                else if (i < 999)
+                {
+                    possibleGainMoney[i] = 500f;
+                }
+            }
+            float gainMoney = possibleGainMoney[UnityEngine.Random.Range(0, possibleGainMoney.Length)]; 
+            AddMainCurrency(gainMoney);
+        }
         if (comboTime > 0)
         {
             if (comboDisplayRoutine != null)

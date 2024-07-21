@@ -8,7 +8,9 @@ public class PController : MonoBehaviour
     [Header(header: "Health Configiration")]
     [SerializeField]
     private float maxHP;
-    private float currentHP;
+
+    private float cHP;
+    public float currentHP { get => cHP; set => cHP = value; }
 
 
     [Header(header: "Speed Configiration")]
@@ -45,7 +47,8 @@ public class PController : MonoBehaviour
     private float dashForce;
     [SerializeField]
     private float maxdashmeter;
-    private float currentdashMeter;
+    private float cdm;
+    public float currentdashMeter {  get => cdm; set => cdm = value; }
     [SerializeField]
     private float dashslideadder;
 
@@ -132,7 +135,7 @@ public class PController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(gc.pState==GameController.PlayState.inPlayerInterrupt||gc.pState == GameController.PlayState.inCinematic || gc.pState==GameController.PlayState.inShop || ccstate != CCStateOfPlayer.normal)
+        if(gc.pState==GameController.PlayState.inPlayerInterrupt||gc.pState == GameController.PlayState.inCinematic || gc.state==GameController.GameState.inShop || ccstate != CCStateOfPlayer.normal)
         {
             return;
         }
@@ -153,7 +156,7 @@ public class PController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || gc.pState == GameController.PlayState.inShop || ccstate != CCStateOfPlayer.normal)
+        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || gc.state == GameController.GameState.inShop || ccstate != CCStateOfPlayer.normal)
         {
             return;
         }
@@ -581,7 +584,14 @@ public class PController : MonoBehaviour
         }
         gc.changeHPOfPlayer(maxHP, currentHP);
     }
-
+    public float getMaxhHP()
+    {
+        return maxHP;
+    }
+    public void setMaxHP(float newHP)
+    {
+        maxHP = newHP;
+    }
     //skillHandling
     public void SetSpeed(float multiplier, float duration)
     {
@@ -601,5 +611,4 @@ public class PController : MonoBehaviour
     {
         extrajump += 1;
     }
-
 }

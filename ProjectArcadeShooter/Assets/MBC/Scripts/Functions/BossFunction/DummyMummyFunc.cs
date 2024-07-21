@@ -385,7 +385,7 @@ public class DummyMummyFunc : MonoBehaviour
             }
         }
         indicator.SetActive(false);
-        indicator.transform.position = new Vector3(0, -50, 0);
+        indicator.transform.localPosition = new Vector3(0, -50, 0);
         if (Vector3.Distance(player.transform.position, gameObject.transform.position) < 15f)
         {
             player.GetComponent<PController>().TakeDMG(30f, gameObject);

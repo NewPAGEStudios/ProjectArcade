@@ -23,7 +23,8 @@ public class WeaponManager : MonoBehaviour
 
 
     //ObjectWeaponRuntime
-    private WeaponRuntimeHolder[] holder;
+    [HideInInspector]
+    public WeaponRuntimeHolder[] holder;
 
 
     [SerializeField]
@@ -61,7 +62,8 @@ public class WeaponManager : MonoBehaviour
     public GameObject activeWeapon;
     public GameObject inActiveWeapon;
 
-    private Skill active_Skill;
+    [HideInInspector]
+    public Skill active_Skill;
     private bool skill_usageCooldown;
     private bool skill_canbePerformed;
     private bool skill_holdOT;
@@ -119,14 +121,14 @@ public class WeaponManager : MonoBehaviour
 
     private void Update()
     {
-        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || gc.pState == GameController.PlayState.inShop || player.ccstate != PController.CCStateOfPlayer.normal)
+        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || gc.state == GameController.GameState.inShop || player.ccstate != PController.CCStateOfPlayer.normal)
         {
             return;
         }
         //nonweaponedFunctiond
         //weaponedFunctions
         //reload
-        if (IManager.getReloadPressed())
+        if (IManager.getReloadPressed() || currWeapon_inWeapon_ammoAmount <= 0)
         {
             if (currWeaponID == -1)
             {
@@ -219,7 +221,7 @@ public class WeaponManager : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || gc.pState == GameController.PlayState.inShop || player.ccstate != PController.CCStateOfPlayer.normal)
+        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || gc.state == GameController.GameState.inShop || player.ccstate != PController.CCStateOfPlayer.normal)
         {
             return;
         }
@@ -291,7 +293,7 @@ public class WeaponManager : MonoBehaviour
         }
         //delete Returns and show a feedback for getting ammo like sound or effect
     }
-    private void ChangeWeapon(int weaponID)
+    public void ChangeWeapon(int weaponID)
     {
         if (weaponID >= gc.weapons.Length)
         {
@@ -717,6 +719,10 @@ public class WeaponManager : MonoBehaviour
         }
         Application.Quit();
         return null;
+    }
+    public void LoadGameGetCurrentWeapon()
+    {
+
     }
 }
 public class WeaponRuntimeHolder
