@@ -8,6 +8,8 @@ public class PerformInstantSkill : MonoBehaviour
     public Skill thisSkill;
     private GameObject player;
     GameObject go;
+
+    public int consPosID;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +36,7 @@ public class PerformInstantSkill : MonoBehaviour
             if(gameObject.TryGetComponent<stunInstanSkill>(out stunInstanSkill sis))
             {
                 sis.thisSkilll = thisSkill;
+                sis.consPosID = consPosID;
             }
         }
         else

@@ -10,7 +10,7 @@ public class MainMenu : MonoBehaviour
     string path;
     private void Awake()
     {
-        path = Application.persistentDataPath + "/player.np";
+        path = Application.persistentDataPath + "/player.newp";
 
         if (File.Exists(path))
         {

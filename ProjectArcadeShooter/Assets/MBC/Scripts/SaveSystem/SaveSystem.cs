@@ -9,7 +9,7 @@ public static class SaveSystem
     public static void SavePlayer (PController player_controll,WeaponManager player_weapon,GameController gm)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/player.np";
+        string path = Application.persistentDataPath + "/player.newp";
         FileStream stream = new FileStream(path, FileMode.Create);
 
 
@@ -19,7 +19,7 @@ public static class SaveSystem
     }
     public static DataElem LoadPlayer()
     {
-        string path = Application.persistentDataPath + "/player.np";
+        string path = Application.persistentDataPath + "/player.newp";
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();

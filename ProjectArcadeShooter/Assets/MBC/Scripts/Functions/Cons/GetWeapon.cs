@@ -6,6 +6,9 @@ public class GetWeapon : MonoBehaviour
 {
     public int weaponID;
     private GameController gc;
+
+    public int consPosID;
+
     private void Start()
     {
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
@@ -49,15 +52,20 @@ public class GetWeapon : MonoBehaviour
             player.GetComponent<PController>().HealDMG(100, gameObject);
             gc.escapeStart();
         }
-        player.GetComponent<WeaponManager>().GetWeapon(weaponID);
+        player.GetComponent<WeaponManager>().GetWeaponR(weaponID);
         gameObject.transform.parent.parent = gc.consumableSpawnPointParent.transform;
+        int id = gc.activeCons.IndexOf(consPosID);
+        gc.activeCons.RemoveAt(id);
+        gc.activeConsID.RemoveAt(id);
+        gc.activeConsSkill.RemoveAt(id);
+        gc.activeConsWeapID.RemoveAt(id);
         Destroy(gameObject);
         return;
     }
 
     public static void perform_WOUTObjected(GameObject player, GameController gc, int weaponID)
     {
-        player.GetComponent<WeaponManager>().GetWeapon(weaponID);
+        player.GetComponent<WeaponManager>().GetWeaponR(weaponID);
         return;
     }
 

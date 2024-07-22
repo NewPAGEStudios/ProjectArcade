@@ -76,7 +76,7 @@ public class DataElem
         for (int c = 0; c < gm.activeCons.Count; c++)
         {
             consPosID[c] = gm.activeCons[c];
-            consID[c] = gm.activeCons[c];
+            consID[c] = gm.activeConsID[c];
             if (gm.activeConsWeapID[c] != -1)
             {
                 cons_weap_ID[c] = gm.activeConsWeapID[c];

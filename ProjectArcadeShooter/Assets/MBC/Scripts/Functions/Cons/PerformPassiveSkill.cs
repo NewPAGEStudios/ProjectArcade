@@ -9,6 +9,7 @@ public class PerformPassiveSkill : MonoBehaviour
     GameObject go;
     private GameObject player;
 
+    public int consPosID;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,7 +35,7 @@ public class PerformPassiveSkill : MonoBehaviour
             //manuelHandling
             if (gameObject.TryGetComponent<getSpeed>(out getSpeed gs))
             {
-
+                gs.consPosID = consPosID;
             }
         }
         else

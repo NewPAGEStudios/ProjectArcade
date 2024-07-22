@@ -7,6 +7,8 @@ public class stunInstanSkill : MonoBehaviour
     public Skill thisSkilll;
     GameObject go;
     GameController gc;
+
+    public int consPosID;
     // Start is called before the first frame update
     void Start()
     {
@@ -43,6 +45,13 @@ public class stunInstanSkill : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
         gameObject.transform.parent.parent = gc.consumableSpawnPointParent.transform;
+
+        int id = gc.activeCons.IndexOf(consPosID);
+        gc.activeCons.RemoveAt(id);
+        gc.activeConsID.RemoveAt(id);
+        gc.activeConsSkill.RemoveAt(id);
+        gc.activeConsWeapID.RemoveAt(id);
+
         Destroy(gameObject);
 
     }

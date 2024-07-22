@@ -82,25 +82,15 @@ public class WeaponManager : MonoBehaviour
     }
     ActionStateOFHands handStates;
     private bool onSkillUsage;
-
+    private void Awake()
+    {
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        player = GetComponent<PController>();
+    }
 
     private void Start()
     {
         handStates = ActionStateOFHands.idle;
-        //init
-        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
-        player = GetComponent<PController>();
-        //holder init
-        holder = new WeaponRuntimeHolder[gc.weapons.Length];
-        for (int i = 0; i < holder.Length; i++)
-        {
-            holder[i] = new WeaponRuntimeHolder
-            {
-                weaponTypeID = gc.weapons[i].WeaponTypeID,
-                maxMagAmount = gc.weapons[i].magSize,
-                isOwned = false
-            };
-        }
         //currentWeaponID init -for now we will use it on global variable init
 
         //weaponStart
@@ -143,7 +133,6 @@ public class WeaponManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("calledREALOAD--> " + handStates);
             }
         }
         //fire
@@ -241,7 +230,7 @@ public class WeaponManager : MonoBehaviour
 
     }
 
-    public void GetWeapon(int weaponID)
+    public void GetWeaponR(int weaponID)
     {
         if (weaponID >= gc.weapons.Length)//wil be deleted
         {
@@ -714,7 +703,7 @@ public class WeaponManager : MonoBehaviour
     {
         for (int i = 0; i < holder.Length; i++)
         {
-            if (gc.weapons[i].WeaponTypeID == searchIndex)
+            if (holder[i].weaponTypeID == searchIndex)
             {
                 return holder[i];
             }

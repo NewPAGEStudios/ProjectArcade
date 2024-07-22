@@ -115,6 +115,8 @@ public class PController : MonoBehaviour
 
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
+        weaponManager = GetComponent<WeaponManager>();
+
     }
 
     // Start is called before the first frame update
@@ -123,7 +125,6 @@ public class PController : MonoBehaviour
         iManager = InputManager.Instance;
         rb = GetComponent<Rigidbody>();
 
-        weaponManager = GetComponent<WeaponManager>();
         weaponManager.IManager = iManager;
 
 
