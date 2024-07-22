@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.WSA;
 
 public class wallriser : MonoBehaviour
 {
@@ -16,12 +15,9 @@ public class wallriser : MonoBehaviour
     bool colliderOpened;
     int hitNumber;
 
-    float disollveEffectscaleNumber;
-
     void Start()
     {
         colliderOpened = false;
-        disollveEffectscaleNumber = 0.5f;
 
         modelRender = GetComponent<MeshRenderer>();
         m_PropertyBlock = new MaterialPropertyBlock();

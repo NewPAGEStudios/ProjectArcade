@@ -7,46 +7,26 @@ public class Pause_Menu : MonoBehaviour
 {
     public static bool GameIsPaused = false;
 
-    public GameObject pauseMenuUI; 
-   
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            if(GameIsPaused)
-            {
-                Resume();
-            }
-            else
-            {
-                Pause();
-            }
-        }
-    }
+    public GameObject pauseMenuUI;
+    private GameController gc;
 
-     public void Resume()
+    private void Start()
     {
-        pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;
-        GameIsPaused = false;
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
     }
-
-     void Pause()
+    public void Resume()
     {
-        pauseMenuUI.SetActive(true);
-        Time.timeScale = 0f;
-        GameIsPaused = true;
+        gc.ResumeGame();
     }
 
     public void LoadMenu()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene(0);
     }
 
     public void QuitGame()
     {
-        Debug.Log("Çýkýlýyor...");
         Application.Quit();
     }
 }

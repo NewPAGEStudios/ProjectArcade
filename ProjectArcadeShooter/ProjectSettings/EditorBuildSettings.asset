@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Begum/Scenes/MainMenuScene.unity
+    guid: a75daa2655104a14d804cf2d02290ef9
+  - enabled: 1
+    path: Assets/MBC/Scenes/bulletMoveScene 1.unity
+    guid: 71275eacf7be2b54597332628fa3d1b3
   m_configObjects: {}

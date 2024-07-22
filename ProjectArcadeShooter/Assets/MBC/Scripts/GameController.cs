@@ -94,6 +94,7 @@ public class GameController : MonoBehaviour
     private float mon;
     public float money {  get { return mon; } set { mon = value; } }
 
+    private bool newGame;
 
     [Header(header: "GameSettings")]
     public float waitTime;
@@ -104,6 +105,7 @@ public class GameController : MonoBehaviour
     public GameObject shopTXT;
     //IEnumerators
     private Coroutine comboDisplayRoutine;
+
     private void Awake()
     {
         ammos = Resources.LoadAll<Ammo>("Ammo");
@@ -165,45 +167,63 @@ public class GameController : MonoBehaviour
             go.name = boss[i].mapName;
             go.SetActive(false);
         }
-
+        newGame = PlayerPrefs.GetInt("newGame") == 1 ? true : false;
 
     }
 
     private void Start()
     {
-        state = GameState.inGame;
-        pState = PlayState.inStart;
+        newGame = true;
+        if (newGame)
+        {
+            state = GameState.inGame;
+            pState = PlayState.inStart;
 
-        //startLevel
-        currentLevel = startMap;
-        changeMap(currentLevel);
+            //startLevel
+            currentLevel = startMap;
+            changeMap(currentLevel);
 
-        player.transform.position = playerTeleportPoint.transform.position;
-        player.GetComponent<PController>().HealDMG(1, gameObject);
+            player.transform.position = playerTeleportPoint.transform.position;
+            player.GetComponent<PController>().HealDMG(1, gameObject);
 
-        SpawnCons(0, 0, 0, -1);
-        waveVisualzie("Get the weapon");
-        waveNumber = 0;
+            SpawnCons(0, 0, 0, -1);
+            waveVisualzie("Get the weapon");
+            waveNumber = 0;
 
-        waitTimeVisualize(-1);
+            waitTimeVisualize(-1);
 
 
 
-        //UI INIT
-        ChangeAmmoText(0);
-        ChangefullAmmoText(0);
+            //UI INIT
+            ChangeAmmoText(0);
+            ChangefullAmmoText(0);
 
-        ComboBG(0);
-        ComboVisualize(0);
+            ComboBG(0);
+            ComboVisualize(0);
+
+
+            //Money Handling
+            money = 0;
+            MoneyDisplay();
+        }
+        else
+        {
+            state = GameState.inGame;
+            pState = PlayState.inStart;
+
+            currentLevel = mainLevel;
+            changeMap(currentLevel);
+
+            ComboBG(0);
+            ComboVisualize(0);
+
+
+            LoadElements();
+        }
 
         //Cursor Handling
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-
-        //Money Handling
-        money = 0;
-        MoneyDisplay();
-
 
         /* Save on waitState
         check save and load it save elements =  
@@ -404,6 +424,10 @@ public class GameController : MonoBehaviour
             }
             else if(state == GameState.inShop)
             {
+                shopCloserfunc();
+            }
+            else if(state == GameState.inGame)
+            {
                 StopGame();
             }
         }
@@ -591,11 +615,24 @@ public class GameController : MonoBehaviour
     public void ResumeGame()
     {
         state = GameState.inGame;
+
+        gamePanel.transform.GetChild(4).gameObject.SetActive(false);
+        Time.timeScale = 1f;
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
     }
 
     public void StopGame()
     {
         state = GameState.pause;
+
+        gamePanel.transform.GetChild(4).gameObject.SetActive(true);
+        Time.timeScale = 0f;
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
 
@@ -622,7 +659,7 @@ public class GameController : MonoBehaviour
 
             //PController
             player.GetComponent<PController>().currentHP = de.currentHP;
-            player.GetComponent<PController>().setMaxHP(de.maxHP);
+            player.GetComponent<PController>().setMaxHP(de.maxHP);//TODO will be changed with perk sysytem
             changeHPOfPlayer(de.maxHP, de.currentHP);
 
             player.GetComponent<PController>().currentdashMeter = de.dashMeter;
@@ -649,15 +686,22 @@ public class GameController : MonoBehaviour
                     player.GetComponent<WeaponManager>().holder[w].isOwned = false;
                 }
             }
-            for(int sk = 0; sk < skills.Length; sk++)
+            if (de.activeSkill_ID != -1)
             {
-                if(de.activeSkill_ID == skills[sk].skillTypeID)
+                for (int sk = 0; sk < skills.Length; sk++)
                 {
-                    player.GetComponent<WeaponManager>().getSkill(skills[sk]);
+                    if (de.activeSkill_ID == skills[sk].skillTypeID)
+                    {
+                        player.GetComponent<WeaponManager>().getSkill(skills[sk]);
+                    }
                 }
             }
-
+            else
+            {
+                player.GetComponent<WeaponManager>().active_Skill = null;
+            }
         }
+        toWait();
     }
 
 

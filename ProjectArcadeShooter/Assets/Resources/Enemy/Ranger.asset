@@ -14,14 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyTypeID: 1
   modelGameObject: {fileID: 0}
-  ai: {fileID: 0}
   ammo: {fileID: 0}
   agentName: 
   firePos: {x: 0, y: 0, z: 0.75}
   hitPoint: 0
   moveSpeed: 0
-  attackRatio: 0
+  attackRatio: 0.1
   isRanged: 0
   rangeDistance: 0
   attackDMG: 0
-  difficultyNumber: 10
+  difficultyNumber: 10000

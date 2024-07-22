@@ -57,7 +57,14 @@ public class DataElem
                 weap_wrh_isOwned[w] = 0;
             }
         }
-        activeSkill_ID = player_weapon.active_Skill.skillTypeID;
+        if (player_weapon.active_Skill != null)
+        {
+            activeSkill_ID = player_weapon.active_Skill.skillTypeID;
+        }
+        else
+        {
+            activeSkill_ID = -1;
+        }
 
         //GameController
         money = gm.money;
