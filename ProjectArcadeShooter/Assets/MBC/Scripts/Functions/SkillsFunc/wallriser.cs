@@ -15,7 +15,7 @@ public class wallriser : MonoBehaviour
     bool colliderOpened;
     int hitNumber;
 
-    void Start()
+    void Start()//TODO runtime da bake iþlemi olumlu yanýt verirse NavMeshModifier ekle
     {
         colliderOpened = false;
 
