@@ -17,7 +17,7 @@ MonoBehaviour:
   descriptionOfC: 'perform InstanSkill
 
     //Ismi eklencek'
-  function: {fileID: 11500000, guid: f7c5deaecd64f604ca352da4e66f3008, type: 3}
+  functionName: PerformInstanSkill
   modelMesh: {fileID: -2865104911859505335, guid: 3c2c81f4f15dc174aa63610f10108c57,
     type: 3}
   mats:

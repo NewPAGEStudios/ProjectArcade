@@ -282,7 +282,8 @@ public class DummyMummyFunc : MonoBehaviour
             go.transform.SetPositionAndRotation(firePos.transform.position, firePos.transform.rotation);
             go.name = "BossAmmo";
             go.layer = 7;
-            go.AddComponent(ammoType.function.GetClass());
+            System.Type scriptMB = System.Type.GetType(ammoType.functionName + ",Assembly-CSharp");
+            go.AddComponent(scriptMB);
 
             go.GetComponent<DummyMummyAmmo>().ammo = ammoType;
             go.AddComponent<Rigidbody>();
@@ -315,7 +316,8 @@ public class DummyMummyFunc : MonoBehaviour
             go.transform.SetPositionAndRotation(firePos.transform.position, firePos.transform.rotation);
             go.name = "BossAmmo";
             go.layer = 7;
-            go.AddComponent(ammoType.function.GetClass());
+            System.Type scriptMB = System.Type.GetType(ammoType.functionName + ",Assembly-CSharp");
+            go.AddComponent(scriptMB);
 
             go.GetComponent<DummyMummyAmmo>().ammo = ammoType;
             go.GetComponent<DummyMummyAmmo>().targetTag = "PlayerColl";

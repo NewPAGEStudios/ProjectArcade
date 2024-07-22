@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 0
   nameOfC: Get Weapon
   descriptionOfC: GetWeapon
-  function: {fileID: 11500000, guid: d41aae991eb827f42893263352a19e86, type: 3}
+  functionName: GetWeapon
   modelMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   mats:
   - {fileID: 2100000, guid: 79a625e103be0fb4aa4a0ceb1c054aed, type: 2}

@@ -7,7 +7,7 @@ public class Ammo : ScriptableObject
 {
     public int AmmoTypeID;
     [Header(header: "Referance")]
-    public MonoScript function;
+    public string functionName;
     public GameObject modelGO;
     [Tooltip("0:MainMat 1+:effects")]
     public Material[] materials;

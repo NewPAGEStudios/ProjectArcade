@@ -14,7 +14,7 @@ public class Path : MonoBehaviour
     [SerializeField]
     private bool drawNumbers;
     public Color debugColour = Color.white;
-
+    /*
     public void OnDrawGizmos()
     {
         if (alwaysDrawPath)
@@ -49,7 +49,7 @@ public class Path : MonoBehaviour
         else
             DrawPath();
     }
-
+*/
     public static object Combine(string dataPath, string v)
     {
         throw new NotImplementedException();

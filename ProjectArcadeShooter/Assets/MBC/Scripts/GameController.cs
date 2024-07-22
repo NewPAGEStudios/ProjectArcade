@@ -173,7 +173,6 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        newGame = true;
         if (newGame)
         {
             state = GameState.inGame;
@@ -278,7 +277,9 @@ public class GameController : MonoBehaviour
 
         consumableobject.transform.position = posOFC;
 
-        consumableobject.AddComponent(consumables[i].function.GetClass());
+        System.Type scriptMB = System.Type.GetType(consumables[i].functionName + ",Assembly-CSharp");
+
+        consumableobject.AddComponent(scriptMB);
 
         activeConsID.Add(consID); 
         
@@ -550,7 +551,8 @@ public class GameController : MonoBehaviour
 
         GameObject go = Instantiate(boss[i].boss, map.transform.position + new Vector3(0,.5f,0), Quaternion.identity);
 
-        go.AddComponent(boss[i].bossController.GetClass());
+        System.Type script = System.Type.GetType(boss[i].bossControllerName + ",Assembly-CSharp");
+        go.AddComponent(script);
 
         //ManuelAdding
         if(go.TryGetComponent<DummyMummyFunc>(out DummyMummyFunc dmf))

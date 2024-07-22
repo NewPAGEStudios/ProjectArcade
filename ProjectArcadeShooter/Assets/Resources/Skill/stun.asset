@@ -18,6 +18,6 @@ MonoBehaviour:
   skillDescription: Stun that's all
   materials: []
   sprite_HUD: {fileID: 0}
-  function: {fileID: 11500000, guid: 8835b7d0ebfefd84b8ed8cfcdc49f07b, type: 3}
+  functionName: stunInstanSkill
   modelPrefab: {fileID: 4831038042603890499, guid: ce1d7a8e0fdfe6d4dadb3237e731043d,
     type: 3}

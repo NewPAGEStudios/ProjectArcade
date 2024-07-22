@@ -20,6 +20,6 @@ public class Skill : ScriptableObject
     [Tooltip("0:MainMat 1+:effects")]
     public Material[] materials;
     public Sprite sprite_HUD;
-    public MonoScript function;
+    public string functionName;
     public GameObject modelPrefab;
 }

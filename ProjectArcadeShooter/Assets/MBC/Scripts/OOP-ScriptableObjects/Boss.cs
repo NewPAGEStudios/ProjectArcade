@@ -13,6 +13,6 @@ public class Boss : ScriptableObject
     public string mapName;
     public GameObject mapParent;
     [Header(header:"Bosses functional Configiration")]
-    public MonoScript bossController;
+    public string bossControllerName;
     public AudioSource bossMusic;
 }

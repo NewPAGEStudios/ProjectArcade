@@ -16,7 +16,7 @@ MonoBehaviour:
   nameOfC: GetSkill
   descriptionOfC: "Get Active Skill \n//Skill\u0130 ismi eklenicek sonradan kod i\xE7inden
     d\xFCzenlenecek\n"
-  function: {fileID: 11500000, guid: 957214aeb62e85446863f83585dc0a28, type: 3}
+  functionName: GetActiveSkill
   modelMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   mats:
   - {fileID: 2100000, guid: 79a625e103be0fb4aa4a0ceb1c054aed, type: 2}

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ReflectinoAmmo
   m_EditorClassIdentifier: 
   AmmoTypeID: 0
-  function: {fileID: 11500000, guid: c98f98fe4248df74eb9cab5550a6e13d, type: 3}
+  functionName: ReflectBulletFunctions
   modelGO: {fileID: 866542443902192392, guid: 70b17518422723f44abb85eada104d07, type: 3}
   materials:
   - {fileID: 2100000, guid: 0b68180e4a4139c4fb79d861793029e8, type: 2}

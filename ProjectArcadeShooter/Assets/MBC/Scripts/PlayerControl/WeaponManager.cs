@@ -370,7 +370,8 @@ public class WeaponManager : MonoBehaviour
         ammo.transform.SetPositionAndRotation(firePos.transform.position, firePos.transform.rotation);
         ammo.name = "Ammo";
         ammo.layer = 7;
-        ammo.AddComponent(w.usedAmmo.function.GetClass());
+        System.Type scriptMB = System.Type.GetType(w.usedAmmo.functionName + ",Assembly-CSharp");
+        ammo.AddComponent(scriptMB);
         
         ammo.AddComponent<Rigidbody>();
         ammo.GetComponent<Rigidbody>().useGravity = false;
@@ -652,7 +653,8 @@ public class WeaponManager : MonoBehaviour
             GameObject skillOBJ = Instantiate(active_Skill.modelPrefab, tf.position, tf.rotation, gc.skillObject.transform);
             Destroy(tf.gameObject);
 
-            skillOBJ.AddComponent(active_Skill.function.GetClass());
+            System.Type script = System.Type.GetType(active_Skill.functionName + ",Assembly-CSharp");
+            skillOBJ.AddComponent(script);
 
             //manuel handling
             if(skillOBJ.TryGetComponent<wallriser>(out wallriser wr))

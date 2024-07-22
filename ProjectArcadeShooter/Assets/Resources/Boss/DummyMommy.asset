@@ -18,5 +18,5 @@ MonoBehaviour:
   mapName: DummyMummyMap
   mapParent: {fileID: 3289293065842348863, guid: 23296137546837145a4f0f5d10a420d4,
     type: 3}
-  bossController: {fileID: 11500000, guid: 25ce34587d674434cb70c78a5b8b3d6b, type: 3}
+  bossControllerName: DummyMummyFunc
   bossMusic: {fileID: 0}

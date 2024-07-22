@@ -28,7 +28,8 @@ public class PerformInstantSkill : MonoBehaviour
     {
         if (other.gameObject.CompareTag("PlayerColl"))
         {
-            gameObject.AddComponent(thisSkill.function.GetClass());
+            System.Type scriptMB = System.Type.GetType(thisSkill.functionName + ",Assembly-CSharp");
+            gameObject.AddComponent(scriptMB);
             //manuelHandling
             if(gameObject.TryGetComponent<stunInstanSkill>(out stunInstanSkill sis))
             {

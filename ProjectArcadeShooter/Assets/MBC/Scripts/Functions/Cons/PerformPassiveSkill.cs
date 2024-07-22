@@ -29,7 +29,8 @@ public class PerformPassiveSkill : MonoBehaviour
     {
         if (other.gameObject.CompareTag("PlayerColl"))
         {
-            gameObject.AddComponent(thisSkill.function.GetClass());
+            System.Type script = System.Type.GetType(thisSkill.functionName + ",Assembly-CSharp");
+            gameObject.AddComponent(script);
             //manuelHandling
             if (gameObject.TryGetComponent<getSpeed>(out getSpeed gs))
             {

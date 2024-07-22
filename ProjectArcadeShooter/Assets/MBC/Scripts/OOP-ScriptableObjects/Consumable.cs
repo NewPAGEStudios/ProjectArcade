@@ -10,7 +10,7 @@ public class Consumable : ScriptableObject
     public string nameOfC;
     [TextArea(15,20)]
     public string descriptionOfC;
-    public MonoScript function;
+    public string functionName;
     public Mesh modelMesh;
     public Material[] mats;
 }

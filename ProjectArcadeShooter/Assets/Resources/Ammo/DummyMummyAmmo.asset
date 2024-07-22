@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DummyMummyAmmo
   m_EditorClassIdentifier: 
   AmmoTypeID: 1
-  function: {fileID: 11500000, guid: b654eed2974529f43bc245777b62ccb2, type: 3}
+  functionName: DummyMummyAmmo
   modelGO: {fileID: 4373994736731576829, guid: 65605bc6bdadde0448d82d10b97e8f74, type: 3}
   materials:
   - {fileID: 2100000, guid: faf13fb854153624f95303da1d1cc6c1, type: 2}
