@@ -15,11 +15,11 @@ public class WeaponManager : MonoBehaviour
 
 
     //RuntimeObject
-    private int currWeaponID;
+    private int currWeaponID = -1;
     private int currWeapon_sum_ammoAmount; //runtime ammo in Mag
     private int currWeapon_inWeapon_ammoAmount;
 
-    private int magmax;
+    private int magmax = -1;
 
 
     //ObjectWeaponRuntime
@@ -90,6 +90,9 @@ public class WeaponManager : MonoBehaviour
 
     private void Start()
     {
+
+
+
         handStates = ActionStateOFHands.idle;
         //currentWeaponID init -for now we will use it on global variable init
 
@@ -103,7 +106,7 @@ public class WeaponManager : MonoBehaviour
         skill_holdOT = true;
         skill_usageCooldown = false;
 
-
+        Debug.Log("Curr ID " + currWeaponID);
     }
 
 
@@ -284,6 +287,7 @@ public class WeaponManager : MonoBehaviour
     }
     public void ChangeWeapon(int weaponID)
     {
+        Debug.Log("ChangeWeapon" + weaponID + "bomba " + currWeaponID);
         if (weaponID >= gc.weapons.Length)
         {
             weaponID = 0;
@@ -304,12 +308,12 @@ public class WeaponManager : MonoBehaviour
                 weaponID = gc.weapons.Length - 1;
             }
         }
-        if (FindWeaponOnRuntime(weaponID).weaponTypeID == currWeaponID)
+        if (FindWeaponOnRuntime(weaponID).weaponTypeID == currWeaponID)//if it's the only weapon
         {
             return;
         }
         handStates = ActionStateOFHands.onChange;
-        if (currWeaponID != -1)
+        if (currWeaponID != -1)//if player  have more than 1 weapon
         {
             FindWeaponOnRuntime(currWeaponID).inWeapon_ammoAmount = currWeapon_inWeapon_ammoAmount;
             FindWeaponOnRuntime(currWeaponID).sum_ammoAmount = currWeapon_sum_ammoAmount;
@@ -719,8 +723,16 @@ public class WeaponManager : MonoBehaviour
 public class WeaponRuntimeHolder
 {
     public int weaponTypeID;
-    public int sum_ammoAmount = 0;
-    public int inWeapon_ammoAmount = 0;
-    public int maxMagAmount = 0;
-    public bool isOwned = false;
+    public int sum_ammoAmount;
+    public int inWeapon_ammoAmount;
+    public int maxMagAmount;
+    public bool isOwned;
+    public WeaponRuntimeHolder(int weaponTypeID,int maxmagAmount)
+    {
+        this.weaponTypeID = weaponTypeID;
+        this.sum_ammoAmount = 0;
+        this.inWeapon_ammoAmount = 0;
+        this.maxMagAmount = maxmagAmount;
+        this.isOwned = false;
+    }
 }

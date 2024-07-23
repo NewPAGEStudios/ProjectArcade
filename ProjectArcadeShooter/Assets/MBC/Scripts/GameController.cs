@@ -168,14 +168,10 @@ public class GameController : MonoBehaviour
         }
         //Runtime Infor holder Init
         player.GetComponent<WeaponManager>().holder = new WeaponRuntimeHolder[weapons.Length];
+
         for (int i = 0; i < player.GetComponent<WeaponManager>().holder.Length; i++)
         {
-            player.GetComponent<WeaponManager>().holder[i] = new WeaponRuntimeHolder
-            {
-                weaponTypeID = weapons[i].WeaponTypeID,
-                maxMagAmount = weapons[i].magSize,
-                isOwned = false
-            };
+            player.GetComponent<WeaponManager>().holder[i] = new WeaponRuntimeHolder(weapons[i].WeaponTypeID, weapons[i].magSize);
         }
 
 
@@ -227,8 +223,7 @@ public class GameController : MonoBehaviour
             ComboBG(0);
             ComboVisualize(0);
 
-
-            LoadElements();
+            Invoke(nameof(LoadElements), Time.deltaTime);
         }
 
         //Cursor Handling
@@ -284,7 +279,9 @@ public class GameController : MonoBehaviour
                 break;
             }
         }
+        
         Debug.Log("Integer " + consID);
+
         consumableobject.name = consumables[i].nameOfC;
 
         consumableobject.transform.parent = consumableSpawnPointParent.transform.GetChild(r);
