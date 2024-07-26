@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    private StateMachine stateMachine;
+    public StateMachine stateMachine;
     private NavMeshAgent agent;
     private GameObject player;
     private Vector3 lastKnowPos;

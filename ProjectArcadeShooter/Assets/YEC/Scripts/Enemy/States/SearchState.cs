@@ -6,39 +6,29 @@ public class SearchState : BaseState
 {
     private float searchTimer;
     private float moveTimer;
-
-    private bool isWalking;
     public override void Enter()
     {
-        enemy.Agent.SetDestination(enemy.LastKnowPos);
-        isWalking = true;
-        enemy.animator.SetBool("isWalking", isWalking);
-
+        enemy.Agent.SetDestination(enemy.Player.transform.position);//
     }
-    public override void Perform()
+        public override void Perform()
     {
-        if(enemy.CanSeePlayer())
-        {
+        if(enemy.CanSeePlayer()){
             stateMachine.ChangesState(new AttackState());
         }
-        if(enemy.Agent.remainingDistance < enemy.Agent.stoppingDistance)
-        {
+
+        if(enemy.Agent.remainingDistance < enemy.Agent.stoppingDistance){
             searchTimer += Time.deltaTime;
             moveTimer += Time.deltaTime;
-            if(moveTimer > Random.Range(3,5))
-            {
+            if(moveTimer > Random.Range(3,5)){
                 enemy.Agent.SetDestination(enemy.transform.position + (Random.insideUnitSphere * 10));
-                isWalking = true;
-                enemy.animator.SetBool("isWalking", isWalking);
                 moveTimer = 0;
             }
-            if(searchTimer > 10)
-            {
+            if(searchTimer > 10){
                 stateMachine.ChangesState(new PatrolState());
             }
         }
     }
-    public override void Exit()
+        public override void Exit()
     {
         
     }

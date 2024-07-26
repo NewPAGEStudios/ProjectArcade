@@ -1,13 +1,16 @@
  using System.Collections;
 using System.Collections.Generic;
-//using NUnit.Framework.Constraints;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class StateMachine : MonoBehaviour
 {
+
     public BaseState activeState;
-    public void Initialise()
-    {
+    public AgentControl agentControl;//
+
+    public void Initialise(){
         ChangesState( new PatrolState());
     }
     void Start()
@@ -18,20 +21,16 @@ public class StateMachine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(activeState != null)
-        {
+        if(activeState != null){
             activeState.Perform();
         }
     }
-    public void ChangesState(BaseState newState)
-    {
-        if (activeState != null)
-        {
+    public void ChangesState(BaseState newState){
+        if(activeState != null){
             activeState.Exit();
         }
         activeState = newState;
-        if(activeState != null)
-        {
+        if(activeState != null){
             activeState.stateMachine = this;
             activeState.enemy = GetComponent<Enemy>();
             activeState.Enter();
