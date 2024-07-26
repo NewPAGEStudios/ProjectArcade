@@ -4,13 +4,26 @@ using System.Linq;
 using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.Audio;
+using TMPro;
+using System;
 public class OptionMenu : MonoBehaviour
 {
+    [Header(header:"VolumeSettings")]
     public Slider volSlider;
-    public void SetVolume(float volume)
+    public TMP_InputField volText;
+    public AudioMixer audioMixer;
+    public void SetVolume(float volume)//Volume is -40 decibell to 0 decibel
     {
-        Debug.Log(volume);
+        volume *= 4;
+        volume -= 40;
+        audioMixer.SetFloat("Volume", volume);
+    }
+    public void SetVolumeWSlider(float volume)
+    {
+        double volumed = Math.Round(volume, 2);
+        volText.text = volumed.ToString();
+        SetVolume(volume);
     }
     public void SetVolumeWInputField(string volume)
     {
@@ -32,6 +45,18 @@ public class OptionMenu : MonoBehaviour
             SetVolume(10f);
             volSlider.value = result;
         }
+
+    }
+    public void SetGraphic(int indexOfGraphSettings)
+    {
+        QualitySettings.SetQualityLevel(indexOfGraphSettings);
+    }
+    public void ChangeFullscreen(bool isFullscreen)
+    {
+        Screen.fullScreen = isFullscreen;
+    }
+    public void SetResolotion(int indexOfResolotion)
+    {
 
     }
 }
