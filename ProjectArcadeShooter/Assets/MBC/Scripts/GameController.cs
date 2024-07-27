@@ -5,6 +5,7 @@ using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -106,8 +107,26 @@ public class GameController : MonoBehaviour
     //IEnumerators
     private Coroutine comboDisplayRoutine;
 
+
+    //PostProcessing Settings
+    AmbientOcclusion ao;
     private void Awake()
     {
+        //MainMenu Referances
+
+        mainCam.GetComponent<PostProcessVolume>().profile.TryGetSettings(out ao);
+        if (PlayerPrefs.GetInt("AmbientOcclusion") == 0)
+        {
+            ao.active = false;
+        }
+        else if (PlayerPrefs.GetInt("AmbientOcclusion") == 1)
+        {
+            ao.active = true;
+        }
+
+
+
+
         ammos = Resources.LoadAll<Ammo>("Ammo");
         weapons = Resources.LoadAll<Weapon>("Weapon");
         enemies = Resources.LoadAll<EnemyType>("Enemy");

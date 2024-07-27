@@ -1905,6 +1905,7 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
+  - component: {fileID: 330585548}
   m_Layer: 6
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2033,6 +2034,23 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!114 &330585548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sharedProfile: {fileID: 11400000, guid: 1fa011c90ab385846adbbf5dace871b6, type: 2}
+  isGlobal: 0
+  blendDistance: 0
+  weight: 1
+  priority: 0
 --- !u!1 &343609181
 GameObject:
   m_ObjectHideFlags: 0
@@ -10499,7 +10517,7 @@ MonoBehaviour:
   maxdashmeter: 50
   dashslideadder: 2.5
   max_angleOfPlane: 60
-  sens: 7
+  sensX: 0
   mainCam: {fileID: 330585545}
   ccstate: 0
   actiontp: 0

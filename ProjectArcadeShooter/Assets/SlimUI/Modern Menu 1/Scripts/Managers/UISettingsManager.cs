@@ -57,6 +57,7 @@ namespace SlimUI.ModernMenu{
 		
 
 		public void  Start (){
+			/*
 			// check difficulty
 			if(PlayerPrefs.GetInt("NormalDifficulty") == 1){
 				difficultynormaltextLINE.gameObject.SetActive(true);
@@ -67,12 +68,12 @@ namespace SlimUI.ModernMenu{
 				difficultyhardcoretextLINE.gameObject.SetActive(true);
 				difficultynormaltextLINE.gameObject.SetActive(false);
 			}
-
+			*/
 			// check slider values
 			musicSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MusicVolume");
 			sensitivityXSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("XSensitivity");
 			sensitivityYSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("YSensitivity");
-			mouseSmoothSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MouseSmoothing");
+//			mouseSmoothSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MouseSmoothing");
 
 			// check full screen
 			if(Screen.fullScreen == true){
@@ -82,6 +83,7 @@ namespace SlimUI.ModernMenu{
 				fullscreentext.GetComponent<TMP_Text>().text = "off";
 			}
 
+            /*
 			// check hud value
 			if(PlayerPrefs.GetInt("ShowHUD")==0){
 				showhudtext.GetComponent<TMP_Text>().text = "off";
@@ -89,7 +91,6 @@ namespace SlimUI.ModernMenu{
 			else{
 				showhudtext.GetComponent<TMP_Text>().text = "on";
 			}
-
 			// check tool tip value
 			if(PlayerPrefs.GetInt("ToolTips")==0){
 				tooltipstext.GetComponent<TMP_Text>().text = "off";
@@ -97,8 +98,10 @@ namespace SlimUI.ModernMenu{
 			else{
 				tooltipstext.GetComponent<TMP_Text>().text = "on";
 			}
+			*/
 
-			// check shadow distance/enabled
+            // check shadow distance/enabled
+            /*
 			if(platform == Platform.Desktop){
 				if(PlayerPrefs.GetInt("Shadows") == 0){
 					QualitySettings.shadowCascades = 0;
@@ -145,8 +148,9 @@ namespace SlimUI.ModernMenu{
 				}
 			}
 
-
-			// check vsync
+			*/
+            // check vsync
+            /*
 			if(QualitySettings.vSyncCount == 0){
 				vsynctext.GetComponent<TMP_Text>().text = "off";
 			}
@@ -178,21 +182,22 @@ namespace SlimUI.ModernMenu{
 				ambientocclusiontext.GetComponent<TMP_Text>().text = "on";
 			}
 
-			// check texture quality
-			if(PlayerPrefs.GetInt("Textures") == 0){
-				QualitySettings.globalTextureMipmapLimit = 2;
+			*/
+            // check texture quality
+            if (PlayerPrefs.GetInt("Textures") == 0){
+				QualitySettings.SetQualityLevel(0);
 				texturelowtextLINE.gameObject.SetActive(true);
 				texturemedtextLINE.gameObject.SetActive(false);
 				texturehightextLINE.gameObject.SetActive(false);
 			}
 			else if(PlayerPrefs.GetInt("Textures") == 1){
-				QualitySettings.globalTextureMipmapLimit = 1;
+				QualitySettings.SetQualityLevel(1);
 				texturelowtextLINE.gameObject.SetActive(false);
 				texturemedtextLINE.gameObject.SetActive(true);
 				texturehightextLINE.gameObject.SetActive(false);
 			}
 			else if(PlayerPrefs.GetInt("Textures") == 2){
-				QualitySettings.globalTextureMipmapLimit = 0;
+				QualitySettings.SetQualityLevel(2);
 				texturelowtextLINE.gameObject.SetActive(false);
 				texturemedtextLINE.gameObject.SetActive(false);
 				texturehightextLINE.gameObject.SetActive(true);
@@ -203,7 +208,7 @@ namespace SlimUI.ModernMenu{
 			//sliderValue = musicSlider.GetComponent<Slider>().value;
 			sliderValueXSensitivity = sensitivityXSlider.GetComponent<Slider>().value;
 			sliderValueYSensitivity = sensitivityYSlider.GetComponent<Slider>().value;
-			sliderValueSmoothing = mouseSmoothSlider.GetComponent<Slider>().value;
+			//sliderValueSmoothing = mouseSmoothSlider.GetComponent<Slider>().value;
 		}
 
 		public void FullScreen (){
@@ -222,11 +227,13 @@ namespace SlimUI.ModernMenu{
 			PlayerPrefs.SetFloat("MusicVolume", musicSlider.GetComponent<Slider>().value);
 		}
 
-		public void SensitivityXSlider (){
+		public void SensitivityXSlider ()
+		{
 			PlayerPrefs.SetFloat("XSensitivity", sliderValueXSensitivity);
 		}
 
-		public void SensitivityYSlider (){
+		public void SensitivityYSlider ()
+		{
 			PlayerPrefs.SetFloat("YSensitivity", sliderValueYSensitivity);
 		}
 
@@ -407,7 +414,7 @@ namespace SlimUI.ModernMenu{
 
 		public void TexturesLow (){
 			PlayerPrefs.SetInt("Textures",0);
-			QualitySettings.globalTextureMipmapLimit = 2;
+			QualitySettings.SetQualityLevel(0);
 			texturelowtextLINE.gameObject.SetActive(true);
 			texturemedtextLINE.gameObject.SetActive(false);
 			texturehightextLINE.gameObject.SetActive(false);
@@ -415,7 +422,7 @@ namespace SlimUI.ModernMenu{
 
 		public void TexturesMed (){
 			PlayerPrefs.SetInt("Textures",1);
-			QualitySettings.globalTextureMipmapLimit = 1;
+			QualitySettings.SetQualityLevel(1);
 			texturelowtextLINE.gameObject.SetActive(false);
 			texturemedtextLINE.gameObject.SetActive(true);
 			texturehightextLINE.gameObject.SetActive(false);
@@ -423,7 +430,7 @@ namespace SlimUI.ModernMenu{
 
 		public void TexturesHigh (){
 			PlayerPrefs.SetInt("Textures",2);
-			QualitySettings.globalTextureMipmapLimit = 0;
+			QualitySettings.SetQualityLevel(0);
 			texturelowtextLINE.gameObject.SetActive(false);
 			texturemedtextLINE.gameObject.SetActive(false);
 			texturehightextLINE.gameObject.SetActive(true);

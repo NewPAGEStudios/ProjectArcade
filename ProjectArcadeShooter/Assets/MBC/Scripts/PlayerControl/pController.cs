@@ -72,7 +72,8 @@ public class PController : MonoBehaviour
 
     [Header(header: "Cam/Look Configiration")]
     [SerializeField]
-    private float sens;
+    private float sensX;
+    private float sensY;
     [SerializeField]
     private Camera mainCam;
     private Vector3 cam_StartingRotation;
@@ -126,6 +127,10 @@ public class PController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         weaponManager.IManager = iManager;
+
+
+        sensX = PlayerPrefs.GetFloat("XSensitivity");
+        sensY = PlayerPrefs.GetFloat("YSensitivity");
 
 
         gc.AddDashIndicator(maxdashmeter);
@@ -464,8 +469,8 @@ public class PController : MonoBehaviour
             cam_StartingRotation = mainCam.transform.localRotation.eulerAngles;
         }
         Vector2 deltaInput = iManager.getCameraMovement();
-        cam_StartingRotation.x += deltaInput.x * Time.deltaTime * sens;
-        cam_StartingRotation.y += deltaInput.y * Time.deltaTime * sens;
+        cam_StartingRotation.x += deltaInput.x * Time.deltaTime * sensX;
+        cam_StartingRotation.y += deltaInput.y * Time.deltaTime * sensY;
         cam_StartingRotation.y = Mathf.Clamp(cam_StartingRotation.y, -60, 60);
         mainCam.transform.localRotation = Quaternion.Euler(-cam_StartingRotation.y, 0f, 0f);
         gameObject.transform.localRotation = Quaternion.Euler(gameObject.transform.localRotation.x, cam_StartingRotation.x, gameObject.transform.localRotation.z);
