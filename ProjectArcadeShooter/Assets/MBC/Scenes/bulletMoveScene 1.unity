@@ -1253,96 +1253,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 575874991}
     m_Modifications:
-    - target: {fileID: 2114885079234445537, guid: 0d5aeb338f5455c499c26b2eaafc49cd,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2114885079234445537, guid: 0d5aeb338f5455c499c26b2eaafc49cd,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2114885079234445537, guid: 0d5aeb338f5455c499c26b2eaafc49cd,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 300
-      objectReference: {fileID: 0}
-    - target: {fileID: 2114885079234445537, guid: 0d5aeb338f5455c499c26b2eaafc49cd,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 2114885079234445537, guid: 0d5aeb338f5455c499c26b2eaafc49cd,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 960
-      objectReference: {fileID: 0}
-    - target: {fileID: 2114885079234445537, guid: 0d5aeb338f5455c499c26b2eaafc49cd,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -420
-      objectReference: {fileID: 0}
-    - target: {fileID: 3090995777355979303, guid: 0d5aeb338f5455c499c26b2eaafc49cd,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3090995777355979303, guid: 0d5aeb338f5455c499c26b2eaafc49cd,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3090995777355979303, guid: 0d5aeb338f5455c499c26b2eaafc49cd,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 300
-      objectReference: {fileID: 0}
-    - target: {fileID: 3090995777355979303, guid: 0d5aeb338f5455c499c26b2eaafc49cd,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 3090995777355979303, guid: 0d5aeb338f5455c499c26b2eaafc49cd,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 960
-      objectReference: {fileID: 0}
-    - target: {fileID: 3090995777355979303, guid: 0d5aeb338f5455c499c26b2eaafc49cd,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -540
-      objectReference: {fileID: 0}
-    - target: {fileID: 3449900047865891589, guid: 0d5aeb338f5455c499c26b2eaafc49cd,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3449900047865891589, guid: 0d5aeb338f5455c499c26b2eaafc49cd,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3449900047865891589, guid: 0d5aeb338f5455c499c26b2eaafc49cd,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 300
-      objectReference: {fileID: 0}
-    - target: {fileID: 3449900047865891589, guid: 0d5aeb338f5455c499c26b2eaafc49cd,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 3449900047865891589, guid: 0d5aeb338f5455c499c26b2eaafc49cd,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 960
-      objectReference: {fileID: 0}
-    - target: {fileID: 3449900047865891589, guid: 0d5aeb338f5455c499c26b2eaafc49cd,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -660
-      objectReference: {fileID: 0}
     - target: {fileID: 3681950593444348268, guid: 0d5aeb338f5455c499c26b2eaafc49cd,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1447,11 +1357,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Pause Menu4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4932426026942430110, guid: 0d5aeb338f5455c499c26b2eaafc49cd,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8095,7 +8000,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1542998225
 RectTransform:
   m_ObjectHideFlags: 0
