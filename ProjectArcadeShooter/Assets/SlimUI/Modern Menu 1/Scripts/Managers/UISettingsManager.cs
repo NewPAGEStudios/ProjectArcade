@@ -430,7 +430,7 @@ namespace SlimUI.ModernMenu{
 
 		public void TexturesHigh (){
 			PlayerPrefs.SetInt("Textures",2);
-			QualitySettings.SetQualityLevel(0);
+			QualitySettings.SetQualityLevel(2);
 			texturelowtextLINE.gameObject.SetActive(false);
 			texturemedtextLINE.gameObject.SetActive(false);
 			texturehightextLINE.gameObject.SetActive(true);

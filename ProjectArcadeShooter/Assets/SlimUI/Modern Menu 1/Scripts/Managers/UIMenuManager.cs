@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 namespace SlimUI.ModernMenu{
 	public class UIMenuManager : MonoBehaviour {
 		private Animator CameraObject;
-
+		public Animator animator_bomba;
 		// campaign button sub menu
         [Header("MENUS")]
         [Tooltip("The Menu for when the MAIN menu buttons")]
@@ -121,6 +121,7 @@ namespace SlimUI.ModernMenu{
 			exitMenu.SetActive(false);
 			if(extrasMenu) extrasMenu.SetActive(false);
 			playMenu.SetActive(true);
+			animator_bomba.SetTrigger("toPlay");
 		}
 		
 		public void PlayCampaignMobile(){
@@ -135,9 +136,10 @@ namespace SlimUI.ModernMenu{
 			if(extrasMenu) extrasMenu.SetActive(false);
 			exitMenu.SetActive(false);
 			mainMenu.SetActive(true);
-		}
+            animator_bomba.SetTrigger("toMenu");
+        }
 
-		public void LoadScene(string scene){
+        public void LoadScene(string scene){
 			if(scene != ""){
 				StartCoroutine(LoadAsynchronously(scene));
 			}
@@ -237,7 +239,8 @@ namespace SlimUI.ModernMenu{
 		public void AreYouSure(){
 			exitMenu.SetActive(true);
 			if(extrasMenu) extrasMenu.SetActive(false);
-			DisablePlayCampaign();
+            animator_bomba.SetTrigger("toExit");
+            DisablePlayCampaign();
 		}
 
 		public void AreYouSureMobile(){

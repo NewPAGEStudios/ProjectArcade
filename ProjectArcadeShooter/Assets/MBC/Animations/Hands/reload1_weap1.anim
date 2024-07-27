@@ -44,7 +44,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: {x: -5.795, y: 0, z: 0}
+        value: {x: -18, y: 0, z: 0}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -1752,6 +1752,15 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
+      path: 2095807378
+      attribute: 4
+      script: {fileID: 0}
+      typeID: 4
+      customType: 4
+      isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
+    - serializedVersion: 2
       path: 2929822209
       attribute: 4
       script: {fileID: 0}
@@ -1870,15 +1879,6 @@ AnimationClip:
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 1997687240
-      attribute: 4
-      script: {fileID: 0}
-      typeID: 4
-      customType: 4
-      isPPtrCurve: 0
-      isIntCurve: 0
-      isSerializeReferenceCurve: 0
-    - serializedVersion: 2
-      path: 2095807378
       attribute: 4
       script: {fileID: 0}
       typeID: 4
@@ -2421,7 +2421,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -5.795
+        value: -18
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -8091,7 +8091,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Armature.009
+    path: Armature.009/Bone.023/Bone.024/Bone.025/Bone.026/Bone.042/Bone.043
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -8103,7 +8103,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Armature.009
+    path: Armature.009/Bone.023/Bone.024/Bone.025/Bone.026/Bone.042/Bone.043
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -8115,7 +8115,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Armature.009
+    path: Armature.009/Bone.023/Bone.024/Bone.025/Bone.026/Bone.042/Bone.043
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -9315,7 +9315,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Armature.009/Bone.023/Bone.024/Bone.025/Bone.026/Bone.042/Bone.043
+    path: Armature.009
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -9327,7 +9327,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Armature.009/Bone.023/Bone.024/Bone.025/Bone.026/Bone.042/Bone.043
+    path: Armature.009
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -9339,7 +9339,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Armature.009/Bone.023/Bone.024/Bone.025/Bone.026/Bone.042/Bone.043
+    path: Armature.009
     classID: 4
     script: {fileID: 0}
     flags: 0

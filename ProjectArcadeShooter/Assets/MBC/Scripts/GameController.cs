@@ -56,6 +56,7 @@ public class GameController : MonoBehaviour
     public GameObject bossIntroPanel;
     public GameObject bossPanel;
     public GameObject shopPanel;
+    public GameObject damagePanel;
 
     [Header(header: "MapReference")]
     public GameObject startMap;
@@ -525,6 +526,7 @@ public class GameController : MonoBehaviour
     }
     private void toWave()
     {
+        SpawnCons(-1, 0, 1, -1);
         waveNumber += 1;
         if (waveNumber % 10 == 2)
         {
@@ -916,7 +918,9 @@ public class GameController : MonoBehaviour
     {
         gamePanel.transform.GetChild(3).gameObject.SetActive(display);
     }
-
+    public void HandleDMGtakenUI(int child)
+    {
+    }
 
     //functions
     public void Interact(int interactID)

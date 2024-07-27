@@ -579,6 +579,7 @@ public class PController : MonoBehaviour
         else
         {
             gc.changeHPOfPlayer(maxHP, currentHP);
+//            gc.HandleDMGtakenUI();
         }
     }
     public void HealDMG(float healAmount, GameObject healTakenFrom)

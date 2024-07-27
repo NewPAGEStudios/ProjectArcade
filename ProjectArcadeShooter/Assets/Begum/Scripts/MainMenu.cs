@@ -18,11 +18,11 @@ public class MainMenu : MonoBehaviour
 
         if (File.Exists(path))
         {
-            continueBut.transform.GetChild(1).gameObject.SetActive(true);
+            continueBut.gameObject.SetActive(true);
         }
         else
         {
-            continueBut.transform.GetChild(1).gameObject.SetActive(false);
+            continueBut.gameObject.SetActive(false);
         }
     }
     public void Play()
