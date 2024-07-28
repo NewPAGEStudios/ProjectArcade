@@ -23,6 +23,7 @@ public class EnemyHealth : MonoBehaviour
     private MaterialPropertyBlock damageMPB;
     private Material deathMat;
     private MaterialPropertyBlock deathMPB;
+    private Color baseColor;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,11 +33,15 @@ public class EnemyHealth : MonoBehaviour
         enemyObjectRenderer = gameObject.transform.GetChild(0).GetChild(1).GetComponent<SkinnedMeshRenderer>();
 
         mainMat = gameObject.GetComponent<Enemy>().e_type.mainMat;
-        damageMat = gameObject.GetComponent<Enemy>().e_type.getDmgMat;
+        if (gameObject.GetComponent<Enemy>().e_type.getDmgMat != null)
+        {
+            damageMat = gameObject.GetComponent<Enemy>().e_type.getDmgMat;
+        }
         deathMat = gameObject.GetComponent<Enemy>().e_type.deathMat;
 
         enemyObjectRenderer.sharedMaterial = mainMat;
 
+        baseColor = mainMat.color;
 
         currentHealth = maxHealth;
     }
@@ -55,14 +60,18 @@ public class EnemyHealth : MonoBehaviour
         {
             currentHealth = 0;
             Die();
+            return;
         }
         else if(amount < 0)
         {
-            if (dmgtakenRoutine != null)
+            if (damageMat != null)
             {
-                StopCoroutine(dmgtakenRoutine);
+                if (dmgtakenRoutine != null)
+                {
+                    StopCoroutine(dmgtakenRoutine);
+                }
+                dmgtakenRoutine = StartCoroutine(EnemyDMGTakeRoutine());
             }
-            dmgtakenRoutine = StartCoroutine(EnemyDMGTakeRoutine());
         }
         else if(amount > 0)
         {
@@ -75,10 +84,24 @@ public class EnemyHealth : MonoBehaviour
     }
     IEnumerator EnemyDMGTakeRoutine()
     {
+        damageMPB = new MaterialPropertyBlock();
+        enemyObjectRenderer.material = damageMat;
+        damageMPB.SetColor("_BaseColor", new Color(188, 0, 0, 1));
+        enemyObjectRenderer.SetPropertyBlock(damageMPB);
+        while (true)
+        {
+            float r = Mathf.MoveTowards(damageMPB.GetColor("_BaseColor").r, baseColor.r, Time.deltaTime * 5f);
+            float g = Mathf.MoveTowards(damageMPB.GetColor("_BaseColor").g, baseColor.g, Time.deltaTime * 5f);
+            float b = Mathf.MoveTowards(damageMPB.GetColor("_BaseColor").b, baseColor.b, Time.deltaTime * 5f);
+            damageMPB.SetColor("_BaseColor", new Color(r, g, b, 1));
+            enemyObjectRenderer.SetPropertyBlock(damageMPB);
+            yield return new WaitForEndOfFrame();
+            if (damageMPB.GetColor("_BaseColor") == baseColor)
+            {
+                break;
+            }
+        }
 
-            
-
-        yield return null;
     }
 
     private void Die()
@@ -88,6 +111,24 @@ public class EnemyHealth : MonoBehaviour
     }
     IEnumerator EnemyDeathRoutine()
     {
+        deathMPB = new MaterialPropertyBlock();
+        enemyObjectRenderer.material = deathMat;
+        deathMPB.SetColor("_BaseColor", baseColor);
+        float valueOfStrentgh = 15f;
+        deathMPB.SetFloat("_NoiseStrength", valueOfStrentgh);
+        enemyObjectRenderer.SetPropertyBlock(deathMPB);
+        while (true)
+        {
+            deathMPB.SetFloat("_NoiseStrength", valueOfStrentgh);
+            valueOfStrentgh = Mathf.MoveTowards(valueOfStrentgh, 0, Time.deltaTime * 1f);
+
+            enemyObjectRenderer.SetPropertyBlock(deathMPB);
+            yield return new WaitForEndOfFrame();
+            if (valueOfStrentgh <= -1)
+            {
+                break;
+            }
+        }
         yield return null;
     }
 }

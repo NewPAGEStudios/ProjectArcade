@@ -18,6 +18,9 @@ MonoBehaviour:
   ammo: {fileID: 0}
   agentName: EnemyWALKER
   firePos: {x: 0, y: 0, z: 0}
+  mainMat: {fileID: 2100000, guid: f2601df4fbcb6df49953a5e9f7963f45, type: 2}
+  getDmgMat: {fileID: 0}
+  deathMat: {fileID: 2100000, guid: c247b988d50dec8448cb5b642c740654, type: 2}
   hitPoint: 100
   moveSpeed: 2
   attackRatio: 0.1
