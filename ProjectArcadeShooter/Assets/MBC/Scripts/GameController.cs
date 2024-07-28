@@ -102,12 +102,13 @@ public class GameController : MonoBehaviour
     public float waitTime;
     private float waitTimer;
     public float comboDuration;
+    public float fadeSpeedDMGVisualizetion;
     [Header(header: "UI Prefab Referances")]
     public GameObject shopButton;
     public GameObject shopTXT;
     //IEnumerators
     private Coroutine comboDisplayRoutine;
-
+    private Coroutine[] fWayDMGVisualize = new Coroutine[4];
 
     //PostProcessing Settings
     AmbientOcclusion ao;
@@ -918,10 +919,30 @@ public class GameController : MonoBehaviour
     {
         gamePanel.transform.GetChild(3).gameObject.SetActive(display);
     }
-    public void HandleDMGtakenUI(int child)
+    public void HandleDMGtakenUI(int childNumber)//0:back 1:left 2:rigth 3:front
     {
+        if (damagePanel.transform.GetChild(childNumber).gameObject.activeInHierarchy)
+        {
+            StopCoroutine(fWayDMGVisualize[childNumber]);
+        }
+        fWayDMGVisualize[childNumber] = StartCoroutine(DMG_UI_Routine(damagePanel.transform.GetChild(childNumber).gameObject));
     }
-
+    IEnumerator DMG_UI_Routine(GameObject targetGo)
+    {
+        targetGo.SetActive(true);
+        Image referanceOFImage = targetGo.GetComponent<Image>();
+        referanceOFImage.color = new Color(referanceOFImage.color.r, referanceOFImage.color.g, referanceOFImage.color.b, 0.5f);
+        while (true)
+        {
+            referanceOFImage.color = new Color(referanceOFImage.color.r, referanceOFImage.color.g, referanceOFImage.color.b, Mathf.MoveTowards(referanceOFImage.color.a, 0, Time.deltaTime * fadeSpeedDMGVisualizetion));
+            yield return new WaitForEndOfFrame();
+            if (referanceOFImage.color.a <= 0)
+            {
+                break;
+            }
+        }
+        targetGo.SetActive(false);
+    }
     //functions
     public void Interact(int interactID)
     {

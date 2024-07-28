@@ -8244,12 +8244,12 @@ GameObject:
   - component: {fileID: 500415825}
   - component: {fileID: 500415824}
   m_Layer: 5
-  m_Name: LeftDamage
+  m_Name: LeftDamage1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &500415823
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9949,12 +9949,12 @@ GameObject:
   - component: {fileID: 727392967}
   - component: {fileID: 727392966}
   m_Layer: 5
-  m_Name: RightDamage
+  m_Name: RightDamage2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &727392965
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11532,12 +11532,12 @@ GameObject:
   - component: {fileID: 946242343}
   - component: {fileID: 946242342}
   m_Layer: 5
-  m_Name: FrontDamage
+  m_Name: FrontDamage3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &946242341
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13489,6 +13489,7 @@ MonoBehaviour:
   bossIntroPanel: {fileID: 612379084}
   bossPanel: {fileID: 809484141}
   shopPanel: {fileID: 58748302}
+  damagePanel: {fileID: 0}
   startMap: {fileID: 1269839831}
   mainLevel: {fileID: 1750625358}
   mapParentM: {fileID: 1712917282}
@@ -13504,6 +13505,7 @@ MonoBehaviour:
   waveNumber: 0
   waitTime: 20
   comboDuration: 8
+  fadeSpeedDMGVisualizetion: 0
   shopButton: {fileID: 6562370639412918204, guid: 0961e4689186876419b4427300091900,
     type: 3}
   shopTXT: {fileID: 7465069773958422486, guid: f9658ddc4e45a0d4b971678ce0a87738, type: 3}
@@ -20790,12 +20792,12 @@ GameObject:
   - component: {fileID: 2006421406}
   - component: {fileID: 2006421405}
   m_Layer: 5
-  m_Name: BackDamage
+  m_Name: BackDamage0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2006421403
 RectTransform:
   m_ObjectHideFlags: 0

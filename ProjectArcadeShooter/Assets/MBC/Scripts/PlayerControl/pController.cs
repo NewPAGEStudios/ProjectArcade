@@ -578,8 +578,32 @@ public class PController : MonoBehaviour
         }
         else
         {
+            //DamageVisualzie
             gc.changeHPOfPlayer(maxHP, currentHP);
-//            gc.HandleDMGtakenUI();
+            if(Vector3.Dot(transform.forward,Vector3.Normalize(dmgTakenFrom.transform.position- transform.position)) < 0)
+            {
+                gc.HandleDMGtakenUI(1);//0:back 1:left 2:rigth 3:front
+            }
+            else if(Vector3.Dot(transform.forward, Vector3.Normalize(dmgTakenFrom.transform.position - transform.position)) > 0)
+            {
+                gc.HandleDMGtakenUI(2);//0:back 1:left 2:rigth 3:front
+            }
+            else
+            {
+
+            }
+            if (Vector3.Dot(transform.right, Vector3.Normalize(dmgTakenFrom.transform.position - transform.position)) < 0)
+            {
+                gc.HandleDMGtakenUI(3);//0:back 1:left 2:rigth 3:front
+            }
+            else if (Vector3.Dot(transform.right, Vector3.Normalize(dmgTakenFrom.transform.position - transform.position)) > 0)
+            {
+                gc.HandleDMGtakenUI(0);//0:back 1:left 2:rigth 3:front
+            }
+            else
+            {
+
+            }
         }
     }
     public void HealDMG(float healAmount, GameObject healTakenFrom)
