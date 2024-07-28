@@ -109,7 +109,7 @@ public class GameController : MonoBehaviour
     //IEnumerators
     private Coroutine comboDisplayRoutine;
     private Coroutine[] fWayDMGVisualize = new Coroutine[4];
-
+    private Coroutine dmgGivenUICoroutine;
     //PostProcessing Settings
     AmbientOcclusion ao;
     private void Awake()
@@ -472,6 +472,26 @@ public class GameController : MonoBehaviour
         {
             if (pState == PlayState.inStart)
             {
+                if (Input.GetKeyDown(KeyCode.I))
+                {
+                    player.GetComponent<PController>().TakeDMG(0, player.transform.GetChild(2).gameObject);
+                }
+                if (Input.GetKeyDown(KeyCode.J))
+                {
+                    player.GetComponent<PController>().TakeDMG(0, player.transform.GetChild(3).gameObject);
+                }
+                if (Input.GetKeyDown(KeyCode.L))
+                {
+                    player.GetComponent<PController>().TakeDMG(0, player.transform.GetChild(4).gameObject);
+                }
+                if (Input.GetKeyDown(KeyCode.K))
+                {
+                    player.GetComponent<PController>().TakeDMG(0, player.transform.GetChild(5).gameObject);
+                }
+                if (Input.GetKeyDown(KeyCode.U))
+                {
+                    HandleDmgGiven();
+                }
                 return;
             }
             else if (pState == PlayState.inWave)
@@ -921,7 +941,7 @@ public class GameController : MonoBehaviour
     }
     public void HandleDMGtakenUI(int childNumber)//0:back 1:left 2:rigth 3:front
     {
-        if (damagePanel.transform.GetChild(childNumber).gameObject.activeInHierarchy)
+        if (fWayDMGVisualize[childNumber] != null)
         {
             StopCoroutine(fWayDMGVisualize[childNumber]);
         }
@@ -943,6 +963,39 @@ public class GameController : MonoBehaviour
         }
         targetGo.SetActive(false);
     }
+    public void HandleDmgGiven()
+    {
+        if (dmgGivenUICoroutine != null)
+        {
+            StopCoroutine(dmgGivenUICoroutine);
+        }
+        dmgGivenUICoroutine = StartCoroutine(DMG_UI_Give_Routine());
+    }
+    IEnumerator DMG_UI_Give_Routine()
+    {
+        Image[] ima = new Image[playerPanel.transform.GetChild(8).childCount];
+        Debug.Log("rAMBABA");
+        for (int z = 0; z < playerPanel.transform.GetChild(8).childCount; z++)
+        {
+            ima[z] = playerPanel.transform.GetChild(8).GetChild(z).GetComponent<Image>();
+            ima[z].color = new Color(ima[z].color.r, ima[z].color.g, ima[z].color.b, 0.4F);
+        }
+        while (true)
+        {
+            ima[0].color = new Color(ima[0].color.r, ima[0].color.g, ima[0].color.b, Mathf.MoveTowards(ima[0].color.a, 0f, Time.deltaTime * fadeSpeedDMGVisualizetion));
+            ima[1].color = new Color(ima[1].color.r, ima[1].color.g, ima[1].color.b, Mathf.MoveTowards(ima[1].color.a, 0f, Time.deltaTime * fadeSpeedDMGVisualizetion));
+            ima[2].color = new Color(ima[2].color.r, ima[2].color.g, ima[2].color.b, Mathf.MoveTowards(ima[2].color.a, 0f, Time.deltaTime * fadeSpeedDMGVisualizetion));
+            ima[3].color = new Color(ima[3].color.r, ima[3].color.g, ima[3].color.b, Mathf.MoveTowards(ima[3].color.a, 0f, Time.deltaTime * fadeSpeedDMGVisualizetion));
+            yield return new WaitForEndOfFrame();
+            if (ima[0].color.a <= 0 || ima[1].color.a <= 0 || ima[2].color.a <= 0 || ima[3].color.a <= 0)
+            {
+                break;
+            }
+        }
+    }
+
+
+
     //functions
     public void Interact(int interactID)
     {

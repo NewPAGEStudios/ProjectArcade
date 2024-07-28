@@ -10,7 +10,7 @@ public class ReflectBulletFunctions : MonoBehaviour
     Renderer modelRender;
 
     private Vector3 tempFWD;
-
+    public GameObject firedBy;
 
     //shader
     public Material[] modelMat;
@@ -60,6 +60,7 @@ public class ReflectBulletFunctions : MonoBehaviour
                 dmf.GetDamage(dmg);
             }
             gc.ComboVombo(numberOfCollisionHit);
+            gc.HandleDmgGiven();
             startDesttroyObject();
         }
         else if (numberOfCollisionHit >= mostHitCanBeDone)

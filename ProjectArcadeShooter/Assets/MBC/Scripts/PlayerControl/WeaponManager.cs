@@ -376,6 +376,9 @@ public class WeaponManager : MonoBehaviour
             rbf.modelMat = w.usedAmmo.materials;
             rbf.bulletSpeed = w.usedAmmo.bulletSpeed;
             rbf.mostHitCanBeDone = w.usedAmmo.maxReflectionTime;
+
+            rbf.firedBy = gameObject;
+
             rbf.dmg = w.usedAmmo.dmg;
             GameObject go = Instantiate(w.usedAmmo.modelGO, ammo.transform);
             go.layer = 7;
