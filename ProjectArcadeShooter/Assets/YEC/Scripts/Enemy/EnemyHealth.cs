@@ -41,8 +41,9 @@ public class EnemyHealth : MonoBehaviour
 
         enemyObjectRenderer.sharedMaterial = mainMat;
 
-
+        mainMPB = new MaterialPropertyBlock();
         baseColor = mainMat.color;
+        baseColor = new Color(baseColor.r * 255, baseColor.g * 255, baseColor.b * 255);
 
 
         currentHealth = maxHealth;
@@ -90,24 +91,24 @@ public class EnemyHealth : MonoBehaviour
         enemyObjectRenderer.sharedMaterial = damageMat;
         damageMPB.SetColor("_BaseColor", new Color(188, 0, 0, 1));
         enemyObjectRenderer.SetPropertyBlock(damageMPB);
-        Debug.Log(damageMPB.GetColor("_BaseColor").r);
+        Debug.Log(baseColor.r);
         while (true)
         {
-            float r = Mathf.MoveTowards(damageMPB.GetColor("_BaseColor").r, baseColor.r * 255, Time.deltaTime * 5f);
-            float g = Mathf.MoveTowards(damageMPB.GetColor("_BaseColor").g, baseColor.g * 255, Time.deltaTime * 5f);
-            float b = Mathf.MoveTowards(damageMPB.GetColor("_BaseColor").b, baseColor.b * 255, Time.deltaTime * 5f);
+            float r = Mathf.MoveTowards(damageMPB.GetColor("_BaseColor").r, baseColor.r, Time.deltaTime * 2f);
+            float g = Mathf.MoveTowards(damageMPB.GetColor("_BaseColor").g, baseColor.g, Time.deltaTime * 2f);
+            float b = Mathf.MoveTowards(damageMPB.GetColor("_BaseColor").b, baseColor.b, Time.deltaTime * 2f);
 
             damageMPB.SetColor("_BaseColor", new Color(r, g, b, 1));
 
             enemyObjectRenderer.SetPropertyBlock(damageMPB);
 
             yield return new WaitForEndOfFrame();
-            if (damageMPB.GetColor("_BaseColor").r == baseColor.r*255 && damageMPB.GetColor("_BaseColor").g == baseColor.g *255 && damageMPB.GetColor("_BaseColor").b == baseColor.b * 255)
+            if (damageMPB.GetColor("_BaseColor").r == baseColor.r && damageMPB.GetColor("_BaseColor").g == baseColor.g && damageMPB.GetColor("_BaseColor").b == baseColor.b)
             {
                 break;
             }
         }
-        Debug.Log("Bdmtss");
+        mainMPB.SetColor("_BaseColor", baseColor);
         enemyObjectRenderer.sharedMaterial = mainMat;
     }
 

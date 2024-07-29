@@ -301,8 +301,6 @@ public class GameController : MonoBehaviour
             }
         }
         
-        Debug.Log("Integer " + consID);
-
         consumableobject.name = consumables[i].nameOfC;
 
         consumableobject.transform.parent = consumableSpawnPointParent.transform.GetChild(r);
