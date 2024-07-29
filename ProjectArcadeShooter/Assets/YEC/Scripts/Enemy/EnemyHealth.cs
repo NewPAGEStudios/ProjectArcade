@@ -87,27 +87,28 @@ public class EnemyHealth : MonoBehaviour
     IEnumerator EnemyDMGTakeRoutine()
     {
         damageMPB = new MaterialPropertyBlock();
-        enemyObjectRenderer.material = damageMat;
+        enemyObjectRenderer.sharedMaterial = damageMat;
         damageMPB.SetColor("_BaseColor", new Color(188, 0, 0, 1));
         enemyObjectRenderer.SetPropertyBlock(damageMPB);
+        Debug.Log(damageMPB.GetColor("_BaseColor").r);
         while (true)
         {
-            float r = Mathf.MoveTowards(damageMPB.GetColor("_BaseColor").r, baseColor.r, Time.deltaTime * 5f);
-            float g = Mathf.MoveTowards(damageMPB.GetColor("_BaseColor").g, baseColor.g, Time.deltaTime * 5f);
-            float b = Mathf.MoveTowards(damageMPB.GetColor("_BaseColor").b, baseColor.b, Time.deltaTime * 5f);
+            float r = Mathf.MoveTowards(damageMPB.GetColor("_BaseColor").r, baseColor.r * 255, Time.deltaTime * 5f);
+            float g = Mathf.MoveTowards(damageMPB.GetColor("_BaseColor").g, baseColor.g * 255, Time.deltaTime * 5f);
+            float b = Mathf.MoveTowards(damageMPB.GetColor("_BaseColor").b, baseColor.b * 255, Time.deltaTime * 5f);
 
             damageMPB.SetColor("_BaseColor", new Color(r, g, b, 1));
 
             enemyObjectRenderer.SetPropertyBlock(damageMPB);
 
             yield return new WaitForEndOfFrame();
-            if (damageMPB.GetColor("_BaseColor").r == baseColor.r && damageMPB.GetColor("_BaseColor").g == baseColor.g && damageMPB.GetColor("_BaseColor").b == baseColor.b)
+            if (damageMPB.GetColor("_BaseColor").r == baseColor.r*255 && damageMPB.GetColor("_BaseColor").g == baseColor.g *255 && damageMPB.GetColor("_BaseColor").b == baseColor.b * 255)
             {
                 break;
             }
         }
         Debug.Log("Bdmtss");
-        enemyObjectRenderer.material = mainMat;
+        enemyObjectRenderer.sharedMaterial = mainMat;
     }
 
     private void Die()
@@ -117,7 +118,7 @@ public class EnemyHealth : MonoBehaviour
     IEnumerator EnemyDeathRoutine()
     {
         deathMPB = new MaterialPropertyBlock();
-        enemyObjectRenderer.material = deathMat;
+        enemyObjectRenderer.sharedMaterial = deathMat;
         deathMPB.SetColor("_BaseColor", baseColor);
         float valueOfStrentgh = 15f;
         deathMPB.SetFloat("_NoiseStrength", valueOfStrentgh);
