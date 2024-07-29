@@ -41,7 +41,9 @@ public class EnemyHealth : MonoBehaviour
 
         enemyObjectRenderer.sharedMaterial = mainMat;
 
+
         baseColor = mainMat.color;
+
 
         currentHealth = maxHealth;
     }
@@ -93,21 +95,24 @@ public class EnemyHealth : MonoBehaviour
             float r = Mathf.MoveTowards(damageMPB.GetColor("_BaseColor").r, baseColor.r, Time.deltaTime * 5f);
             float g = Mathf.MoveTowards(damageMPB.GetColor("_BaseColor").g, baseColor.g, Time.deltaTime * 5f);
             float b = Mathf.MoveTowards(damageMPB.GetColor("_BaseColor").b, baseColor.b, Time.deltaTime * 5f);
+
             damageMPB.SetColor("_BaseColor", new Color(r, g, b, 1));
+
             enemyObjectRenderer.SetPropertyBlock(damageMPB);
+
             yield return new WaitForEndOfFrame();
-            if (damageMPB.GetColor("_BaseColor") == baseColor)
+            if (damageMPB.GetColor("_BaseColor").r == baseColor.r && damageMPB.GetColor("_BaseColor").g == baseColor.g && damageMPB.GetColor("_BaseColor").b == baseColor.b)
             {
                 break;
             }
         }
-
+        Debug.Log("Bdmtss");
+        enemyObjectRenderer.material = mainMat;
     }
 
     private void Die()
     {
-        gc.decreseEnemyCount();
-        Destroy(gameObject);
+        StartCoroutine(EnemyDeathRoutine());
     }
     IEnumerator EnemyDeathRoutine()
     {
@@ -129,6 +134,7 @@ public class EnemyHealth : MonoBehaviour
                 break;
             }
         }
-        yield return null;
+        gc.decreseEnemyCount();
+        Destroy(gameObject);
     }
 }

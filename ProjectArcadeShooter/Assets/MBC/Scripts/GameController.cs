@@ -345,26 +345,6 @@ public class GameController : MonoBehaviour
             activeConsWeapID.Add(-1);
             activeConsSkill.Add(gas.skillId);
         }
-        else if(consumableobject.TryGetComponent<PerformInstantSkill>(out PerformInstantSkill pis))
-        {
-            if (skillID == -1)
-            {
-                pis.thisSkill = instantSkills[UnityEngine.Random.Range(0, instantSkills.Count)];
-            }
-            else
-            {
-                for(int s = 0; s < instantSkills.Count; s++)
-                {
-                    if(skillID == instantSkills[s].skillTypeID)
-                    {
-                        pis.thisSkill = instantSkills[s];
-                    }
-                }
-            }
-            pis.consPosID = pos_Holder;
-            activeConsWeapID.Add(-1);
-            activeConsSkill.Add(pis.thisSkill.skillTypeID);
-        }
         else if(consumableobject.TryGetComponent<PerformPassiveSkill>(out PerformPassiveSkill pps))
         {
             if (skillID == -1)
@@ -686,7 +666,7 @@ public class GameController : MonoBehaviour
     public void StopGame()
     {
         state = GameState.pause;
-
+        Debug.Log("Ram");
         gamePanel.transform.GetChild(4).gameObject.SetActive(true);
         Time.timeScale = 0f;
 
@@ -1086,7 +1066,6 @@ public class GameController : MonoBehaviour
     }
     IEnumerator comboRoutine()
     {
-        Debug.Log("kdmtss");
         float duration = comboDuration;
         while (true)
         {

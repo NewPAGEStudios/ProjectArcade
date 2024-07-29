@@ -39,7 +39,6 @@ public class stunInstanSkill : MonoBehaviour
         go.GetComponent<Renderer>().SetPropertyBlock(m_propertyBlock);
         while (m_propertyBlock.GetColor("_BaseColor").a > 0)
         {
-            Debug.Log("Time");
             m_propertyBlock.SetColor("_BaseColor", new Color(0, 0, 0, m_propertyBlock.GetColor("_BaseColor").a - 0.01f));
             go.GetComponent<Renderer>().SetPropertyBlock(m_propertyBlock);
             yield return new WaitForSeconds(0.1f);

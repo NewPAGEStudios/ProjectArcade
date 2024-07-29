@@ -10,6 +10,12 @@ public class StateMachine : MonoBehaviour
     public BaseState activeState;
     public AgentControl agentControl;//
 
+    private void Awake()
+    {
+        agentControl = GameObject.FindGameObjectWithTag("GameController").GetComponent<AgentControl>();
+        Debug.Log(agentControl.gameObject.name);
+    }
+
     public void Initialise(){
         ChangesState( new PatrolState());
     }

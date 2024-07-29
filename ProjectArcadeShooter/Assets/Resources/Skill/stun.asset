@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 824b19c71dc078441a291035e0e5a7b0, type: 3}
   m_Name: stun
   m_EditorClassIdentifier: 
-  st: 2
+  st: 0
   skillTypeID: 1
   skillName: UltraMultraStunTapper
   skillDescription: Stun that's all

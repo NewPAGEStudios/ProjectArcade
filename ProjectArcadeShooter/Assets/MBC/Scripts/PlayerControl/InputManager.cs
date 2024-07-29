@@ -52,7 +52,6 @@ public class InputManager : MonoBehaviour
     }
     private void CrouchCanceled(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
-        Debug.Log("Deneme");
         crouching = false;
     }
 

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3620e0fdba82fc14ebadc328a5924842, type: 3}
   m_Name: performPassiveSkill
   m_EditorClassIdentifier: 
-  id: 3
+  id: 2
   nameOfC: performPassiveSkill
   descriptionOfC: performing passive skill
   functionName: PerformPassiveSkill

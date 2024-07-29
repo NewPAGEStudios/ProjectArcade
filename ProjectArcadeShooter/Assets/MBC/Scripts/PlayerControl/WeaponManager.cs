@@ -114,7 +114,7 @@ public class WeaponManager : MonoBehaviour
 
     private void Update()
     {
-        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || gc.state == GameController.GameState.inShop || player.ccstate != PController.CCStateOfPlayer.normal)
+        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || gc.state == GameController.GameState.inShop ||gc.state == GameController.GameState.pause|| player.ccstate != PController.CCStateOfPlayer.normal)
         {
             return;
         }

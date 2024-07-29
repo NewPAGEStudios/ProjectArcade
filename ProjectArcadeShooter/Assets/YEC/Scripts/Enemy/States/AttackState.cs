@@ -26,7 +26,6 @@ public class AttackState : BaseState
         stateMachine.agentControl.AllAgentsAttack();//
         if (enemy.CanSeePlayer())
         {
-
             if (!enemy.e_type.isRanged)
             {
                 losePlayerTimer = 0;
@@ -55,8 +54,9 @@ public class AttackState : BaseState
                     enemy.transform.eulerAngles = new Vector3(0, enemy.transform.eulerAngles.y, enemy.transform.eulerAngles.z);
 
                 }
-
-
+            }
+            else
+            {
                 losePlayerTimer = 0;
                 moveTimer += Time.deltaTime;
                 shotTimer += Time.deltaTime;
