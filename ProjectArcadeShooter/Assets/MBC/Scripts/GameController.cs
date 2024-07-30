@@ -664,7 +664,6 @@ public class GameController : MonoBehaviour
     public void StopGame()
     {
         state = GameState.pause;
-        Debug.Log("Ram");
         gamePanel.transform.GetChild(4).gameObject.SetActive(true);
         Time.timeScale = 0f;
 
