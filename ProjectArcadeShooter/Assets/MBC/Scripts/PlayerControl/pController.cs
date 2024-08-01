@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -71,12 +72,11 @@ public class PController : MonoBehaviour
     private float max_angleOfPlane;
 
     [Header(header: "Cam/Look Configiration")]
-    [SerializeField]
-    private float sensX;
-    private float sensY;
-    [SerializeField]
-    private Camera mainCam;
-    private Vector3 cam_StartingRotation;
+    public float sensX;
+    public float sensY;
+
+
+    private CameraPOVExtension cpove;
 
     GameController gc;
     WeaponManager weaponManager;
@@ -136,6 +136,10 @@ public class PController : MonoBehaviour
         gc.AddDashIndicator(maxdashmeter);
         currentdashMeter = maxdashmeter;
         gc.DashIndicator(currentdashMeter);
+
+        cpove = GameObject.FindAnyObjectByType<CinemachineVirtualCamera>().GetComponent<CameraPOVExtension>();
+
+        cpove.SensivityChanger(sensX, sensY);
     }
 
     // Update is called once per frame
@@ -156,7 +160,12 @@ public class PController : MonoBehaviour
         CrouchExit();
         Sliding();
         Dashing();
-        CamRotation();
+        //sway n Bob
+
+        //weaponPrecadural Anim
+        weaponManager.Sway(iManager.getCameraMovement());
+        weaponManager.SwayRotation(iManager.getCameraMovement());
+
         CheckGround();
         weaponManager.ConpositePositionRotation();
     }
@@ -462,23 +471,6 @@ public class PController : MonoBehaviour
         return Vector3.ProjectOnPlane(directionOnNormalPlane, slopePlaneNormal).normalized;
     }
 
-    private void CamRotation()//tmmlandý
-    {
-        if(cam_StartingRotation == null)
-        {
-            cam_StartingRotation = mainCam.transform.localRotation.eulerAngles;
-        }
-        Vector2 deltaInput = iManager.getCameraMovement();
-        cam_StartingRotation.x += deltaInput.x * Time.deltaTime * sensX;
-        cam_StartingRotation.y += deltaInput.y * Time.deltaTime * sensY;
-        cam_StartingRotation.y = Mathf.Clamp(cam_StartingRotation.y, -60, 60);
-        mainCam.transform.localRotation = Quaternion.Euler(-cam_StartingRotation.y, 0f, 0f);
-        gameObject.transform.localRotation = Quaternion.Euler(gameObject.transform.localRotation.x, cam_StartingRotation.x, gameObject.transform.localRotation.z);
-
-        //weaponPrecadural Anim
-        weaponManager.Sway(deltaInput);
-        weaponManager.SwayRotation(deltaInput);
-    }
 
     private void OnCollisionEnter(Collision collision)
     {
