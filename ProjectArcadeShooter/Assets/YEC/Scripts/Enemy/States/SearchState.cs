@@ -6,9 +6,23 @@ public class SearchState : BaseState
 {
     private float searchTimer;
     private float moveTimer;
+    private Vector3 randomPos;
+    private Vector3 target;
     public override void Enter()
     {
-        enemy.Agent.SetDestination(enemy.Player.transform.position);//
+        //eğer bir enemy bile playeri görüyorsa diğerleri playerin bulunduğu konuma gider eğer player kaybolduysa rastgele konumlarda player aranır
+        if(stateMachine.agentControl.anybodySee){
+            enemy.Agent.SetDestination(stateMachine.agentControl.LastKnowPos);
+            stateMachine.agentControl.anybodySee = false;
+        }
+        
+        //direkt bu kodu kullanmış olsaydık uzakta olan enemy sürekli rastgele konum üretmiş olup acık sapıtırdı 
+        else{//hepsi aynı konumda sıkışmasın diye rastgele konumlarda player aranır
+            randomPos = Random.insideUnitSphere * 10 ;
+            enemy.Agent.SetDestination(stateMachine.agentControl.LastKnowPos + randomPos);
+            //enemy'nin o anki hedefi(hedef sürekli değişeceği için tek bir değişkene atıp daha rahat  kontrol etmek için oluşturdum)
+            target = stateMachine.agentControl.LastKnowPos + randomPos;
+        }
     }
         public override void Perform()
     {
@@ -16,11 +30,13 @@ public class SearchState : BaseState
             stateMachine.ChangesState(new AttackState());
         }
 
-        if(enemy.Agent.remainingDistance < enemy.Agent.stoppingDistance){
+        if(Vector3.Distance(enemy.Agent.transform.position, target) < 10.0f/*enemy.Agent.remainingDistance < enemy.Agent.stoppingDistance*/){
             searchTimer += Time.deltaTime;
             moveTimer += Time.deltaTime;
             if(moveTimer > Random.Range(3,5)){
-                enemy.Agent.SetDestination(enemy.transform.position + (Random.insideUnitSphere * 10));
+                randomPos = Random.insideUnitSphere * 10;
+                enemy.Agent.SetDestination(stateMachine.agentControl.LastKnowPos + randomPos);
+                target = stateMachine.agentControl.LastKnowPos + randomPos;
                 moveTimer = 0;
             }
             if(searchTimer > 10){

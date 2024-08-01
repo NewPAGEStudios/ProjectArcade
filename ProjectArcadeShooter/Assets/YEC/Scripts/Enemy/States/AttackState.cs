@@ -23,9 +23,10 @@ public class AttackState : BaseState
 
     public override void Perform()
     {
-        stateMachine.agentControl.AllAgentsAttack();//
         if (enemy.CanSeePlayer())
         {
+            stateMachine.agentControl.AllAgentsAttack();//
+
             if (!enemy.e_type.isRanged)
             {
                 losePlayerTimer = 0;
@@ -76,6 +77,7 @@ public class AttackState : BaseState
         }
         else
         {
+            stateMachine.agentControl.LastKnowPos = enemy.Player.transform.position;//playerin son bulunduğu konumu diğer enemylere aktarmak için
             losePlayerTimer += Time.deltaTime;
             if (losePlayerTimer > 8)
             {

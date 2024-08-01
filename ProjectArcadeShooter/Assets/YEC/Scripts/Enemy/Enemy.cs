@@ -110,6 +110,7 @@ public class Enemy : MonoBehaviour
                     {
                         if(hitInfo.transform.gameObject == player)
                         {
+                            stateMachine.agentControl.LastKnowPos = player.transform.position;
                             return true;
                         }
                     }
