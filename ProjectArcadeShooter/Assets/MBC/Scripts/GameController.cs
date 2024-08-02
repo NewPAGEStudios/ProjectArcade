@@ -36,6 +36,7 @@ public class GameController : MonoBehaviour
     public Consumable[] consumables;
     public Skill[] skills;
     public Boss[] boss;
+    public Perk[] perks;
     
     private List<Skill> activeSkills = new List<Skill>();
     private List<Skill> passiveSkills = new List<Skill>();
@@ -126,16 +127,13 @@ public class GameController : MonoBehaviour
             ao.active = true;
         }
 
-
-
-
         ammos = Resources.LoadAll<Ammo>("Ammo");
         weapons = Resources.LoadAll<Weapon>("Weapon");
         enemies = Resources.LoadAll<EnemyType>("Enemy");
         consumables = Resources.LoadAll<Consumable>("Consumable");
         skills = Resources.LoadAll<Skill>("Skill");
         boss = Resources.LoadAll<Boss>("Boss");
-
+        perks = Resources.LoadAll<Perk>("Perks");
 
 
         for (int i = 0; i < weapons.Length; i++)
@@ -168,11 +166,6 @@ public class GameController : MonoBehaviour
             if (skills[i].st == Skill.skillType.active)
             {
                 activeSkills.Add(skills[i]);
-            }
-            else if (skills[i].st == Skill.skillType.instant)
-            {
-                instantSkills.Add(skills[i]);
-
             }
             else if (skills[i].st == Skill.skillType.passive)
             {

@@ -9,7 +9,6 @@ public class Skill : ScriptableObject
     {
         active,
         passive,
-        instant,
     }
     public skillType st;
 

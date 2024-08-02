@@ -26,13 +26,12 @@ public class WeaponManager : MonoBehaviour
     [HideInInspector]
     public WeaponRuntimeHolder[] holder;
 
-
+    [Header("Sway N Bobbing")]
     [SerializeField]
     private float smooth = 10f;
     [SerializeField]
     private float smoothRot = 12f;
 
-    [Header("Sway N Bobbing")]
     //INpsector taking
     //Sway
     private Vector3 swayPos;

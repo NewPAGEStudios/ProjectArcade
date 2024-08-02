@@ -619,10 +619,17 @@ public class PController : MonoBehaviour
     //skillHandling
     public void SetSpeed(float multiplier, float duration)
     {
-        moveSpeed *= multiplier;
-        slideForce *= multiplier;
-        dashForce *= multiplier;
-        StartCoroutine(SpeedMultiplierDuration(multiplier, duration));
+        if(duration == -1)//Permanent
+        {
+
+        }
+        else
+        {
+            moveSpeed *= multiplier;
+            slideForce *= multiplier;
+            dashForce *= multiplier;
+            StartCoroutine(SpeedMultiplierDuration(multiplier, duration));
+        }
     }
     IEnumerator SpeedMultiplierDuration(float multiplier,float duration)
     {
