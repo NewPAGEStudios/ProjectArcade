@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Shop : MonoBehaviour
 {
+    //birden fazla kullaným hakký olacak
     GameController gc;
     Collider col;
     MeshFilter meshFilter;

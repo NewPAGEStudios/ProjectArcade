@@ -443,21 +443,37 @@ public class GameController : MonoBehaviour
         {
             if (pState == PlayState.inStart)
             {
-                if (Input.GetKeyDown(KeyCode.I))
+                if (Input.GetKeyDown(KeyCode.Alpha0))
                 {
                     player.GetComponent<PController>().TakeDMG(0, player.transform.GetChild(2).gameObject);
                 }
-                if (Input.GetKeyDown(KeyCode.J))
+                if (Input.GetKeyDown(KeyCode.Alpha1))
                 {
                     player.GetComponent<PController>().TakeDMG(0, player.transform.GetChild(3).gameObject);
                 }
-                if (Input.GetKeyDown(KeyCode.L))
+                if (Input.GetKeyDown(KeyCode.Alpha2))
                 {
                     player.GetComponent<PController>().TakeDMG(0, player.transform.GetChild(4).gameObject);
                 }
-                if (Input.GetKeyDown(KeyCode.K))
+                if (Input.GetKeyDown(KeyCode.Alpha3))
                 {
                     player.GetComponent<PController>().TakeDMG(0, player.transform.GetChild(5).gameObject);
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha4))
+                {
+                    player.GetComponent<PController>().TakeDMG(0, player.transform.GetChild(6).gameObject);
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha5))
+                {
+                    player.GetComponent<PController>().TakeDMG(0, player.transform.GetChild(7).gameObject);
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha6))
+                {
+                    player.GetComponent<PController>().TakeDMG(0, player.transform.GetChild(8).gameObject);
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha7))
+                {
+                    player.GetComponent<PController>().TakeDMG(0, player.transform.GetChild(9).gameObject);
                 }
                 if (Input.GetKeyDown(KeyCode.U))
                 {

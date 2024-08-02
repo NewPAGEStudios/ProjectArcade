@@ -570,33 +570,49 @@ public class PController : MonoBehaviour
             Debug.Log("Die");
         }
         else
-        {
+        {//0ön 1ön sað 2 sað 3 arka sað 4 arka 5 arka sol 6sol 7 sol ön
+            
             //DamageVisualzie
             gc.changeHPOfPlayer(maxHP, currentHP);
-            if(Vector3.Dot(transform.forward,Vector3.Normalize(dmgTakenFrom.transform.position- transform.position)) < 0)
+
+
+            GameObject capsule = gameObject.transform.GetChild(0).gameObject;
+            GameObject ori = capsule.transform.GetChild(0).gameObject;
+
+            int pos = 0;
+
+            if(Vector3.Dot(ori.transform.right,Vector3.Normalize(gameObject.transform.position - dmgTakenFrom.transform.position)) < 0)
             {
-                gc.HandleDMGtakenUI(1);//0:back 1:left 2:rigth 3:front
-            }
-            else if(Vector3.Dot(transform.forward, Vector3.Normalize(dmgTakenFrom.transform.position - transform.position)) > 0)
-            {
-                gc.HandleDMGtakenUI(2);//0:back 1:left 2:rigth 3:front
+                //soll
+                Vector3 targetDirection = gameObject.transform.position - dmgTakenFrom.transform.position;
+                float angle = Vector3.Angle(ori.transform.forward, targetDirection);
+                angle = 360 - angle;
+
+                pos = (int)(angle / 45);
             }
             else
             {
+                //sað
+                Vector3 targetDirection = gameObject.transform.position - dmgTakenFrom.transform.position;
+                float angle = Vector3.Angle(ori.transform.forward, targetDirection);
 
+                pos = (int)(angle / 45);
             }
-            if (Vector3.Dot(transform.right, Vector3.Normalize(dmgTakenFrom.transform.position - transform.position)) < 0)
+            //0:back 1:left 2:rigth 3:front
+            switch (pos)
             {
-                gc.HandleDMGtakenUI(3);//0:back 1:left 2:rigth 3:front
+                case 0: gc.HandleDMGtakenUI(3); break;
+                case 1: gc.HandleDMGtakenUI(3); gc.HandleDMGtakenUI(2); break;
+                case 2: gc.HandleDMGtakenUI(2); break;
+                case 3: gc.HandleDMGtakenUI(0); gc.HandleDMGtakenUI(2); break;
+                case 4: gc.HandleDMGtakenUI(0); break;
+                case 5: gc.HandleDMGtakenUI(0); gc.HandleDMGtakenUI(1); break;
+                case 6: gc.HandleDMGtakenUI(1); break;
+                case 7: gc.HandleDMGtakenUI(1); gc.HandleDMGtakenUI(3); break;
+                default:break;
             }
-            else if (Vector3.Dot(transform.right, Vector3.Normalize(dmgTakenFrom.transform.position - transform.position)) > 0)
-            {
-                gc.HandleDMGtakenUI(0);//0:back 1:left 2:rigth 3:front
-            }
-            else
-            {
 
-            }
+
         }
     }
     public void HealDMG(float healAmount, GameObject healTakenFrom)

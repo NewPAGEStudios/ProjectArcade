@@ -7,6 +7,7 @@ public class CameraPOVExtension : CinemachineExtension
 {
 
     private InputManager iManager;
+    private GameObject player;
     private Vector3 startingRotation;// kameran�n ilk rotasyonu
 
 
@@ -20,6 +21,7 @@ public class CameraPOVExtension : CinemachineExtension
         iManager = InputManager.Instance;
         base.Awake();
         if (startingRotation == null) startingRotation = transform.localRotation.eulerAngles;
+        player = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().player;
     }
     public void SensivityChanger(float sensX, float sensY)
     {
@@ -44,8 +46,9 @@ public class CameraPOVExtension : CinemachineExtension
                 startingRotation.x += deltaInput.x * Time.deltaTime * verticalSpeed;
                 startingRotation.y += deltaInput.y * Time.deltaTime * horizontalSpeed;
                 startingRotation.y = Mathf.Clamp(startingRotation.y, -clampAngle, clampAngle);//kamera rotasyonunu dikey bi�imde k�s�tlama
+                //For worldSpace
                 state.RawOrientation = Quaternion.Euler(-startingRotation.y, startingRotation.x, 0f);//camera rotasyonunu ayarlama
-
+                player.transform.rotation = Quaternion.Euler(0f, startingRotation.x, 0f);
             }
         }
     }

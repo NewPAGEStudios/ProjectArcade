@@ -109,6 +109,7 @@ public class AttackState : BaseState
 
         enemy.transform.LookAt(enemy.Player.transform);
         enemy.transform.eulerAngles = new Vector3(0, enemy.transform.eulerAngles.y, enemy.transform.eulerAngles.z);
+
     }
     IEnumerator AttackAnim_Routine()
     {
