@@ -7949,8 +7949,8 @@ GameObject:
   m_Component:
   - component: {fileID: 454471562}
   - component: {fileID: 454471565}
-  - component: {fileID: 454471568}
   - component: {fileID: 454471567}
+  - component: {fileID: 454471568}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -8056,10 +8056,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 454471561}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36d1163fa822e8b418a0a603ec078d5c, type: 3}
+  m_Script: {fileID: 11500000, guid: fa7155796051b734daa718462081dc5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Damping: 0
+  m_BindingMode: 1
+  m_FollowOffset: {x: 0, y: 0, z: 0}
+  m_XDamping: 0
+  m_YDamping: 0
+  m_ZDamping: 0
+  m_AngularDampingMode: 0
+  m_PitchDamping: 0
+  m_YawDamping: 0
+  m_RollDamping: 0
+  m_AngularDamping: 0
 --- !u!64 &459384092
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11773,8 +11782,8 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 330585546}
-  m_Follow: {fileID: 1906974778}
+  m_LookAt: {fileID: 0}
+  m_Follow: {fileID: 330585546}
   m_Lens:
     FieldOfView: 60
     OrthographicSize: 5
@@ -11839,11 +11848,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15f96e0252475e4418d7a102ca50e36d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horizontalSpeed: 10
-  verticalSpeed: 10
   clampAngle: 80
-  upperBody: {fileID: 0}
-  fullBody: {fileID: 0}
 --- !u!64 &904888169
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -20834,7 +20839,7 @@ MonoBehaviour:
   dashslideadder: 2.5
   max_angleOfPlane: 60
   sensX: 0
-  mainCam: {fileID: 330585545}
+  sensY: 0
   ccstate: 0
   actiontp: 0
   actiontg: 0

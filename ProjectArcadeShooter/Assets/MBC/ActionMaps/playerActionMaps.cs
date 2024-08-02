@@ -67,7 +67,7 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
                     ""name"": ""Look"",
                     ""type"": ""PassThrough"",
                     ""id"": ""24446f61-0a52-4358-8950-af33d04ddc03"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""expectedControlType"": ""Delta"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true

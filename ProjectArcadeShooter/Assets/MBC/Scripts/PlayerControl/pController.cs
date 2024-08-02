@@ -138,7 +138,8 @@ public class PController : MonoBehaviour
         gc.DashIndicator(currentdashMeter);
 
         cpove = GameObject.FindAnyObjectByType<CinemachineVirtualCamera>().GetComponent<CameraPOVExtension>();
-
+        sensX = 10f;
+        sensY = 10f;
         cpove.SensivityChanger(sensX, sensY);
     }
 
