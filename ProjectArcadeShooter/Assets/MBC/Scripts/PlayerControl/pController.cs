@@ -1,6 +1,7 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -75,6 +76,8 @@ public class PController : MonoBehaviour
     public float sensX;
     public float sensY;
 
+    private bool snb;
+    private bool dv;
 
     private CameraPOVExtension cpove;
 
@@ -110,6 +113,7 @@ public class PController : MonoBehaviour
     public ActionStateDependecyToGround actiontg;
 
 
+
     private void Awake()
     {
         //REFERANCES
@@ -131,6 +135,9 @@ public class PController : MonoBehaviour
 
         sensX = PlayerPrefs.GetFloat("XSensitivity");
         sensY = PlayerPrefs.GetFloat("YSensitivity");
+
+        snb = PlayerPrefs.GetInt("SwayNBobbing") == 1 ? true : false;
+        dv = PlayerPrefs.GetInt("DMGVibration") == 1 ? true : false;
 
 
         gc.AddDashIndicator(maxdashmeter);
@@ -161,14 +168,15 @@ public class PController : MonoBehaviour
         CrouchExit();
         Sliding();
         Dashing();
-        //sway n Bob
 
-        //weaponPrecadural Anim
-        weaponManager.Sway(iManager.getCameraMovement());
-        weaponManager.SwayRotation(iManager.getCameraMovement());
+        if (snb)//apply sway
+        {
+            weaponManager.Sway(iManager.getCameraMovement());
+            weaponManager.SwayRotation(iManager.getCameraMovement());
+            weaponManager.ConpositePositionRotation();
+        }
 
         CheckGround();
-        weaponManager.ConpositePositionRotation();
     }
     private void FixedUpdate()
     {
@@ -296,8 +304,12 @@ public class PController : MonoBehaviour
             return;
         }
         Vector2 moveDirVect2 = iManager.getPlayerMovement();// (x,y) (x,y,z) (x,0,y)
-        weaponManager.BobOffset(this,moveDirVect2);
-        weaponManager.BobRotation(moveDirVect2);
+
+        if (snb)//apply bob
+        {
+            weaponManager.BobOffset(this, moveDirVect2);
+            weaponManager.BobRotation(moveDirVect2);
+        }
 
 
 
@@ -611,7 +623,10 @@ public class PController : MonoBehaviour
                 case 7: gc.HandleDMGtakenUI(1); gc.HandleDMGtakenUI(3); break;
                 default:break;
             }
-            gc.takeDmgEffect();
+            if (dv)//check get damage effect
+            {
+                gc.takeDmgEffect();
+            }
         }
     }
     public void HealDMG(float healAmount, GameObject healTakenFrom)

@@ -120,4 +120,31 @@ public class Enemy : MonoBehaviour
         }
         return false;
     }
+    public void Attack()
+    {
+        StartCoroutine(AttackAnim_Routine());
+    }
+    IEnumerator AttackAnim_Routine()
+    {
+        while (true)
+        {
+
+            yield return new WaitForEndOfFrame();
+
+            if (animator.GetCurrentAnimatorStateInfo(1).IsName("AttackEnd"))
+            {
+                if (Vector3.Distance(Player.transform.position, transform.position) <= e_type.rangeDistance)
+                {
+                    Player.GetComponent<PController>().TakeDMG(20, gameObject);
+                }
+                break;
+            }
+
+        }
+
+        animator.SetBool("AttackEnd", false);
+
+
+    }
+
 }

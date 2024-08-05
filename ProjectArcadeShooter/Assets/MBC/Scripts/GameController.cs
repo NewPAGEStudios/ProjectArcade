@@ -658,6 +658,7 @@ public class GameController : MonoBehaviour
         playerTeleportPoint = currentLevel.transform.Find("PlayerTeleportPoint").gameObject;
 
         player.transform.position = playerTeleportPoint.transform.position;
+        mainCam.transform.localPosition = Vector3.zero;
     }
     public void DefaultMap()
     {
@@ -1156,7 +1157,7 @@ public class GameController : MonoBehaviour
         {
             vcam.m_Lens.FarClipPlane -= 0.01f * 500;
             yield return new WaitForSecondsRealtime(0.01f);
-            if (vcam.m_Lens.FarClipPlane <= 0)
+            if (vcam.m_Lens.FarClipPlane <= vcam.m_Lens.NearClipPlane + 0.01)
             {
                 break;
             }

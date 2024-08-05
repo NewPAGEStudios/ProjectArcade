@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 namespace SlimUI.ModernMenu{
 	public class UISettingsManager : MonoBehaviour {
@@ -40,8 +41,10 @@ namespace SlimUI.ModernMenu{
 		public GameObject difficultynormaltextLINE;
 		public GameObject difficultyhardcoretext;
 		public GameObject difficultyhardcoretextLINE;
+		public GameObject swayBobtext;
+        public GameObject damageVibrationtext;
 
-		[Header("CONTROLS SETTINGS")]
+        [Header("CONTROLS SETTINGS")]
 		public GameObject invertmousetext;
 
 		// sliders
@@ -73,10 +76,37 @@ namespace SlimUI.ModernMenu{
 			musicSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MusicVolume");
 			sensitivityXSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("XSensitivity");
 			sensitivityYSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("YSensitivity");
-//			mouseSmoothSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MouseSmoothing");
+            //			mouseSmoothSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MouseSmoothing");
 
-			// check full screen
-			if(Screen.fullScreen == true){
+
+
+
+            // check sway n Bobbing
+            bool snb = PlayerPrefs.GetInt("SwayNBobbing") == 1 ? true : false;
+			if (snb)
+			{
+				swayBobtext.GetComponent<TMP_Text>().text = "on";
+			}
+			else
+			{
+                swayBobtext.GetComponent<TMP_Text>().text = "off";
+            }
+
+			// check DamageVibration
+			bool dv = PlayerPrefs.GetInt("DMGVibration") == 1 ? true : false;
+			if (dv)
+			{
+                damageVibrationtext.GetComponent<TMP_Text>().text = "on";
+
+            }
+            else
+			{
+                damageVibrationtext.GetComponent<TMP_Text>().text = "off";
+            }
+
+
+            // check full screen
+            if (Screen.fullScreen == true){
 				fullscreentext.GetComponent<TMP_Text>().text = "on";
 			}
 			else if(Screen.fullScreen == false){
@@ -211,7 +241,41 @@ namespace SlimUI.ModernMenu{
 			//sliderValueSmoothing = mouseSmoothSlider.GetComponent<Slider>().value;
 		}
 
-		public void FullScreen (){
+		public void SwayNBobbing()
+		{
+            bool snb = PlayerPrefs.GetInt("SwayNBobbing") == 1 ? true : false;
+			if (snb)
+			{
+                PlayerPrefs.SetInt("SwayNBobbing", 0);
+                swayBobtext.GetComponent<TMP_Text>().text = "off";
+
+            }
+            else
+			{
+                PlayerPrefs.SetInt("SwayNBobbing", 1);
+                swayBobtext.GetComponent<TMP_Text>().text = "on";
+            }
+
+        }
+
+		public void dmgVibration()
+		{
+            bool dv = PlayerPrefs.GetInt("DMGVibration") == 1 ? true : false;
+            if (dv)
+            {
+				PlayerPrefs.SetInt("DMGVibration", 0);
+                damageVibrationtext.GetComponent<TMP_Text>().text = "off";
+
+            }
+            else
+            {
+				PlayerPrefs.SetInt("DMGVibration", 1);
+                damageVibrationtext.GetComponent<TMP_Text>().text = "on";
+            }
+        }
+
+
+        public void FullScreen (){
 			Screen.fullScreen = !Screen.fullScreen;
 
 			if(Screen.fullScreen == true){
@@ -435,5 +499,7 @@ namespace SlimUI.ModernMenu{
 			texturemedtextLINE.gameObject.SetActive(false);
 			texturehightextLINE.gameObject.SetActive(true);
 		}
+
+
 	}
 }

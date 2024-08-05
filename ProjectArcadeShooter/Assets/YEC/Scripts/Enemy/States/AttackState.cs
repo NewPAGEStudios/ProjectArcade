@@ -111,26 +111,4 @@ public class AttackState : BaseState
         enemy.transform.eulerAngles = new Vector3(0, enemy.transform.eulerAngles.y, enemy.transform.eulerAngles.z);
 
     }
-    IEnumerator AttackAnim_Routine()
-    {
-        while (true)
-        {
-
-            yield return new WaitForEndOfFrame();
-
-            if (enemy.animator.GetCurrentAnimatorStateInfo(1).IsName("AttackEnd"))
-            {
-                if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) <= enemy.e_type.rangeDistance)
-                {
-                    enemy.Player.GetComponent<PController>().TakeDMG(20, enemy.gameObject);
-                }
-                break;
-            }
-
-        }
-
-        enemy.animator.SetBool("AttackEnd", false);
-
-        shotTimer = 0;
-    }
 }
