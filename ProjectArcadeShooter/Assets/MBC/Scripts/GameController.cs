@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,6 +51,8 @@ public class GameController : MonoBehaviour
 
     [Header(header: "Main Camera")]
     public GameObject mainCam;
+    public CinemachineVirtualCamera vcam;
+    CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin;
     //UI Ref
     [Header(header: "UIReference")]
     public GameObject playerPanel;
@@ -104,6 +107,9 @@ public class GameController : MonoBehaviour
     private float waitTimer;
     public float comboDuration;
     public float fadeSpeedDMGVisualizetion;
+    public float cameraShakeIntensity;
+    public float cameraShakeDuration;
+    private float baseFixedUpdate;
     [Header(header: "UI Prefab Referances")]
     public GameObject shopButton;
     public GameObject shopTXT;
@@ -111,10 +117,16 @@ public class GameController : MonoBehaviour
     private Coroutine comboDisplayRoutine;
     private Coroutine[] fWayDMGVisualize = new Coroutine[4];
     private Coroutine dmgGivenUICoroutine;
+    private Coroutine dmgTakenEffectCoroutine;
     //PostProcessing Settings
     AmbientOcclusion ao;
     private void Awake()
     {
+
+        //update base
+        baseFixedUpdate = Time.fixedDeltaTime;
+
+
         //MainMenu Referances
 
         mainCam.GetComponent<PostProcessVolume>().profile.TryGetSettings(out ao);
@@ -190,6 +202,8 @@ public class GameController : MonoBehaviour
 
 
         newGame = PlayerPrefs.GetInt("newGame") == 1 ? true : false;
+
+        cinemachineBasicMultiChannelPerlin = vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
 
     private void Start()
@@ -1092,4 +1106,40 @@ public class GameController : MonoBehaviour
         comboCount = 0;
         ComboVisualize(comboCount);
     }
+    
+    //Effects
+    public void takeDmgEffect()
+    {
+        if (dmgTakenEffectCoroutine != null)
+        {
+            Time.timeScale = 1f;
+            Time.fixedDeltaTime = baseFixedUpdate;
+
+            cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0f;
+            mainCam.transform.localPosition = Vector3.zero;
+
+            StopCoroutine(dmgTakenEffectCoroutine);
+        }
+        dmgTakenEffectCoroutine = StartCoroutine(dmngTakeRoutine());
+    }
+    IEnumerator dmngTakeRoutine()
+    {
+        GameObject weapCam = mainCam.transform.GetChild(0).gameObject;
+        GameObject firePos = mainCam.transform.GetChild(1).gameObject;
+        
+
+        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = cameraShakeIntensity;
+
+        Time.timeScale = 0.5f;
+        Time.fixedDeltaTime *= Time.timeScale;
+
+        yield return new WaitForSeconds(cameraShakeDuration);
+
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = baseFixedUpdate;
+
+        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0f;
+        mainCam.transform.localPosition = Vector3.zero;
+    }
+
 }

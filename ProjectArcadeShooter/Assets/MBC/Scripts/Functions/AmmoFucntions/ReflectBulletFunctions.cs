@@ -21,8 +21,14 @@ public class ReflectBulletFunctions : MonoBehaviour
     public int numberOfCollisionHit;
     public int mostHitCanBeDone;
     public float dmg;
-    // Start is called before the first frame update
+    private float lifeTime = 10f;
+
+
     private GameController gc;
+
+    private GameObject trail;
+
+    public TrailType trailType;
 
     void Start()
     {
@@ -36,9 +42,35 @@ public class ReflectBulletFunctions : MonoBehaviour
         m_PropertyBlock.SetFloat("_fresnalPow", 2f);
         modelRender.SetPropertyBlock(m_PropertyBlock);
         tempFWD = transform.forward;
+
+        //Trail Renderer
+        trail = new();
+        trail.transform.parent = transform;
+        trail.transform.localPosition = Vector3.zero;
+
+        trail.AddComponent<TrailRenderer>();
+        trail.GetComponent<TrailRenderer>().material = trailType.TrailMaterail;
+        trail.GetComponent<TrailRenderer>().colorGradient = trailType.gradient;
+        trail.GetComponent<TrailRenderer>().widthCurve = trailType.curve;
+        trail.GetComponent<TrailRenderer>().time = trailType.Time;
+
+
         GetComponent<Rigidbody>().freezeRotation = true;
         GetComponent<Rigidbody>().AddForce(transform.forward * bulletSpeed, ForceMode.Impulse);
     }
+
+    private void Update()
+    {
+        if (lifeTime > 0)
+        {
+            lifeTime -= Time.deltaTime;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -105,5 +137,9 @@ public class ReflectBulletFunctions : MonoBehaviour
         }
         GetComponent<Rigidbody>().velocity = Vector3.zero;
         Destroy(gameObject);
+    }
+    private void OnDestroy()
+    {
+        trail.transform.parent = null;
     }
 }

@@ -369,6 +369,7 @@ public class WeaponManager : MonoBehaviour
         ammo.GetComponent<Rigidbody>().useGravity = false;
         ammo.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
 
+
         //ManuelAdding
         if(ammo.TryGetComponent<ReflectBulletFunctions>(out ReflectBulletFunctions rbf))
         {
@@ -379,6 +380,9 @@ public class WeaponManager : MonoBehaviour
             rbf.firedBy = gameObject;
 
             rbf.dmg = w.usedAmmo.dmg;
+
+            rbf.trailType = w.usedAmmo.trail;
+
             GameObject go = Instantiate(w.usedAmmo.modelGO, ammo.transform);
             go.layer = 7;
         }

@@ -581,11 +581,11 @@ public class PController : MonoBehaviour
 
             int pos = 0;
 
-            if(Vector3.Dot(ori.transform.right,Vector3.Normalize(gameObject.transform.position - dmgTakenFrom.transform.position)) < 0)
+            if(Vector3.Dot(ori.transform.right,Vector3.Normalize(ori.transform.position - dmgTakenFrom.transform.position)) > 0)
             {
                 //soll
-                Vector3 targetDirection = gameObject.transform.position - dmgTakenFrom.transform.position;
-                float angle = Vector3.Angle(ori.transform.forward, targetDirection);
+                Vector3 targetDirection = dmgTakenFrom.transform.position - gameObject.transform.position;
+                float angle = Vector3.Angle(ori.transform.forward, targetDirection.normalized);
                 angle = 360 - angle;
 
                 pos = (int)(angle / 45);
@@ -593,7 +593,7 @@ public class PController : MonoBehaviour
             else
             {
                 //sað
-                Vector3 targetDirection = gameObject.transform.position - dmgTakenFrom.transform.position;
+                Vector3 targetDirection = dmgTakenFrom.transform.position - gameObject.transform.position;
                 float angle = Vector3.Angle(ori.transform.forward, targetDirection);
 
                 pos = (int)(angle / 45);
@@ -611,8 +611,7 @@ public class PController : MonoBehaviour
                 case 7: gc.HandleDMGtakenUI(1); gc.HandleDMGtakenUI(3); break;
                 default:break;
             }
-
-
+            gc.takeDmgEffect();
         }
     }
     public void HealDMG(float healAmount, GameObject healTakenFrom)
