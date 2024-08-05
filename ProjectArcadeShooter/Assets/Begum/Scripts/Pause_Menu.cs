@@ -12,6 +12,14 @@ public class Pause_Menu : MonoBehaviour
     [SerializeField] private GameObject optionCanv;
     private GameController gc;
 
+
+    [Header("SFX")]
+    [Tooltip("The GameObject holding the Audio Source component for the HOVER SOUND")]
+    public AudioSource hoverSound;
+    [Tooltip("The GameObject holding the Audio Source component for the SWOOSH SOUND when switching to the Settings Screen")]
+    public AudioSource swooshSound;
+
+
     private void Start()
     {
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
@@ -31,5 +39,17 @@ public class Pause_Menu : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene(0);
     }
+
+    //SFX 
+    public void PlayHover()
+    {
+        hoverSound.Play();
+    }
+
+    public void PlaySwoosh()
+    {
+        swooshSound.Play();
+    }
+
 
 }

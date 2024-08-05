@@ -567,7 +567,7 @@ public class PController : MonoBehaviour
         currentHP -= dmgAmmount;
         if (currentHP <= 0)
         {
-            Debug.Log("Die");
+            gc.EndGame();
         }
         else
         {//0ön 1ön sað 2 sað 3 arka sað 4 arka 5 arka sol 6sol 7 sol ön

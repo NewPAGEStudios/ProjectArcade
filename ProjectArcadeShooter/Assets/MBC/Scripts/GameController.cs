@@ -693,7 +693,16 @@ public class GameController : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }
+    public void EndGame()
+    {
+        Time.timeScale = 0;
+        Time.fixedDeltaTime *= Time.timeScale;
+        
+        state = GameState.pause;
+        pState = PlayState.inPlayerInterrupt;
 
+        StartCoroutine(endGameEffect());
+    }
 
     //SaveSystem
     public void SaveElements()
@@ -1141,5 +1150,54 @@ public class GameController : MonoBehaviour
         cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0f;
         mainCam.transform.localPosition = Vector3.zero;
     }
+    IEnumerator endGameEffect()
+    {
+        while (true)
+        {
+            vcam.m_Lens.FarClipPlane -= 0.01f * 500;
+            yield return new WaitForSecondsRealtime(0.01f);
+            if (vcam.m_Lens.FarClipPlane <= 0)
+            {
+                break;
+            }
+        }
+
+        for(int i = 0 ; i < bossIntroPanel.transform.childCount; i++)
+        {
+            bossIntroPanel.transform.GetChild(i).gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < bossPanel.transform.childCount; i++)
+        {
+            bossPanel.transform.GetChild(i).gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < damagePanel.transform.childCount; i++)
+        {
+            damagePanel.transform.GetChild(i).gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < gamePanel.transform.childCount; i++)
+        {
+            gamePanel.transform.GetChild(i).gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < playerPanel.transform.childCount; i++)
+        {
+            playerPanel.transform.GetChild(i).gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < shopPanel.transform.childCount; i++)
+        {
+            shopPanel.transform.GetChild(i).gameObject.SetActive(false);
+        }
+
+
+        gamePanel.transform.GetChild(5).gameObject.SetActive(true);
+
+
+    }
+
+
 
 }
