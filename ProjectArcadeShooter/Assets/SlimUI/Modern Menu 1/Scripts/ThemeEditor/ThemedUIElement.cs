@@ -18,13 +18,22 @@ namespace SlimUI.ModernMenu{
 
 			if(hasImage){
 				image = GetComponent<Image>();
+				Debug.Log(gameObject.name + " " + themeController.currentColor);
 				image.color = themeController.currentColor;
 			}
 
 			message = gameObject;
 
 			if(isText){
-				message.GetComponent<TextMeshPro>().color = themeController.textColor;
+				if(message.TryGetComponent<TextMeshPro>(out TextMeshPro tmpBoom))
+				{
+					tmpBoom.color = themeController.textColor;
+
+                }
+				else if(message.TryGetComponent<TextMeshProUGUI>(out TextMeshProUGUI tmpUGUI))
+				{
+					tmpUGUI.color = themeController.textColor;
+				}
 			}
 		}
 	}

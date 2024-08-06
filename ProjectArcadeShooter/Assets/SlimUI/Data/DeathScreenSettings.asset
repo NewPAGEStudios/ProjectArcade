@@ -10,24 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dbacb2414dc974448827c731c3756377, type: 3}
-  m_Name: DeathScreenSettings
+  m_Name: deathScreenSettings
   m_EditorClassIdentifier: 
   custom1:
-    graphic1: {r: 0, g: 0, b: 0, a: 1}
+    graphic1: {r: 1, g: 0, b: 0, a: 1}
     text1:
       serializedVersion: 2
       rgba: 4278190080
   custom2:
-    graphic2: {r: 0, g: 0, b: 0, a: 1}
+    graphic2: {r: 0, g: 0.055462334, b: 0.38679248, a: 1}
     text2:
       serializedVersion: 2
-      rgba: 4278190080
+      rgba: 4284681728
   custom3:
-    graphic3: {r: 0, g: 0, b: 0, a: 1}
+    graphic3: {r: 0, g: 1, b: 0.9167206, a: 1}
     text3:
       serializedVersion: 2
-      rgba: 4278190080
-  currentColor: {r: 0, g: 0, b: 0, a: 0}
+      rgba: 4293590784
+  currentColor: {r: 0, g: 0.055462334, b: 0.38679248, a: 1}
   textColor:
     serializedVersion: 2
-    rgba: 0
+    rgba: 4284681728

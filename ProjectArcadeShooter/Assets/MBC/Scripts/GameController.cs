@@ -702,6 +702,9 @@ public class GameController : MonoBehaviour
         state = GameState.pause;
         pState = PlayState.inPlayerInterrupt;
 
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         StartCoroutine(endGameEffect());
     }
 
@@ -728,7 +731,7 @@ public class GameController : MonoBehaviour
 
             //PController
             player.GetComponent<PController>().currentHP = de.currentHP;
-            player.GetComponent<PController>().setMaxHP(de.maxHP);//TODO will be changed with perk sysytem
+            player.GetComponent<PController>().setMaxHP(de.maxHP , -1);//TODO will be changed with perk sysytem
             changeHPOfPlayer(de.maxHP, de.currentHP);
 
             player.GetComponent<PController>().currentdashMeter = de.dashMeter;
@@ -1153,17 +1156,18 @@ public class GameController : MonoBehaviour
     }
     IEnumerator endGameEffect()
     {
+        vcam.m_Lens.FarClipPlane = 100f;
         while (true)
         {
-            vcam.m_Lens.FarClipPlane -= 0.01f * 500;
+            vcam.m_Lens.FarClipPlane -= 0.5f;
             yield return new WaitForSecondsRealtime(0.01f);
-            if (vcam.m_Lens.FarClipPlane <= vcam.m_Lens.NearClipPlane + 0.01)
+            if (vcam.m_Lens.FarClipPlane <= vcam.m_Lens.NearClipPlane + 0.5f)
             {
                 break;
             }
         }
 
-        for(int i = 0 ; i < bossIntroPanel.transform.childCount; i++)
+        for (int i = 0 ; i < bossIntroPanel.transform.childCount; i++)
         {
             bossIntroPanel.transform.GetChild(i).gameObject.SetActive(false);
         }
@@ -1193,8 +1197,56 @@ public class GameController : MonoBehaviour
             shopPanel.transform.GetChild(i).gameObject.SetActive(false);
         }
 
-
         gamePanel.transform.GetChild(5).gameObject.SetActive(true);
+
+        while (true)
+        {
+            gamePanel.transform.GetChild(5).GetComponent<Image>().color = new Color(gamePanel.transform.GetChild(5).GetComponent<Image>().color.r, gamePanel.transform.GetChild(5).GetComponent<Image>().color.b, gamePanel.transform.GetChild(5).GetComponent<Image>().color.g, gamePanel.transform.GetChild(5).GetComponent<Image>().color.a + 0.01f);
+            new WaitForSecondsRealtime(0.01f);
+            if (gamePanel.transform.GetChild(5).GetComponent<Image>().color.a >= 1f)
+            {
+                break;
+            }
+        }
+
+        vcam.m_Lens.FarClipPlane = 1000f;
+
+        gamePanel.transform.GetChild(5).GetChild(0).gameObject.SetActive(true);
+        string tempText = gamePanel.transform.GetChild(5).GetChild(0).GetComponent<TextMeshProUGUI>().text;
+        gamePanel.transform.GetChild(5).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
+
+        for (int c = 0; c < tempText.Length;)
+        {
+            if (c + 1 == tempText.Length)
+            {
+                gamePanel.transform.GetChild(5).GetChild(0).GetComponent<TextMeshProUGUI>().text += tempText[c];
+                c += 1;
+            }
+            else
+            {
+                gamePanel.transform.GetChild(5).GetChild(0).GetComponent<TextMeshProUGUI>().text += (tempText[c] + tempText[c + 1]);
+                c += 2;
+            }
+            yield return new WaitForSecondsRealtime(0.005f);
+        }
+
+        int changeCount = 0;
+
+        while (true)
+        {
+            gamePanel.transform.GetChild(5).GetChild(0).gameObject.SetActive(!gamePanel.transform.GetChild(5).GetChild(0).gameObject.activeSelf);
+            yield return new WaitForSecondsRealtime(UnityEngine.Random.Range(0.065f,0.085f));
+            changeCount += 1;
+            if (changeCount == 5)
+            {
+                break;
+            }
+        }
+
+        for(int i = 1; i < gamePanel.transform.GetChild(5).childCount; i++)
+        {
+            gamePanel.transform.GetChild(5).GetChild(i).gameObject.SetActive(true);
+        }
 
 
     }

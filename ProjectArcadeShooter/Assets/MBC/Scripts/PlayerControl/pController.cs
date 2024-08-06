@@ -642,9 +642,16 @@ public class PController : MonoBehaviour
     {
         return maxHP;
     }
-    public void setMaxHP(float newHP)
+    public void setMaxHP(float amount,float duration)
     {
-        maxHP = newHP;
+        if (duration == -1)
+        {
+            maxHP += amount;
+        }
+        else
+        {
+
+        }
     }
     //skillHandling
     public void SetSpeed(float multiplier, float duration)
