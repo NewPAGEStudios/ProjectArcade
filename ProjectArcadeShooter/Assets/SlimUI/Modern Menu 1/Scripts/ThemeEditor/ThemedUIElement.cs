@@ -18,7 +18,6 @@ namespace SlimUI.ModernMenu{
 
 			if(hasImage){
 				image = GetComponent<Image>();
-				Debug.Log(gameObject.name + " " + themeController.currentColor);
 				image.color = themeController.currentColor;
 			}
 

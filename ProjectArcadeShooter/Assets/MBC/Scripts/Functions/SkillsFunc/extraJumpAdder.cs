@@ -18,6 +18,7 @@ public class extraJumpAdder : MonoBehaviour
         player.GetComponent<PController>().addExtraJump();
 
         int id = gc.activeCons.IndexOf(consPosID);
+
         gc.activeCons.RemoveAt(id);
         gc.activeConsID.RemoveAt(id);
         gc.activeConsSkill.RemoveAt(id);

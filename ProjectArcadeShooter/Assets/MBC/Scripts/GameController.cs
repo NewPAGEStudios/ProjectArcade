@@ -51,8 +51,6 @@ public class GameController : MonoBehaviour
 
     [Header(header: "Main Camera")]
     public GameObject mainCam;
-    public CinemachineVirtualCamera vcam;
-    CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin;
     //UI Ref
     [Header(header: "UIReference")]
     public GameObject playerPanel;
@@ -203,7 +201,6 @@ public class GameController : MonoBehaviour
 
         newGame = PlayerPrefs.GetInt("newGame") == 1 ? true : false;
 
-        cinemachineBasicMultiChannelPerlin = vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
 
     private void Start()
@@ -316,9 +313,10 @@ public class GameController : MonoBehaviour
 
         System.Type scriptMB = System.Type.GetType(consumables[i].functionName + ",Assembly-CSharp");
 
+        activeConsID.Add(consID);
+
         consumableobject.AddComponent(scriptMB);
 
-        activeConsID.Add(consID);
         
         //Manuel adding
         if (consumableobject.TryGetComponent<GetWeapon>(out GetWeapon gw))
@@ -1121,47 +1119,14 @@ public class GameController : MonoBehaviour
     }
     
     //Effects
-    public void takeDmgEffect()
-    {
-        if (dmgTakenEffectCoroutine != null)
-        {
-            Time.timeScale = 1f;
-            Time.fixedDeltaTime = baseFixedUpdate;
-
-            cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0f;
-            mainCam.transform.localPosition = Vector3.zero;
-
-            StopCoroutine(dmgTakenEffectCoroutine);
-        }
-        dmgTakenEffectCoroutine = StartCoroutine(dmngTakeRoutine());
-    }
-    IEnumerator dmngTakeRoutine()
-    {
-        GameObject weapCam = mainCam.transform.GetChild(0).gameObject;
-        GameObject firePos = mainCam.transform.GetChild(1).gameObject;
-        
-
-        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = cameraShakeIntensity;
-
-        Time.timeScale = 0.5f;
-        Time.fixedDeltaTime *= Time.timeScale;
-
-        yield return new WaitForSeconds(cameraShakeDuration);
-
-        Time.timeScale = 1f;
-        Time.fixedDeltaTime = baseFixedUpdate;
-
-        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0f;
-        mainCam.transform.localPosition = Vector3.zero;
-    }
     IEnumerator endGameEffect()
     {
-        vcam.m_Lens.FarClipPlane = 100f;
+        mainCam.GetComponent<Camera>().farClipPlane = 100f;
         while (true)
         {
-            vcam.m_Lens.FarClipPlane -= 0.5f;
+            mainCam.GetComponent<Camera>().farClipPlane -= 0.5f;
             yield return new WaitForSecondsRealtime(0.01f);
-            if (vcam.m_Lens.FarClipPlane <= vcam.m_Lens.NearClipPlane + 0.5f)
+            if (mainCam.GetComponent<Camera>().farClipPlane <= mainCam.GetComponent<Camera>().farClipPlane + 0.5f)
             {
                 break;
             }
@@ -1209,7 +1174,7 @@ public class GameController : MonoBehaviour
             }
         }
 
-        vcam.m_Lens.FarClipPlane = 1000f;
+        mainCam.GetComponent<Camera>().farClipPlane = 1000f;
 
         gamePanel.transform.GetChild(5).GetChild(0).gameObject.SetActive(true);
         string tempText = gamePanel.transform.GetChild(5).GetChild(0).GetComponent<TextMeshProUGUI>().text;

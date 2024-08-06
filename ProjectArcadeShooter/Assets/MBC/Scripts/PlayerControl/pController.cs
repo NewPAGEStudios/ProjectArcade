@@ -1,4 +1,4 @@
-using Cinemachine;
+ï»¿using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -73,8 +73,12 @@ public class PController : MonoBehaviour
     private float max_angleOfPlane;
 
     [Header(header: "Cam/Look Configiration")]
-    public float sensX;
-    public float sensY;
+    [SerializeField]
+    private float sensX;
+    private float sensY;
+    [SerializeField]
+    private Camera mainCam;
+    private Vector3 cam_StartingRotation;
 
     private bool snb;
     private bool dv;
@@ -144,10 +148,8 @@ public class PController : MonoBehaviour
         currentdashMeter = maxdashmeter;
         gc.DashIndicator(currentdashMeter);
 
-        cpove = GameObject.FindAnyObjectByType<CinemachineVirtualCamera>().GetComponent<CameraPOVExtension>();
         sensX = 10f;
         sensY = 10f;
-        cpove.SensivityChanger(sensX, sensY);
     }
 
     // Update is called once per frame
@@ -162,6 +164,8 @@ public class PController : MonoBehaviour
             currentdashMeter += dashslideadder * Time.deltaTime;
             gc.DashIndicator(currentdashMeter);
         }
+
+        CamRotation();
 
         Jump();
         Crouch();
@@ -186,6 +190,23 @@ public class PController : MonoBehaviour
         }
         Move();
 
+    }
+    private void CamRotation()//tmmlandï¿½
+    {
+        if (cam_StartingRotation == null)
+        {
+            cam_StartingRotation = mainCam.transform.localRotation.eulerAngles;
+        }
+        Vector2 deltaInput = iManager.getCameraMovement();
+        cam_StartingRotation.x += deltaInput.x * Time.deltaTime * sensX;
+        cam_StartingRotation.y += deltaInput.y * Time.deltaTime * sensY;
+        cam_StartingRotation.y = Mathf.Clamp(cam_StartingRotation.y, -60, 60);
+        mainCam.transform.localRotation = Quaternion.Euler(-cam_StartingRotation.y, 0f, 0f);
+        gameObject.transform.localRotation = Quaternion.Euler(gameObject.transform.localRotation.x, cam_StartingRotation.x, gameObject.transform.localRotation.z);
+
+        //weaponPrecadural Anim
+        weaponManager.Sway(deltaInput);
+        weaponManager.SwayRotation(deltaInput);
     }
     private void Jump()
     {
@@ -213,7 +234,7 @@ public class PController : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
-    //EðilmeBaþla
+    //EÄŸilmeBaÅŸla
     private void Crouch()
     {
         //iManager.crouching;
@@ -294,8 +315,9 @@ public class PController : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         actiontp = ActionStateDependecyToPlayer.idle;
+        Camera.main.transform.localPosition = Vector3.zero;
     }
-    //EÐilme Bit
+    //EÄžilme Bit
 
     private void Move()
     {
@@ -330,7 +352,7 @@ public class PController : MonoBehaviour
             case ActionStateDependecyToPlayer.crouch:
                 break;
             default:
-                Debug.LogWarning("action State to Player Sýkýntýlý");
+                Debug.LogWarning("action State to Player SÄ±kÄ±ntÄ±lÄ±");
                 break;
         }
 
@@ -346,7 +368,7 @@ public class PController : MonoBehaviour
                 rb.AddForce(moveSpeedOnAir * Time.fixedDeltaTime * moveDir, ForceMode.Force);
                 break;
             default:
-                Debug.LogWarning("action State to Ground Sýkýntýlý");
+                Debug.LogWarning("action State to Ground SÄ±kÄ±ntÄ±lÄ±");
                 break;
         }
         //        rb.AddForce(Slope(moveDir) * moveSpeed * Time.fixedDeltaTime, ForceMode.Force);
@@ -582,7 +604,7 @@ public class PController : MonoBehaviour
             gc.EndGame();
         }
         else
-        {//0ön 1ön sað 2 sað 3 arka sað 4 arka 5 arka sol 6sol 7 sol ön
+        {//0Ã¶n 1Ã¶n saÄŸ 2 saÄŸ 3 arka saÄŸ 4 arka 5 arka sol 6sol 7 sol Ã¶n
             
             //DamageVisualzie
             gc.changeHPOfPlayer(maxHP, currentHP);
@@ -604,7 +626,7 @@ public class PController : MonoBehaviour
             }
             else
             {
-                //sað
+                //saÄŸ
                 Vector3 targetDirection = dmgTakenFrom.transform.position - gameObject.transform.position;
                 float angle = Vector3.Angle(ori.transform.forward, targetDirection);
 
@@ -623,9 +645,10 @@ public class PController : MonoBehaviour
                 case 7: gc.HandleDMGtakenUI(1); gc.HandleDMGtakenUI(3); break;
                 default:break;
             }
+            dv = true;
             if (dv)//check get damage effect
             {
-                gc.takeDmgEffect();
+                mainCam.gameObject.GetComponent<CameraShake>().StartCamShake();
             }
         }
     }

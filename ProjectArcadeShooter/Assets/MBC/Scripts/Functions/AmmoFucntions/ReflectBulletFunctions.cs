@@ -30,6 +30,9 @@ public class ReflectBulletFunctions : MonoBehaviour
 
     public TrailType trailType;
 
+    public Trail3D trail3D;
+
+
     void Start()
     {
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
@@ -43,6 +46,9 @@ public class ReflectBulletFunctions : MonoBehaviour
         modelRender.SetPropertyBlock(m_PropertyBlock);
         tempFWD = transform.forward;
 
+        trail = Instantiate(trail3D.trail, transform);
+        trail.transform.localEulerAngles = new Vector3(0,180,0);
+        /*
         //Trail Renderer
         trail = new();
         trail.transform.parent = transform;
@@ -53,7 +59,7 @@ public class ReflectBulletFunctions : MonoBehaviour
         trail.GetComponent<TrailRenderer>().colorGradient = trailType.gradient;
         trail.GetComponent<TrailRenderer>().widthCurve = trailType.curve;
         trail.GetComponent<TrailRenderer>().time = trailType.Time;
-
+        */
 
         GetComponent<Rigidbody>().freezeRotation = true;
         GetComponent<Rigidbody>().AddForce(transform.forward * bulletSpeed, ForceMode.Impulse);
@@ -69,6 +75,16 @@ public class ReflectBulletFunctions : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        if(trail.transform.localScale.z < trail3D.maxZScale)
+        {
+            trail.transform.localScale = new Vector3(10, 10, trail.transform.localScale.z + (Time.deltaTime * GetComponent<Rigidbody>().velocity.magnitude * bulletSpeed));
+//            trail.transform.lossyScale.z *= Time.deltaTime * GetComponent<Rigidbody>().velocity;
+        }
+        else
+        {
+
+        }
+
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -140,6 +156,6 @@ public class ReflectBulletFunctions : MonoBehaviour
     }
     private void OnDestroy()
     {
-        trail.transform.parent = null;
+//        trail.transform.parent = null;
     }
 }
