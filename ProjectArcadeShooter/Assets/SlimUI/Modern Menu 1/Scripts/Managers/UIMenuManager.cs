@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.Localization;
 
 namespace SlimUI.ModernMenu{
 	public class UIMenuManager : MonoBehaviour {
@@ -80,6 +81,10 @@ namespace SlimUI.ModernMenu{
         [Tooltip("The GameObject holding the Audio Source component for the SWOOSH SOUND when switching to the Settings Screen")]
         public AudioSource swooshSound;
 
+		[Header("LOCALESTR")]
+		[SerializeField] private LocalizedString LocalizedString;
+		private string keyCodestr;
+
 		void Start(){
 			CameraObject = transform.GetComponent<Animator>();
 
@@ -88,6 +93,9 @@ namespace SlimUI.ModernMenu{
 			if(extrasMenu) extrasMenu.SetActive(false);
 			firstMenu.SetActive(true);
 			mainMenu.SetActive(true);
+
+			LocalizedString.Arguments = new object[] { keyCodestr };
+
 
 			SetThemeColors();
 		}
@@ -276,7 +284,9 @@ namespace SlimUI.ModernMenu{
 				loadingBar.value = progress;
 
 				if (operation.progress >= 0.9f && waitForInput){
-					loadPromptText.text = "Press " + userPromptKey.ToString().ToUpper() + " to continue";
+					keyCodestr = userPromptKey.ToString().ToUpper();
+					LocalizedString.Arguments[0] = keyCodestr;
+//					loadPromptText.text = LocalizedString.;
 					loadingBar.value = 1;
 
 					if (Input.GetKeyDown(userPromptKey)){

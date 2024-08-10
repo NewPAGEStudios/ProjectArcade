@@ -12,6 +12,7 @@ public class MainMenu : MonoBehaviour
 
     public GameObject LoadingScreen;
 
+
     private void Awake()
     {
         path = Application.persistentDataPath + "/player.newp";
@@ -25,6 +26,8 @@ public class MainMenu : MonoBehaviour
             continueBut.gameObject.SetActive(false);
         }
     }
+
+
     public void Play()
     {
         bool val = true;
