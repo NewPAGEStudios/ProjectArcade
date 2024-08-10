@@ -27,6 +27,46 @@ MonoBehaviour:
     m_Key: Setting_Header
     m_Metadata:
       m_Items: []
+  - m_Id: 255242561654784
+    m_Key: button_continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 256096958156800
+    m_Key: button_newgame
+    m_Metadata:
+      m_Items: []
+  - m_Id: 257245903851520
+    m_Key: button_return
+    m_Metadata:
+      m_Items: []
+  - m_Id: 257732006907904
+    m_Key: button_play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 257977386274816
+    m_Key: button_settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 258352319303680
+    m_Key: button_exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 259825933488128
+    m_Key: button_exit_r_u_sure
+    m_Metadata:
+      m_Items: []
+  - m_Id: 261078616903680
+    m_Key: button_no
+    m_Metadata:
+      m_Items: []
+  - m_Id: 261334368784384
+    m_Key: button_yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 262812382793728
+    m_Key: settings_warning_text
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

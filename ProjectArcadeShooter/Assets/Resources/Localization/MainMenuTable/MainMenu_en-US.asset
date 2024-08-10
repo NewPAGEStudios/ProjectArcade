@@ -29,7 +29,47 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 252749995462656
+    m_Localized: SETTINGS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 255242561654784
+    m_Localized: Continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 256096958156800
+    m_Localized: New Game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 257245903851520
+    m_Localized: Return
+    m_Metadata:
+      m_Items: []
+  - m_Id: 257732006907904
+    m_Localized: Play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 257977386274816
     m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 258352319303680
+    m_Localized: Exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 259825933488128
+    m_Localized: Are you sure you want to quit?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 261078616903680
+    m_Localized: No
+    m_Metadata:
+      m_Items: []
+  - m_Id: 261334368784384
+    m_Localized: Yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 262812382793728
+    m_Localized: SOME SETTINGS CAN ONLY BE CHANGED IN THE MAIN MENU
     m_Metadata:
       m_Items: []
   references:

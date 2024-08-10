@@ -83,37 +83,52 @@ namespace SlimUI.ModernMenu{
 
             // check sway n Bobbing
             bool snb = PlayerPrefs.GetInt("SwayNBobbing") == 1 ? true : false;
+			GameObject snbParent = swayBobtext.transform.parent.gameObject;
+			snbParent.transform.GetChild(0).gameObject.SetActive(false);
+			snbParent.transform.GetChild(1).gameObject.SetActive(false);
 			if (snb)
 			{
-				swayBobtext.GetComponent<TMP_Text>().text = "on";
+
+				snbParent.transform.GetChild(1).gameObject.SetActive(true);
 			}
 			else
 			{
-                swayBobtext.GetComponent<TMP_Text>().text = "off";
+				snbParent.transform.GetChild(0).gameObject.SetActive(true);
             }
 
 			// check DamageVibration
 			bool dv = PlayerPrefs.GetInt("DMGVibration") == 1 ? true : false;
+			GameObject dvParent = damageVibrationtext.transform.parent.gameObject;
+			dvParent.transform.GetChild(0).gameObject.SetActive(false);
+			dvParent.transform.GetChild(1).gameObject.SetActive(false);
 			if (dv)
 			{
-                damageVibrationtext.GetComponent<TMP_Text>().text = "on";
+				dvParent.transform.GetChild(1).gameObject.SetActive(true);
+                
 
             }
             else
 			{
-                damageVibrationtext.GetComponent<TMP_Text>().text = "off";
-            }
+				dvParent.transform.GetChild(0).gameObject.SetActive(true);
+			}
 
 
-            // check full screen
-            if (Screen.fullScreen == true){
-				fullscreentext.GetComponent<TMP_Text>().text = "on";
+			// check fullscreen
+			GameObject fullscreen_parent = fullscreentext.transform.parent.gameObject;
+			fullscreen_parent.transform.GetChild(0).gameObject.SetActive(false);
+			fullscreen_parent.transform.GetChild(1).gameObject.SetActive(false);
+			if (Screen.fullScreen == true){
+
+				fullscreen_parent.transform.GetChild(1).gameObject.SetActive(true);
+				
 			}
 			else if(Screen.fullScreen == false){
-				fullscreentext.GetComponent<TMP_Text>().text = "off";
+
+				fullscreen_parent.transform.GetChild(0).gameObject.SetActive(true);
+				
 			}
 
-            /*
+			/*
 			// check hud value
 			if(PlayerPrefs.GetInt("ShowHUD")==0){
 				showhudtext.GetComponent<TMP_Text>().text = "off";
@@ -130,8 +145,8 @@ namespace SlimUI.ModernMenu{
 			}
 			*/
 
-            // check shadow distance/enabled
-            /*
+			// check shadow distance/enabled
+			/*
 			if(platform == Platform.Desktop){
 				if(PlayerPrefs.GetInt("Shadows") == 0){
 					QualitySettings.shadowCascades = 0;
@@ -179,8 +194,8 @@ namespace SlimUI.ModernMenu{
 			}
 
 			*/
-            // check vsync
-            /*
+			// check vsync
+			/*
 			if(QualitySettings.vSyncCount == 0){
 				vsynctext.GetComponent<TMP_Text>().text = "off";
 			}
@@ -203,16 +218,23 @@ namespace SlimUI.ModernMenu{
 			else if(PlayerPrefs.GetInt("MotionBlur")==1){
 				motionblurtext.GetComponent<TMP_Text>().text = "on";
 			}
-
+			*/
 			// check ambient occlusion
-			if(PlayerPrefs.GetInt("AmbientOcclusion")==0){
-				ambientocclusiontext.GetComponent<TMP_Text>().text = "off";
+			GameObject ao_parent = ambientocclusiontext.transform.parent.gameObject;
+			ao_parent.transform.GetChild(0).gameObject.SetActive(false);
+			ao_parent.transform.GetChild(1).gameObject.SetActive(false);
+
+			if (PlayerPrefs.GetInt("AmbientOcclusion")==0){
+				ao_parent.transform.GetChild(0).gameObject.SetActive(true);
+				
 			}
 			else if(PlayerPrefs.GetInt("AmbientOcclusion")==1){
-				ambientocclusiontext.GetComponent<TMP_Text>().text = "on";
+
+				ao_parent.transform.GetChild(1).gameObject.SetActive(true);
+				
 			}
 
-			*/
+			
             // check texture quality
             if (PlayerPrefs.GetInt("Textures") == 0){
 				QualitySettings.SetQualityLevel(0);
@@ -244,45 +266,60 @@ namespace SlimUI.ModernMenu{
 		public void SwayNBobbing()
 		{
             bool snb = PlayerPrefs.GetInt("SwayNBobbing") == 1 ? true : false;
+			GameObject snbParent = swayBobtext.transform.parent.gameObject;
+			snbParent.transform.GetChild(0).gameObject.SetActive(false);
+			snbParent.transform.GetChild(1).gameObject.SetActive(false);
 			if (snb)
 			{
-                PlayerPrefs.SetInt("SwayNBobbing", 0);
-                swayBobtext.GetComponent<TMP_Text>().text = "off";
-
-            }
-            else
+				PlayerPrefs.SetInt("SwayNBobbing", 0);
+				snbParent.transform.GetChild(0).gameObject.SetActive(true);
+				
+			}
+			else
 			{
-                PlayerPrefs.SetInt("SwayNBobbing", 1);
-                swayBobtext.GetComponent<TMP_Text>().text = "on";
-            }
-
-        }
+				PlayerPrefs.SetInt("SwayNBobbing", 1);
+				snbParent.transform.GetChild(1).gameObject.SetActive(true);
+			}
+		}
 
 		public void dmgVibration()
 		{
             bool dv = PlayerPrefs.GetInt("DMGVibration") == 1 ? true : false;
-            if (dv)
-            {
+			GameObject dvParent = damageVibrationtext.transform.parent.gameObject;
+			dvParent.transform.GetChild(0).gameObject.SetActive(false);
+			dvParent.transform.GetChild(1).gameObject.SetActive(false);
+			if (dv)
+			{
 				PlayerPrefs.SetInt("DMGVibration", 0);
-                damageVibrationtext.GetComponent<TMP_Text>().text = "off";
+				dvParent.transform.GetChild(0).gameObject.SetActive(true);
 
-            }
-            else
-            {
+
+			}
+			else
+			{
 				PlayerPrefs.SetInt("DMGVibration", 1);
-                damageVibrationtext.GetComponent<TMP_Text>().text = "on";
-            }
-        }
+				dvParent.transform.GetChild(1).gameObject.SetActive(true);
+			}
+		}
 
 
         public void FullScreen (){
 			Screen.fullScreen = !Screen.fullScreen;
 
-			if(Screen.fullScreen == true){
-				fullscreentext.GetComponent<TMP_Text>().text = "on";
+			GameObject fullscreen_parent = fullscreentext.transform.parent.gameObject;
+			fullscreen_parent.transform.GetChild(0).gameObject.SetActive(false);
+			fullscreen_parent.transform.GetChild(1).gameObject.SetActive(false);
+			if (Screen.fullScreen != true)
+			{
+
+				fullscreen_parent.transform.GetChild(0).gameObject.SetActive(true);
+
 			}
-			else if(Screen.fullScreen == false){
-				fullscreentext.GetComponent<TMP_Text>().text = "off";
+			else if (Screen.fullScreen != false)
+			{
+
+				fullscreen_parent.transform.GetChild(1).gameObject.SetActive(true);
+
 			}
 		}
 
@@ -455,13 +492,21 @@ namespace SlimUI.ModernMenu{
 		}
 
 		public void AmbientOcclusion (){
-			if(PlayerPrefs.GetInt("AmbientOcclusion")==0){
-				PlayerPrefs.SetInt("AmbientOcclusion",1);
-				ambientocclusiontext.GetComponent<TMP_Text>().text = "on";
+			GameObject ao_parent = ambientocclusiontext.transform.parent.gameObject;
+			ao_parent.transform.GetChild(0).gameObject.SetActive(false);
+			ao_parent.transform.GetChild(1).gameObject.SetActive(false);
+
+			if (PlayerPrefs.GetInt("AmbientOcclusion") == 0)
+			{
+				PlayerPrefs.SetInt("AmbientOcclusion", 1);
+				ao_parent.transform.GetChild(1).gameObject.SetActive(true);
+
 			}
-			else if(PlayerPrefs.GetInt("AmbientOcclusion")==1){
-				PlayerPrefs.SetInt("AmbientOcclusion",0);
-				ambientocclusiontext.GetComponent<TMP_Text>().text = "off";
+			else if (PlayerPrefs.GetInt("AmbientOcclusion") == 1)
+			{
+				PlayerPrefs.SetInt("AmbientOcclusion", 0);
+				ao_parent.transform.GetChild(0).gameObject.SetActive(true);
+
 			}
 		}
 

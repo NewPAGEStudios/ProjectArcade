@@ -29,7 +29,48 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 252749995462656
-    m_Localized: deu
+    m_Localized: 'EINSTELLUNGEN '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 255242561654784
+    m_Localized: Fortfahren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 256096958156800
+    m_Localized: Neues Spiel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 257245903851520
+    m_Localized: Laden/Speichern
+    m_Metadata:
+      m_Items: []
+  - m_Id: 257732006907904
+    m_Localized: Spielen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 257977386274816
+    m_Localized: Einstellungen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 258352319303680
+    m_Localized: Beenden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 259825933488128
+    m_Localized: "Willst du wirklich aufh\xF6ren?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 261078616903680
+    m_Localized: Nein
+    m_Metadata:
+      m_Items: []
+  - m_Id: 261334368784384
+    m_Localized: Ja
+    m_Metadata:
+      m_Items: []
+  - m_Id: 262812382793728
+    m_Localized: "EINIGE EINSTELLUNGEN K\xD6NNEN NUR IM HAUPTMEN\xDC GE\xC4NDERT
+      WERDEN"
     m_Metadata:
       m_Items: []
   references:

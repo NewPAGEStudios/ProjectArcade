@@ -25,11 +25,51 @@ MonoBehaviour:
       m_Items:
       - rid: 7012299455040847881
   - m_Id: 252148213501952
-    m_Localized: "Spagett,\t"
+    m_Localized: "Spagetti...\t"
     m_Metadata:
       m_Items: []
   - m_Id: 252749995462656
-    m_Localized: spagitti
+    m_Localized: "SPAGETT\u0130"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 255242561654784
+    m_Localized: Spagetti
+    m_Metadata:
+      m_Items: []
+  - m_Id: 256096958156800
+    m_Localized: Spagetti
+    m_Metadata:
+      m_Items: []
+  - m_Id: 257245903851520
+    m_Localized: Spagetti
+    m_Metadata:
+      m_Items: []
+  - m_Id: 257732006907904
+    m_Localized: Spagetti
+    m_Metadata:
+      m_Items: []
+  - m_Id: 257977386274816
+    m_Localized: Spagetti
+    m_Metadata:
+      m_Items: []
+  - m_Id: 258352319303680
+    m_Localized: Spagetti
+    m_Metadata:
+      m_Items: []
+  - m_Id: 259825933488128
+    m_Localized: Spagetti Spagetti?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 261078616903680
+    m_Localized: NO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 261334368784384
+    m_Localized: "S\xCC"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 262812382793728
+    m_Localized: "SPAGETT\u0130 SPAGETT\u0130"
     m_Metadata:
       m_Items: []
   references:
