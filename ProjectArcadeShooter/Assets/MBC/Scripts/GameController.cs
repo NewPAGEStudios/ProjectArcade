@@ -407,6 +407,7 @@ public class GameController : MonoBehaviour
 
 
         Transform p = enemySpawnPointParent.transform.GetChild(UnityEngine.Random.Range(0, enemySpawnPointParent.transform.childCount));
+        
         float x = UnityEngine.Random.Range(p.transform.Find("min").position.x, p.transform.Find("max").position.x);
         float y = p.position.y + enemies[indexOfID].modelGameObject.transform.localScale.y;
         float z = UnityEngine.Random.Range(p.transform.Find("min").position.z, p.transform.Find("max").position.z);

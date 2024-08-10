@@ -47,7 +47,7 @@ public class ReflectBulletFunctions : MonoBehaviour
         tempFWD = transform.forward;
 
         trail = Instantiate(trail3D.trail, transform);
-        trail.transform.localEulerAngles = new Vector3(0,180,0);
+        trail.transform.localEulerAngles = new Vector3(-90,0,0);
         /*
         //Trail Renderer
         trail = new();
@@ -75,10 +75,9 @@ public class ReflectBulletFunctions : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        if(trail.transform.localScale.z < trail3D.maxZScale)
+        if(trail.transform.localScale.z < trail3D.maxYScale)
         {
-            trail.transform.localScale = new Vector3(10, 10, trail.transform.localScale.z + (Time.deltaTime * GetComponent<Rigidbody>().velocity.magnitude * bulletSpeed));
-//            trail.transform.lossyScale.z *= Time.deltaTime * GetComponent<Rigidbody>().velocity;
+            trail.transform.localScale = new Vector3(.1f, trail3D.maxYScale, .1f);
         }
         else
         {
