@@ -84,6 +84,7 @@ namespace SlimUI.ModernMenu{
 		[Header("LOCALESTR")]
 		[SerializeField] private LocalizedString LocalizedString;
 		private string keyCodestr;
+		
 
 		void Start(){
 			CameraObject = transform.GetComponent<Animator>();
@@ -285,8 +286,7 @@ namespace SlimUI.ModernMenu{
 
 				if (operation.progress >= 0.9f && waitForInput){
 					keyCodestr = userPromptKey.ToString().ToUpper();
-					LocalizedString.Arguments[0] = keyCodestr;
-//					loadPromptText.text = LocalizedString.;
+					loadPromptText.GetComponent<ChangeTextPrompt>().ChangeTP(keyCodestr);
 					loadingBar.value = 1;
 
 					if (Input.GetKeyDown(userPromptKey)){
