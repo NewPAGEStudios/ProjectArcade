@@ -24,6 +24,14 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 7012299455040847880
+  - m_Id: 252148213501952
+    m_Localized: Verladen...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 252749995462656
+    m_Localized: deu
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

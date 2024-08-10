@@ -9487,6 +9487,7 @@ GameObject:
   - component: {fileID: 575658170973970659}
   - component: {fileID: 574150023752463669}
   - component: {fileID: 393855802203550973}
+  - component: {fileID: 575658170973970660}
   m_Layer: 5
   m_Name: LoadingText
   m_TagString: Untagged
@@ -10119,6 +10120,7 @@ GameObject:
   - component: {fileID: 575793793038922507}
   - component: {fileID: 338653441188679763}
   - component: {fileID: 393507895392444601}
+  - component: {fileID: 575793793038922508}
   m_Layer: 0
   m_Name: SETTINGS
   m_TagString: Untagged
@@ -10802,7 +10804,7 @@ GameObject:
   - component: {fileID: 575678431938897015}
   - component: {fileID: 574010156624240345}
   - component: {fileID: 393764845444782467}
-  - component: {fileID: 575678431938897017}
+  - component: {fileID: 575678431938897016}
   m_Layer: 5
   m_Name: TextPrompt
   m_TagString: Untagged
@@ -18253,6 +18255,34 @@ RectTransform:
   m_AnchoredPosition: {x: 629, y: -275}
   m_SizeDelta: {x: 542, y: 62.1}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &575658170973970660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352623183883870675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:ee52057980c2b2646bf560cfd1a70ccc
+    m_TableEntryReference:
+      m_KeyId: 252148213501952
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!224 &575658650712403811
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18351,7 +18381,7 @@ RectTransform:
   m_AnchoredPosition: {x: -618, y: -292.4}
   m_SizeDelta: {x: 542, y: 27.2}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &575678431938897017
+--- !u!114 &575678431938897016
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -18360,10 +18390,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 353399513269078779}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d111e721b951e245b5430c72c6da0ea, type: 3}
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localStringPrompt:
+  m_StringReference:
     m_TableReference:
       m_TableCollectionName: GUID:ee52057980c2b2646bf560cfd1a70ccc
     m_TableEntryReference:
@@ -18371,11 +18401,34 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
-    m_LocalVariables: []
-  textRef: {fileID: 393764845444782467}
+    m_LocalVariables:
+    - name: E
+      variable:
+        rid: 7012299468947587074
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 393764845444782467}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 7012299468947587074
+      type: {class: StringVariable, ns: UnityEngine.Localization.SmartFormat.PersistentVariables,
+        asm: Unity.Localization}
+      data:
+        m_Value: E
 --- !u!224 &575682811767952363
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18630,6 +18683,34 @@ RectTransform:
   m_AnchoredPosition: {x: 293.00012, y: -101.5}
   m_SizeDelta: {x: 586, y: 203}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &575793793038922508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352915749284841961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:ee52057980c2b2646bf560cfd1a70ccc
+    m_TableEntryReference:
+      m_KeyId: 252749995462656
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!224 &575816732092617433
 RectTransform:
   m_ObjectHideFlags: 0

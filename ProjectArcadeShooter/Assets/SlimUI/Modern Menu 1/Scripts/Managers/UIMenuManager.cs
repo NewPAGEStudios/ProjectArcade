@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.Localization;
+using UnityEngine.Localization.Components;
 
 namespace SlimUI.ModernMenu{
 	public class UIMenuManager : MonoBehaviour {
@@ -275,6 +276,7 @@ namespace SlimUI.ModernMenu{
 
 		// Load Bar synching animation
 		IEnumerator LoadAsynchronously(string sceneName){ // scene name is just the name of the current scene being loaded
+			loadPromptText.gameObject.SetActive(false);
 			AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
 			operation.allowSceneActivation = false;
 			mainCanvas.SetActive(false);
@@ -285,8 +287,7 @@ namespace SlimUI.ModernMenu{
 				loadingBar.value = progress;
 
 				if (operation.progress >= 0.9f && waitForInput){
-					keyCodestr = userPromptKey.ToString().ToUpper();
-					loadPromptText.GetComponent<ChangeTextPrompt>().ChangeTP(keyCodestr);
+ 					loadPromptText.gameObject.SetActive(true);
 					loadingBar.value = 1;
 
 					if (Input.GetKeyDown(userPromptKey)){

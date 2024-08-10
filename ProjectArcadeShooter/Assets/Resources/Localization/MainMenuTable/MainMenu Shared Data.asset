@@ -19,6 +19,14 @@ MonoBehaviour:
     m_Key: LoadingText
     m_Metadata:
       m_Items: []
+  - m_Id: 252148213501952
+    m_Key: LoadingTextLoading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 252749995462656
+    m_Key: Setting_Header
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -22,11 +22,6 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 31b359b0e76d12a4da6d26e6dcb4d6f7
-    m_Address: Assets/Resources/Localization/MainMenuScene Shared Data.asset
-    m_ReadOnly: 1
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f87063fad99a62d49b9302578eeab764
     m_Address: Assets/Resources/Localization/AssetTableLang Shared Data.asset
     m_ReadOnly: 1
