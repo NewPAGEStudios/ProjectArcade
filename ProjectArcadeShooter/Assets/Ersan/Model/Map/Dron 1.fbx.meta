@@ -3,7 +3,42 @@ guid: 2f47fdea5bb838c40a948cfa1a9a21af
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bathroom tiles
+    second: {fileID: 2100000, guid: 7a6b959bdaf8aec4382040095a02bf3c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bathroom tiles.001
+    second: {fileID: 2100000, guid: 7a6b959bdaf8aec4382040095a02bf3c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Black Bamboo Lattice
+    second: {fileID: 2100000, guid: 7a6b959bdaf8aec4382040095a02bf3c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Engineering Drawing Blueprint Grid
+    second: {fileID: 2100000, guid: 7a6b959bdaf8aec4382040095a02bf3c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ferrari Rosso Corsa Car Paint
+    second: {fileID: 2100000, guid: 7a6b959bdaf8aec4382040095a02bf3c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.001
+    second: {fileID: 2100000, guid: 2ce5beb4cef3c0d47adf95c27ca755da, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.002
+    second: {fileID: 2100000, guid: 7a6b959bdaf8aec4382040095a02bf3c, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
