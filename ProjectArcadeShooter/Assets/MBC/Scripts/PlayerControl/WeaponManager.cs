@@ -60,6 +60,8 @@ public class WeaponManager : MonoBehaviour
     [Header("Active/Inactive Weapon's Refs")]
     public GameObject activeWeapon;
     public GameObject inActiveWeapon;
+    private GameObject currentWeaponGO;
+
 
     [HideInInspector]
     public Skill active_Skill;
@@ -401,6 +403,7 @@ public class WeaponManager : MonoBehaviour
     }
     IEnumerator FireAnim()
     {
+        currentWeaponGO.transform.Find("Particle System").GetComponent<ParticleSystem>().Play();
         hand_Animator.SetBool("fired", true);
         yield return new WaitForSeconds(0.01f);
         hand_Animator.SetBool("fired", false);
@@ -582,6 +585,7 @@ public class WeaponManager : MonoBehaviour
                 }
             }
         }
+        currentWeaponGO = activeWeapon.transform.GetChild(0).gameObject;
         StartCoroutine(SheateAnim(weaponIndex));
         //AnimationStart
     }
