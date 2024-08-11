@@ -148,7 +148,7 @@ public class GameController : MonoBehaviour
 
         for (int i = 0; i < weapons.Length; i++)
         {
-            //weapon GO ýnstantiate
+            //weapon GO ï¿½nstantiate
             GameObject weaponGO = Instantiate(weapons[i].modelGameObject, inActiveWeapon.transform);
             weaponGO.name = weapons[i].WeaponName;
             weaponGO.SetActive(false);
@@ -280,6 +280,10 @@ public class GameController : MonoBehaviour
         else
         {
             r = pos_childID;
+            if(consumableSpawnPointParent.transform.childCount==0)
+            {
+                return;
+            }
             for(int count = 0; count < consumableSpawnPointParent.transform.childCount; count++)
             {
                 if (consumableSpawnPointParent.transform.GetChild(count).GetComponent<PosIDStorage>().posID == pos_childID)
@@ -289,6 +293,7 @@ public class GameController : MonoBehaviour
                     vec = consumableSpawnPointParent.transform.GetChild(count).position;
                 }
             }
+            
         }
 
 

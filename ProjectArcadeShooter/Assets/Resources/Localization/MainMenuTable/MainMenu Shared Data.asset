@@ -67,6 +67,78 @@ MonoBehaviour:
     m_Key: settings_warning_text
     m_Metadata:
       m_Items: []
+  - m_Id: 724742012669952
+    m_Key: button_off
+    m_Metadata:
+      m_Items: []
+  - m_Id: 725014747287552
+    m_Key: button_on
+    m_Metadata:
+      m_Items: []
+  - m_Id: 725819374178304
+    m_Key: music_volume_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 726836530647040
+    m_Key: damage_vibration_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 727176017612800
+    m_Key: sway_bobbing_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 728481356320768
+    m_Key: mouse_hrz_look_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 728973872467968
+    m_Key: mouse_vrt_look
+    m_Metadata:
+      m_Items: []
+  - m_Id: 730595965014016
+    m_Key: full_screen_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 731468199890944
+    m_Key: ambient_occlusion_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 732002789101568
+    m_Key: texture_quality_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733295997882368
+    m_Key: low_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733462033600512
+    m_Key: medium_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733613515083776
+    m_Key: high_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 734334201368576
+    m_Key: Game_Header
+    m_Metadata:
+      m_Items: []
+  - m_Id: 734905092280320
+    m_Key: Controls_Header
+    m_Metadata:
+      m_Items: []
+  - m_Id: 735548578205696
+    m_Key: button_return_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 735927214804992
+    m_Key: game_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 738527855251456
+    m_Key: controls_text
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
