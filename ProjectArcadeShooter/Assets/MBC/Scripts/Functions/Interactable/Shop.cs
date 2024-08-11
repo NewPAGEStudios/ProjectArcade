@@ -14,20 +14,16 @@ public class Shop : MonoBehaviour
     {
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         col = GetComponent<Collider>();
-        meshFilter = GetComponent<MeshFilter>();
-        meshRenderer = GetComponent<MeshRenderer>();
     }
     private void Update()
     {
         if (gc.pState == GameController.PlayState.inWaiting)
         {
             col.enabled = true;
-            meshRenderer.enabled = true;
         }
         else
         {
             col.enabled = false;
-            meshRenderer.enabled = false;
         }
     }
 

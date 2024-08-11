@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Koni
   m_EditorClassIdentifier: 
   trail3DID: 0
-  maxZScale: 500
-  trail: {fileID: 57908723375168562, guid: f4080a0d707151b48b81f4203c75d92b, type: 3}
+  maxYScale: 10
+  trail: {fileID: 2524949572689927925, guid: b509d9b52f3b65f40bf77bb4a151765b, type: 3}

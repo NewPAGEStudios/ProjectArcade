@@ -13,7 +13,6 @@ public class StateMachine : MonoBehaviour
     private void Awake()
     {
         agentControl = GameObject.FindGameObjectWithTag("GameController").GetComponent<AgentControl>();
-        Debug.Log(agentControl.gameObject.name);
     }
 
     public void Initialise(){

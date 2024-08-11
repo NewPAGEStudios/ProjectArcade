@@ -57,6 +57,7 @@ public class Enemy : MonoBehaviour
         meleeDmg = e_type.attackDMG;
 
         path = gameObject.AddComponent<Path>();
+
         //PathInitialization
         int mostPath = 2;//TODO change to random.range System with different
 

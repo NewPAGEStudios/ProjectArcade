@@ -6,6 +6,6 @@ using UnityEngine;
 public class Trail3D : ScriptableObject
 {
     public int trail3DID;
-    public float maxZScale;
+    public float maxYScale;
     public GameObject trail;
 }
