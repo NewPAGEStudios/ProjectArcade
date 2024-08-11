@@ -69,7 +69,7 @@ public class DummyMummyFunc : MonoBehaviour
 
         }
     }
-    public void toIdle()
+    public void toIdle()//attack süreleri
     {
         bossState = BossState.inIdle;
         idleTimer = Random.Range(2, 4);
