@@ -596,6 +596,21 @@ public class PController : MonoBehaviour
         ccstate = CCStateOfPlayer.normal;
     }
     //OOP Handling
+    public void ChangeSens(float x,float y)
+    {
+        sensX = x;
+        sensY = y;
+    }
+    public void handleSNB(bool value)
+    {
+        snb = value;
+    }
+    public void handleDV(bool value)
+    {
+        dv = value;
+    }
+
+
     public void TakeDMG(float dmgAmmount, GameObject dmgTakenFrom)
     {
         currentHP -= dmgAmmount;

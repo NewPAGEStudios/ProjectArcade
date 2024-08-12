@@ -5,8 +5,11 @@ using System.Linq;
 using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -48,6 +51,11 @@ public class GameController : MonoBehaviour
     public GameObject skillObject;
     public Material skillIndicatorMaterial;
     public GameObject dashVisualized;
+
+    [Header("Global Volume Profiles")]
+    [SerializeField] private VolumeProfile mainEffect;
+    [SerializeField] private VolumeProfile noiseEffect;
+    [SerializeField] private Volume globalProfile;
 
     [Header(header: "Main Camera")]
     public GameObject mainCam;
@@ -120,6 +128,8 @@ public class GameController : MonoBehaviour
     AmbientOcclusion ao;
     private void Awake()
     {
+
+        globalProfile.profile = mainEffect;
 
         //update base
         baseFixedUpdate = Time.fixedDeltaTime;
@@ -461,41 +471,9 @@ public class GameController : MonoBehaviour
         {
             if (pState == PlayState.inStart)
             {
-                if (Input.GetKeyDown(KeyCode.Alpha0))
+                if (Input.GetKeyDown(KeyCode.F))
                 {
-                    player.GetComponent<PController>().TakeDMG(0, player.transform.GetChild(2).gameObject);
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha1))
-                {
-                    player.GetComponent<PController>().TakeDMG(0, player.transform.GetChild(3).gameObject);
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha2))
-                {
-                    player.GetComponent<PController>().TakeDMG(0, player.transform.GetChild(4).gameObject);
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha3))
-                {
-                    player.GetComponent<PController>().TakeDMG(0, player.transform.GetChild(5).gameObject);
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha4))
-                {
-                    player.GetComponent<PController>().TakeDMG(0, player.transform.GetChild(6).gameObject);
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha5))
-                {
-                    player.GetComponent<PController>().TakeDMG(0, player.transform.GetChild(7).gameObject);
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha6))
-                {
-                    player.GetComponent<PController>().TakeDMG(0, player.transform.GetChild(8).gameObject);
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha7))
-                {
-                    player.GetComponent<PController>().TakeDMG(0, player.transform.GetChild(9).gameObject);
-                }
-                if (Input.GetKeyDown(KeyCode.U))
-                {
-                    HandleDmgGiven();
+                    player.GetComponent<PController>().TakeDMG(5, gameObject);
                 }
                 return;
             }
@@ -566,7 +544,7 @@ public class GameController : MonoBehaviour
         waitTimeVisualize(waitTimer);
         waveVisualzie("Wave " + waveNumber);
         //difficulty
-        int maxDifficultyNumber = (waveNumber * 4) - 2;
+        int maxDifficultyNumber = (waveNumber * 4);
         List<EnemyType> enemyThatCanSpawn = new List<EnemyType>();
         
         for(int a = 0; a < enemies.Length; a++)
@@ -679,14 +657,21 @@ public class GameController : MonoBehaviour
     //GameStatesChanger
     public void ResumeGame()
     {
-        state = GameState.inGame;
+        if (gamePanel.transform.GetChild(4).GetChild(0).gameObject.activeInHierarchy)
+        {
+            state = GameState.inGame;
 
-        gamePanel.transform.GetChild(4).gameObject.SetActive(false);
-        Time.timeScale = 1f;
+            gamePanel.transform.GetChild(4).gameObject.SetActive(false);
+            Time.timeScale = 1f;
 
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        else
+        {
+            gamePanel.transform.GetChild(4).GetChild(0).gameObject.SetActive(true);
+            gamePanel.transform.GetChild(4).GetChild(1).gameObject.SetActive(false);
+        }
     }
 
     public void StopGame()
@@ -1183,21 +1168,15 @@ public class GameController : MonoBehaviour
         mainCam.GetComponent<Camera>().farClipPlane = 1000f;
 
         gamePanel.transform.GetChild(5).GetChild(0).gameObject.SetActive(true);
-        string tempText = gamePanel.transform.GetChild(5).GetChild(0).GetComponent<TextMeshProUGUI>().text;
-        gamePanel.transform.GetChild(5).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
+        string tempText = gamePanel.transform.GetChild(5).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text;
+        gamePanel.transform.GetChild(5).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
+
+        globalProfile.profile = noiseEffect;
 
         for (int c = 0; c < tempText.Length;)
         {
-            if (c + 1 == tempText.Length)
-            {
-                gamePanel.transform.GetChild(5).GetChild(0).GetComponent<TextMeshProUGUI>().text += tempText[c];
-                c += 1;
-            }
-            else
-            {
-                gamePanel.transform.GetChild(5).GetChild(0).GetComponent<TextMeshProUGUI>().text += (tempText[c] + tempText[c + 1]);
-                c += 2;
-            }
+            gamePanel.transform.GetChild(5).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text += tempText[c];
+            c += 1;
             yield return new WaitForSecondsRealtime(0.005f);
         }
 
@@ -1219,9 +1198,28 @@ public class GameController : MonoBehaviour
             gamePanel.transform.GetChild(5).GetChild(i).gameObject.SetActive(true);
         }
 
-
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = baseFixedUpdate;
     }
 
+    public void StartAgain()
+    {
+        PlayerPrefs.SetInt("newGame", 1);
+        StartCoroutine(startAgainLoadingRoutine());
+    }
+    IEnumerator startAgainLoadingRoutine()
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync("MainScene");
+        operation.allowSceneActivation = false;
+        
+        while (!operation.isDone)
+        {
+            if(operation.progress >= 0.9f)
+            {
+                operation.allowSceneActivation = true;
+            }
+            yield return null;
+        }
 
-
+    }
 }

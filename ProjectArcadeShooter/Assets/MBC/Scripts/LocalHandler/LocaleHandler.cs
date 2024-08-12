@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -22,11 +23,18 @@ public class LocaleHandler : MonoBehaviour
         {
             return;
         }
-        if(currentID + changerID < 0 || currentID + changerID >= LocalizationSettings.AvailableLocales.Locales.Count)
+        if(currentID + changerID < 0)
         {
-            return;
+            currentID = LocalizationSettings.AvailableLocales.Locales.Count - 1;
+        } 
+        else if (currentID + changerID >= LocalizationSettings.AvailableLocales.Locales.Count)
+        {
+            currentID = 0;
         }
-        currentID += changerID;
+        else
+        {
+            currentID += changerID;
+        }
         StartCoroutine(setLocale(currentID));
     }
 

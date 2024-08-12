@@ -8,8 +8,6 @@ public class Pause_Menu : MonoBehaviour
 {
     public static bool GameIsPaused = false;
 
-    [SerializeField]private GameObject pauseMenuUI;
-    [SerializeField] private GameObject optionCanv;
     private GameController gc;
 
 
@@ -30,11 +28,10 @@ public class Pause_Menu : MonoBehaviour
     }
     public void OpenOption()
     {
-        pauseMenuUI.GetComponent<Image>().color = new Color(pauseMenuUI.GetComponent<Image>().color.r, pauseMenuUI.GetComponent<Image>().color.g, pauseMenuUI.GetComponent<Image>().color.b, 1);
-        pauseMenuUI.transform.GetChild(0).gameObject.SetActive(false);
-        optionCanv.SetActive(true);
+        gameObject.transform.GetChild(0).gameObject.SetActive(false);
+        gameObject.transform.GetChild(1).gameObject.SetActive(true);
     }
-    public void LoadMenu()
+    public void LoadMenu(bool deleteSave)
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(0);

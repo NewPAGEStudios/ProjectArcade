@@ -172,22 +172,22 @@ namespace SlimUI.ModernMenu{
 			PanelControls.SetActive(false);
 			PanelVideo.SetActive(false);
 			PanelGame.SetActive(false);
-//			PanelKeyBindings.SetActive(false);
 
 			lineGame.SetActive(false);
 			lineControls.SetActive(false);
 			lineVideo.SetActive(false);
-//			lineKeyBindings.SetActive(false);
+            //			PanelKeyBindings.SetActive(false);
+            //			lineKeyBindings.SetActive(false);
 
-//			PanelMovement.SetActive(false);
-//			lineMovement.SetActive(false);
-//			PanelCombat.SetActive(false);
-//			lineCombat.SetActive(false);
-//			PanelGeneral.SetActive(false);
-//			lineGeneral.SetActive(false);
-		}
+            //			PanelMovement.SetActive(false);
+            //			lineMovement.SetActive(false);
+            //			PanelCombat.SetActive(false);
+            //			lineCombat.SetActive(false);
+            //			PanelGeneral.SetActive(false);
+            //			lineGeneral.SetActive(false);
+        }
 
-		public void GamePanel(){
+        public void GamePanel(){
 			DisablePanels();
 			PanelGame.SetActive(true);
 			lineGame.SetActive(true);
