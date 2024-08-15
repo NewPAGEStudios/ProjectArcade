@@ -55,6 +55,7 @@ public class GameController : MonoBehaviour
     [Header("Global Volume Profiles")]
     [SerializeField] private VolumeProfile mainEffect;
     [SerializeField] private VolumeProfile noiseEffect;
+    [SerializeField] private VolumeProfile pauseEffect;
     [SerializeField] private Volume globalProfile;
 
     [Header(header: "Cameras")]
@@ -616,7 +617,10 @@ public class GameController : MonoBehaviour
         pState = PlayState.inCinematic;
         //DisableUI
         playerPanel.SetActive(false);
-        gamePanel.SetActive(false);
+        for(int i = 0; i < gamePanel.transform.childCount; i++)
+        {
+            gamePanel.transform.GetChild(i).gameObject.SetActive(false);
+        }
 
 
         //cam Change to cinematic Camera
@@ -669,6 +673,8 @@ public class GameController : MonoBehaviour
             gamePanel.transform.GetChild(4).gameObject.SetActive(false);
             Time.timeScale = 1f;
 
+            globalProfile.profile = mainEffect;
+
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
@@ -684,6 +690,8 @@ public class GameController : MonoBehaviour
         state = GameState.pause;
         gamePanel.transform.GetChild(4).gameObject.SetActive(true);
         Time.timeScale = 0f;
+
+        globalProfile.profile = pauseEffect;
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
@@ -810,12 +818,21 @@ public class GameController : MonoBehaviour
 
         //UI Normalize
         bossIntroPanel.SetActive(false);
-        gamePanel.SetActive(true);
+        for (int i = 0; i < gamePanel.transform.childCount; i++)
+        {
+            if(i == 2 || i == 3 || i == 4 || i == 5)
+            {
+                continue;
+            }
+            gamePanel.transform.GetChild(i).gameObject.SetActive(false);
+        }
         playerPanel.SetActive(true);
         bossPanel.SetActive(true);
+
         //camNormalize
         mainCam.GetComponent<Camera>().enabled = true;
         selectedCam.enabled = false;
+
         //change GameState
         pState = PlayState.inBoss;
     }
@@ -1114,35 +1131,71 @@ public class GameController : MonoBehaviour
         ComboVisualize(comboCount);
     }
 
-    public void DashEffectOpener()
+    public void DashEffectOpener(float duration)
     {
         if (dashEffectCoroutine != null)
         {
             StopCoroutine(dashEffectCoroutine);
         }
-        dashEffectCoroutine = StartCoroutine(dashEffect());
+        dashEffectCoroutine = StartCoroutine(DashEffect(duration));
     }
 
 
     //Effects
-    IEnumerator dashEffect()
+    IEnumerator DashEffect(float duration)
     {
+        mainCam.GetComponent<Camera>().fieldOfView = 90f;
 
+        yield return new WaitForSeconds(duration);
 
-        yield return null;
-
+        mainCam.GetComponent<Camera>().fieldOfView = 60f;
     }
 
 
 
     IEnumerator endGameEffect()
     {
-        mainCam.GetComponent<Camera>().farClipPlane = 100f;
+        mainCam.GetComponent<Camera>().nearClipPlane = 0.3f;
+        HandOverlayCam.GetComponent<Camera>().nearClipPlane = 0.3f;
+
+        mainCam.GetComponent<Camera>().fieldOfView = 60f;
+        float vectorizer = 1.5f;
+
+        float remaining = 1.5f * Mathf.Pow(vectorizer, -1);
+
         while (true)
         {
-            mainCam.GetComponent<Camera>().farClipPlane -= 0.5f;
+            if (mainCam.transform.localEulerAngles.z < 10f)
+            {
+                if (mainCam.transform.localEulerAngles.z > 6f)
+                {
+                    mainCam.transform.localEulerAngles = Vector3.MoveTowards(mainCam.transform.localEulerAngles, new Vector3(mainCam.transform.localEulerAngles.x, 0, 10f), 0.02f * vectorizer);
+                }
+                else
+                {
+                    mainCam.transform.localEulerAngles = Vector3.MoveTowards(mainCam.transform.localEulerAngles, new Vector3(mainCam.transform.localEulerAngles.x, 0, 10f), 0.1f * vectorizer);
+                }
+            }
+            if (mainCam.GetComponent<Camera>().fieldOfView >= 45f)
+            {
+                mainCam.GetComponent<Camera>().fieldOfView = Mathf.MoveTowards(mainCam.GetComponent<Camera>().fieldOfView, 45f, 0.1f * vectorizer);
+            }
+            if (remaining < 0f)
+            {
+                break;
+            }
+            yield return new WaitForSecondsRealtime(0.01f * vectorizer);
+            remaining -= 0.01f * vectorizer;
+        }
+
+
+        while (true)
+        {
+
+            mainCam.GetComponent<Camera>().nearClipPlane += 0.5f;
+            HandOverlayCam.GetComponent<Camera>().nearClipPlane += 0.5f;
             yield return new WaitForSecondsRealtime(0.01f);
-            if (mainCam.GetComponent<Camera>().farClipPlane <= mainCam.GetComponent<Camera>().farClipPlane + 0.5f)
+            if (mainCam.GetComponent<Camera>().nearClipPlane >= 50f)
             {
                 break;
             }
@@ -1180,17 +1233,17 @@ public class GameController : MonoBehaviour
 
         gamePanel.transform.GetChild(5).gameObject.SetActive(true);
 
+        gamePanel.transform.GetChild(5).GetComponent<Image>().color = new Color(0, 0, 0, 0);
+
         while (true)
         {
-            gamePanel.transform.GetChild(5).GetComponent<Image>().color = new Color(gamePanel.transform.GetChild(5).GetComponent<Image>().color.r, gamePanel.transform.GetChild(5).GetComponent<Image>().color.b, gamePanel.transform.GetChild(5).GetComponent<Image>().color.g, gamePanel.transform.GetChild(5).GetComponent<Image>().color.a + 0.01f);
-            new WaitForSecondsRealtime(0.01f);
+            gamePanel.transform.GetChild(5).GetComponent<Image>().color = new Color(gamePanel.transform.GetChild(5).GetComponent<Image>().color.r, gamePanel.transform.GetChild(5).GetComponent<Image>().color.b, gamePanel.transform.GetChild(5).GetComponent<Image>().color.g, gamePanel.transform.GetChild(5).GetComponent<Image>().color.a + 0.01f * 0.01f);
+            new WaitForSecondsRealtime(0.1f);
             if (gamePanel.transform.GetChild(5).GetComponent<Image>().color.a >= 1f)
             {
                 break;
             }
         }
-
-        mainCam.GetComponent<Camera>().farClipPlane = 1000f;
 
         gamePanel.transform.GetChild(5).GetChild(0).gameObject.SetActive(true);
         string tempText = gamePanel.transform.GetChild(5).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text;

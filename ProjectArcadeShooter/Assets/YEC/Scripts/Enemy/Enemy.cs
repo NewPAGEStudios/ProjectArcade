@@ -39,6 +39,15 @@ public class Enemy : MonoBehaviour
     [HideInInspector]
     public EnemyType e_type;
     public Animator animator;
+
+    private enum ccState
+    {
+        normal,
+        stun,
+    }
+    ccState state;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -93,6 +102,10 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (state == ccState.stun)
+        {
+            return;//Updateyi patlat
+        }
         currentState = stateMachine.activeState.ToString();
     }
     public bool CanSeePlayer()
@@ -144,7 +157,18 @@ public class Enemy : MonoBehaviour
         }
 
         animator.SetBool("AttackEnd", false);
+    }
+    //crowd controll
+    public void stun()
+    {
+        StartCoroutine(stunEffect());
+    }
 
+    //crowd controll effect
+    IEnumerator stunEffect()
+    //visualize et material rengi ve material property block ile // //ayrýca hareketi kýsacak stateyi ayarla//
+    {
+        yield return null;
 
     }
 

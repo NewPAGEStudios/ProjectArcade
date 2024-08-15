@@ -618,7 +618,10 @@ public class WeaponManager : MonoBehaviour
             hand_Animator.SetTrigger("skill" + active_Skill.skillTypeID);
             GameObject go = Instantiate(active_Skill.modelPrefab, gc.skillIndicatorParent.transform);
             go.name = "indicator";
-            go.GetComponent<Collider>().enabled = false;
+            if(go.TryGetComponent<Collider>(out Collider col))
+            {
+                col.enabled = false;
+            }
             go.GetComponent<MeshRenderer>().material = gc.skillIndicatorMaterial;
             onSkillUsage = true;
             skill_holdOT = false;
@@ -665,8 +668,13 @@ public class WeaponManager : MonoBehaviour
             if(skillOBJ.TryGetComponent<wallriser>(out wallriser wr))
             {
                 wr.skill = active_Skill;
+                StartCoroutine(PerformSkillAnim(active_Skill.skillTypeID));
             }
-            StartCoroutine(PerformSkillAnim(active_Skill.skillTypeID));
+            else if(skillOBJ.TryGetComponent<stunInstanSkill>(out stunInstanSkill sis))
+            {
+                sis.thisSkilll = active_Skill;
+                StartCoroutine(PerformSkillAnim(0));
+            }
 
             skill_holdOT = true;
             active_Skill = null;

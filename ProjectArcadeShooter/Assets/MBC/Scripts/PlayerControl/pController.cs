@@ -440,6 +440,7 @@ public class PController : MonoBehaviour
             currentdashMeter -= 25;
             gc.DashIndicator(currentdashMeter);
 
+            gc.DashEffectOpener(slideDuration - 0.03f);
             Invoke(nameof(SlidingNormal), slideDuration);
         }
     }
@@ -477,6 +478,7 @@ public class PController : MonoBehaviour
                     rb.AddForce(moveDir * dashForce, ForceMode.VelocityChange);
                     break;
             }
+            gc.DashEffectOpener(slideDuration - 0.03f);
             Invoke(nameof(DashingNormal), slideDuration - 0.03f);
         }
     }

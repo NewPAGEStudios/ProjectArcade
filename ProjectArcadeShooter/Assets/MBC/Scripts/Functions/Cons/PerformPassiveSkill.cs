@@ -37,6 +37,10 @@ public class PerformPassiveSkill : MonoBehaviour
             {
                 gs.consPosID = consPosID;
             }
+            else if(gameObject.TryGetComponent<extraJumpAdder>(out extraJumpAdder eja))
+            {
+                eja.consPosID = consPosID;
+            }
         }
         else
         {
