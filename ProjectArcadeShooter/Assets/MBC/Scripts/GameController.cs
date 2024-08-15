@@ -5,7 +5,6 @@ using System.Linq;
 using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.PostProcessing;
@@ -243,6 +242,7 @@ public class GameController : MonoBehaviour
 
             //UI INIT
             ChangeAmmoText(0);
+            ChangeVisibilityofSlash();
             ChangefullAmmoText(0);
 
             ComboBG(0);
@@ -895,13 +895,33 @@ public class GameController : MonoBehaviour
         playerPanel.transform.GetChild(6).GetChild(0).GetComponent<Image>().fillAmount = currentH/maxH;
         playerPanel.transform.GetChild(6).GetChild(1).GetComponent<TextMeshProUGUI>().text = currentH.ToString() + "/" + maxH.ToString();
     }
-    public void ChangeAmmoText(int newAmmo)
+    public void ChangeAmmoText(int newAmmo,bool? value = null)
     {
-        playerPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = newAmmo.ToString();
+        if (value == null)
+        {
+            playerPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = newAmmo.ToString();
+        }
+        else
+        {
+            playerPanel.transform.GetChild(0).transform.gameObject.SetActive(value.Value);
+        }
     }
-    public void ChangefullAmmoText(int newAmmo)
+
+    
+    public void ChangeVisibilityofSlash(bool value)
     {
-        playerPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = newAmmo.ToString();
+        playerPanel.transform.GetChild(1).gameObject.SetActive(value);
+    }
+    public void ChangefullAmmoText(int newAmmo,bool? value=null)
+    {
+        if(value == null )
+        {
+            playerPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = newAmmo.ToString();
+        }
+        else
+        {
+            playerPanel.transform.GetChild(0).transform.gameObject.SetActive(value.Value);
+        }
 
     }
     public void changeSpriteOfActiveSkill(Sprite sprite)
