@@ -57,8 +57,10 @@ public class GameController : MonoBehaviour
     [SerializeField] private VolumeProfile noiseEffect;
     [SerializeField] private Volume globalProfile;
 
-    [Header(header: "Main Camera")]
+    [Header(header: "Cameras")]
     public GameObject mainCam;
+    public GameObject UIOverlayCam;
+    public GameObject HandOverlayCam;
     //UI Ref
     [Header(header: "UIReference")]
     public GameObject playerPanel;
@@ -119,11 +121,14 @@ public class GameController : MonoBehaviour
     [Header(header: "UI Prefab Referances")]
     public GameObject shopButton;
     public GameObject shopTXT;
+
     //IEnumerators
     private Coroutine comboDisplayRoutine;
     private Coroutine[] fWayDMGVisualize = new Coroutine[4];
     private Coroutine dmgGivenUICoroutine;
     private Coroutine dmgTakenEffectCoroutine;
+    private Coroutine dashEffectCoroutine;
+
     //PostProcessing Settings
     AmbientOcclusion ao;
     private void Awake()
@@ -1051,7 +1056,7 @@ public class GameController : MonoBehaviour
     public void ComboVombo(int comboTime)
     {
         comboCount += comboTime;
-        if (comboCount % 10 == 0 && comboCount != 0)
+        if (comboCount % 5 == 0 && comboCount != 0)
         {
             float[] possibleGainMoney = new float[1000];
             for(int i = 0; i < 1000; i++)
@@ -1108,8 +1113,28 @@ public class GameController : MonoBehaviour
         comboCount = 0;
         ComboVisualize(comboCount);
     }
-    
+
+    public void DashEffectOpener()
+    {
+        if (dashEffectCoroutine != null)
+        {
+            StopCoroutine(dashEffectCoroutine);
+        }
+        dashEffectCoroutine = StartCoroutine(dashEffect());
+    }
+
+
     //Effects
+    IEnumerator dashEffect()
+    {
+
+
+        yield return null;
+
+    }
+
+
+
     IEnumerator endGameEffect()
     {
         mainCam.GetComponent<Camera>().farClipPlane = 100f;

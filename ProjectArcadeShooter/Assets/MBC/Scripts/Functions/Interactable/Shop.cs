@@ -9,9 +9,15 @@ public class Shop : MonoBehaviour
     Collider col;
     MeshFilter meshFilter;
     MeshRenderer meshRenderer;
+    bool OTEventforOpen;
+    bool OTEventforClose;
+    Animator animator;
     // Start is called before the first frame update
     void Start()
     {
+        animator = GetComponent<Animator>();
+        OTEventforOpen = true;
+        OTEventforClose = true;
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         col = GetComponent<Collider>();
     }
@@ -19,12 +25,53 @@ public class Shop : MonoBehaviour
     {
         if (gc.pState == GameController.PlayState.inWaiting)
         {
-            col.enabled = true;
+            if (OTEventforOpen)
+            {
+                StartCoroutine(OpenRoutine());
+                OTEventforOpen = false;
+                OTEventforClose = true;
+            }
         }
         else
         {
-            col.enabled = false;
+            if (OTEventforClose)
+            {
+                col.enabled = false;
+                StartCoroutine(CloseRoutine());
+                OTEventforOpen = true;
+                OTEventforClose = false;
+            }
+
         }
+    }
+    IEnumerator OpenRoutine()
+    {
+        animator.SetBool("close", false);
+        animator.SetBool("open", true);
+        while (true)
+        {
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Main"))
+            {
+                break;
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        col.enabled = true;
+        yield return null;
+    }
+    IEnumerator CloseRoutine()
+    {
+        animator.SetBool("close", true);
+        animator.SetBool("open", false);
+        while (true)
+        {
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Main"))
+            {
+                break;
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        yield return null;
     }
 
 }

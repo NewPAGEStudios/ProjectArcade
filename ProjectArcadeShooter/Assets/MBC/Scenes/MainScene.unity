@@ -3282,7 +3282,6 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
-  - component: {fileID: 330585548}
   - component: {fileID: 330585549}
   m_Layer: 6
   m_Name: Main Camera
@@ -3395,7 +3394,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -3416,23 +3415,6 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
---- !u!114 &330585548
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 330585543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: 1fa011c90ab385846adbbf5dace871b6, type: 2}
-  isGlobal: 0
-  blendDistance: 0
-  weight: 1
-  priority: 0
 --- !u!114 &330585549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10118,7 +10100,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: a6560a915ef98420e9faacc1c7438823, type: 2}
+  sharedProfile: {fileID: 11400000, guid: deacf1bf0e6658f408160a7b0e47c4a2, type: 2}
 --- !u!4 &832575519
 Transform:
   m_ObjectHideFlags: 0
@@ -13170,6 +13152,8 @@ MonoBehaviour:
   noiseEffect: {fileID: 11400000, guid: 59eed34d786dd9740bfce7e5cab26bed, type: 2}
   globalProfile: {fileID: 832575518}
   mainCam: {fileID: 330585543}
+  UIOverlayCam: {fileID: 0}
+  HandOverlayCam: {fileID: 0}
   playerPanel: {fileID: 1542998224}
   gamePanel: {fileID: 575874990}
   bossIntroPanel: {fileID: 612379084}
@@ -18371,6 +18355,7 @@ GameObject:
   - component: {fileID: 1516385308}
   - component: {fileID: 1516385309}
   - component: {fileID: 1516385310}
+  - component: {fileID: 1516385311}
   m_Layer: 8
   m_Name: WeaponCamOverlay
   m_TagString: Untagged
@@ -18489,6 +18474,23 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!114 &1516385311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1516385307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 0}
 --- !u!1 &1521155569
 GameObject:
   m_ObjectHideFlags: 0
@@ -19689,17 +19691,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 0956535edf85bb44d8c761bd42a5e965,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.0000000018626444
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0956535edf85bb44d8c761bd42a5e965,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.296
+      value: -0.29600143
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0956535edf85bb44d8c761bd42a5e965,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.5
+      value: -0.5000005
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0956535edf85bb44d8c761bd42a5e965,
         type: 3}
@@ -19899,12 +19901,12 @@ PrefabInstance:
     - target: {fileID: -5728292905374268493, guid: 0956535edf85bb44d8c761bd42a5e965,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.10820937
+      value: -0.10820938
       objectReference: {fileID: 0}
     - target: {fileID: -5728292905374268493, guid: 0956535edf85bb44d8c761bd42a5e965,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.026315657
+      value: -0.02631566
       objectReference: {fileID: 0}
     - target: {fileID: -5676886021798722774, guid: 0956535edf85bb44d8c761bd42a5e965,
         type: 3}
@@ -23840,7 +23842,7 @@ Transform:
   m_GameObject: {fileID: 1906974777}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.99992436, z: 0, w: 0.012304397}
-  m_LocalPosition: {x: 0, y: 33.63, z: 0}
+  m_LocalPosition: {x: -10.49, y: -6.1, z: -120.26}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
