@@ -27,8 +27,8 @@ public class EnemyHealth : MonoBehaviour
     {
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         level = 0;
-        
-        enemyObjectRenderer = gameObject.transform.GetChild(0).GetChild(1).GetComponent<SkinnedMeshRenderer>();
+
+        enemyObjectRenderer = gameObject.transform.Find("Model").GetComponentInChildren<SkinnedMeshRenderer>();
 
         mainMat = gameObject.GetComponent<Enemy>().e_type.mainMat;
         if (gameObject.GetComponent<Enemy>().e_type.getDmgMat != null)

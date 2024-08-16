@@ -242,7 +242,7 @@ public class GameController : MonoBehaviour
 
             //UI INIT
             ChangeAmmoText(0);
-            ChangeVisibilityofSlash();
+//            ChangeVisibilityofSlash();
             ChangefullAmmoText(0);
 
             ComboBG(0);
@@ -438,17 +438,6 @@ public class GameController : MonoBehaviour
         enemy.AddComponent<Enemy>();
         enemy.GetComponent<Enemy>().e_type = enemies[indexOfID];
         enemy.GetComponent<Enemy>().parentSelectedPosition = p;
-
-        if (enemies[indexOfID].isRanged)
-        {
-            GameObject firePosGO = new();
-            firePosGO.transform.SetParent(enemy.transform);
-
-            firePosGO.transform.position = enemies[indexOfID].firePos;
-            firePosGO.transform.localEulerAngles = Vector3.zero;
-            firePosGO.transform.localScale = Vector3.one;
-
-        }
 
         enemy.name = "enemy";
 

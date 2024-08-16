@@ -51,12 +51,14 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameObject model = Instantiate(e_type.modelGameObject, gameObject.transform);
+
+        model.name = "Model";
+
         if (e_type.isRanged)
         {
-            gunBarrel = transform.GetChild(0).Find("firePos");
+            gunBarrel = transform.Find("Model").Find("firePos");
         }
-
-        GameObject model = Instantiate(e_type.modelGameObject, gameObject.transform);
 
         animator = model.GetComponent<Animator>();
 
