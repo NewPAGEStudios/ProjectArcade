@@ -53,7 +53,7 @@ public class Enemy : MonoBehaviour
     {
         if (e_type.isRanged)
         {
-            gunBarrel = transform.Find("firePos");
+            gunBarrel = transform.GetChild(0).Find("firePos");
         }
 
         GameObject model = Instantiate(e_type.modelGameObject, gameObject.transform);
@@ -166,7 +166,7 @@ public class Enemy : MonoBehaviour
 
     //crowd controll effect
     IEnumerator stunEffect()
-    //visualize et material rengi ve material property block ile // //ayrýca hareketi kýsacak stateyi ayarla//
+    //visualize et material rengi ve material property block ile // //ayrï¿½ca hareketi kï¿½sacak stateyi ayarla//
     {
         yield return null;
 

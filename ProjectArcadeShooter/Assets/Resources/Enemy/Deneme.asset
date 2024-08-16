@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83af2c1cfa181454ab5d6314b130aec2, type: 3}
+  m_Name: Deneme
+  m_EditorClassIdentifier: 
+  EnemyTypeID: 2
+  modelGameObject: {fileID: 1605696545314292573, guid: df44dbe2345f1c044802e88d6fba7aa3,
+    type: 3}
+  ammo: {fileID: 11400000, guid: 11a3b18b96a292d4ca57c0107bb46267, type: 2}
+  agentName: EnemyWALKER
+  firePos: {x: 0, y: 0, z: 0}
+  mainMat: {fileID: 2100000, guid: f2601df4fbcb6df49953a5e9f7963f45, type: 2}
+  getDmgMat: {fileID: 2100000, guid: d9f6cacbf86f0734ab3af54209544245, type: 2}
+  deathMat: {fileID: 2100000, guid: c247b988d50dec8448cb5b642c740654, type: 2}
+  hitPoint: 100
+  moveSpeed: 2
+  attackRatio: 0.1
+  isRanged: 1
+  rangeDistance: 3
+  attackDMG: 20
+  difficultyNumber: 1

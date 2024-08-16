@@ -69,7 +69,7 @@ public class AttackState : BaseState
                 }
                 if (moveTimer > Random.Range(3, 7))
                 {
-                    enemy.Agent.SetDestination(enemy.transform.position + (Random.insideUnitSphere * 5));
+                    enemy.Agent.SetDestination(enemy.transform.position + (Random.insideUnitSphere * 15));
                     moveTimer = 0;
                 }
                 enemy.LastKnowPos = enemy.Player.transform.position;
@@ -88,7 +88,7 @@ public class AttackState : BaseState
     //Functions
     public void Shoot()
     {
-        enemy.animator.SetTrigger("Throw");
+        //  enemy.animator.SetTrigger("Throw");//*
 
         Transform gunbarrel = enemy.gunBarrel;
 
@@ -98,7 +98,7 @@ public class AttackState : BaseState
 
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(Random.Range(-3f, 3f), Vector3.up) * shootDirection * 40;
         Debug.Log("Shoot");
-        enemy.animator.SetTrigger("Idle");
+        //  enemy.animator.SetTrigger("Idle");//*
 
         shotTimer = 0;
     }
