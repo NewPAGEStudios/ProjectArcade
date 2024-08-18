@@ -144,6 +144,22 @@ MonoBehaviour:
     m_Localized: Controls
     m_Metadata:
       m_Items: []
+  - m_Id: 3254475954851840
+    m_Localized: 999 COMBO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3254849201770496
+    m_Localized: Resume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3258712185114624
+    m_Localized: Main Menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3259962872041472
+    m_Localized: Try Again
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

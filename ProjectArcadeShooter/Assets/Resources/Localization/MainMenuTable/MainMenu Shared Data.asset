@@ -139,6 +139,22 @@ MonoBehaviour:
     m_Key: controls_text
     m_Metadata:
       m_Items: []
+  - m_Id: 3254475954851840
+    m_Key: 999_combo_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3254849201770496
+    m_Key: p_menu_resume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3258712185114624
+    m_Key: p_menu_main_menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3259962872041472
+    m_Key: tyr_again_text
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

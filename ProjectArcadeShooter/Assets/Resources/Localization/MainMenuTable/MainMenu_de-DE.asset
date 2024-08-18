@@ -33,7 +33,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 255242561654784
-    m_Localized: Fortfahren
+    m_Localized: Weiter
     m_Metadata:
       m_Items: []
   - m_Id: 256096958156800
@@ -143,6 +143,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 738527855251456
     m_Localized: Kontrollen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3254475954851840
+    m_Localized: 999 COMBO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3254849201770496
+    m_Localized: Weitergehen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3258712185114624
+    m_Localized: "Hauptmen\xFC"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3259962872041472
+    m_Localized: Versuchen Sie Es Erneut
     m_Metadata:
       m_Items: []
   references:
