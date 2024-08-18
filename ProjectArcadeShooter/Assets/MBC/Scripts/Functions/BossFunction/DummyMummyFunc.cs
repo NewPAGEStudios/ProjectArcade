@@ -204,7 +204,8 @@ public class DummyMummyFunc : MonoBehaviour
     IEnumerator moveWithAttack(Vector3 targetPos,int[] attackPath, int attackID)
     {
         targetPos = new Vector3(targetPos.x, 100.5f, targetPos.z);
-        gameObject.transform.eulerAngles = new Vector3(30, 0, 0);
+        gameObject.transform.LookAt(targetPos);
+        gameObject.transform.eulerAngles = new Vector3(30, gameObject.transform.eulerAngles.y, 0);
         GameObject rotateObject = gameObject.transform.Find("Model").gameObject;
         while (true)
         {

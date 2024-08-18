@@ -52,11 +52,13 @@ public class GetActiveSkill : MonoBehaviour
         player.GetComponent<WeaponManager>().getSkill(thisSkill);
         gameObject.transform.parent.parent = gc.consumableSpawnPointParent.transform;
         int id = gc.activeCons.IndexOf(consPosID);
-        Debug.Log(id);
-        gc.activeCons.RemoveAt(id);
-        gc.activeConsID.RemoveAt(id);
-        gc.activeConsSkill.RemoveAt(id);
-        gc.activeConsWeapID.RemoveAt(id);
+        if (gc.pState != GameController.PlayState.inBoss)
+        {
+            gc.activeCons.RemoveAt(id);
+            gc.activeConsID.RemoveAt(id);
+            gc.activeConsSkill.RemoveAt(id);
+            gc.activeConsWeapID.RemoveAt(id);
+        }
         Destroy(gameObject);
         return;
     }

@@ -289,7 +289,10 @@ public class GameController : MonoBehaviour
         if (pos_childID == -1 || activeCons.Contains(pos_childID))
         {
             r = UnityEngine.Random.Range(0, consumableSpawnPointParent.transform.childCount);
-            activeCons.Add(consumableSpawnPointParent.transform.GetChild(r).GetComponent<PosIDStorage>().posID);
+            if(pState != PlayState.inBoss)
+            {
+                activeCons.Add(consumableSpawnPointParent.transform.GetChild(r).GetComponent<PosIDStorage>().posID);
+            }
             pos_Holder = consumableSpawnPointParent.transform.GetChild(r).GetComponent<PosIDStorage>().posID;
             vec = consumableSpawnPointParent.transform.GetChild(r).position;
         }
@@ -304,7 +307,10 @@ public class GameController : MonoBehaviour
             {
                 if (consumableSpawnPointParent.transform.GetChild(count).GetComponent<PosIDStorage>().posID == pos_childID)
                 {
-                    activeCons.Add(pos_childID);
+                    if (pState != PlayState.inBoss)
+                    {
+                        activeCons.Add(pos_childID);
+                    }
                     pos_Holder = pos_childID;
                     vec = consumableSpawnPointParent.transform.GetChild(count).position;
                 }
@@ -334,7 +340,10 @@ public class GameController : MonoBehaviour
 
         System.Type scriptMB = System.Type.GetType(consumables[i].functionName + ",Assembly-CSharp");
 
-        activeConsID.Add(consID);
+        if (pState != PlayState.inBoss)
+        {
+            activeConsID.Add(consID);
+        }
 
         consumableobject.AddComponent(scriptMB);
 
@@ -351,8 +360,11 @@ public class GameController : MonoBehaviour
                 gw.weaponID = weaponID;
             }
             gw.consPosID = pos_Holder;
-            activeConsWeapID.Add(gw.weaponID);
-            activeConsSkill.Add(-1);
+            if (pState != PlayState.inBoss)
+            {
+                activeConsWeapID.Add(gw.weaponID);
+                activeConsSkill.Add(-1);
+            }
         }
         //skills
         else if(consumableobject.TryGetComponent<GetActiveSkill>(out GetActiveSkill gas))
@@ -366,8 +378,11 @@ public class GameController : MonoBehaviour
                 gas.skillId = skillID;
             }
             gas.consPosID = pos_Holder;
-            activeConsWeapID.Add(-1);
-            activeConsSkill.Add(gas.skillId);
+            if (pState != PlayState.inBoss)
+            {
+                activeConsWeapID.Add(-1);
+                activeConsSkill.Add(gas.skillId);
+            }
         }
         else if(consumableobject.TryGetComponent<PerformPassiveSkill>(out PerformPassiveSkill pps))
         {
@@ -386,8 +401,11 @@ public class GameController : MonoBehaviour
                 }
             }
             pps.consPosID = pos_Holder;
-            activeConsWeapID.Add(-1);
-            activeConsSkill.Add(pps.thisSkill.skillTypeID);
+            if (pState != PlayState.inBoss)
+            {
+                activeConsWeapID.Add(-1);
+                activeConsSkill.Add(pps.thisSkill.skillTypeID);
+            }
         }
         else
         {
@@ -527,7 +545,7 @@ public class GameController : MonoBehaviour
     {
         SpawnCons(-1, 0, 1, -1);
         waveNumber += 1;
-        if (waveNumber % 10 == 2)
+        if (waveNumber % 10 == 1)
         {
             toBoss(0);
             return;
