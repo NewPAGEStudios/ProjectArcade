@@ -241,9 +241,9 @@ public class GameController : MonoBehaviour
             waitTimeVisualize(-1);
 
             //UI INIT
-            ChangeAmmoText(0);
-//            ChangeVisibilityofSlash();
-            ChangefullAmmoText(0);
+            ChangeAmmoText(-1, false);
+            ChangeVisibilityofSlash(false);
+            ChangefullAmmoText(-1,false);
 
             ComboBG(0);
             ComboVisualize(0);
@@ -545,7 +545,7 @@ public class GameController : MonoBehaviour
     {
         SpawnCons(-1, 0, 1, -1);
         waveNumber += 1;
-        if (waveNumber % 10 == 1)
+        if (waveNumber % 10 == 2)
         {
             toBoss(0);
             return;
@@ -902,34 +902,37 @@ public class GameController : MonoBehaviour
         playerPanel.transform.GetChild(6).GetChild(0).GetComponent<Image>().fillAmount = currentH/maxH;
         playerPanel.transform.GetChild(6).GetChild(1).GetComponent<TextMeshProUGUI>().text = currentH.ToString() + "/" + maxH.ToString();
     }
-    public void ChangeAmmoText(int newAmmo,bool? value = null)
+    public void ChangeAmmoText(int? newAmmo = -1, bool? value = true)
     {
-        if (value == null)
-        {
-            playerPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = newAmmo.ToString();
-        }
-        else
-        {
-            playerPanel.transform.GetChild(0).transform.gameObject.SetActive(value.Value);
-        }
+        playerPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = newAmmo.ToString();
+        playerPanel.transform.GetChild(0).transform.gameObject.SetActive(value.Value);
     }
+
 
     
     public void ChangeVisibilityofSlash(bool value)
     {
         playerPanel.transform.GetChild(1).gameObject.SetActive(value);
     }
-    public void ChangefullAmmoText(int newAmmo,bool? value=null)
+    public void ChangefullAmmoText(int? newAmmo = -1, bool? value = true)
     {
-        if(value == null )
-        {
-            playerPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = newAmmo.ToString();
-        }
-        else
-        {
-            playerPanel.transform.GetChild(0).transform.gameObject.SetActive(value.Value);
-        }
+         playerPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = newAmmo.ToString();
+         playerPanel.transform.GetChild(2).transform.gameObject.SetActive(value.Value);
+    }
 
+    public void ChangeActiveWeapon(int id)
+    {
+        for (int c = 0; c < playerPanel.transform.GetChild(9).childCount; c++)
+        {
+            if(c == id)
+            {
+                playerPanel.transform.GetChild(9).GetChild(c).gameObject.SetActive(true);
+            }
+            else
+            {
+                playerPanel.transform.GetChild(9).GetChild(c).gameObject.SetActive(false);
+            }
+        }
     }
     public void changeSpriteOfActiveSkill(Sprite sprite)
     {

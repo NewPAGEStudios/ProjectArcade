@@ -43,15 +43,6 @@ public class stunInstanSkill : MonoBehaviour
             go.GetComponent<Renderer>().SetPropertyBlock(m_propertyBlock);
             yield return new WaitForSeconds(0.1f);
         }
-        gameObject.transform.parent.parent = gc.consumableSpawnPointParent.transform;
-
-        int id = gc.activeCons.IndexOf(consPosID);
-        gc.activeCons.RemoveAt(id);
-        gc.activeConsID.RemoveAt(id);
-        gc.activeConsSkill.RemoveAt(id);
-        gc.activeConsWeapID.RemoveAt(id);
-
-        Destroy(gameObject);
 
     }
 }

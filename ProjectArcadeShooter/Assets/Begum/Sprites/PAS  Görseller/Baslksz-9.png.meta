@@ -95,7 +95,91 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Baslksz-9_0
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 209
+        width: 1516
+        height: 810
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8471a332292cf5d44afa92a3aa61604e
+      internalID: -1244299788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Baslksz-9_1
+      rect:
+        serializedVersion: 2
+        x: 367
+        y: 1013
+        width: 597
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0199ebbdde59f4c489212d1379606175
+      internalID: -1312586982
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Baslksz-9_2
+      rect:
+        serializedVersion: 2
+        x: 1096
+        y: 1013
+        width: 61
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ddf9afe73e44e3f408c63dde1ca9289a
+      internalID: 640936235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Baslksz-9_3
+      rect:
+        serializedVersion: 2
+        x: 1300
+        y: 1013
+        width: 60
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 267cc0f18b0d7e6418375c8923a39114
+      internalID: -613191507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -106,7 +190,11 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Baslksz-9_0: -1244299788
+      Baslksz-9_1: -1312586982
+      Baslksz-9_2: 640936235
+      Baslksz-9_3: -613191507
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

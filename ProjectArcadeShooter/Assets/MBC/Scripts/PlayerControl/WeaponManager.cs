@@ -281,6 +281,8 @@ public class WeaponManager : MonoBehaviour
         {
 
             currWeapon_sum_ammoAmount += ammoAmount;
+            gc.ChangeAmmoText(0);
+            gc.ChangeVisibilityofSlash(true);
             gc.ChangefullAmmoText(currWeapon_sum_ammoAmount);
             return;
         }
@@ -325,6 +327,7 @@ public class WeaponManager : MonoBehaviour
         magmax = FindWeaponOnRuntime(weaponID).maxMagAmount;
 
         gc.ChangeAmmoText(currWeapon_inWeapon_ammoAmount);
+        gc.ChangeVisibilityofSlash(true);
         gc.ChangefullAmmoText(currWeapon_sum_ammoAmount);
 
 
@@ -357,6 +360,7 @@ public class WeaponManager : MonoBehaviour
         }
 
         gc.ChangeAmmoText(currWeapon_inWeapon_ammoAmount);
+        gc.ChangeVisibilityofSlash(true);
         gc.ChangefullAmmoText(currWeapon_sum_ammoAmount);
 
         //spawnBullet()
@@ -500,6 +504,7 @@ public class WeaponManager : MonoBehaviour
             activeWeapon.transform.GetChild(0).Find("ammo").GetComponent<TextMeshPro>().text = currWeapon_inWeapon_ammoAmount.ToString();
         }
         gc.ChangeAmmoText(currWeapon_inWeapon_ammoAmount);
+        gc.ChangeVisibilityofSlash(true);
         gc.ChangefullAmmoText(currWeapon_sum_ammoAmount);
     }
     //swayNBobbing
@@ -587,7 +592,7 @@ public class WeaponManager : MonoBehaviour
         }
         currentWeaponGO = activeWeapon.transform.GetChild(0).gameObject;
         StartCoroutine(SheateAnim(weaponIndex));
-        //AnimationStart
+        gc.ChangeActiveWeapon(weaponIndex);
     }
     IEnumerator SheateAnim(int id)
     {
