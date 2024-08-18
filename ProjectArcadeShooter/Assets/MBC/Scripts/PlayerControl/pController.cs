@@ -203,8 +203,12 @@ public class PController : MonoBehaviour
         cam_StartingRotation.y = Mathf.Clamp(cam_StartingRotation.y, -60, 60);
         mainCam.transform.localRotation = Quaternion.Euler(-cam_StartingRotation.y, 0f, 0f);
         gameObject.transform.localRotation = Quaternion.Euler(gameObject.transform.localRotation.x, cam_StartingRotation.x, gameObject.transform.localRotation.z);
+        //compass Visualize
 
-        //weaponPrecadural Anim
+        gc.CompassVisualize(gameObject.transform.localEulerAngles.y);
+
+
+        //weaponProcedural Anim
         weaponManager.Sway(deltaInput);
         weaponManager.SwayRotation(deltaInput);
     }

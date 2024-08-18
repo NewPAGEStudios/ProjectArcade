@@ -620,7 +620,7 @@ public class WeaponManager : MonoBehaviour
     {
         if (skill_holdOT)
         {
-            hand_Animator.SetTrigger("skill" + active_Skill.skillTypeID);
+            hand_Animator.SetTrigger("skill" + 0);//TODO:active_Skill.skillTypeID;
             GameObject go = Instantiate(active_Skill.modelPrefab, gc.skillIndicatorParent.transform);
             go.name = "indicator";
             if(go.TryGetComponent<Collider>(out Collider col))
@@ -697,7 +697,7 @@ public class WeaponManager : MonoBehaviour
 
         skill_canbePerformed = false;
         skill_usageCooldown = true;
-        StartCoroutine(CancelSkillAnim(active_Skill.skillTypeID));
+        StartCoroutine(CancelSkillAnim(0));//TODO: active_Skill.skillTypeID;
         skill_holdOT = true;
     }
     IEnumerator CancelSkillAnim(int id)

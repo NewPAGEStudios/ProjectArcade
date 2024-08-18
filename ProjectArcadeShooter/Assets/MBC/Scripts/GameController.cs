@@ -121,7 +121,7 @@ public class GameController : MonoBehaviour
     [Header(header: "UI Prefab Referances")]
     public GameObject shopButton;
     public GameObject shopTXT;
-
+    public GameObject enemiesIndicator;
     //IEnumerators
     private Coroutine comboDisplayRoutine;
     private Coroutine[] fWayDMGVisualize = new Coroutine[4];
@@ -131,6 +131,10 @@ public class GameController : MonoBehaviour
 
     //PostProcessing Settings
     AmbientOcclusion ao;
+
+    //Compass
+    float cUnit;
+    List<CompassObject> cObjects = new List<CompassObject>();
     private void Awake()
     {
 
@@ -266,6 +270,8 @@ public class GameController : MonoBehaviour
 
             Invoke(nameof(LoadElements), Time.deltaTime);
         }
+
+        cUnit = gamePanel.transform.GetChild(6).GetChild(1).GetComponent<RawImage>().rectTransform.rect.width / 360f;
 
         //Cursor Handling
         Cursor.visible = false;
@@ -457,8 +463,11 @@ public class GameController : MonoBehaviour
         enemy.GetComponent<Enemy>().e_type = enemies[indexOfID];
         enemy.GetComponent<Enemy>().parentSelectedPosition = p;
 
-        enemy.name = "enemy";
 
+
+        enemy.name = "enemy";
+        enemy.tag = "Enemy";
+        CompassSpawnEnemy(enemy);
     }
 
 
@@ -789,7 +798,7 @@ public class GameController : MonoBehaviour
 
 
     //Animations
-    IEnumerator waveStartAnim()//UI
+    IEnumerator waveStartAnim()//UI//TODO:Düzenle
     {
         TextMeshProUGUI tmp = gamePanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         tmp.rectTransform.localPosition = Vector3.zero;
@@ -893,7 +902,26 @@ public class GameController : MonoBehaviour
         shopPanel.SetActive(false);
     }
 
+    public void CompassVisualize(float value)
+    {
+        gamePanel.transform.GetChild(6).GetChild(1).GetComponent<RawImage>().uvRect = new Rect(value/360f,0f,1f,1f);
 
+        foreach(CompassObject cobject in cObjects)
+        {
+            Vector2 pPos = new Vector2(player.transform.position.x, player.transform.position.z);
+            Vector2 pFwd = new Vector2(player.transform.forward.x, player.transform.forward.z);
+
+            float angle = Vector2.SignedAngle(new Vector2(cobject.irTransform.position.x, cobject.irTransform.position.z) - pPos, pFwd);
+
+            cobject.uiTransform.GetComponent<Image>().rectTransform.anchoredPosition = new Vector2(cUnit * angle, 0f);
+        }
+    }
+    public void CompassSpawnEnemy(GameObject enemi)
+    {
+        GameObject uiGO = Instantiate(enemiesIndicator, gamePanel.transform.GetChild(6).GetChild(1));
+        var compassObject = new CompassObject(ir: enemi.transform, ui: uiGO.transform);
+        cObjects.Add(compassObject);
+    }
 
     //player based UI Events
 
@@ -934,6 +962,10 @@ public class GameController : MonoBehaviour
             }
         }
     }
+
+
+
+
     public void changeSpriteOfActiveSkill(Sprite sprite)
     {
         playerPanel.transform.GetChild(4).GetChild(0).GetComponent<Image>().enabled = true;
@@ -984,10 +1016,6 @@ public class GameController : MonoBehaviour
     public void MoneyDisplay()
     {
         playerPanel.transform.GetChild(7).GetChild(0).GetComponent<TextMeshProUGUI>().text = money.ToString() + " $";
-    }
-    public void MainMenu()
-    {
-        //SceneManagement.LoadScene(mainMenuint)
     }
     public void DisplayInstruction(bool display)
     {
@@ -1096,8 +1124,10 @@ public class GameController : MonoBehaviour
         GetWeapon.perform_WOUTObjected(player, GetComponent<GameController>(), weapons[i].WeaponTypeID);
     }
 
-    public void decreseEnemyCount()
+    public void decreseEnemyCount(GameObject deletedOBJ)
     {
+        Destroy(cObjects.Find(x => x.irTransform == deletedOBJ.transform).uiTransform.gameObject);
+        cObjects.Remove(cObjects.Find(x => x.irTransform == deletedOBJ.transform));
         enemyCount -= 1;
     }
     public void ComboVombo(int comboTime)
@@ -1329,5 +1359,17 @@ public class GameController : MonoBehaviour
             yield return null;
         }
 
+    }
+}
+
+
+public class CompassObject
+{
+    public Transform irTransform;
+    public Transform uiTransform;
+    public CompassObject(Transform ir , Transform ui)
+    {
+        irTransform = ir;
+        uiTransform = ui;
     }
 }

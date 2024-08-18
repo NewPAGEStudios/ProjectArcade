@@ -157,7 +157,7 @@ public class EnemyHealth : MonoBehaviour
                 break;
             }
         }
-        gc.decreseEnemyCount();
+        gc.decreseEnemyCount(gameObject);
         Destroy(gameObject);
     }
 }
