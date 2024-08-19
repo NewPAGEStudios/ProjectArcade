@@ -105,7 +105,9 @@ public class AttackState : BaseState
 
         bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(Random.Range(-3f, 3f), Vector3.up) * shootDirection * 40;
         Debug.Log("Shoot");
-        //  enemy.animator.SetTrigger("Idle");//*
+         enemy.animator.SetTrigger("shoot");//*
+         enemy.animator.SetBool("isWalking",true);//*
+
 
         shotTimer = 0;
     }

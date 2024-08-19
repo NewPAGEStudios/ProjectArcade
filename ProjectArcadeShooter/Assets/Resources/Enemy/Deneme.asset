@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Deneme
   m_EditorClassIdentifier: 
   EnemyTypeID: 2
-  modelGameObject: {fileID: 1605696545314292573, guid: df44dbe2345f1c044802e88d6fba7aa3,
+  modelGameObject: {fileID: 2924280648218503077, guid: f4241a986cce98f48ada47a4c3b0797d,
     type: 3}
   ammo: {fileID: 11400000, guid: 11a3b18b96a292d4ca57c0107bb46267, type: 2}
   agentName: EnemyWALKER
-  firePos: {x: 0, y: 0, z: 0.5}
+  firePos: {x: -0.22, y: 4.4, z: 5.37}
   mainMat: {fileID: 2100000, guid: f2601df4fbcb6df49953a5e9f7963f45, type: 2}
   getDmgMat: {fileID: 2100000, guid: d9f6cacbf86f0734ab3af54209544245, type: 2}
   deathMat: {fileID: 2100000, guid: c247b988d50dec8448cb5b642c740654, type: 2}
