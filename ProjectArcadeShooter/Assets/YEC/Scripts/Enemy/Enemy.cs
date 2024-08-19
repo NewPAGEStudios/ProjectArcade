@@ -22,7 +22,7 @@ public class Enemy : MonoBehaviour
 
     [Header("Sight Values")]
     public float sightDistance = 20f;
-    public float fieldOfView = 85f;
+    public float fieldOfView = 360f;
     public float eyeHeight;
 
     [Header("Weapon Values")]
@@ -90,7 +90,9 @@ public class Enemy : MonoBehaviour
             agent = gameObject.AddComponent<NavMeshAgent>();
             agent.agentTypeID = agenjtFindClass.GetAgentTypeIDbyName(e_type.agentName);
             agent.speed = e_type.moveSpeed;
-
+            if(e_type.agentName == "EnemyFly"){
+                agent.baseOffset = 0;
+            }
         }
 
 

@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 83af2c1cfa181454ab5d6314b130aec2, type: 3}
-  m_Name: Deneme
+  m_Name: Fly
   m_EditorClassIdentifier: 
-  EnemyTypeID: 2
-  modelGameObject: {fileID: 2924280648218503077, guid: f4241a986cce98f48ada47a4c3b0797d,
+  EnemyTypeID: 1
+  modelGameObject: {fileID: 3068017689113124873, guid: 494066bb9d6453f46adc5262b6ecc0c7,
     type: 3}
   ammo: {fileID: 11400000, guid: 11a3b18b96a292d4ca57c0107bb46267, type: 2}
-  agentName: EnemyWALKER
-  firePos: {x: -0.22, y: 4.4, z: 5.37}
+  agentName: EnemyFly
+  firePos: {x: 0, y: 0, z: 0}
   mainMat: {fileID: 2100000, guid: f2601df4fbcb6df49953a5e9f7963f45, type: 2}
   getDmgMat: {fileID: 2100000, guid: d9f6cacbf86f0734ab3af54209544245, type: 2}
   deathMat: {fileID: 2100000, guid: c247b988d50dec8448cb5b642c740654, type: 2}
   hitPoint: 100
-  moveSpeed: 2
-  attackRatio: 1.25
+  moveSpeed: 5
+  attackRatio: 1
   isRanged: 1
-  rangeDistance: 3
+  rangeDistance: 10
   attackDMG: 20
   difficultyNumber: 1
