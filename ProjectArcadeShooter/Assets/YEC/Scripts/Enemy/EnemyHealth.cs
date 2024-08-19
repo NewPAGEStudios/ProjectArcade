@@ -28,7 +28,7 @@ public class EnemyHealth : MonoBehaviour
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         level = 0;
 
-        enemyObjectRenderer = gameObject.transform.Find("Model").GetComponentInChildren<SkinnedMeshRenderer>();
+        enemyObjectRenderer = gameObject.transform.Find("Model").GetComponentInChildren<Renderer>();
 
         mainMat = gameObject.GetComponent<Enemy>().e_type.mainMat;
         if (gameObject.GetComponent<Enemy>().e_type.getDmgMat != null)
@@ -133,8 +133,8 @@ public class EnemyHealth : MonoBehaviour
         enemyObjectRenderer.sharedMaterial = mainMat;
     }
 
-    private void Die()
-    {
+    public void Die()
+    {//id check
         StartCoroutine(EnemyDeathRoutine());
     }
     IEnumerator EnemyDeathRoutine()

@@ -281,7 +281,7 @@ public class WeaponManager : MonoBehaviour
         {
 
             currWeapon_sum_ammoAmount += ammoAmount;
-            gc.ChangeAmmoText(0);
+            gc.ChangeAmmoText(currWeapon_inWeapon_ammoAmount);
             gc.ChangeVisibilityofSlash(true);
             gc.ChangefullAmmoText(currWeapon_sum_ammoAmount);
             return;

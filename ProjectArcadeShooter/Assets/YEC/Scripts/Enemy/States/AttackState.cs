@@ -113,6 +113,10 @@ public class AttackState : BaseState
     }
     public void Attack()
     {
+        if (enemy.e_type.EnemyTypeID == 1)//sinek
+        {
+            //TODO: PATLAT DMG AT ardından : gamecontrollerdan düşman sayısını azalt
+        }
         enemy.animator.SetTrigger("Attack");
         enemy.animator.SetBool("AttackEnd", true);
 

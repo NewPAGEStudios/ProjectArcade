@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Fly
   m_EditorClassIdentifier: 
   EnemyTypeID: 1
-  modelGameObject: {fileID: 3068017689113124873, guid: 494066bb9d6453f46adc5262b6ecc0c7,
+  modelGameObject: {fileID: 1672027476823096463, guid: a2ebbc02fa088944f88fb1f508dd7a85,
     type: 3}
   ammo: {fileID: 11400000, guid: 11a3b18b96a292d4ca57c0107bb46267, type: 2}
   agentName: EnemyFly
@@ -21,10 +21,10 @@ MonoBehaviour:
   mainMat: {fileID: 2100000, guid: f2601df4fbcb6df49953a5e9f7963f45, type: 2}
   getDmgMat: {fileID: 2100000, guid: d9f6cacbf86f0734ab3af54209544245, type: 2}
   deathMat: {fileID: 2100000, guid: c247b988d50dec8448cb5b642c740654, type: 2}
-  hitPoint: 100
+  hitPoint: 20
   moveSpeed: 5
-  attackRatio: 1
-  isRanged: 1
-  rangeDistance: 10
+  attackRatio: 0.1
+  isRanged: 0
+  rangeDistance: 0
   attackDMG: 20
   difficultyNumber: 1
