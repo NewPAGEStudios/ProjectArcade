@@ -27,4 +27,4 @@ MonoBehaviour:
   isRanged: 0
   rangeDistance: 0
   attackDMG: 20
-  difficultyNumber: 123
+  difficultyNumber: 1
