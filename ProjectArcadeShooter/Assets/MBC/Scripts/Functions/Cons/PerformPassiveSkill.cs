@@ -43,6 +43,10 @@ public class PerformPassiveSkill : MonoBehaviour
             {
                 eja.doFunctionWoutObject();
             }
+            else if(gameObject.TryGetComponent<dashAdder>(out dashAdder da))
+            {
+                da.doFunctionWoutObject();
+            }
         }
         else
         {

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 824b19c71dc078441a291035e0e5a7b0, type: 3}
+  m_Name: dashAdder
+  m_EditorClassIdentifier: 
+  st: 1
+  skillTypeID: 4
+  skillName: DashAdder
+  skillDescription: adds Dash
+  materials: []
+  sprite_HUD: {fileID: 0}
+  functionName: dashAdder
+  modelPrefab: {fileID: 919132149155446097, guid: 5a83addec15f0f5479c2b7687cc92777,
+    type: 3}

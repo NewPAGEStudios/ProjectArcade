@@ -11,14 +11,28 @@ public class GameObjectReferancer : MonoBehaviour
     {
         foreach (GameObject obj in referanced)
         {
-            obj.SetActive(true);
+            if(obj.TryGetComponent<ParticleSystem>(out ParticleSystem objps))
+            {
+                objps.Play();
+            }
+            else
+            {
+                obj.SetActive(true);
+            }
         }
     }
     private void OnDisable()
     {
         foreach (GameObject obj in referanced)
         {
-            obj.SetActive(false);
+            if (obj.TryGetComponent<ParticleSystem>(out ParticleSystem objps))
+            {
+                objps.Stop();
+            }
+            else
+            {
+                obj.SetActive(false);
+            }
         }
     }
 

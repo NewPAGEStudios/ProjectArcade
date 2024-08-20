@@ -27,6 +27,7 @@ public class DummyMummyAmmo : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log(collision.gameObject.name);
         if(targetTag == "PlayerColl")
         {
             if (collision.transform.CompareTag(targetTag))
@@ -46,9 +47,6 @@ public class DummyMummyAmmo : MonoBehaviour
 
             }
         }
-        else
-        {
-            Destroy(gameObject);
-        }
+        Destroy(gameObject);
     }
 }

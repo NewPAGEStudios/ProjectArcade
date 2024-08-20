@@ -73,6 +73,7 @@ public class InputManager : MonoBehaviour
 
     public Vector2 getPlayerMovement()
     {
+
         return inputActions.playerMap.Movement.ReadValue<Vector2>();
     }
     public Vector2 getCameraMovement()

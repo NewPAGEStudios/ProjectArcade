@@ -29,14 +29,33 @@ public class DummyMummyFunc : MonoBehaviour
     public Boss boss;
     public float meleeDMG = 30f;
     public bool meleeDMG_Activated = false;
+    public GameObject mapParent;
+
+    private GameObject effectParent;
+
+
     private void Start()
     {
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         player = GameObject.FindGameObjectWithTag("Player");
+        effectParent = gameObject.transform.Find("Effects").gameObject;
+
+        for(int c = 0; c < effectParent.transform.childCount; c++)
+        {
+            effectParent.transform.GetChild(c).gameObject.SetActive(false);
+        }
+
         currentHP = maxHP;
         gc.BossHPChange(currentHP / maxHP);
+        gc.BossHpDisplay(currentHP, maxHP);
         bossState = BossState.interrupted;
         middle = new Vector3(-10, transform.position.y, 30);
+
+        GameObject firePos = gameObject.transform.Find("FirePosR").gameObject;
+        firePos.transform.Find("AmmoSimVis").gameObject.SetActive(true);
+        firePos = gameObject.transform.Find("FirePosL").gameObject;
+        firePos.transform.Find("AmmoSimVis").gameObject.SetActive(true);
+
         toIdle();
     }
 
@@ -78,6 +97,7 @@ public class DummyMummyFunc : MonoBehaviour
     {
         currentHP -= dmg;
         gc.BossHPChange(currentHP / maxHP);
+        gc.BossHpDisplay(currentHP, maxHP);
         if (currentHP <= 0)
         {
             gc.endBoss();
@@ -203,10 +223,20 @@ public class DummyMummyFunc : MonoBehaviour
 
     IEnumerator moveWithAttack(Vector3 targetPos,int[] attackPath, int attackID)
     {
+        while (bossState == BossState.inIdle) 
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        gc.SpawnCons(findClosestYTNKZZMN(), 2, -1, 4);
+
         targetPos = new Vector3(targetPos.x, 100.5f, targetPos.z);
         gameObject.transform.LookAt(targetPos);
-        gameObject.transform.eulerAngles = new Vector3(30, gameObject.transform.eulerAngles.y, 0);
+        gameObject.transform.eulerAngles = new Vector3(60, gameObject.transform.eulerAngles.y, 0);
         GameObject rotateObject = gameObject.transform.Find("Model").gameObject;
+        effectParent.transform.Find("HandsTrail").gameObject.SetActive(true);
+
+
+        //TODO: Attack started feedback to player with sound fx
         while (true)
         {
             meleeDMG_Activated = true;
@@ -229,6 +259,7 @@ public class DummyMummyFunc : MonoBehaviour
         }
         else
         {
+            yield return new WaitForSeconds(0.5f);
             switch (attackPath[attackID])
             {
                 case 0:
@@ -246,15 +277,32 @@ public class DummyMummyFunc : MonoBehaviour
                 default: break;
             }
         }
-
+        effectParent.transform.Find("HandsTrail").gameObject.SetActive(false);
     }
     IEnumerator middleRangedAttack(int[] attackPath, int attackID)
     {
+        while (bossState == BossState.inIdle)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        gc.SpawnCons(findClosestYTNKZZMN(), 2, -1, 4);
+
         float timeRemainingTOAttack = Random.Range(1, 4);
+
+        GameObject firePos = gameObject.transform.Find("FirePosR").gameObject;
+        firePos.transform.Find("AmmoSimVis").gameObject.SetActive(true);
+        for(int s = 0; s< firePos.transform.Find("AmmoSimVis").childCount; s++)
+        {
+            Transform traansform = firePos.transform.Find("AmmoSimVis").GetChild(s);
+            traansform.localScale = new Vector3(0.1f, 0.1f, 50f);
+            traansform.localPosition = new Vector3(traansform.localPosition.x, traansform.localPosition.y, 25f);
+        }
         while (true)
         {
             timeRemainingTOAttack -= Time.deltaTime;
             gameObject.transform.LookAt(player.transform.position);
+            
             gameObject.transform.eulerAngles = new Vector3(0, gameObject.transform.eulerAngles.y - 90, 0);
             
             yield return new WaitForEndOfFrame();
@@ -264,15 +312,18 @@ public class DummyMummyFunc : MonoBehaviour
             }
         }
 
-        Ammo ammoType = gc.ammos[0];
-        for(int i = 0; i < gc.ammos.Length; i++)
+        int i = 0;
+        for (i = 0; i < gc.ammos.Length; i++)
         {
             if (gc.ammos[i].AmmoTypeID == 1)
             {
-                ammoType = gc.ammos[i];
+                break;
             }
         }
-        GameObject firePos = gameObject.transform.Find("FirePosR").gameObject;
+
+
+        //TODO: Attack started feedback to player with sound fx
+        effectParent.transform.Find("ShootParticleR").gameObject.SetActive(true);
         for(int c = 0; c < 3; c++)
         {
             GameObject go = new();
@@ -283,16 +334,38 @@ public class DummyMummyFunc : MonoBehaviour
             go.transform.SetPositionAndRotation(firePos.transform.position, firePos.transform.rotation);
             go.name = "BossAmmo";
             go.layer = 7;
-            System.Type scriptMB = System.Type.GetType(ammoType.functionName + ",Assembly-CSharp");
+            System.Type scriptMB = System.Type.GetType(gc.ammos[i].functionName + ",Assembly-CSharp");
             go.AddComponent(scriptMB);
 
-            go.GetComponent<DummyMummyAmmo>().ammo = ammoType;
+            go.GetComponent<DummyMummyAmmo>().ammo = gc.ammos[i];
             go.AddComponent<Rigidbody>();
             go.GetComponent<Rigidbody>().useGravity = false;
             go.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
             go.GetComponent<Rigidbody>().freezeRotation = true;
         }
+        effectParent.transform.Find("ShootParticleR").gameObject.SetActive(false);
+
+        for (int s = 0; s < firePos.transform.Find("AmmoSimVis").childCount; s++)
+        {
+            Transform traansform = firePos.transform.Find("AmmoSimVis").GetChild(s);
+            traansform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+            traansform.localPosition = new Vector3(traansform.localPosition.x, traansform.localPosition.y, 0f);
+        }
+        firePos.transform.Find("AmmoSimVis").gameObject.SetActive(false);
+
         yield return new WaitForSeconds(0.1f);
+        //Left
+
+        firePos = gameObject.transform.Find("FirePosL").gameObject;
+        firePos.transform.Find("AmmoSimVis").gameObject.SetActive(true);
+
+        for (int s = 0; s < firePos.transform.Find("AmmoSimVis").childCount; s++)
+        {
+            Transform traansform = firePos.transform.Find("AmmoSimVis").GetChild(s);
+            traansform.localScale = new Vector3(0.1f, 0.1f, 50f);
+            traansform.localPosition = new Vector3(traansform.localPosition.x, traansform.localPosition.y, 25f);
+        }
+
         timeRemainingTOAttack = 0.2f;
         while (true)
         {
@@ -306,7 +379,8 @@ public class DummyMummyFunc : MonoBehaviour
                 break;
             }
         }
-        firePos = gameObject.transform.Find("FirePosL").gameObject;
+
+        effectParent.transform.Find("ShootParticleL").gameObject.SetActive(true);
         for (int c = 0; c < 3; c++)
         {
             GameObject go = new();
@@ -317,15 +391,23 @@ public class DummyMummyFunc : MonoBehaviour
             go.transform.SetPositionAndRotation(firePos.transform.position, firePos.transform.rotation);
             go.name = "BossAmmo";
             go.layer = 7;
-            System.Type scriptMB = System.Type.GetType(ammoType.functionName + ",Assembly-CSharp");
+            System.Type scriptMB = System.Type.GetType(gc.ammos[i].functionName + ",Assembly-CSharp");
             go.AddComponent(scriptMB);
 
-            go.GetComponent<DummyMummyAmmo>().ammo = ammoType;
+            go.GetComponent<DummyMummyAmmo>().ammo = gc.ammos[i];
             go.GetComponent<DummyMummyAmmo>().targetTag = "PlayerColl";
             go.AddComponent<Rigidbody>();
             go.GetComponent<Rigidbody>().useGravity = false;
             go.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
             go.GetComponent<Rigidbody>().freezeRotation = true;
+        }
+        effectParent.transform.Find("ShootParticleL").gameObject.SetActive(false);
+        firePos.transform.Find("AmmoSimVis").gameObject.SetActive(false);
+        for (int s = 0; s < firePos.transform.Find("AmmoSimVis").childCount; s++)
+        {
+            Transform traansform = firePos.transform.Find("AmmoSimVis").GetChild(s);
+            traansform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+            traansform.localPosition = new Vector3(traansform.localPosition.x, traansform.localPosition.y, 0f);
         }
 
         attackID += 1;
@@ -335,6 +417,7 @@ public class DummyMummyFunc : MonoBehaviour
         }
         else
         {
+            yield return new WaitForSeconds(0.5f);
             switch (attackPath[attackID])
             {
                 case 0:
@@ -355,6 +438,13 @@ public class DummyMummyFunc : MonoBehaviour
     }
     IEnumerator aboveAttack(int[] attackPath, int attackID)
     {
+        while (bossState == BossState.inIdle)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        gc.SpawnCons(findClosestYTNKZZMN(), 2, -1, 4);
+
         while (true)
         {
             gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, new Vector3(gameObject.transform.position.x, 150, gameObject.transform.position.z),Time.deltaTime * 30f);
@@ -366,6 +456,8 @@ public class DummyMummyFunc : MonoBehaviour
         }
         float timeRemainingTOAttack = Random.Range(1, 4);
         GameObject indicator = gameObject.transform.Find("CylinderIndicator").gameObject;
+
+
         indicator.SetActive(true);
         while (true)
         {
@@ -377,6 +469,7 @@ public class DummyMummyFunc : MonoBehaviour
                 break;
             }
         }
+        effectParent.transform.Find("toDownTrail").gameObject.SetActive(true);
         while (true)
         {
             gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, new Vector3(gameObject.transform.position.x, 100.5f, gameObject.transform.position.z), Time.deltaTime * 30f);
@@ -387,9 +480,10 @@ public class DummyMummyFunc : MonoBehaviour
                 break;
             }
         }
+        effectParent.transform.Find("toDownTrail").gameObject.SetActive(false);
         indicator.SetActive(false);
         indicator.transform.localPosition = new Vector3(0, -50, 0);
-        if (Vector3.Distance(player.transform.position, gameObject.transform.position) < 15f)
+        if (Vector3.Distance(player.transform.position, gameObject.transform.position) < 7.5f)
         {
             player.GetComponent<PController>().TakeDMG(30f, gameObject);
             player.GetComponent<PController>().ThrowPlayer(gameObject.transform.position);
@@ -403,6 +497,7 @@ public class DummyMummyFunc : MonoBehaviour
         }
         else
         {
+            yield return new WaitForSeconds(0.5f);
             switch (attackPath[attackID])
             {
                 case 0:
@@ -422,4 +517,22 @@ public class DummyMummyFunc : MonoBehaviour
         }
 
     }
+
+    private int findClosestYTNKZZMN()
+    {
+        int holdingIndex = 0;
+        if(mapParent.transform.Find("ConsumableCreatePos").childCount==0 || mapParent.transform.Find("ConsumableCreatePos").childCount == 1)
+        {
+            return holdingIndex;
+        }
+        for(int c = 1; c < mapParent.transform.Find("ConsumableCreatePos").childCount ; c++)
+        {
+            if(Vector3.Distance(player.transform.position,mapParent.transform.Find("ConsumableCreatePos").GetChild(c).position) < Vector3.Distance(player.transform.position, mapParent.transform.Find("ConsumableCreatePos").GetChild(holdingIndex).position))
+            {
+                holdingIndex = c;
+            }
+        }
+        return holdingIndex;
+    }
+
 }

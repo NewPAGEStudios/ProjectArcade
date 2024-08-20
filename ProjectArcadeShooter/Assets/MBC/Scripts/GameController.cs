@@ -287,8 +287,14 @@ public class GameController : MonoBehaviour
     }
 
     //spawners
-    private void SpawnCons(int pos_childID,int consID,int weaponID,int skillID)
+    public void SpawnCons(int pos_childID,int consID,int weaponID,int skillID)
     {
+        if (consumableSpawnPointParent.transform.childCount == 0)
+        {
+            Debug.Log("RampageBombaabasd,iasdklaskdlşasdasŞaka");
+            return;
+        }
+
         Vector3 vec = Vector3.zero;
         int r;
         int pos_Holder = -1;
@@ -547,6 +553,7 @@ public class GameController : MonoBehaviour
     public void endBoss()
     {
         bossPanel.SetActive(false);
+        BossHpDisplay(0, 0, false);
         changeMap(mainLevel);
         toWait();
     }
@@ -554,7 +561,7 @@ public class GameController : MonoBehaviour
     {
         SpawnCons(-1, 0, 1, -1);
         waveNumber += 1;
-        if (waveNumber % 10 == 2)
+        if (waveNumber % 10 == 1)
         {
             toBoss(0);
             return;
@@ -620,6 +627,7 @@ public class GameController : MonoBehaviour
         if(go.TryGetComponent<DummyMummyFunc>(out DummyMummyFunc dmf))
         {
             dmf.boss = boss[i];
+            dmf.mapParent = map;     
         }
         bossIntroPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = boss[i].bossName;
         bossPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = boss[i].bossName;
@@ -801,14 +809,16 @@ public class GameController : MonoBehaviour
     IEnumerator waveStartAnim()//UI//TODO:Düzenle
     {
         TextMeshProUGUI tmp = gamePanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        Vector3 tmp_truePos = tmp.rectTransform.localPosition;
         tmp.rectTransform.localPosition = Vector3.zero;
         tmp.fontSize = 144;
+        float speedAnim = 50f;
         while (true)
         {
-            tmp.rectTransform.localPosition = new Vector3(0, tmp.rectTransform.localPosition.y + 10f, 0);
-            tmp.fontSize -= 2.16f;
+            tmp.rectTransform.localPosition = Vector3.MoveTowards(tmp.rectTransform.localPosition, tmp_truePos,Time.deltaTime * speedAnim);
+            tmp.fontSize = Mathf.MoveTowards(tmp.fontSize, 36, Time.deltaTime * speedAnim);
             yield return new WaitForEndOfFrame();
-            if (tmp.fontSize <= 36)
+            if (tmp.rectTransform.localPosition == tmp_truePos && tmp.fontSize == 36)
             {
                 break;
             }
@@ -1013,6 +1023,11 @@ public class GameController : MonoBehaviour
     {
         bossPanel.transform.GetChild(1).GetChild(0).GetComponent<Image>().fillAmount = fa;
     }
+    public void BossHpDisplay(float curr,float max,bool? act=true)
+    {
+        bossPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = curr.ToString() + "/" + max.ToString();
+        bossPanel.transform.GetChild(2).gameObject.SetActive(act.Value);
+    }
     public void MoneyDisplay()
     {
         playerPanel.transform.GetChild(7).GetChild(0).GetComponent<TextMeshProUGUI>().text = money.ToString() + " $";
@@ -1205,8 +1220,17 @@ public class GameController : MonoBehaviour
     IEnumerator DashEffect(float duration)
     {
         mainCam.GetComponent<Camera>().fieldOfView = 90f;
-
-        yield return new WaitForSeconds(duration);
+        float delta = duration / Time.deltaTime;
+        while (true)
+        {
+            Mathf.MoveTowards(mainCam.GetComponent<Camera>().fieldOfView, 60, delta);
+            duration -= Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+            if (duration <= 0)
+            {
+                break;
+            }
+        }
 
         mainCam.GetComponent<Camera>().fieldOfView = 60f;
     }

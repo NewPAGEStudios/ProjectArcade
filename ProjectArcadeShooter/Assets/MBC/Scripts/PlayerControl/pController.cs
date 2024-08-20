@@ -331,6 +331,7 @@ public class PController : MonoBehaviour
         }
         Vector2 moveDirVect2 = iManager.getPlayerMovement();// (x,y) (x,y,z) (x,0,y)
 
+        Debug.Log("movedirvect2:  " + moveDirVect2);
         if (snb)//apply bob
         {
             weaponManager.BobOffset(this, moveDirVect2);
@@ -722,5 +723,14 @@ public class PController : MonoBehaviour
     public void addExtraJump()
     {
         extrajump += 1;
+    }
+    public void addDash()
+    {
+        currentdashMeter += 25;
+        if (currentdashMeter > maxdashmeter)
+        {
+            currentdashMeter = maxdashmeter;
+        }
+        gc.DashIndicator(currentdashMeter);
     }
 }
