@@ -47,7 +47,6 @@ public class DummyMummyFunc : MonoBehaviour
 
         currentHP = maxHP;
         gc.BossHPChange(currentHP / maxHP);
-        gc.BossHpDisplay(currentHP, maxHP);
         bossState = BossState.interrupted;
         middle = new Vector3(-10, transform.position.y, 30);
 
@@ -97,7 +96,6 @@ public class DummyMummyFunc : MonoBehaviour
     {
         currentHP -= dmg;
         gc.BossHPChange(currentHP / maxHP);
-        gc.BossHpDisplay(currentHP, maxHP);
         if (currentHP <= 0)
         {
             gc.endBoss();

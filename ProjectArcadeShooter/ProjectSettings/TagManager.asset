@@ -23,7 +23,7 @@ TagManager:
   - BossCollider
   - Enemy
   - Interactable
-  - 
+  - UnflyableArea
   - 
   - 
   - 

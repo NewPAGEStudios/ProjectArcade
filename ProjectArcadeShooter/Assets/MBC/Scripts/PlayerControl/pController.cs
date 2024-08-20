@@ -331,7 +331,6 @@ public class PController : MonoBehaviour
         }
         Vector2 moveDirVect2 = iManager.getPlayerMovement();// (x,y) (x,y,z) (x,0,y)
 
-        Debug.Log("movedirvect2:  " + moveDirVect2);
         if (snb)//apply bob
         {
             weaponManager.BobOffset(this, moveDirVect2);

@@ -160,6 +160,10 @@ MonoBehaviour:
     m_Localized: Tekrar Deneyin
     m_Metadata:
       m_Items: []
+  - m_Id: 3986318970474496
+    m_Localized: HATA!
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

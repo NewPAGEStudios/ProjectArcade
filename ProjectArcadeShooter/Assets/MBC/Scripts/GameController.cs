@@ -8,6 +8,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -553,7 +554,6 @@ public class GameController : MonoBehaviour
     public void endBoss()
     {
         bossPanel.SetActive(false);
-        BossHpDisplay(0, 0, false);
         changeMap(mainLevel);
         toWait();
     }
@@ -812,7 +812,7 @@ public class GameController : MonoBehaviour
         Vector3 tmp_truePos = tmp.rectTransform.localPosition;
         tmp.rectTransform.localPosition = Vector3.zero;
         tmp.fontSize = 144;
-        float speedAnim = 50f;
+        float speedAnim = 250f;
         while (true)
         {
             tmp.rectTransform.localPosition = Vector3.MoveTowards(tmp.rectTransform.localPosition, tmp_truePos,Time.deltaTime * speedAnim);
@@ -1022,11 +1022,8 @@ public class GameController : MonoBehaviour
     public void BossHPChange(float fa)
     {
         bossPanel.transform.GetChild(1).GetChild(0).GetComponent<Image>().fillAmount = fa;
-    }
-    public void BossHpDisplay(float curr,float max,bool? act=true)
-    {
-        bossPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = curr.ToString() + "/" + max.ToString();
-        bossPanel.transform.GetChild(2).gameObject.SetActive(act.Value);
+        RectTransform rt = bossPanel.transform.GetChild(2).GetChild(0).GetComponent<Image>().rectTransform;
+        rt.localPosition = new Vector3(rt.localPosition.x, fa * 100, rt.localPosition.z);
     }
     public void MoneyDisplay()
     {
@@ -1239,6 +1236,7 @@ public class GameController : MonoBehaviour
 
     IEnumerator endGameEffect()
     {
+        UIOverlayCam.GetComponent<Camera>().GetUniversalAdditionalCameraData().volumeLayerMask = LayerMask.GetMask("Default");
         mainCam.GetComponent<Camera>().nearClipPlane = 0.3f;
         HandOverlayCam.GetComponent<Camera>().nearClipPlane = 0.3f;
 
@@ -1330,19 +1328,34 @@ public class GameController : MonoBehaviour
         }
 
         gamePanel.transform.GetChild(5).GetChild(0).gameObject.SetActive(true);
+
+        gamePanel.transform.GetChild(5).GetChild(0).GetChild(0).gameObject.SetActive(true);
+        gamePanel.transform.GetChild(5).GetChild(0).GetChild(1).gameObject.SetActive(false);
+
         string tempText = gamePanel.transform.GetChild(5).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text;
         gamePanel.transform.GetChild(5).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
 
         globalProfile.profile = noiseEffect;
 
+        float a = 0f;
         for (int c = 0; c < tempText.Length;)
         {
             gamePanel.transform.GetChild(5).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text += tempText[c];
             c += 1;
+            if (tempText.Length - c < 100)
+            {
+                a += 0.005f;
+                if (a >= 0.065f)
+                {
+                    gamePanel.transform.GetChild(5).GetChild(0).GetChild(1).gameObject.SetActive(! gamePanel.transform.GetChild(5).GetChild(0).GetChild(1).gameObject.activeSelf);
+                }
+            }
             yield return new WaitForSecondsRealtime(0.005f);
         }
 
         int changeCount = 0;
+
+        gamePanel.transform.GetChild(5).GetChild(0).GetChild(0).gameObject.SetActive(false);
 
         while (true)
         {
@@ -1354,8 +1367,9 @@ public class GameController : MonoBehaviour
                 break;
             }
         }
+        gamePanel.transform.GetChild(5).GetChild(0).gameObject.SetActive(false);
 
-        for(int i = 1; i < gamePanel.transform.GetChild(5).childCount; i++)
+        for (int i = 1; i < gamePanel.transform.GetChild(5).childCount; i++)
         {
             gamePanel.transform.GetChild(5).GetChild(i).gameObject.SetActive(true);
         }

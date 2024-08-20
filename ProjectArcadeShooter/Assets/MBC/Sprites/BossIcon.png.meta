@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6fab9ce1e841f3e4780954e49e3c2eb1
+guid: d5f8eb0b9bcf15e479252787e857690f
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -25,7 +25,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMipmapLimit: 1
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -45,7 +45,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Baslksz-9_0
+      name: BossIcon_0
       rect:
         serializedVersion: 2
-        x: 214
-        y: 209
-        width: 1516
-        height: 810
+        x: 569
+        y: 576
+        width: 274
+        height: 266
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,20 +111,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8471a332292cf5d44afa92a3aa61604e
-      internalID: -1244299788
+      spriteID: fccefd73489599246b9f026a07863873
+      internalID: 704492537
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Baslksz-9_1
+      name: BossIcon_1
       rect:
         serializedVersion: 2
-        x: 367
-        y: 1013
-        width: 597
-        height: 5
+        x: 873
+        y: 514
+        width: 105
+        height: 96
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,20 +132,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0199ebbdde59f4c489212d1379606175
-      internalID: -1312586982
+      spriteID: 4c05121944fe4fe42a8ce3d24b2798fe
+      internalID: -697977442
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Baslksz-9_2
+      name: BossIcon_2
       rect:
         serializedVersion: 2
-        x: 1096
-        y: 1013
-        width: 61
-        height: 6
+        x: 1008
+        y: 571
+        width: 275
+        height: 266
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,20 +153,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ddf9afe73e44e3f408c63dde1ca9289a
-      internalID: 640936235
+      spriteID: f905f8df43209d547bae8d4861b0d166
+      internalID: -1681610038
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Baslksz-9_3
+      name: BossIcon_3
       rect:
         serializedVersion: 2
-        x: 1300
-        y: 1013
-        width: 60
-        height: 5
+        x: 524
+        y: 233
+        width: 827
+        height: 334
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,8 +174,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 267cc0f18b0d7e6418375c8923a39114
-      internalID: -613191507
+      spriteID: ff88273db9a42b441b40fb0f9ce6df74
+      internalID: 900042092
       vertices: []
       indices: 
       edges: []
@@ -191,10 +191,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Baslksz-9_0: -1244299788
-      Baslksz-9_1: -1312586982
-      Baslksz-9_2: 640936235
-      Baslksz-9_3: -613191507
+      BossIcon_0: 704492537
+      BossIcon_1: -697977442
+      BossIcon_2: -1681610038
+      BossIcon_3: 900042092
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
