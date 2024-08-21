@@ -119,6 +119,8 @@ public class GameController : MonoBehaviour
     public float cameraShakeIntensity;
     public float cameraShakeDuration;
     private float baseFixedUpdate;
+    public int bossTimePerWave;
+    public int bossTimePerWaveLoop;
     [Header(header: "UI Prefab Referances")]
     public GameObject shopButton;
     public GameObject shopTXT;
@@ -561,7 +563,7 @@ public class GameController : MonoBehaviour
     {
         SpawnCons(-1, 0, 1, -1);
         waveNumber += 1;
-        if (waveNumber % 10 == 1)
+        if (waveNumber % bossTimePerWave == bossTimePerWaveLoop)
         {
             toBoss(0);
             return;

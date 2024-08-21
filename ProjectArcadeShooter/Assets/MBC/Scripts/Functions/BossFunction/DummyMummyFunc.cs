@@ -109,14 +109,14 @@ public class DummyMummyFunc : MonoBehaviour
         int[] attackPath = new int[3];
         int[] ids = { 0, 1, 3 };
         int id = ids[Random.Range(0, ids.Length)];//3 ATTACK Openner TYPE 0-dash to middle 1 -dash to player 2- above Attack
-        attackPath[0] = id;
+        attackPath[0] = 0;//TODO: Change to normal "id"
         if (id == 0)
         {
             ids[0] = 1;
             ids[1] = 2;
             ids[2] = 3;
             id = ids[Random.Range(0, ids.Length)];
-            attackPath[1] = id;
+            attackPath[1] = 2;//TODO: Change to "id"
             switch (id)
             {
                 case 1:
@@ -300,7 +300,10 @@ public class DummyMummyFunc : MonoBehaviour
         {
             timeRemainingTOAttack -= Time.deltaTime;
             gameObject.transform.LookAt(player.transform.position);
-            
+
+            firePos.transform.LookAt(player.transform.position);
+            firePos.transform.localEulerAngles = new Vector3(firePos.transform.localEulerAngles.x, 90, 0);
+
             gameObject.transform.eulerAngles = new Vector3(0, gameObject.transform.eulerAngles.y - 90, 0);
             
             yield return new WaitForEndOfFrame();
