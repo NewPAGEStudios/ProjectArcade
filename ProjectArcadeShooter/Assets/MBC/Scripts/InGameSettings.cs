@@ -1,3 +1,4 @@
+using SlimUI.ModernMenu;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,10 +16,14 @@ public class InGameSettings : MonoBehaviour
     public GameObject PanelVideo;
     [Tooltip("The UI Panel that holds the GAME window tab")]
     public GameObject PanelGame;
+    [Tooltip("The UI Panel that holds the SOUND window tab")]
+    public GameObject PanelSound;
 
     [Header("SETTINGS SCREEN")]
     [Tooltip("Highlight Image for when GAME Tab is selected in Settings")]
     public GameObject lineGame;
+    [Tooltip("Highlight Image for when GAME Tab is selected in Settings")]
+    public GameObject lineSound;
     [Tooltip("Highlight Image for when VIDEO Tab is selected in Settings")]
     public GameObject lineVideo;
     [Tooltip("Highlight Image for when CONTROLS Tab is selected in Settings")]
@@ -34,7 +39,11 @@ public class InGameSettings : MonoBehaviour
     public GameObject damageVibrationtext;
 
     [Header("Slider Options")]
+    public GameObject masterSlider;
     public GameObject musicSlider;
+    public GameObject sFXSlider;
+    public GameObject soundSlider;
+    [Header("-----")]
     public GameObject sensitivityXSlider;
     public GameObject sensitivityYSlider;
 
@@ -48,7 +57,11 @@ public class InGameSettings : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PController>();
 
 
+        masterSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MasterVolume");
         musicSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MusicVolume");
+        sFXSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("SFXVolume");
+        soundSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("SoundVolume");
+
         sensitivityXSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("XSensitivity");
         sensitivityYSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("YSensitivity");
 
@@ -114,10 +127,12 @@ public class InGameSettings : MonoBehaviour
         PanelControls.SetActive(false);
         PanelVideo.SetActive(false);
         PanelGame.SetActive(false);
+        PanelSound.SetActive(false);
 
         lineGame.SetActive(false);
         lineControls.SetActive(false);
         lineVideo.SetActive(false);
+        lineSound.SetActive(false);
     }
 
     public void GamePanel()
@@ -125,6 +140,12 @@ public class InGameSettings : MonoBehaviour
         DisablePanels();
         PanelGame.SetActive(true);
         lineGame.SetActive(true);
+    }
+    public void SoundPanel()
+    {
+        DisablePanels();
+        PanelSound.SetActive(true);
+        lineSound.SetActive(true);
     }
 
     public void VideoPanel()
@@ -145,10 +166,21 @@ public class InGameSettings : MonoBehaviour
 
 
 
+    public void MasterSlider()
+    {
+        PlayerPrefs.SetFloat("MasterVolume", masterSlider.GetComponent<Slider>().value);
+    }
     public void MusicSlider()
     {
-        //PlayerPrefs.SetFloat("MusicVolume", sliderValue);
         PlayerPrefs.SetFloat("MusicVolume", musicSlider.GetComponent<Slider>().value);
+    }
+    public void SFXSlider()
+    {
+        PlayerPrefs.SetFloat("SFXVolume", sFXSlider.GetComponent<Slider>().value);
+    }
+    public void SoundSlider()
+    {
+        PlayerPrefs.SetFloat("SoundVolume", soundSlider.GetComponent<Slider>().value);
     }
 
     public void SensitivityXSlider()

@@ -27,7 +27,7 @@ public class GameObjectReferancer : MonoBehaviour
         {
             if (obj.TryGetComponent<ParticleSystem>(out ParticleSystem objps))
             {
-                objps.Stop();
+//                objps.Stop();
             }
             else
             {

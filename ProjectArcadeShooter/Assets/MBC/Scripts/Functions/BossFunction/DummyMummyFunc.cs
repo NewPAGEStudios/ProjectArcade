@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class DummyMummyFunc : MonoBehaviour
 {
-    private float maxHP = 500;
+    private float maxHP = 100;//TODO DEGGISTIR
     private float currentHP;
-
+    private int bossSearchID = 0;
 
     private enum BossState
     {
@@ -44,7 +44,14 @@ public class DummyMummyFunc : MonoBehaviour
         {
             effectParent.transform.GetChild(c).gameObject.SetActive(false);
         }
-
+        for(int i = 0; i < gc.boss.Length; i++)
+        {
+            if (gc.boss[i].BossID == bossSearchID)
+            {
+                maxHP = gc.boss[i].maxHP;
+                break;
+            }
+        }
         currentHP = maxHP;
         gc.BossHPChange(currentHP / maxHP);
         bossState = BossState.interrupted;
@@ -98,9 +105,10 @@ public class DummyMummyFunc : MonoBehaviour
         gc.BossHPChange(currentHP / maxHP);
         if (currentHP <= 0)
         {
-            gc.endBoss();
+            NormalEverything();
+            gc.endBoss(gameObject);
             bossState = BossState.inDeath;
-            Destroy(gameObject);
+
         }
     }
     private void AttackOpenner()
@@ -109,14 +117,14 @@ public class DummyMummyFunc : MonoBehaviour
         int[] attackPath = new int[3];
         int[] ids = { 0, 1, 3 };
         int id = ids[Random.Range(0, ids.Length)];//3 ATTACK Openner TYPE 0-dash to middle 1 -dash to player 2- above Attack
-        attackPath[0] = 0;//TODO: Change to normal "id"
+        attackPath[0] = id;
         if (id == 0)
         {
             ids[0] = 1;
             ids[1] = 2;
             ids[2] = 3;
             id = ids[Random.Range(0, ids.Length)];
-            attackPath[1] = 2;//TODO: Change to "id"
+            attackPath[1] = id;
             switch (id)
             {
                 case 1:
@@ -300,11 +308,11 @@ public class DummyMummyFunc : MonoBehaviour
         {
             timeRemainingTOAttack -= Time.deltaTime;
             gameObject.transform.LookAt(player.transform.position);
+            gameObject.transform.eulerAngles = new Vector3(0, gameObject.transform.eulerAngles.y - 90, 0);
 
             firePos.transform.LookAt(player.transform.position);
             firePos.transform.localEulerAngles = new Vector3(firePos.transform.localEulerAngles.x, 90, 0);
 
-            gameObject.transform.eulerAngles = new Vector3(0, gameObject.transform.eulerAngles.y - 90, 0);
             
             yield return new WaitForEndOfFrame();
             if (timeRemainingTOAttack <= 0)
@@ -329,16 +337,20 @@ public class DummyMummyFunc : MonoBehaviour
         {
             GameObject go = new();
 
-            firePos.transform.localPosition = new Vector3(firePos.transform.localPosition.x, firePos.transform.localPosition.y, 0 - 0.18f * c);
-            firePos.transform.LookAt(player.transform.position);
+            go.transform.parent = firePos.transform;
 
-            go.transform.SetPositionAndRotation(firePos.transform.position, firePos.transform.rotation);
-            go.name = "BossAmmo";
+            go.transform.localPosition = new Vector3(0.75f * (c - 1), 0, 0);
+            go.transform.localEulerAngles = new Vector3(0, 25 * (c - 1), 0);
+
+            go.name = "BossAmmoR";
             go.layer = 7;
             System.Type scriptMB = System.Type.GetType(gc.ammos[i].functionName + ",Assembly-CSharp");
             go.AddComponent(scriptMB);
 
             go.GetComponent<DummyMummyAmmo>().ammo = gc.ammos[i];
+
+            go.GetComponent<DummyMummyAmmo>().targetTag = "Player";
+
             go.AddComponent<Rigidbody>();
             go.GetComponent<Rigidbody>().useGravity = false;
             go.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
@@ -354,7 +366,7 @@ public class DummyMummyFunc : MonoBehaviour
         }
         firePos.transform.Find("AmmoSimVis").gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.2f);
         //Left
 
         firePos = gameObject.transform.Find("FirePosL").gameObject;
@@ -367,12 +379,15 @@ public class DummyMummyFunc : MonoBehaviour
             traansform.localPosition = new Vector3(traansform.localPosition.x, traansform.localPosition.y, 25f);
         }
 
-        timeRemainingTOAttack = 0.2f;
+        timeRemainingTOAttack = 0.5f;
         while (true)
         {
             timeRemainingTOAttack -= Time.deltaTime;
             gameObject.transform.LookAt(player.transform.position);
             gameObject.transform.eulerAngles = new Vector3(0, gameObject.transform.eulerAngles.y + 90, 0);
+
+            firePos.transform.LookAt(player.transform.position);
+            firePos.transform.localEulerAngles = new Vector3(firePos.transform.localEulerAngles.x, -90, 0);
 
             yield return new WaitForEndOfFrame();
             if (timeRemainingTOAttack <= 0)
@@ -381,22 +396,24 @@ public class DummyMummyFunc : MonoBehaviour
             }
         }
 
+        //TODO: Attack started feedback to player with sound fx
         effectParent.transform.Find("ShootParticleL").gameObject.SetActive(true);
         for (int c = 0; c < 3; c++)
         {
             GameObject go = new();
 
-            firePos.transform.localPosition = new Vector3(firePos.transform.localPosition.x, firePos.transform.localPosition.y, 0 - 0.18f * c);
-            firePos.transform.LookAt(player.transform.position);
+            go.transform.parent = firePos.transform;
 
-            go.transform.SetPositionAndRotation(firePos.transform.position, firePos.transform.rotation);
-            go.name = "BossAmmo";
+            go.transform.localPosition = new Vector3(0.75f * (c - 1), 0, 0);
+            go.transform.localEulerAngles = new Vector3(0, 25 * (c - 1), 0);
+
+            go.name = "BossAmmoL";
             go.layer = 7;
             System.Type scriptMB = System.Type.GetType(gc.ammos[i].functionName + ",Assembly-CSharp");
             go.AddComponent(scriptMB);
 
             go.GetComponent<DummyMummyAmmo>().ammo = gc.ammos[i];
-            go.GetComponent<DummyMummyAmmo>().targetTag = "PlayerColl";
+            go.GetComponent<DummyMummyAmmo>().targetTag = "Player";
             go.AddComponent<Rigidbody>();
             go.GetComponent<Rigidbody>().useGravity = false;
             go.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
@@ -518,7 +535,62 @@ public class DummyMummyFunc : MonoBehaviour
         }
 
     }
+    private void NormalEverything()
+    {
+        meleeDMG_Activated = false;
+        gameObject.transform.position = new Vector3(0, 100, 0);
+        gameObject.transform.eulerAngles = Vector3.zero;
+        
+        gameObject.transform.Find("Model").localEulerAngles = Vector3.zero;
+        gameObject.transform.Find("Model").localPosition = Vector3.zero;
 
+        GameObject firePos;
+        for (int c = 0; c < 2; c++)
+        {
+            if (c == 0)
+            {
+                firePos = gameObject.transform.Find("FirePosR").gameObject;
+            }
+            else
+            {
+                firePos = gameObject.transform.Find("FirePosL").gameObject;
+            }
+            firePos.transform.Find("AmmoSimVis").gameObject.SetActive(false);            
+        }
+
+        for(int c = 0; c< 5; c++)
+        {
+            try
+            {
+                GameObject gos = GameObject.Find("BossAmmoL");
+                Destroy(gos);
+            }
+            catch 
+            {
+                Debug.Log("catchL");
+                break;
+            }
+        }
+
+        for (int c = 0; c < 5; c++)
+        {
+            try
+            {
+                GameObject gos = GameObject.Find("BossAmmoR");
+                Destroy(gos);
+            }
+            catch
+            {
+                Debug.Log("catchR");
+                break;
+            }
+        }
+
+        GameObject indicator = gameObject.transform.Find("CylinderIndicator").gameObject;
+        indicator.SetActive(false);
+
+
+    }
     private int findClosestYTNKZZMN()
     {
         int holdingIndex = 0;

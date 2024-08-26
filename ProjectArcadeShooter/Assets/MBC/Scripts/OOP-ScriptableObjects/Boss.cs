@@ -12,7 +12,8 @@ public class Boss : ScriptableObject
     public GameObject boss;
     public string mapName;
     public GameObject mapParent;
-    [Header(header:"Bosses functional Configiration")]
+    [Header(header: "Bosses functional Configiration")]
+    public float maxHP;
     public string bossControllerName;
     public AudioSource bossMusic;
 }

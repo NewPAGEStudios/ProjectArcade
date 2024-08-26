@@ -61,7 +61,8 @@ public class WeaponManager : MonoBehaviour
     public GameObject activeWeapon;
     public GameObject inActiveWeapon;
     private GameObject currentWeaponGO;
-
+    [Header("Sounds")]
+    public GameObject soundWeapon;
 
     [HideInInspector]
     public Skill active_Skill;
@@ -362,6 +363,12 @@ public class WeaponManager : MonoBehaviour
         gc.ChangeAmmoText(currWeapon_inWeapon_ammoAmount);
         gc.ChangeVisibilityofSlash(true);
         gc.ChangefullAmmoText(currWeapon_sum_ammoAmount);
+
+        if (soundWeapon.transform.Find(currWeaponID.ToString()).GetComponent<AudioSource>().isPlaying)
+        {
+            soundWeapon.transform.Find(currWeaponID.ToString()).GetComponent<AudioSource>().Stop();
+        }
+        soundWeapon.transform.Find(currWeaponID.ToString()).GetComponent<AudioSource>().Play();
 
         //spawnBullet()
         GameObject ammo = new();

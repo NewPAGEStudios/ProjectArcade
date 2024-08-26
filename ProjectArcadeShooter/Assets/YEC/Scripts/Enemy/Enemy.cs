@@ -57,6 +57,8 @@ public class Enemy : MonoBehaviour
 
         model.name = "Model";
 
+        model.transform.GetChild(0).gameObject.layer = 10;
+
         if (e_type.isRanged)
         {
             gunBarrel = transform.Find("Model").Find("firePos");
@@ -174,6 +176,7 @@ public class Enemy : MonoBehaviour
 
         animator.SetBool("AttackEnd", false);
     }
+<<<<<<< Updated upstream
     public void BaseOffsetValueControl(){
         // enemy.Agent.SetDestination(enemy.Player.transform.position);
         // Debug.Log("aradaki mesafe"+distance+"range"+ e_type.rangeDistance);
@@ -245,6 +248,12 @@ public class Enemy : MonoBehaviour
                 agent.baseOffset += 0.04f;
             }
         }
+=======
+    //Getter
+    public GameObject getModel()
+    {
+        return gameObject.transform.Find("Model").gameObject;
+>>>>>>> Stashed changes
     }
     //crowd controll
     public void stun()

@@ -25,6 +25,7 @@ MonoBehaviour:
   moveSpeed: 2
   attackRatio: 0.1
   isRanged: 0
+  isFlyable: 0
   rangeDistance: 3
   attackDMG: 20
-  difficultyNumber: 1
+  difficultyNumber: 10

@@ -18,5 +18,6 @@ MonoBehaviour:
   mapName: DummyMummyMap
   mapParent: {fileID: 3289293065842348863, guid: 23296137546837145a4f0f5d10a420d4,
     type: 3}
+  maxHP: 100
   bossControllerName: DummyMummyFunc
   bossMusic: {fileID: 0}

@@ -164,6 +164,18 @@ MonoBehaviour:
     m_Localized: HATA!
     m_Metadata:
       m_Items: []
+  - m_Id: 6005410833256448
+    m_Localized: "Ses D\xFCzeyi"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6012249885003776
+    m_Localized: "Genel Ses D\xFCzeyi"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6012270319652864
+    m_Localized: "SFX Ses D\xFCzeyi"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

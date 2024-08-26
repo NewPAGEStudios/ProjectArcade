@@ -24,65 +24,99 @@ public class AttackState : BaseState
 
     public override void Perform()
     {
-        if (enemy.CanSeePlayer())
+        if (enemy.e_type.isFlyable)
         {
+<<<<<<< Updated upstream
             stateMachine.agentControl.AllAgentsAttack();
             
             if (!enemy.e_type.isRanged)
+=======
+            enemy.getModel().transform.LookAt(enemy.Player.transform);
+            if (Physics.Raycast(enemy.transform.position, enemy.getModel().transform.forward, 10f,6))//enemy XZ Movement check
+>>>>>>> Stashed changes
             {
-                losePlayerTimer = 0;
-                shotTimer += Time.deltaTime;
-                if (shotTimer > enemy.fireRate)
-                {
-                    if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) <= enemy.e_type.rangeDistance)
-                    {
-                        Attack();
-                    }
-                }
-                if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.e_type.rangeDistance - 1f)
-                {
-                    enemy.Agent.SetDestination(enemy.Player.transform.position);
-                    enemy.animator.SetBool("isWalking", true);
-
-                }
-                else
-                {
-                    enemy.Agent.SetDestination(enemy.transform.position);
-
-                    enemy.animator.SetBool("isWalking", false);
-
-                    targetRotation = Quaternion.LookRotation(enemy.Player.transform.position - enemy.transform.position);
-                    enemy.transform.rotation = Quaternion.Lerp(enemy.transform.rotation, targetRotation, .4f);
-                    enemy.transform.eulerAngles = new Vector3(0, enemy.transform.eulerAngles.y, enemy.transform.eulerAngles.z);
-
-                }
+                enemy.Agent.speed = 1f;
+                enemy.Agent.SetDestination(new Vector3(enemy.Player.transform.position.x, 0, enemy.Player.transform.position.z));
+                enemy.Agent.baseOffset = Mathf.MoveTowards(enemy.Agent.baseOffset, 0f, Time.deltaTime * 2.5f);
+                return;
             }
             else
             {
-                losePlayerTimer = 0;
-                moveTimer += Time.deltaTime;
-                shotTimer += Time.deltaTime;
-                enemy.transform.LookAt(enemy.Player.transform);
-
-                if (shotTimer > enemy.fireRate)
-                {
-                    Shoot();
-                }
-                if (moveTimer > Random.Range(3, 7))
-                {
-                    enemy.Agent.SetDestination(enemy.transform.position + (Random.insideUnitSphere * 15));
-                    moveTimer = 0;
-                }
-                enemy.LastKnowPos = enemy.Player.transform.position;
+                enemy.Agent.speed = 20f;
+                //                enemy.transform.LookAt(enemy.Player.transform);
+                enemy.Agent.SetDestination(new Vector3(enemy.Player.transform.position.x, 0, enemy.Player.transform.position.z));
+            }
+            if(Physics.Raycast(enemy.transform.position,enemy.getModel().transform.up * -1, 1f,6))//enemy Y Movement check
+            {
+                enemy.Agent.baseOffset = Mathf.MoveTowards(enemy.Agent.baseOffset, enemy.Player.transform.position.y, Time.deltaTime * 0.02f);
+            }
+            else
+            {
+                enemy.Agent.baseOffset = Mathf.MoveTowards(enemy.Agent.baseOffset, enemy.Player.transform.position.y, Time.deltaTime * 2.5f);
             }
         }
         else
         {
-            stateMachine.agentControl.LastKnowPos = enemy.Player.transform.position;//playerin son bulunduğu konumu diğer enemylere aktarmak için
-            losePlayerTimer += Time.deltaTime;
-            if (losePlayerTimer > 8)
+            if (enemy.CanSeePlayer())
             {
-                stateMachine.ChangesState(new SearchState());
+                stateMachine.agentControl.AllAgentsAttack();//
+
+                if (!enemy.e_type.isRanged)
+                {
+                    losePlayerTimer = 0;
+                    shotTimer += Time.deltaTime;
+                    if (shotTimer > enemy.fireRate)
+                    {
+                        if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) <= enemy.e_type.rangeDistance)
+                        {
+                            Attack();
+                        }
+                    }
+                    if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.e_type.rangeDistance - 1f)
+                    {
+                        enemy.Agent.SetDestination(enemy.Player.transform.position);
+                        enemy.animator.SetBool("isWalking", true);
+
+                    }
+                    else
+                    {
+                        enemy.Agent.SetDestination(enemy.transform.position);
+
+                        enemy.animator.SetBool("isWalking", false);
+
+                        targetRotation = Quaternion.LookRotation(enemy.Player.transform.position - enemy.transform.position);
+                        enemy.transform.rotation = Quaternion.Lerp(enemy.transform.rotation, targetRotation, .4f);
+                        enemy.transform.eulerAngles = new Vector3(0, enemy.transform.eulerAngles.y, enemy.transform.eulerAngles.z);
+
+                    }
+                }
+                else
+                {
+                    losePlayerTimer = 0;
+                    moveTimer += Time.deltaTime;
+                    shotTimer += Time.deltaTime;
+                    enemy.transform.LookAt(enemy.Player.transform);
+
+                    if (shotTimer > enemy.fireRate)
+                    {
+                        Shoot();
+                    }
+                    if (moveTimer > Random.Range(3, 7))
+                    {
+                        enemy.Agent.SetDestination(enemy.transform.position + (Random.insideUnitSphere * 15));
+                        moveTimer = 0;
+                    }
+                    enemy.LastKnowPos = enemy.Player.transform.position;
+                }
+            }
+            else
+            {
+                stateMachine.agentControl.LastKnowPos = enemy.Player.transform.position;//playerin son bulunduğu konumu diğer enemylere aktarmak için
+                losePlayerTimer += Time.deltaTime;
+                if (losePlayerTimer > 8)
+                {
+                    stateMachine.ChangesState(new SearchState());
+                }
             }
         }
     }
@@ -114,7 +148,15 @@ public class AttackState : BaseState
     }
     public void Attack()
     {
+<<<<<<< Updated upstream
         //TODO: PATLAT DMG AT ardından : gamecontrollerdan düşman sayısını azalt
+=======
+        if (enemy.e_type.EnemyTypeID == 1)//sinek
+        {
+            //TODO: PATLAT DMG AT ardından : gamecontrollerdan düşman sayısını azalt
+        }
+
+>>>>>>> Stashed changes
         enemy.animator.SetTrigger("Attack");
         enemy.animator.SetBool("AttackEnd", true);
 

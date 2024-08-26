@@ -463,7 +463,17 @@ public class GameController : MonoBehaviour
         Transform p = enemySpawnPointParent.transform.GetChild(UnityEngine.Random.Range(0, enemySpawnPointParent.transform.childCount));
         
         float x = UnityEngine.Random.Range(p.transform.Find("min").position.x, p.transform.Find("max").position.x);
-        float y = p.position.y + enemies[indexOfID].modelGameObject.transform.localScale.y;
+        float y = 0;
+
+        if (enemies[indexOfID].isFlyable)
+        {
+            y = 0;
+        }
+        else
+        {
+            y = p.position.y + enemies[indexOfID].modelGameObject.transform.localScale.y;
+        }
+        
         float z = UnityEngine.Random.Range(p.transform.Find("min").position.z, p.transform.Find("max").position.z);
 
         enemy.transform.position = new Vector3(x, y, z);
@@ -553,11 +563,10 @@ public class GameController : MonoBehaviour
         DefaultMap();
         toWave();
     }
-    public void endBoss()
+    public void endBoss(GameObject bossObject)
     {
         bossPanel.SetActive(false);
-        changeMap(mainLevel);
-        toWait();
+        toCinematic(pState, PlayState.inWaiting, bossObject.GetComponent<Animator>(), bossObject.GetComponentInChildren<Camera>(),bossObject);
     }
     private void toWave()
     {
@@ -595,7 +604,10 @@ public class GameController : MonoBehaviour
 
         }
     }
-
+    public void callToWait()
+    {
+        toWait();
+    }
     private void toWait()
     {
         SaveElements();
@@ -636,10 +648,10 @@ public class GameController : MonoBehaviour
         bossPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = boss[i].bossName;
 
 
-        toCinematic(pState, PlayState.inBoss, go.GetComponent<Animator>(), go.GetComponentInChildren<Camera>());
+        toCinematic(pState, PlayState.inBoss, go.GetComponent<Animator>(), go.GetComponentInChildren<Camera>(),null);
 
     }
-    private void toCinematic(PlayState from,PlayState to,Animator anim,Camera animCam)
+    private void toCinematic(PlayState from,PlayState to,Animator anim,Camera animCam,GameObject targetting)
     {
         pState = PlayState.inCinematic;
         //DisableUI
@@ -662,7 +674,8 @@ public class GameController : MonoBehaviour
         }
         else if(from == PlayState.inBoss && to == PlayState.inWaiting)
         {
-            //bossEnd
+            anim.SetTrigger("Finish");
+            StartCoroutine(bossEndAnim(anim, animCam,targetting));
         }
         //Addable
     }
@@ -832,7 +845,7 @@ public class GameController : MonoBehaviour
         while (true) 
         {
             yield return new WaitForEndOfFrame();
-            if (selectedAnim.GetCurrentAnimatorStateInfo(0).IsName("end"))
+            if (selectedAnim.GetCurrentAnimatorStateInfo(0).IsName("end_start"))
             {
                 bossIntroPanel.SetActive(true);
                 break;
@@ -865,7 +878,44 @@ public class GameController : MonoBehaviour
         //change GameState
         pState = PlayState.inBoss;
     }
+    IEnumerator bossEndAnim(Animator selectedAnim, Camera selectedCam,GameObject willDestroyObj)
+    {
+        while (true)
+        {
+            yield return new WaitForEndOfFrame();
+            if (selectedAnim.GetCurrentAnimatorStateInfo(0).IsName("end_finish"))
+            {
+                break;
+            }
+        }
+        yield return new WaitForSeconds(0.3f);
+        //StopAnimation
 
+        selectedAnim.SetBool("FinishEnd", true);
+        yield return new WaitForEndOfFrame();
+        selectedAnim.SetBool("FinishEnd", false);
+
+        for (int i = 0; i < gamePanel.transform.childCount; i++)
+        {
+            if (i == 2 || i == 3 || i == 4 || i == 5)
+            {
+                continue;
+            }
+            gamePanel.transform.GetChild(i).gameObject.SetActive(true);
+        }
+        playerPanel.SetActive(true);
+        bossPanel.SetActive(false);
+
+        //camNormalize
+        mainCam.GetComponent<Camera>().enabled = true;
+        selectedCam.enabled = false;
+
+        Destroy(willDestroyObj);
+        currentLevel.transform.Find("MapChangerDoor").gameObject.SetActive(true);
+
+        //change GameState
+        pState = PlayState.inBoss;
+    }
     //UI Events
     //GameBasedUI Evvents
     public void waitTimeVisualize(float timer)

@@ -159,6 +159,18 @@ MonoBehaviour:
     m_Key: error_text
     m_Metadata:
       m_Items: []
+  - m_Id: 6005410833256448
+    m_Key: Sound_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6012249885003776
+    m_Key: MasterSound_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6012270319652864
+    m_Key: SFX_Text
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

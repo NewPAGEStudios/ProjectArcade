@@ -10,30 +10,21 @@ public class DummyMummyAmmo : MonoBehaviour
     void Start()
     {
         Instantiate(ammo.modelGO, gameObject.transform);
-        StartCoroutine(startingFunc());
-    }
+        gameObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
-    IEnumerator startingFunc()
-    {
-        gameObject.transform.localScale = Vector3.zero;
-        while (gameObject.transform.localScale.z <= 1f)
-        {
-            gameObject.transform.localScale += new Vector3(0.01f, 0.01f, 0.01f) * Time.deltaTime * 100;
-            yield return new WaitForEndOfFrame();
-        }
-        gameObject.transform.localScale = Vector3.one / 10;
+        gameObject.transform.parent = null;
+
         GetComponent<Rigidbody>().AddForce(transform.forward * ammo.bulletSpeed, ForceMode.Impulse);
     }
-
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log(collision.gameObject.name);
-        if(targetTag == "PlayerColl")
+        if(targetTag == "Player")
         {
             if (collision.transform.CompareTag(targetTag))
             {
-                collision.transform.parent.GetComponent<PController>().TakeDMG(ammo.dmg,gameObject);
-                Destroy(gameObject);
+                Debug.Log("Bomba");
+                collision.transform.GetComponent<PController>().TakeDMG(ammo.dmg,gameObject);
             }
         }
         else if(targetTag == "Enemy" || targetTag == "Boss")
@@ -47,6 +38,7 @@ public class DummyMummyAmmo : MonoBehaviour
 
             }
         }
+        gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
         Destroy(gameObject);
     }
 }

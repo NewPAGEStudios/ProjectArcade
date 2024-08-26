@@ -18,6 +18,7 @@ MonoBehaviour:
     type: 3}
   usedAmmo: {fileID: 11400000, guid: 11a3b18b96a292d4ca57c0107bb46267, type: 2}
   twoStateReload: 1
+  soundOfWeaponOnFire: {fileID: 8300000, guid: 88ccce6315840454f88d049b0534ad30, type: 3}
   UIRef: {fileID: 21300000, guid: 083cdc2aedad3874e8591e491ab86da3, type: 3}
   toBuyMoney: 150
   type: 1

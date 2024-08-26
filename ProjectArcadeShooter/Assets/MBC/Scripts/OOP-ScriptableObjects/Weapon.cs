@@ -19,6 +19,7 @@ public class Weapon : ScriptableObject
     public GameObject modelGameObject;
     public Ammo usedAmmo;
     public bool twoStateReload;
+//    public AudioClip soundOfWeaponOnFire;
     [Header(header: "ShopSettings")]
     public Sprite UIRef;
     public float toBuyMoney;

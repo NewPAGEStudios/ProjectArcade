@@ -23,9 +23,9 @@ public class EnemyType : ScriptableObject
     [Range(0.1f, 10f)]
     public float attackRatio;
     public bool isRanged;
+    public bool isFlyable;
     public float rangeDistance;
     public float attackDMG;
-
 
     [Header(header: "Difficulty")]
     [Tooltip("2->walker 7->drone 8->ranged 10->droneRanged 10->demolisher")]

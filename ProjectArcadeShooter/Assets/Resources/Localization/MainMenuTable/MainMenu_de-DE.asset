@@ -165,6 +165,18 @@ MonoBehaviour:
     m_Localized: FEHLER!
     m_Metadata:
       m_Items: []
+  - m_Id: 6005410833256448
+    m_Localized: "Lautst\xE4rke"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6012249885003776
+    m_Localized: "deutch\t"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6012270319652864
+    m_Localized: deutch
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

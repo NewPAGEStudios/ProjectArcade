@@ -2,33 +2,67 @@
 using System.Collections;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 namespace SlimUI.ModernMenu{
 	public class CheckMusicVolume : MonoBehaviour {
 
-		public AudioSource music;
+		public AudioMixer auMix;
 
-		public void  Start ()
+		void Awake ()
 		{
-			// remember volume level from last time
-			if(SceneManager.GetActiveScene().name == "MainScene")
-			{
-				music.volume = PlayerPrefs.GetFloat("MusicVolume");
-			}
-			else
-			{
-                GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("MusicVolume");
+            auMix.SetFloat("MasterVolume", Mathf.Lerp(-40,0,PlayerPrefs.GetFloat("MasterVolume")));
+            if (PlayerPrefs.GetFloat("MasterVolume") == 0)
+            {
+                auMix.SetFloat("MasterVolume", -80);
             }
+
+            auMix.SetFloat("MusicVolume", Mathf.Lerp(-40, 0, PlayerPrefs.GetFloat("MusicVolume")));
+            if (PlayerPrefs.GetFloat("MusicVolume") == 0)
+            {
+                auMix.SetFloat("MusicVolume", -80);
+            }
+
+            auMix.SetFloat("SFXVolume", Mathf.Lerp(-40, 0, PlayerPrefs.GetFloat("SFXVolume")));
+            if (PlayerPrefs.GetFloat("SFXVolume") == 0)
+            {
+                auMix.SetFloat("SFXVolume", -80);
+            }
+
+            auMix.SetFloat("SoundVolume", Mathf.Lerp(-40, 0, PlayerPrefs.GetFloat("SoundVolume")));
+            if (PlayerPrefs.GetFloat("SoundVolume") == 0)
+            {
+                auMix.SetFloat("SoundVolume", -80);
+            }
+
+            gameObject.SetActive(false);
+            gameObject.transform.parent.gameObject.SetActive(false);
+
         }
 
-		public void UpdateVolume ()
+        public void UpdateVolume ()
         {
-            if (SceneManager.GetActiveScene().name == "MainScene")
+            auMix.SetFloat("MasterVolume", Mathf.Lerp(-40, 0, PlayerPrefs.GetFloat("MasterVolume")));
+            if (PlayerPrefs.GetFloat("MasterVolume") == 0)
             {
-                music.volume = PlayerPrefs.GetFloat("MusicVolume");
+                auMix.SetFloat("MasterVolume", -80);
             }
-            else
+
+            auMix.SetFloat("MusicVolume", Mathf.Lerp(-40, 0, PlayerPrefs.GetFloat("MusicVolume")));
+            if (PlayerPrefs.GetFloat("MusicVolume") == 0)
             {
-                GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("MusicVolume");
+                auMix.SetFloat("MusicVolume", -80);
+            }
+
+            auMix.SetFloat("SFXVolume", Mathf.Lerp(-40, 0, PlayerPrefs.GetFloat("SFXVolume")));
+            if (PlayerPrefs.GetFloat("SFXVolume") == 0)
+            {
+                auMix.SetFloat("SFXVolume", -80);
+            }
+
+            auMix.SetFloat("SoundVolume", Mathf.Lerp(-40, 0, PlayerPrefs.GetFloat("SoundVolume")));
+            if (PlayerPrefs.GetFloat("SoundVolume") == 0)
+            {
+                auMix.SetFloat("SoundVolume", -80);
             }
         }
     }

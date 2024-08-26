@@ -164,6 +164,18 @@ MonoBehaviour:
     m_Localized: ERROR!
     m_Metadata:
       m_Items: []
+  - m_Id: 6005410833256448
+    m_Localized: Sound Volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6012249885003776
+    m_Localized: Master Sound
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6012270319652864
+    m_Localized: SFX Sound
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
