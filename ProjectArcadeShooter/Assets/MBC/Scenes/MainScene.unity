@@ -15763,8 +15763,8 @@ MonoBehaviour:
   fadeSpeedDMGVisualizetion: 1
   cameraShakeIntensity: 2
   cameraShakeDuration: 0.15
-  bossTimePerWave: 5
-  bossTimePerWaveLoop: 1
+  bossTimePerWave: 6
+  bossTimePerWaveLoop: 0
   shopButton: {fileID: 6562370639412918204, guid: 0961e4689186876419b4427300091900,
     type: 3}
   shopTXT: {fileID: 7465069773958422486, guid: f9658ddc4e45a0d4b971678ce0a87738, type: 3}
