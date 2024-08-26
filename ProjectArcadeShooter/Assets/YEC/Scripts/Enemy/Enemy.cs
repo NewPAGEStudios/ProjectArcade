@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -39,6 +40,7 @@ public class Enemy : MonoBehaviour
     [HideInInspector]
     public EnemyType e_type;
     public Animator animator;
+    public float currentBaseOffeset;
 
     private enum ccState
     {
@@ -74,9 +76,9 @@ public class Enemy : MonoBehaviour
 
         for(int i = 0; i < mostPath; i++)
         {
-            float x = Random.Range(parentSelectedPosition.transform.Find("min").position.x, parentSelectedPosition.transform.Find("max").position.x);
+            float x = UnityEngine.Random.Range(parentSelectedPosition.transform.Find("min").position.x, parentSelectedPosition.transform.Find("max").position.x);
             float y = parentSelectedPosition.position.y + model.transform.localScale.y;
-            float z = Random.Range(parentSelectedPosition.transform.Find("min").position.z, parentSelectedPosition.transform.Find("max").position.z);
+            float z = UnityEngine.Random.Range(parentSelectedPosition.transform.Find("min").position.z, parentSelectedPosition.transform.Find("max").position.z);
 
             path.waypoints.Add(new Vector3(x, y, z));
         }
@@ -91,7 +93,9 @@ public class Enemy : MonoBehaviour
             agent.agentTypeID = agenjtFindClass.GetAgentTypeIDbyName(e_type.agentName);
             agent.speed = e_type.moveSpeed;
             if(e_type.agentName == "EnemyFly"){
-                agent.baseOffset = 0;
+                agent.baseOffset = 5;
+                currentBaseOffeset = agent.baseOffset;
+
             }
         }
 
@@ -111,6 +115,14 @@ public class Enemy : MonoBehaviour
             return;//Updateyi patlat
         }
         currentState = stateMachine.activeState.ToString();
+    }
+    void FixedUpdate(){
+        if (e_type.EnemyTypeID == 1)//sinek
+        {
+
+            BaseOffsetValueControl();
+        }
+        
     }
     public bool CanSeePlayer()
     {
@@ -161,6 +173,78 @@ public class Enemy : MonoBehaviour
         }
 
         animator.SetBool("AttackEnd", false);
+    }
+    public void BaseOffsetValueControl(){
+        // enemy.Agent.SetDestination(enemy.Player.transform.position);
+        // Debug.Log("aradaki mesafe"+distance+"range"+ e_type.rangeDistance);
+        agent.radius = 0.6f;// nedense 0.5 değerinde player yüksekteyken takip etmiyor
+        float distance = Vector3.Distance(Player.transform.position, transform.position);
+        float playerHight = player.transform.position.y - transform.position.y;
+        // Debug.Log(playerHight);
+        RaycastHit hitInfo = new RaycastHit();
+        if(Physics.Raycast(transform.position, transform.forward, out hitInfo, 3) && hitInfo.collider.gameObject.tag != "PlayerColl" && hitInfo.collider.gameObject.tag != "EnemyColl")
+        {
+            Debug.Log("nesne:" + hitInfo.collider.name+ "tag:"+ hitInfo.collider.gameObject.tag);
+            agent.speed = 0.1f;
+            agent.baseOffset += 0.07f;
+            // if(hitInfo.distance < 5){
+
+            // }
+            // else{
+            //     Debug.Log("hızlan");
+            //     agent.speed = 5;
+            // }
+        }
+        else
+        {
+            agent.speed = 5;
+        }
+
+        if(distance <= 15 && agent.baseOffset >= agent.baseOffset + playerHight)
+        {
+
+            // -8.935724
+            // if(Physics.Raycast(transform.position, transform.forward, out hitInfo, 15))
+            // {
+
+            //     /////////////////
+            //     // if(hitInfo.transform.CompareTag("PlayerColl"))
+            //     // {
+
+            //     // }
+            //     // else
+            //     // {
+            //     //     if(player.transform.position.y > transform.position.y)
+            //     //     {
+                        
+            //     //         // Mathf.MoveTowards(agent.baseOffset,transform.position.y,2);
+
+            //     //         agent.baseOffset += playerHight;
+            //     //     }
+            //     // }
+            // }
+            for(float i = distance + 1f; i >= distance; i-= 0.5f)
+            {
+                agent.baseOffset -= 0.01f; 
+            }
+        }
+        
+        if(agent.baseOffset < currentBaseOffeset + playerHight && distance >=15)
+        {
+            agent.baseOffset += 0.01f;
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////
+        //rampada
+        Ray downwardRay = new Ray(transform.position, Vector3.down);
+        RaycastHit hitDownInfo = new RaycastHit();
+        if(Physics.Raycast(downwardRay, out hitDownInfo))
+        {
+            if(hitDownInfo.distance < 0.9)
+            {
+                agent.baseOffset += 0.04f;
+            }
+        }
     }
     //crowd controll
     public void stun()

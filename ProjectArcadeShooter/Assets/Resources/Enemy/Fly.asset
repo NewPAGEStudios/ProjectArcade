@@ -25,6 +25,6 @@ MonoBehaviour:
   moveSpeed: 5
   attackRatio: 0.1
   isRanged: 0
-  rangeDistance: 0
+  rangeDistance: 3
   attackDMG: 20
   difficultyNumber: 1

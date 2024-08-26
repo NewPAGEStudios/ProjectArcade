@@ -592,6 +592,7 @@ public class GameController : MonoBehaviour
             SpawnEnemy(enemyThatCanSpawn[i].EnemyTypeID);
             maxDifficultyNumber -= enemyThatCanSpawn[i].difficultyNumber;
             Debug.Log(maxDifficultyNumber);
+
         }
     }
 

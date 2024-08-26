@@ -29,12 +29,14 @@ public class  AgentControl : MonoBehaviour
         {
 
             var enemy = agent.GetComponent<Enemy>();
-            if (enemy.CanSeePlayer() == false){//Her düşmanın playeri görüp görmediğini kontrol ederiz.
+            if (enemy.CanSeePlayer() == false)
+            {//Her düşmanın playeri görüp görmediğini kontrol ederiz.
                 enemy.stateMachine.ChangesState(new SearchState());
                 // Debug.Log($"search state agent: {agent.name}");
 
             }
-            else{
+            else
+            {
                 anybodySee = true;
             }
         }

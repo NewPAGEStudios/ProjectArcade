@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AttackState : BaseState
@@ -25,8 +26,8 @@ public class AttackState : BaseState
     {
         if (enemy.CanSeePlayer())
         {
-            stateMachine.agentControl.AllAgentsAttack();//
-
+            stateMachine.agentControl.AllAgentsAttack();
+            
             if (!enemy.e_type.isRanged)
             {
                 losePlayerTimer = 0;
@@ -113,10 +114,7 @@ public class AttackState : BaseState
     }
     public void Attack()
     {
-        if (enemy.e_type.EnemyTypeID == 1)//sinek
-        {
-            //TODO: PATLAT DMG AT ardından : gamecontrollerdan düşman sayısını azalt
-        }
+        //TODO: PATLAT DMG AT ardından : gamecontrollerdan düşman sayısını azalt
         enemy.animator.SetTrigger("Attack");
         enemy.animator.SetBool("AttackEnd", true);
 
