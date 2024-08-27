@@ -31,9 +31,15 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 1
+<<<<<<< Updated upstream
   m_Children:
   - {fileID: 3375186842945547173}
 --- !u!33 &1147712493526613741
+=======
+
+
+
+>>>>>>> Stashed changes
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
