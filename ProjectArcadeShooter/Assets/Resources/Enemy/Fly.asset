@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Fly
   m_EditorClassIdentifier: 
   EnemyTypeID: 1
-  modelGameObject: {fileID: 919132149155446097, guid: ca50a4c7207ce0f4b976501dfdecb234,
+  modelGameObject: {fileID: 1672027476823096463, guid: a2ebbc02fa088944f88fb1f508dd7a85,
     type: 3}
   ammo: {fileID: 11400000, guid: 11a3b18b96a292d4ca57c0107bb46267, type: 2}
   agentName: EnemyFly
