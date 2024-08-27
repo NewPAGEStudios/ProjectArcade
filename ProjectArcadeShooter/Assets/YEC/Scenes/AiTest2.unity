@@ -7633,13 +7633,18 @@ MonoBehaviour:
   PanelControls: {fileID: 1961411991}
   PanelVideo: {fileID: 1608989583}
   PanelGame: {fileID: 900714464}
+  PanelSound: {fileID: 0}
   lineGame: {fileID: 1886209662}
+  lineSound: {fileID: 0}
   lineVideo: {fileID: 512363204}
   lineControls: {fileID: 1435567674}
   fullscreentext: {fileID: 406754674}
   swayBobtext: {fileID: 2000636972}
   damageVibrationtext: {fileID: 1507359523}
+  masterSlider: {fileID: 0}
   musicSlider: {fileID: 1673975479}
+  sFXSlider: {fileID: 0}
+  soundSlider: {fileID: 0}
   sensitivityXSlider: {fileID: 453608655}
   sensitivityYSlider: {fileID: 1852694053}
 --- !u!114 &607300520
@@ -7654,7 +7659,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad149d53679afc04782ee02fa3e008d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  music: {fileID: 655203944}
+  auMix: {fileID: 0}
 --- !u!1001 &611857018
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25694,6 +25699,7 @@ MonoBehaviour:
   sb_apllier: {fileID: 714850383}
   activeWeapon: {fileID: 273581186}
   inActiveWeapon: {fileID: 2001263146}
+  soundWeapon: {fileID: 0}
   active_Skill: {fileID: 0}
   IManager: {fileID: 0}
 --- !u!54 &1906974780
