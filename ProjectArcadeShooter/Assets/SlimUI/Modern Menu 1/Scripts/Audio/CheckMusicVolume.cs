@@ -33,10 +33,6 @@ namespace SlimUI.ModernMenu{
             {
                 auMix.SetFloat("SoundVolume", -80);
             }
-
-            gameObject.SetActive(false);
-            gameObject.transform.parent.gameObject.SetActive(false);
-
         }
 
         public void UpdateVolume ()

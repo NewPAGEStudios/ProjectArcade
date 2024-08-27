@@ -25,11 +25,6 @@ MonoBehaviour:
   moveSpeed: 20
   attackRatio: 0.1
   isRanged: 0
-<<<<<<< Updated upstream
   rangeDistance: 3
-=======
   isFlyable: 1
   rangeDistance: 0
->>>>>>> Stashed changes
-  attackDMG: 20
-  difficultyNumber: 1

@@ -7857,7 +7857,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &575874991
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8350,7 +8350,6 @@ GameObject:
   m_Component:
   - component: {fileID: 607300512}
   - component: {fileID: 607300518}
-  - component: {fileID: 607300520}
   - component: {fileID: 607300519}
   - component: {fileID: 607300517}
   - component: {fileID: 607300521}
@@ -8454,19 +8453,6 @@ MonoBehaviour:
   soundSlider: {fileID: 1272030047}
   sensitivityXSlider: {fileID: 453608655}
   sensitivityYSlider: {fileID: 1852694053}
---- !u!114 &607300520
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 607300511}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad149d53679afc04782ee02fa3e008d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  auMix: {fileID: 24100000, guid: 204ae77320b536d459d12c2126255a73, type: 2}
 --- !u!114 &607300521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12423,7 +12409,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 607300520}
+        - m_Target: {fileID: 1203979086}
           m_TargetAssemblyTypeName: SlimUI.ModernMenu.CheckMusicVolume, Assembly-CSharp
           m_MethodName: UpdateVolume
           m_Mode: 1
@@ -12498,7 +12484,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 607300520}
+      - m_Target: {fileID: 1203979086}
         m_TargetAssemblyTypeName: SlimUI.ModernMenu.CheckMusicVolume, Assembly-CSharp
         m_MethodName: UpdateVolume
         m_Mode: 1
@@ -15698,6 +15684,7 @@ GameObject:
   - component: {fileID: 1203979081}
   - component: {fileID: 1203979083}
   - component: {fileID: 1203979085}
+  - component: {fileID: 1203979086}
   m_Layer: 0
   m_Name: GameController
   m_TagString: GameController
@@ -15813,6 +15800,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allAgents: []
   anybodySee: 0
+--- !u!114 &1203979086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1203979080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad149d53679afc04782ee02fa3e008d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  auMix: {fileID: 24100000, guid: 204ae77320b536d459d12c2126255a73, type: 2}
 --- !u!1 &1208570023
 GameObject:
   m_ObjectHideFlags: 0
@@ -16840,7 +16840,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 607300520}
+        - m_Target: {fileID: 1203979086}
           m_TargetAssemblyTypeName: SlimUI.ModernMenu.CheckMusicVolume, Assembly-CSharp
           m_MethodName: UpdateVolume
           m_Mode: 1
@@ -16915,7 +16915,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 607300520}
+      - m_Target: {fileID: 1203979086}
         m_TargetAssemblyTypeName: SlimUI.ModernMenu.CheckMusicVolume, Assembly-CSharp
         m_MethodName: UpdateVolume
         m_Mode: 1
@@ -25134,7 +25134,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 607300520}
+        - m_Target: {fileID: 1203979086}
           m_TargetAssemblyTypeName: SlimUI.ModernMenu.CheckMusicVolume, Assembly-CSharp
           m_MethodName: UpdateVolume
           m_Mode: 1
@@ -25209,7 +25209,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 607300520}
+      - m_Target: {fileID: 1203979086}
         m_TargetAssemblyTypeName: SlimUI.ModernMenu.CheckMusicVolume, Assembly-CSharp
         m_MethodName: UpdateVolume
         m_Mode: 1
@@ -27988,7 +27988,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 607300520}
+        - m_Target: {fileID: 1203979086}
           m_TargetAssemblyTypeName: SlimUI.ModernMenu.CheckMusicVolume, Assembly-CSharp
           m_MethodName: UpdateVolume
           m_Mode: 1
@@ -28063,7 +28063,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 607300520}
+      - m_Target: {fileID: 1203979086}
         m_TargetAssemblyTypeName: SlimUI.ModernMenu.CheckMusicVolume, Assembly-CSharp
         m_MethodName: UpdateVolume
         m_Mode: 1
@@ -33608,7 +33608,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4991050726251382337
 Transform:
   m_ObjectHideFlags: 0
