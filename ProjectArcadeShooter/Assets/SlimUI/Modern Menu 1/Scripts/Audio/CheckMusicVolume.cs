@@ -8,7 +8,7 @@ namespace SlimUI.ModernMenu{
 
 		public AudioMixer auMix;
 
-		void Awake ()
+		void Start ()
 		{
             auMix.SetFloat("MasterVolume", Mathf.Lerp(-40,0,PlayerPrefs.GetFloat("MasterVolume")));
             if (PlayerPrefs.GetFloat("MasterVolume") == 0)

@@ -26,6 +26,7 @@ MonoBehaviour:
   attackRatio: 0.1
   isRanged: 0
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   rangeDistance: 3
   isFlyable: 1
   rangeDistance: 0
@@ -34,4 +35,10 @@ MonoBehaviour:
   rangeDistance: 0
   attackDMG: 0
   difficultyNumber: 0
+>>>>>>> Stashed changes
+=======
+  isFlyable: 1
+  rangeDistance: 0
+  attackDMG: 0
+  difficultyNumber: 4
 >>>>>>> Stashed changes

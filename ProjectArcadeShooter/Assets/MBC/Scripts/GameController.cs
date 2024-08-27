@@ -601,7 +601,6 @@ public class GameController : MonoBehaviour
             SpawnEnemy(enemyThatCanSpawn[i].EnemyTypeID);
             maxDifficultyNumber -= enemyThatCanSpawn[i].difficultyNumber;
             Debug.Log(maxDifficultyNumber);
-
         }
     }
     public void callToWait()
@@ -616,6 +615,7 @@ public class GameController : MonoBehaviour
         waitTimeVisualize(waitTimer);
         waveVisualzie("Wait");
         //Enable Shops
+
     }
 
     private void toBoss(int bossID)
