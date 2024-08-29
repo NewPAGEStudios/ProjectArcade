@@ -89,15 +89,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 727176017612800
-    m_Localized: Sallanma ve Yalplanma
+    m_Localized: Sallanma ve Yalpalanma
     m_Metadata:
       m_Items: []
   - m_Id: 728481356320768
-    m_Localized: "Fare Yatay G\xF6r\xFCn\xFCm"
+    m_Localized: Fare Yatay Hassasiyet
     m_Metadata:
       m_Items: []
   - m_Id: 728973872467968
-    m_Localized: "Fare Dikey G\xF6r\xFCn\xFCm\xFC"
+    m_Localized: Fare Dikey Hassasiyet
     m_Metadata:
       m_Items: []
   - m_Id: 730595965014016
@@ -105,7 +105,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 731468199890944
-    m_Localized: "Ortam Okl\xFCzyonu"
+    m_Localized: "Ambiyans Detay\u0131"
     m_Metadata:
       m_Items: []
   - m_Id: 732002789101568
@@ -165,7 +165,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6005410833256448
-    m_Localized: "Ses D\xFCzeyi"
+    m_Localized: Ses
     m_Metadata:
       m_Items: []
   - m_Id: 6012249885003776
@@ -174,6 +174,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 6012270319652864
     m_Localized: "SFX Ses D\xFCzeyi"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7169154854572032
+    m_Localized: "Ses D\xFCzeyi"
     m_Metadata:
       m_Items: []
   references:

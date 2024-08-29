@@ -171,6 +171,10 @@ MonoBehaviour:
     m_Key: SFX_Text
     m_Metadata:
       m_Items: []
+  - m_Id: 7169154854572032
+    m_Key: SoundVolumeText
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

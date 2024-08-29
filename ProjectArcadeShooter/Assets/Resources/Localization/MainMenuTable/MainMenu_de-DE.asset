@@ -94,11 +94,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 728481356320768
-    m_Localized: Maus Im Horizontal Look
+    m_Localized: 'Horizontale Empfindlichkeit der Maus
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 728973872467968
-    m_Localized: Vertikaler Blick der Maus
+    m_Localized: 'Vertikale Empfindlichkeit der Maus
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 730595965014016
@@ -166,15 +170,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6005410833256448
-    m_Localized: "Lautst\xE4rke"
+    m_Localized: Ton
     m_Metadata:
       m_Items: []
   - m_Id: 6012249885003776
-    m_Localized: "deutch\t"
+    m_Localized: Meister Klang
     m_Metadata:
       m_Items: []
   - m_Id: 6012270319652864
-    m_Localized: deutch
+    m_Localized: Soundeffekte
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7169154854572032
+    m_Localized: "Lautst\xE4rke"
     m_Metadata:
       m_Items: []
   references:

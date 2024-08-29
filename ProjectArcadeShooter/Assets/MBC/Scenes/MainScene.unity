@@ -15237,6 +15237,7 @@ GameObject:
   - component: {fileID: 1181956164}
   - component: {fileID: 1181956163}
   - component: {fileID: 1181956162}
+  - component: {fileID: 1181956166}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -15417,6 +15418,34 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1181956166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1181956160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:ee52057980c2b2646bf560cfd1a70ccc
+    m_TableEntryReference:
+      m_KeyId: 6005410833256448
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!4 &1184148530 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7306991442216533873, guid: 0956535edf85bb44d8c761bd42a5e965,
@@ -30475,7 +30504,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:ee52057980c2b2646bf560cfd1a70ccc
     m_TableEntryReference:
-      m_KeyId: 6005410833256448
+      m_KeyId: 7169154854572032
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0

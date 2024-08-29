@@ -93,15 +93,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 728481356320768
-    m_Localized: Mouse Horizontal Look
+    m_Localized: Mouse Horizontal Sensivity
     m_Metadata:
       m_Items: []
   - m_Id: 728973872467968
-    m_Localized: Mouse Vertical Look
+    m_Localized: Mouse Vertical Sensivity
     m_Metadata:
       m_Items: []
   - m_Id: 730595965014016
-    m_Localized: Full Screen
+    m_Localized: Fullscreen
     m_Metadata:
       m_Items: []
   - m_Id: 731468199890944
@@ -165,7 +165,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6005410833256448
-    m_Localized: Sound Volume
+    m_Localized: Sound
     m_Metadata:
       m_Items: []
   - m_Id: 6012249885003776
@@ -174,6 +174,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 6012270319652864
     m_Localized: SFX Sound
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7169154854572032
+    m_Localized: Sound Volume
     m_Metadata:
       m_Items: []
   references:
