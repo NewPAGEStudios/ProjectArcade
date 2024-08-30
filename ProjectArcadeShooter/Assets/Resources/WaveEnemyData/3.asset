@@ -10,12 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: efd77661eb35f04488c41e3a09d3e5fa, type: 3}
-  m_Name: WaveEnemyData
+  m_Name: 3
   m_EditorClassIdentifier: 
+  waveNumber: 3
   enemyTypes:
   - enemyId: 0
-    enemyPiece: 5
+    enemyPiece: 20
   - enemyId: 1
-    enemyPiece: 2
+    enemyPiece: 0
   - enemyId: 2
-    enemyPiece: 1
+    enemyPiece: 5
+  enemyStatMultiplier: 1
+  maxConsSpawn: 12
+  maxAmmoSpawn: 0

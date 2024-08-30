@@ -41,7 +41,11 @@ public class GameController : MonoBehaviour
     public Skill[] skills;
     public Boss[] boss;
     public Perk[] perks;
-    
+    public WaveEnemyData[] waveEnemyDatas;
+    [Tooltip("Drag/Release")]
+    public WeaponGetAmmoData weaponGetAmmoData;
+
+
     private List<Skill> activeSkills = new List<Skill>();
     private List<Skill> passiveSkills = new List<Skill>();
     private List<Skill> instantSkills = new List<Skill>();
@@ -95,7 +99,11 @@ public class GameController : MonoBehaviour
     public List<int> activeConsSkill = new List<int>();
 
 
-    private float spawnTimer;
+    private float spawnTimer;//For Spawning Consumables
+    [Tooltip("PercentageOfSpawningWeapon")]
+    public int ammoSpawn = 50;
+    private int remainingConsToSpawn = 0;
+    private int remainingAmmoConsToSpawn = 0;
 
     [Header(header: "PlayerConfigiration")]
     public GameObject inActiveWeapon;
@@ -166,7 +174,7 @@ public class GameController : MonoBehaviour
         skills = Resources.LoadAll<Skill>("Skill");
         boss = Resources.LoadAll<Boss>("Boss");
         perks = Resources.LoadAll<Perk>("Perks");
-
+        waveEnemyDatas = Resources.LoadAll<WaveEnemyData>("WaveEnemyData");
 
         for (int i = 0; i < weapons.Length; i++)
         {
@@ -294,7 +302,6 @@ public class GameController : MonoBehaviour
     {
         if (consumableSpawnPointParent.transform.childCount == 0)
         {
-            Debug.Log("RampageBombaabasd,iasdklaskdlşasdasŞaka");
             return;
         }
 
@@ -520,10 +527,30 @@ public class GameController : MonoBehaviour
             }
             else if (pState == PlayState.inWave)
             {
+                //ConsuambleSpawn
                 if (spawnTimer <= 0f)
                 {
-                    SpawnCons(-1, UnityEngine.Random.Range(0, consumables.Length), -1, -1);
-                    spawnTimer = UnityEngine.Random.Range(7.5f, 12.5f);
+                    if (remainingConsToSpawn > 0)
+                    {
+                        if (UnityEngine.Random.Range(0, 100) < ammoSpawn && remainingAmmoConsToSpawn > 0)
+                        {
+
+                            SpawnCons(-1, 0, UnityEngine.Random.Range(0, weapons.Length), -1);
+                            remainingAmmoConsToSpawn -= 1;
+                        }
+                        else if (remainingAmmoConsToSpawn == remainingConsToSpawn)
+                        {
+
+                            SpawnCons(-1, 0, UnityEngine.Random.Range(0, weapons.Length), -1);
+                            remainingAmmoConsToSpawn -= 1;
+                        }
+                        else
+                        {
+                            SpawnCons(-1, UnityEngine.Random.Range(0, consumables.Length), -1, -1);
+                        }
+                        remainingConsToSpawn -= 1;
+                        spawnTimer = UnityEngine.Random.Range(4f, 8f);
+                    }
                 }
                 else
                 {
@@ -583,24 +610,24 @@ public class GameController : MonoBehaviour
         }
         waitTimeVisualize(waitTimer);
         waveVisualzie("Wave " + waveNumber);
-        //difficulty
-        int maxDifficultyNumber = (waveNumber * 4);
-        List<EnemyType> enemyThatCanSpawn = new List<EnemyType>();
-        
-        for(int a = 0; a < enemies.Length; a++)
+        //WaveConfigiration
+        //EnemySpawn
+        foreach(WaveEnemyData wed in waveEnemyDatas)
         {
-            if (enemies[a].difficultyNumber <= maxDifficultyNumber)
+            if (wed.waveNumber == waveNumber)
             {
-                enemyThatCanSpawn.Add(enemies[a]);
+                for(int c = 0; c < wed.enemyTypes.Length; c++)//searching Enemy Typs
+                {
+                    for(int k = 0; k < wed.enemyTypes[c].enemyPiece; k++)//Indexing EnemyCounts
+                    {
+                        SpawnEnemy(wed.enemyTypes[c].enemyId);
+                    }
+                }
+                //ConsSpawn
+                remainingConsToSpawn = wed.maxConsSpawn;
+                remainingAmmoConsToSpawn = wed.maxAmmoSpawn;
+                break;
             }
-        }
-
-        while(maxDifficultyNumber > 0)
-        {
-            int i = UnityEngine.Random.Range(0, enemyThatCanSpawn.Count);
-            SpawnEnemy(enemyThatCanSpawn[i].EnemyTypeID);
-            maxDifficultyNumber -= enemyThatCanSpawn[i].difficultyNumber;
-            Debug.Log(maxDifficultyNumber);
         }
     }
     public void callToWait()

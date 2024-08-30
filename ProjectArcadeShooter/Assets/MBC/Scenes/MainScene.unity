@@ -15742,6 +15742,8 @@ MonoBehaviour:
   skills: []
   boss: []
   perks: []
+  waveEnemyDatas: []
+  weaponGetAmmoData: {fileID: 11400000, guid: 5c8c4aac34667114ebe3f8cdb1c8b910, type: 2}
   skillIndicatorParent: {fileID: 1421504720}
   skillObject: {fileID: 1147648187}
   skillIndicatorMaterial: {fileID: 2100000, guid: f40655604f57ecf4284b7fa96524cbd0,
@@ -15771,6 +15773,7 @@ MonoBehaviour:
   activeConsID: 
   activeConsWeapID: 
   activeConsSkill: 
+  ammoSpawn: 50
   inActiveWeapon: {fileID: 2001263146}
   player: {fileID: 1906974777}
   waveNumber: 0

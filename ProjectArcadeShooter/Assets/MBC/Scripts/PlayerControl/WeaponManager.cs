@@ -66,6 +66,7 @@ public class WeaponManager : MonoBehaviour
 
     [HideInInspector]
     public Skill active_Skill;
+    public List<Skill> stocked_Skills = new List<Skill>();
     private bool skill_usageCooldown;
     private bool skill_canbePerformed;
     private bool skill_holdOT;
@@ -244,26 +245,25 @@ public class WeaponManager : MonoBehaviour
         if (FindWeaponOnRuntime(weaponID).isOwned)
         {
             Debug.Log("You get " + weaponID + "id weapon Ammo");
-            if (weaponID == 0)
+            foreach (WeaponGetAmmoData_holder.weaponGetAmmoData_holder wgadh in gc.weaponGetAmmoData.weaponTypes)
             {
-                GetAmmo(weaponID, FindWeapon(weaponID).magSize * 2);
-            }
-            else
-            {
-                GetAmmo(weaponID, FindWeapon(weaponID).magSize);
+                if(wgadh.weaponID == weaponID)
+                {
+                    GetAmmo(weaponID, wgadh.weaponAmmoCount);
+                    break;
+                }
             }
         }
         else
         {
             Debug.Log("You get " + weaponID + "id weapon");
-            FindWeaponOnRuntime(weaponID).isOwned = true;
-            if (weaponID == 0)
+            foreach (WeaponGetAmmoData_holder.weaponGetAmmoData_holder wgadh in gc.weaponGetAmmoData.weaponTypes)
             {
-                GetAmmo(weaponID, FindWeapon(weaponID).magSize*2);
-            }
-            else
-            {
-                GetAmmo(weaponID, FindWeapon(weaponID).magSize);
+                if (wgadh.weaponID == weaponID)
+                {
+                    GetAmmo(weaponID, wgadh.weaponAmmoCount);
+                    break;
+                }
             }
         }
         if (currWeaponID == -1)
@@ -620,8 +620,23 @@ public class WeaponManager : MonoBehaviour
     //Skills
     public void getSkill(Skill sk)
     {
-        active_Skill = sk;
-        gc.changeSpriteOfActiveSkill(sk.sprite_HUD);
+        if (stocked_Skills.Count == 0)
+        {
+            active_Skill = sk;
+            gc.changeSpriteOfActiveSkill(sk.sprite_HUD);
+        }
+
+        stocked_Skills.Add(sk);
+    }
+    public void changeSkills(int skill_id)
+    {
+        if (stocked_Skills.Count == 0)
+        {
+            return;
+        }
+        active_Skill = stocked_Skills.Find(x => x.skillTypeID == skill_id);
+        gc.changeSpriteOfActiveSkill(active_Skill.sprite_HUD);
+
     }
     private void skillStayOpen()
     {
