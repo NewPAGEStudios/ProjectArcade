@@ -67,6 +67,10 @@ public class WeaponManager : MonoBehaviour
     [HideInInspector]
     public Skill active_Skill;
     public List<Skill> stocked_Skills = new List<Skill>();
+    [HideInInspector]
+    public bool ot_event_skillMenuOpen = true;
+
+
     private bool skill_usageCooldown;
     private bool skill_canbePerformed;
     private bool skill_holdOT;
@@ -109,7 +113,6 @@ public class WeaponManager : MonoBehaviour
         skill_holdOT = true;
         skill_usageCooldown = false;
 
-        Debug.Log("Curr ID " + currWeaponID);
     }
 
 
@@ -117,7 +120,7 @@ public class WeaponManager : MonoBehaviour
 
     private void Update()
     {
-        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || gc.state == GameController.GameState.inShop ||gc.state == GameController.GameState.pause|| player.ccstate != PController.CCStateOfPlayer.normal)
+        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || gc.state != GameController.GameState.inGame || player.ccstate != PController.CCStateOfPlayer.normal)
         {
             return;
         }
@@ -180,7 +183,14 @@ public class WeaponManager : MonoBehaviour
                 ChangeWeapon(currWeaponID + 1);
             }
         }
-
+        if (IManager.skillMenu)
+        {
+            if (ot_event_skillMenuOpen)
+            {
+                ot_event_skillMenuOpen = false;
+                gc.openSkillMenu();
+            }
+        }
         //skillUsing
         if (active_Skill != null)
         {
@@ -257,6 +267,7 @@ public class WeaponManager : MonoBehaviour
         else
         {
             Debug.Log("You get " + weaponID + "id weapon");
+            FindWeaponOnRuntime(weaponID).isOwned = true;
             foreach (WeaponGetAmmoData_holder.weaponGetAmmoData_holder wgadh in gc.weaponGetAmmoData.weaponTypes)
             {
                 if (wgadh.weaponID == weaponID)
@@ -630,6 +641,7 @@ public class WeaponManager : MonoBehaviour
     }
     public void changeSkills(int skill_id)
     {
+        ot_event_skillMenuOpen = true;
         if (stocked_Skills.Count == 0)
         {
             return;

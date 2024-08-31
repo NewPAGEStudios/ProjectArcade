@@ -36,6 +36,7 @@ public class GetWeapon : MonoBehaviour
     {
         if(other.gameObject.CompareTag("PlayerColl"))
         {
+            Debug.Log("EscapeStart");
             apply(other.transform.parent.gameObject);
         }
         else
@@ -47,7 +48,8 @@ public class GetWeapon : MonoBehaviour
 
     private void apply(GameObject player)
     {
-        if(gc.pState == GameController.PlayState.inStart)
+        Debug.Log("EscapeStart");
+        if (gc.pState == GameController.PlayState.inStart)
         {
             player.GetComponent<PController>().HealDMG(100, gameObject);
             gc.escapeStart();

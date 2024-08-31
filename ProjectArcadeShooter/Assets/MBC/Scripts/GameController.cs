@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.PostProcessing;
@@ -19,6 +20,7 @@ public class GameController : MonoBehaviour
     {
         pause,
         inShop,
+        inSkillMenu,
         inGame
     }
     public enum PlayState
@@ -98,10 +100,10 @@ public class GameController : MonoBehaviour
     [HideInInspector]
     public List<int> activeConsSkill = new List<int>();
 
+    [HideInInspector]
+    public InputManager IManager;
 
     private float spawnTimer;//For Spawning Consumables
-    [Tooltip("PercentageOfSpawningWeapon")]
-    public int ammoSpawn = 50;
     private int remainingConsToSpawn = 0;
     private int remainingAmmoConsToSpawn = 0;
 
@@ -129,10 +131,14 @@ public class GameController : MonoBehaviour
     private float baseFixedUpdate;
     public int bossTimePerWave;
     public int bossTimePerWaveLoop;
+    [Tooltip("PercentageOfSpawningWeapon")]
+    public int ammoSpawn = 50;
+
     [Header(header: "UI Prefab Referances")]
     public GameObject shopButton;
     public GameObject shopTXT;
     public GameObject enemiesIndicator;
+
     //IEnumerators
     private Coroutine comboDisplayRoutine;
     private Coroutine[] fWayDMGVisualize = new Coroutine[4];
@@ -612,6 +618,7 @@ public class GameController : MonoBehaviour
         waveVisualzie("Wave " + waveNumber);
         //WaveConfigiration
         //EnemySpawn
+        Debug.Log("EnemyStartSpawn");
         foreach(WaveEnemyData wed in waveEnemyDatas)
         {
             if (wed.waveNumber == waveNumber)
@@ -629,6 +636,7 @@ public class GameController : MonoBehaviour
                 break;
             }
         }
+        Debug.Log("EnemyStartEnd");
     }
     public void callToWait()
     {
@@ -841,6 +849,12 @@ public class GameController : MonoBehaviour
             else
             {
                 player.GetComponent<WeaponManager>().active_Skill = null;
+            }
+            List<Skill> lst = new();
+            lst = skills.ToList();
+            for(int count = 0; count < de.stockedSkill_ID.Length; count++)
+            {
+                player.GetComponent<WeaponManager>().stocked_Skills.Add(lst.Find(x => x.skillTypeID == de.stockedSkill_ID[count]));
             }
         }
         toWait();
@@ -1167,8 +1181,158 @@ public class GameController : MonoBehaviour
             }
         }
     }
+    //Skilll menu bombaaaaaaaaaaaaaa
+    public void openSkillMenu()
+    {
+        state = GameState.inSkillMenu;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        gamePanel.transform.GetChild(7).gameObject.SetActive(true);
+
+        Color col = gamePanel.transform.GetChild(7).GetComponent<Image>().color;
+        gamePanel.transform.GetChild(7).GetComponent<Image>().color = new Color(col.r, col.g, col.b, 0);
+        StartCoroutine(skillMenuOpenAnim(col));
+        //TODO: place skills
+        skillFullfillSkillMenu(0, 8);
+    }
+    public void skillFullfillSkillMenu(int startInt, int endInt)
+    {
+        for (int count=0; count < gamePanel.transform.GetChild(7).GetChild(1).childCount; count++)
+        {
+            gamePanel.transform.GetChild(7).GetChild(1).GetChild(count).GetComponent<Button>().interactable = false;
+            gamePanel.transform.GetChild(7).GetChild(1).GetChild(count).GetChild(0).gameObject.SetActive(false);
+        }
+        for (int c = startInt; c < endInt; c++)
+        {
+            if(c == player.GetComponent<WeaponManager>().stocked_Skills.Count)
+            {
+                break;
+            }
+            gamePanel.transform.GetChild(7).GetChild(1).GetChild(c - startInt).GetComponent<Button>().interactable = true;
+            gamePanel.transform.GetChild(7).GetChild(1).GetChild(c - startInt).GetChild(0).gameObject.SetActive(true);
 
 
+            gamePanel.transform.GetChild(7).GetChild(1).GetChild(c - startInt).GetChild(0).GetComponent<Image>().sprite = player.GetComponent<WeaponManager>().stocked_Skills[c].sprite_HUD;
+        }
+    }
+    public void changePageSkillMenu(int multiplier)
+    {
+        multiplier -= 1;
+        skillFullfillSkillMenu(0 + (8 * multiplier), 8 + (8 * multiplier));
+    }
+    IEnumerator skillMenuOpenAnim(Color bgColor)
+    {
+        float frametime = Time.deltaTime * 10;
+
+        int pageNumber = 1;
+
+        int pageCount = (player.GetComponent<WeaponManager>().stocked_Skills.Count / 8) + 1;
+
+        while (true)
+        {
+            Time.timeScale = Mathf.MoveTowards(Time.timeScale, 0f, frametime * 10);
+            Time.fixedDeltaTime *= Time.timeScale;
+            gamePanel.transform.GetChild(7).GetComponent<Image>().color = new Color(bgColor.r, bgColor.g, bgColor.b, Mathf.MoveTowards(gamePanel.transform.GetChild(7).GetComponent<Image>().color.a, bgColor.a, frametime * 20));
+
+
+            if (!IManager.skillMenu)
+            {
+                closeSKillMenu();
+                break;
+            }
+
+            if(IManager.getMouseScroll() > 0)
+            {
+                pageNumber++;
+                if(pageNumber >= pageCount)
+                {
+                    pageNumber = 1;
+                }
+                changePageSkillMenu(pageNumber);
+            }
+            else if (IManager.getMouseScroll() < 0)
+            {
+                pageNumber--;
+                if (pageNumber <= 0)
+                {
+                    pageNumber = pageCount;
+                }
+                changePageSkillMenu(pageNumber);
+            }
+
+            if(gamePanel.transform.GetChild(7).GetComponent<Image>().color.a == bgColor.a)
+            {
+                Debug.Log("Color Comp");
+            }
+
+            if (Time.timeScale == 0)
+            {
+                Debug.Log("Time Stopeed");
+                break;
+            }
+            yield return new WaitForSecondsRealtime(frametime);
+        }
+        StartCoroutine(skillMenuWaitInput(pageNumber,frametime));
+    }
+    IEnumerator skillMenuWaitInput(int pageNumber,float frametime)
+    {
+        int pageCount = (player.GetComponent<WeaponManager>().stocked_Skills.Count / 8) + 1;
+
+        while (true)
+        {
+            if (IManager.getMouseScroll() > 0)
+            {
+                pageNumber++;
+                if (pageNumber >= pageCount)
+                {
+                    pageNumber = 1;
+                }
+                changePageSkillMenu(pageNumber);
+            }
+            else if (IManager.getMouseScroll() < 0)
+            {
+                pageNumber--;
+                if (pageNumber <= 0)
+                {
+                    pageNumber = pageCount;
+                }
+                changePageSkillMenu(pageNumber);
+            }
+
+            if (!IManager.skillMenu)
+            {
+                closeSKillMenu();
+                break;
+            }
+            yield return new WaitForSecondsRealtime(frametime);
+        }
+    }
+    public void closeSKillMenu()
+    {
+        state = GameState.inGame;
+
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = baseFixedUpdate;
+
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        for (int count = 0; count < gamePanel.transform.GetChild(7).GetChild(1).childCount; count++)
+        {
+            gamePanel.transform.GetChild(7).GetChild(1).GetChild(count).GetComponent<Button>().interactable = false;
+            gamePanel.transform.GetChild(7).GetChild(1).GetChild(count).GetChild(0).gameObject.SetActive(false);
+        }
+
+        Color col = gamePanel.transform.GetChild(7).GetComponent<Image>().color;
+        gamePanel.transform.GetChild(7).GetComponent<Image>().color = new Color(col.r, col.g, col.b, 225/255);
+
+        gamePanel.transform.GetChild(7).gameObject.SetActive(false);
+
+        //TODO: Change Skill functionally
+        player.GetComponent<WeaponManager>().changeSkills(gamePanel.transform.GetChild(7).GetChild(1).GetComponent<skillMenuControll>().currentSkill);
+    }
 
     //functions
     public void Interact(int interactID)

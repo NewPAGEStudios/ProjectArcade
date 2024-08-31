@@ -49,6 +49,10 @@ public class GetActiveSkill : MonoBehaviour
     }
     private void apply(GameObject player)
     {
+        if (player.GetComponent<WeaponManager>().stocked_Skills.Contains(thisSkill))
+        {
+            return;
+        }
         player.GetComponent<WeaponManager>().getSkill(thisSkill);
         gameObject.transform.parent.parent = gc.consumableSpawnPointParent.transform;
         int id = gc.activeCons.IndexOf(consPosID);

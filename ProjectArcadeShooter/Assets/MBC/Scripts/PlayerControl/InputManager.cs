@@ -13,6 +13,7 @@ public class InputManager : MonoBehaviour
 
     public bool crouching = false;
     public bool fireHolding = false;
+    public bool skillMenu = false;
 
     private PlayerActionMaps inputActions;
     private void Awake()
@@ -33,7 +34,19 @@ public class InputManager : MonoBehaviour
         inputActions.handMap.FireAuto.performed += FirePerformed;
         inputActions.handMap.FireAuto.canceled += FireCanceled;
 
+        inputActions.handMap.ChangeSkill.performed += CSPerformed;
+        inputActions.handMap.ChangeSkill.canceled += CSCanceled;
 
+    }
+
+    private void CSCanceled(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        skillMenu = false;
+    }
+
+    private void CSPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        skillMenu = true;
     }
 
     private void FirePerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)

@@ -135,7 +135,7 @@ public class PController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         weaponManager.IManager = iManager;
-
+        gc.IManager = iManager;
 
         sensX = PlayerPrefs.GetFloat("XSensitivity");
         sensY = PlayerPrefs.GetFloat("YSensitivity");
