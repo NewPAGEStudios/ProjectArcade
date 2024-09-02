@@ -30,6 +30,8 @@ public class EnemyHealth : MonoBehaviour
 
         enemyObjectRenderer = gameObject.transform.Find("Model").GetComponentInChildren<Renderer>();
 
+        Debug.Log(enemyObjectRenderer.material.name);
+
         mainMat = gameObject.GetComponent<Enemy>().e_type.mainMat;
         if (gameObject.GetComponent<Enemy>().e_type.getDmgMat != null)
         {
