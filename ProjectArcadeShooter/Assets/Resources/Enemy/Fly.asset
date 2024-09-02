@@ -28,4 +28,4 @@ MonoBehaviour:
   isFlyable: 1
   rangeDistance: 0
   attackDMG: 0
-  difficultyNumber: 1
+  difficultyNumber: 10

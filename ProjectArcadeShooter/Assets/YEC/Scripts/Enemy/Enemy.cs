@@ -41,6 +41,7 @@ public class Enemy : MonoBehaviour
     public EnemyType e_type;
     public Animator animator;
     public float currentBaseOffeset;
+    public GameObject meleeObj;
 
     private enum ccState
     {
@@ -119,7 +120,7 @@ public class Enemy : MonoBehaviour
         currentState = stateMachine.activeState.ToString();
     }
     void FixedUpdate(){
-        if (e_type.EnemyTypeID == 1)//sinek
+        if (e_type.EnemyTypeID == 1)
         {
 
             BaseOffsetValueControl();
@@ -152,9 +153,16 @@ public class Enemy : MonoBehaviour
         }
         return false;
     }
-    public void Attack()
+    public void MeleeAttack()
     {
+        animator.SetTrigger("Attack");
+        meleeObj.GetComponent<Collider>().enabled = true;
+        animator.SetBool("AttackEnd", true);
+        
+        transform.LookAt(Player.transform);
+        transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, transform.eulerAngles.z);
         StartCoroutine(AttackAnim_Routine());
+
     }
     IEnumerator AttackAnim_Routine()
     {
@@ -165,16 +173,14 @@ public class Enemy : MonoBehaviour
 
             if (animator.GetCurrentAnimatorStateInfo(1).IsName("AttackEnd"))
             {
-                if (Vector3.Distance(Player.transform.position, transform.position) <= e_type.rangeDistance)
-                {
-                    Player.GetComponent<PController>().TakeDMG(20, gameObject);
-                }
+                meleeObj.GetComponent<Collider>().enabled = false;
                 break;
             }
 
         }
 
         animator.SetBool("AttackEnd", false);
+        
     }
     public void BaseOffsetValueControl(){
         // enemy.Agent.SetDestination(enemy.Player.transform.position);

@@ -27,7 +27,4 @@ public class EnemyType : ScriptableObject
     public float rangeDistance;
     public float attackDMG;
 
-    [Header(header: "Difficulty")]
-    [Tooltip("2->walker 7->drone 8->ranged 10->droneRanged 10->demolisher")]
-    public int difficultyNumber;
 }

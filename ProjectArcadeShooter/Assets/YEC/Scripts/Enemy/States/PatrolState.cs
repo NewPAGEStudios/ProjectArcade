@@ -16,6 +16,9 @@ public class PatrolState : BaseState
         enemy.animator.SetBool("isWalking", isWalking);
     }
 
+    public override void ResetAttack(){}
+
+
     public override void Perform()
     {
         PatrolCycle();
