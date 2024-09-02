@@ -20,6 +20,7 @@ public class Shop : MonoBehaviour
         OTEventforClose = true;
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         col = GetComponent<Collider>();
+        animator.SetTrigger("Start");
     }
     private void Update()
     {
@@ -47,10 +48,11 @@ public class Shop : MonoBehaviour
     IEnumerator OpenRoutine()
     {
         animator.SetBool("close", false);
+        yield return new WaitForEndOfFrame();
         animator.SetBool("open", true);
         while (true)
         {
-            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Main"))
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("OpenEnd"))
             {
                 break;
             }
@@ -61,11 +63,12 @@ public class Shop : MonoBehaviour
     }
     IEnumerator CloseRoutine()
     {
-        animator.SetBool("close", true);
         animator.SetBool("open", false);
+        yield return new WaitForEndOfFrame();
+        animator.SetBool("close", true);
         while (true)
         {
-            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Main"))
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("CloseEnd"))
             {
                 break;
             }

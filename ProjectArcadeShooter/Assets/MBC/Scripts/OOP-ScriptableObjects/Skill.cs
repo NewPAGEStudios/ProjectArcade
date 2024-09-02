@@ -21,4 +21,6 @@ public class Skill : ScriptableObject
     public Sprite sprite_HUD;
     public string functionName;
     public GameObject modelPrefab;
+
+    public float toBuyMoney;
 }

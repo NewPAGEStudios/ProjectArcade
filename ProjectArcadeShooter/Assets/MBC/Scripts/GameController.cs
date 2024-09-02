@@ -219,9 +219,26 @@ public class GameController : MonoBehaviour
                 passiveSkills.Add(skills[i]);
 
             }
+            //UI Instanttiate
+            GameObject imaj = Instantiate(shopButton, shopPanel.transform.GetChild(0).GetChild(0));
+            imaj.AddComponent<Image>();
+            imaj.GetComponent<Image>().sprite = skills[i].sprite_HUD;
+            imaj.name = "id_" + skills[i].skillTypeID + "Shop";
+            Button but = imaj.AddComponent<Button>();
+            but.targetGraphic = imaj.GetComponent<Image>();
+
+            but.onClick.AddListener(() => skillButtonPressed(but.gameObject.name));
+
+            GameObject imajChild = Instantiate(shopTXT, imaj.transform);
+            TextMeshProUGUI tmp = imajChild.AddComponent<TextMeshProUGUI>();
+            tmp.color = Color.white;
+            tmp.text = skills[i].toBuyMoney.ToString();
+            tmp.fontSize = 36;
+            tmp.fontStyle = FontStyles.Bold;
+            tmp.alignment = TextAlignmentOptions.MidlineGeoAligned;
         }
         //spawnMaps;
-        for(int i = 0; i < boss.Length; i++)
+        for (int i = 0; i < boss.Length; i++)
         {
             GameObject go = Instantiate(boss[i].mapParent,mapParentM.transform);
             go.name = boss[i].mapName;
@@ -557,7 +574,7 @@ public class GameController : MonoBehaviour
                         }
                         else
                         {
-                            SpawnCons(-1, UnityEngine.Random.Range(0, consumables.Length), -1, -1);
+                            SpawnCons(-1, UnityEngine.Random.Range(1, consumables.Length), -1, -1);
                         }
                         remainingConsToSpawn -= 1;
                         spawnTimer = UnityEngine.Random.Range(4f, 8f);
@@ -608,7 +625,6 @@ public class GameController : MonoBehaviour
     }
     private void toWave()
     {
-        SpawnCons(-1, 0, 1, -1);
         waveNumber += 1;
         if (waveNumber % bossTimePerWave == bossTimePerWaveLoop)
         {
@@ -1429,6 +1445,26 @@ public class GameController : MonoBehaviour
         DeductMainCurrency(weapons[i].toBuyMoney);
         GetWeapon.perform_WOUTObjected(player, GetComponent<GameController>(), weapons[i].WeaponTypeID);
     }
+    public void skillButtonPressed(string nameOFSkillName)
+    {
+        int i;
+        for (i = 0; i < skills.Length; i++)
+        {
+            if (nameOFSkillName == "id_" + skills[i].skillTypeID + "Shop")
+            {
+                break;
+            }
+        }
+        DeductMainCurrency(skills[i].toBuyMoney);
+        if (skills[i].st == Skill.skillType.active)
+        {
+            GetActiveSkill.perform_WOUTObjected(player, GetComponent<GameController>(), skills[i].skillTypeID);
+        }
+        else if (skills[i].st == Skill.skillType.passive)
+        {
+            PerformPassiveSkill.perform_WOUTObjected(player, GetComponent<GameController>(), skills[i].skillTypeID);
+        }
+    }
 
     public void decreseEnemyCount(GameObject deletedOBJ)
     {
@@ -1502,6 +1538,11 @@ public class GameController : MonoBehaviour
         if (dashEffectCoroutine != null)
         {
             StopCoroutine(dashEffectCoroutine);
+
+            Camera overlayCam = mainCam.transform.GetChild(0).GetComponent<Camera>();
+
+            mainCam.GetComponent<Camera>().fieldOfView = 60f;
+            overlayCam.fieldOfView = 60f;
         }
         dashEffectCoroutine = StartCoroutine(DashEffect(duration));
     }
@@ -1510,20 +1551,24 @@ public class GameController : MonoBehaviour
     //Effects
     IEnumerator DashEffect(float duration)
     {
-        mainCam.GetComponent<Camera>().fieldOfView = 90f;
-        float delta = duration / Time.deltaTime;
+        Camera overlayCam = mainCam.transform.GetChild(0).GetComponent<Camera>();
+
+        mainCam.GetComponent<Camera>().fieldOfView = 55f;
+        overlayCam.fieldOfView = 55f;
+        yield return new WaitForSeconds(duration);
         while (true)
         {
-            Mathf.MoveTowards(mainCam.GetComponent<Camera>().fieldOfView, 60, delta);
-            duration -= Time.deltaTime;
+            mainCam.GetComponent<Camera>().fieldOfView = Mathf.MoveTowards(mainCam.GetComponent<Camera>().fieldOfView, 60, Time.deltaTime * 30);
+            overlayCam.fieldOfView = Mathf.MoveTowards(overlayCam.fieldOfView, 60, Time.deltaTime * 30);
             yield return new WaitForEndOfFrame();
-            if (duration <= 0)
+            if(mainCam.GetComponent<Camera>().fieldOfView == 60 && overlayCam.fieldOfView == 60)
             {
                 break;
             }
         }
 
         mainCam.GetComponent<Camera>().fieldOfView = 60f;
+        overlayCam.fieldOfView = 60f;
     }
 
 

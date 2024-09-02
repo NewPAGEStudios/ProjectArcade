@@ -720,17 +720,19 @@ public class PController : MonoBehaviour
     IEnumerator SpeedMultiplierDuration(float multiplier,float duration)
     {
         Camera handCam = mainCam.transform.GetChild(0).GetComponent<Camera>();
+        float minusDuration = 0f;
         while (true)
         {
             handCam.fieldOfView = Mathf.MoveTowards(handCam.fieldOfView, 80, Time.deltaTime * 30);
             mainCam.fieldOfView = Mathf.MoveTowards(mainCam.fieldOfView, 80, Time.deltaTime * 30);
-            if (handCam.fieldOfView == 70 && mainCam.fieldOfView == 70)
+            if (handCam.fieldOfView == 80 && mainCam.fieldOfView == 80)
             {
                 break;
             }
             yield return new WaitForEndOfFrame();
+            minusDuration += Time.deltaTime;
         }
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(duration-minusDuration);
         moveSpeed /= multiplier;
         slideForce /= multiplier;
         dashForce /= multiplier;

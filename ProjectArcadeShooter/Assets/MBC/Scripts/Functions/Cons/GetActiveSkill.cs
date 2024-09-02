@@ -62,4 +62,9 @@ public class GetActiveSkill : MonoBehaviour
         Destroy(gameObject);
         return;
     }
+    public static void perform_WOUTObjected(GameObject player, GameController gc, int skillID)
+    {
+        player.GetComponent<WeaponManager>().getSkill(gc.skills[skillID]);
+        return;
+    }
 }

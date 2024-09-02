@@ -52,4 +52,9 @@ public class PerformPassiveSkill : MonoBehaviour
         Destroy(gameObject);
 
     }
+    public static void perform_WOUTObjected(GameObject player, GameController gc, int skillID)
+    {
+        player.GetComponent<WeaponManager>().getSkill(gc.skills[skillID]);
+        return;
+    }
 }
