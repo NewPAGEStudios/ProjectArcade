@@ -90,7 +90,8 @@ public class PController : MonoBehaviour
 
     //skill variables
     private int extrajump;
-
+    //Coroutines
+    private Coroutine speedEfect;
     public enum ActionStateDependecyToPlayer
     {
         idle,
@@ -709,15 +710,41 @@ public class PController : MonoBehaviour
             moveSpeed *= multiplier;
             slideForce *= multiplier;
             dashForce *= multiplier;
-            StartCoroutine(SpeedMultiplierDuration(multiplier, duration));
+            if (speedEfect != null)
+            {
+                StopCoroutine(speedEfect);
+            }
+            speedEfect = StartCoroutine(SpeedMultiplierDuration(multiplier, duration));
         }
     }
     IEnumerator SpeedMultiplierDuration(float multiplier,float duration)
     {
+        Camera handCam = mainCam.transform.GetChild(0).GetComponent<Camera>();
+        while (true)
+        {
+            handCam.fieldOfView = Mathf.MoveTowards(handCam.fieldOfView, 80, Time.deltaTime * 30);
+            mainCam.fieldOfView = Mathf.MoveTowards(mainCam.fieldOfView, 80, Time.deltaTime * 30);
+            if (handCam.fieldOfView == 70 && mainCam.fieldOfView == 70)
+            {
+                break;
+            }
+            yield return new WaitForEndOfFrame();
+        }
         yield return new WaitForSeconds(duration);
         moveSpeed /= multiplier;
         slideForce /= multiplier;
         dashForce /= multiplier;
+
+        while (true)
+        {
+            handCam.fieldOfView = Mathf.MoveTowards(handCam.fieldOfView, 60, Time.deltaTime * 30);
+            mainCam.fieldOfView = Mathf.MoveTowards(mainCam.fieldOfView, 60, Time.deltaTime * 30);
+            if (handCam.fieldOfView == 60 && mainCam.fieldOfView == 60)
+            {
+                break;
+            }
+            yield return new WaitForEndOfFrame();
+        }
     }
     public void addExtraJump()
     {

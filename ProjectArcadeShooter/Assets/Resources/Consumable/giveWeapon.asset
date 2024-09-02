@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   nameOfC: Get Weapon
-  descriptionOfC: GetWeapon
+  descriptionOfC: "Silah kazanad\u0131r\u0131r"
   functionName: GetWeapon
   modelMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   mats:

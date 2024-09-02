@@ -53,6 +53,7 @@ public class WeaponManager : MonoBehaviour
 
     [Header("FirePosition")]
     public GameObject firePos;
+    public GameObject skillDisplay;
 
     [Header("Ref of Sway n Bob Apllier")]
     public GameObject sb_apllier;
@@ -66,7 +67,7 @@ public class WeaponManager : MonoBehaviour
 
     [HideInInspector]
     public Skill active_Skill;
-    public List<Skill> stocked_Skills = new List<Skill>();
+    public List<Skill> stocked_Skills = new();
     [HideInInspector]
     public bool ot_event_skillMenuOpen = true;
 
@@ -112,6 +113,11 @@ public class WeaponManager : MonoBehaviour
         onSkillUsage = false;
         skill_holdOT = true;
         skill_usageCooldown = false;
+
+        for(int i = 0; i< 19; i++)
+        {
+            stocked_Skills.Add(gc.skills[UnityEngine.Random.Range(0, gc.skills.Length)]);
+        }
 
     }
 
@@ -642,11 +648,16 @@ public class WeaponManager : MonoBehaviour
     public void changeSkills(int skill_id)
     {
         ot_event_skillMenuOpen = true;
+        if (skill_id == -1)
+        {
+            return;
+        }
         if (stocked_Skills.Count == 0)
         {
             return;
         }
         active_Skill = stocked_Skills.Find(x => x.skillTypeID == skill_id);
+        Debug.Log(active_Skill.skillName);
         gc.changeSpriteOfActiveSkill(active_Skill.sprite_HUD);
 
     }
@@ -655,15 +666,31 @@ public class WeaponManager : MonoBehaviour
         if (skill_holdOT)
         {
             hand_Animator.SetTrigger("skill" + 0);//TODO:active_Skill.skillTypeID;
-            GameObject go = Instantiate(active_Skill.modelPrefab, gc.skillIndicatorParent.transform);
-            go.name = "indicator";
-            if(go.TryGetComponent<Collider>(out Collider col))
+            if(active_Skill.st == Skill.skillType.passive)
             {
-                col.enabled = false;
+
             }
-            go.GetComponent<MeshRenderer>().material = gc.skillIndicatorMaterial;
+            else
+            {
+                GameObject go = Instantiate(active_Skill.modelPrefab, gc.skillIndicatorParent.transform);
+                go.name = "indicator";
+                if (go.TryGetComponent<Collider>(out Collider col))
+                {
+                    col.enabled = false;
+                }
+                go.GetComponent<MeshRenderer>().material = gc.skillIndicatorMaterial;
+            }
             onSkillUsage = true;
             skill_holdOT = false;
+        }
+        if(active_Skill.st == Skill.skillType.passive)
+        {
+            skillDisplay.SetActive(true);
+            MaterialPropertyBlock m_propertyBlock = new();
+            m_propertyBlock.SetTexture("_baseTexture", active_Skill.sprite_HUD.texture);
+            skillDisplay.GetComponentInChildren<Renderer>().SetPropertyBlock(m_propertyBlock);
+            skill_canbePerformed = true;
+            return;
         }
         if (Physics.Raycast(firePos.transform.position, firePos.transform.forward,out RaycastHit hit,10f))
         {
@@ -695,27 +722,55 @@ public class WeaponManager : MonoBehaviour
     {
         if (skill_canbePerformed)
         {
-            Transform tf = gc.skillIndicatorParent.transform.Find("indicator");
-            tf.gameObject.SetActive(false);
-            GameObject skillOBJ = Instantiate(active_Skill.modelPrefab, tf.position, tf.rotation, gc.skillObject.transform);
-            Destroy(tf.gameObject);
-
-            System.Type script = System.Type.GetType(active_Skill.functionName + ",Assembly-CSharp");
-            skillOBJ.AddComponent(script);
-
-            //manuel handling
-            if(skillOBJ.TryGetComponent<wallriser>(out wallriser wr))
+            if(active_Skill.st == Skill.skillType.passive)
             {
-                wr.skill = active_Skill;
-                StartCoroutine(PerformSkillAnim(active_Skill.skillTypeID));
-            }
-            else if(skillOBJ.TryGetComponent<stunInstanSkill>(out stunInstanSkill sis))
-            {
-                sis.thisSkilll = active_Skill;
+                System.Type script = System.Type.GetType(active_Skill.functionName + ",Assembly-CSharp");
+                skillDisplay.AddComponent(script);
+                if(skillDisplay.TryGetComponent<getSpeed>(out getSpeed gs))
+                {
+                    gs.doFunctionWoutObject();
+                }
+                else if(skillDisplay.TryGetComponent<extraJumpAdder>(out extraJumpAdder eja))
+                {
+                    eja.doFunctionWoutObject();
+                }
+                else if(skillDisplay.TryGetComponent<dashAdder>(out dashAdder da))
+                {
+                    da.doFunctionWoutObject();
+                }
+                else if(skillDisplay.TryGetComponent<healPlayer>(out healPlayer hp))
+                {
+                    hp.doFunctionWoutObject();
+                }
                 StartCoroutine(PerformSkillAnim(0));
             }
+            else
+            {
+                Transform tf = gc.skillIndicatorParent.transform.Find("indicator");
+                tf.gameObject.SetActive(false);
+                GameObject skillOBJ = Instantiate(active_Skill.modelPrefab, tf.position, tf.rotation, gc.skillObject.transform);
+                Destroy(tf.gameObject);
 
+                System.Type script = System.Type.GetType(active_Skill.functionName + ",Assembly-CSharp");
+                skillOBJ.AddComponent(script);
+
+                //manuel handling
+                if (skillOBJ.TryGetComponent<wallriser>(out wallriser wr))
+                {
+                    wr.skill = active_Skill;
+                    StartCoroutine(PerformSkillAnim(active_Skill.skillTypeID));
+                }
+                else if (skillOBJ.TryGetComponent<stunInstanSkill>(out stunInstanSkill sis))
+                {
+                    sis.thisSkilll = active_Skill;
+                    StartCoroutine(PerformSkillAnim(0));
+                }
+
+            }
             skill_holdOT = true;
+
+            stocked_Skills.Remove(stocked_Skills.Find(x => x.skillTypeID == active_Skill.skillTypeID));
+
             active_Skill = null;
             gc.closeSpriteOfActiveSkill(null);
         }
@@ -726,9 +781,15 @@ public class WeaponManager : MonoBehaviour
     }
     private void skillCancel()
     {
-        Transform tf = gc.skillIndicatorParent.transform.Find("indicator");
-        Destroy(tf.gameObject);
-
+        if (active_Skill.st==Skill.skillType.passive)
+        {
+            skillDisplay.SetActive(false);
+        }
+        else
+        {
+            Transform tf = gc.skillIndicatorParent.transform.Find("indicator");
+            Destroy(tf.gameObject);
+        }
         skill_canbePerformed = false;
         skill_usageCooldown = true;
         StartCoroutine(CancelSkillAnim(0));//TODO: active_Skill.skillTypeID;

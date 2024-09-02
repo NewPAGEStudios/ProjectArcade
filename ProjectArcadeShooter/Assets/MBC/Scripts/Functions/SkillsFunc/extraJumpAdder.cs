@@ -14,5 +14,8 @@ public class extraJumpAdder : MonoBehaviour
         GameController gController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
         player.GetComponent<PController>().addExtraJump();
+
+        extraJumpAdder eja = GetComponent<extraJumpAdder>();
+        Destroy(eja);
     }
 }

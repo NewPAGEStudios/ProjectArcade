@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: SkillMenu_it-IT
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: it-IT
+  m_SharedData: {fileID: 11400000, guid: 0290846406ebd9846bae10f25d45253f, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 2196849709056
+    m_Localized: Muro Ascendente
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2949223960576
+    m_Localized: Generatore di Stordimento Ultra Multra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3523680030720
+    m_Localized: Acceleratore Veloce
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4255783211008
+    m_Localized: Salto Extra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4532309479424
+    m_Localized: Riempitore di Dash
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5080215605248
+    m_Localized: Guarire
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5280921440256
+    m_Localized: "Un muro viene in tuo aiuto. Pu\xF2 essere danneggiato al massimo
+      da 2 proiettili."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13094263869440
+    m_Localized: Genera un effetto di stordimento efficace come il ghiaccio in un'area
+      con diametro di 10 metri.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17299154292736
+    m_Localized: "Per 2 secondi aumenta la tua velocit\xE0 di 1,2 volte"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18019257569280
+    m_Localized: In aria ti concede un salto extra.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19601416146944
+    m_Localized: "Ricarica l'abilit\xE0 di dash"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20512595136512
+    m_Localized: Riallinea 20 punti di vita.
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

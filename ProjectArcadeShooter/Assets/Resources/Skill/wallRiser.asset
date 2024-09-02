@@ -15,7 +15,7 @@ MonoBehaviour:
   st: 0
   skillTypeID: 0
   skillName: Wall Riser
-  skillDescription: Create a firewall and rise it from ground
+  skillDescription: A wall comes for your help. It can be damaged most 2 bullet
   materials:
   - {fileID: 2100000, guid: 2ce5beb4cef3c0d47adf95c27ca755da, type: 2}
   - {fileID: 2100000, guid: 0415c187218467747a50bfdbc178f535, type: 2}

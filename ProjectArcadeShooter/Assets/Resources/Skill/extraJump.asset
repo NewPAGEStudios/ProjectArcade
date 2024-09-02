@@ -15,9 +15,9 @@ MonoBehaviour:
   st: 1
   skillTypeID: 3
   skillName: extraJump
-  skillDescription: airJump
+  skillDescription: "Havada iken ekstra z\u0131plama hakk\u0131 tan\u0131r."
   materials: []
-  sprite_HUD: {fileID: 0}
+  sprite_HUD: {fileID: 21300000, guid: f2d85f0ce2bb8eb4b9864f7937e037cc, type: 3}
   functionName: extraJumpAdder
   modelPrefab: {fileID: 919132149155446097, guid: 5a83addec15f0f5479c2b7687cc92777,
     type: 3}

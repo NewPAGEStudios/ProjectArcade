@@ -100,16 +100,17 @@ public class GameController : MonoBehaviour
     [HideInInspector]
     public List<int> activeConsSkill = new List<int>();
 
-    [HideInInspector]
-    public InputManager IManager;
 
     private float spawnTimer;//For Spawning Consumables
     private int remainingConsToSpawn = 0;
     private int remainingAmmoConsToSpawn = 0;
 
-    [Header(header: "PlayerConfigiration")]
+    [Header(header: "ControllerReferances")]
     public GameObject inActiveWeapon;
     public GameObject player;
+    private LccalApplierToScriptable localizer_scp;
+    [HideInInspector]
+    public InputManager IManager;
 
 
     public int waveNumber;
@@ -226,8 +227,12 @@ public class GameController : MonoBehaviour
             go.name = boss[i].mapName;
             go.SetActive(false);
         }
+
+        localizer_scp = GetComponent<LccalApplierToScriptable>();
+
         //Runtime Infor holder Init
         player.GetComponent<WeaponManager>().holder = new WeaponRuntimeHolder[weapons.Length];
+
 
         for (int i = 0; i < player.GetComponent<WeaponManager>().holder.Length; i++)
         {
@@ -1223,9 +1228,10 @@ public class GameController : MonoBehaviour
     }
     IEnumerator skillMenuOpenAnim(Color bgColor)
     {
-        float frametime = Time.deltaTime * 10;
+        float frametime = Time.deltaTime;
 
         int pageNumber = 1;
+        gamePanel.transform.GetChild(7).GetChild(3).GetComponent<TextMeshProUGUI>().text = pageNumber.ToString();
 
         int pageCount = (player.GetComponent<WeaponManager>().stocked_Skills.Count / 8) + 1;
 
@@ -1236,20 +1242,18 @@ public class GameController : MonoBehaviour
             gamePanel.transform.GetChild(7).GetComponent<Image>().color = new Color(bgColor.r, bgColor.g, bgColor.b, Mathf.MoveTowards(gamePanel.transform.GetChild(7).GetComponent<Image>().color.a, bgColor.a, frametime * 20));
 
 
-            if (!IManager.skillMenu)
-            {
-                closeSKillMenu();
-                break;
-            }
 
             if(IManager.getMouseScroll() > 0)
             {
                 pageNumber++;
-                if(pageNumber >= pageCount)
+                if(pageNumber >= pageCount + 1)
                 {
                     pageNumber = 1;
                 }
                 changePageSkillMenu(pageNumber);
+                gamePanel.transform.GetChild(7).GetChild(3).GetComponent<TextMeshProUGUI>().text = pageNumber.ToString();
+
+                gamePanel.transform.GetChild(7).GetChild(1).GetComponent<skillMenuControll>().pageChangeSkillID();
             }
             else if (IManager.getMouseScroll() < 0)
             {
@@ -1259,9 +1263,21 @@ public class GameController : MonoBehaviour
                     pageNumber = pageCount;
                 }
                 changePageSkillMenu(pageNumber);
+                
+                gamePanel.transform.GetChild(7).GetChild(3).GetComponent<TextMeshProUGUI>().text = pageNumber.ToString();
+
+                gamePanel.transform.GetChild(7).GetChild(1).GetComponent<skillMenuControll>().pageChangeSkillID();
             }
 
-            if(gamePanel.transform.GetChild(7).GetComponent<Image>().color.a == bgColor.a)
+            if (!IManager.skillMenu)
+            {
+                closeSKillMenu(gamePanel.transform.GetChild(7).GetChild(1).GetComponent<skillMenuControll>().currentSkill + (8 * (pageNumber - 1)));
+                break;
+            }
+
+            skillMenuTXT(gamePanel.transform.GetChild(7).GetChild(1).GetComponent<skillMenuControll>().currentSkill + (8 * (pageNumber - 1)));
+
+            if (gamePanel.transform.GetChild(7).GetComponent<Image>().color.a == bgColor.a)
             {
                 Debug.Log("Color Comp");
             }
@@ -1284,11 +1300,14 @@ public class GameController : MonoBehaviour
             if (IManager.getMouseScroll() > 0)
             {
                 pageNumber++;
-                if (pageNumber >= pageCount)
+                if (pageNumber >= pageCount + 1)
                 {
                     pageNumber = 1;
                 }
                 changePageSkillMenu(pageNumber);
+                gamePanel.transform.GetChild(7).GetChild(3).GetComponent<TextMeshProUGUI>().text = pageNumber.ToString();
+
+                gamePanel.transform.GetChild(7).GetChild(1).GetComponent<skillMenuControll>().pageChangeSkillID();
             }
             else if (IManager.getMouseScroll() < 0)
             {
@@ -1298,18 +1317,31 @@ public class GameController : MonoBehaviour
                     pageNumber = pageCount;
                 }
                 changePageSkillMenu(pageNumber);
+                gamePanel.transform.GetChild(7).GetChild(3).GetComponent<TextMeshProUGUI>().text = pageNumber.ToString();
+
+                gamePanel.transform.GetChild(7).GetChild(1).GetComponent<skillMenuControll>().pageChangeSkillID();
             }
+
+            skillMenuTXT(gamePanel.transform.GetChild(7).GetChild(1).GetComponent<skillMenuControll>().currentSkill + (8 * (pageNumber - 1)));
 
             if (!IManager.skillMenu)
             {
-                closeSKillMenu();
-                break;
+                if (gamePanel.transform.GetChild(7).GetChild(1).GetComponent<skillMenuControll>().currentSkill == -1)
+                {
+
+                }
+                else
+                {
+                    closeSKillMenu(gamePanel.transform.GetChild(7).GetChild(1).GetComponent<skillMenuControll>().currentSkill + (8 * (pageNumber - 1)));
+                    break;
+                }
             }
             yield return new WaitForSecondsRealtime(frametime);
         }
     }
-    public void closeSKillMenu()
+    public void closeSKillMenu(int indexOfMenu)
     {
+
         state = GameState.inGame;
 
         Time.timeScale = 1f;
@@ -1326,14 +1358,32 @@ public class GameController : MonoBehaviour
         }
 
         Color col = gamePanel.transform.GetChild(7).GetComponent<Image>().color;
-        gamePanel.transform.GetChild(7).GetComponent<Image>().color = new Color(col.r, col.g, col.b, 225/255);
+        gamePanel.transform.GetChild(7).GetComponent<Image>().color = new Color(col.r, col.g, col.b, 0.8f);
 
         gamePanel.transform.GetChild(7).gameObject.SetActive(false);
-
+        int targetID = 0;
+        if (indexOfMenu == -1)
+        {
+            targetID = -1;
+        }
+        else
+        {
+            targetID = player.GetComponent<WeaponManager>().stocked_Skills[indexOfMenu].skillTypeID;
+        }
         //TODO: Change Skill functionally
-        player.GetComponent<WeaponManager>().changeSkills(gamePanel.transform.GetChild(7).GetChild(1).GetComponent<skillMenuControll>().currentSkill);
+        player.GetComponent<WeaponManager>().changeSkills(targetID);
     }
-
+    public void skillMenuTXT(int index)
+    {
+        if (index == -1)
+        {
+            gamePanel.transform.GetChild(7).GetChild(2).Find("Desc").GetComponent<TextMeshProUGUI>().text = ";";
+            gamePanel.transform.GetChild(7).GetChild(2).Find("Name").GetComponent<TextMeshProUGUI>().text = ";";
+            return;
+        }
+        gamePanel.transform.GetChild(7).GetChild(2).Find("Desc").GetComponent<TextMeshProUGUI>().text = localizer_scp.applySkill(player.GetComponent<WeaponManager>().stocked_Skills[index],"Desc");
+        gamePanel.transform.GetChild(7).GetChild(2).Find("Name").GetComponent<TextMeshProUGUI>().text = localizer_scp.applySkill(player.GetComponent<WeaponManager>().stocked_Skills[index], "Name");
+    }
     //functions
     public void Interact(int interactID)
     {

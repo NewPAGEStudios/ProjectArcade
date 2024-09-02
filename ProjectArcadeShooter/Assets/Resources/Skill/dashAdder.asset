@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   st: 1
   skillTypeID: 4
-  skillName: DashAdder
-  skillDescription: adds Dash
+  skillName: Dash Fill Meter
+  skillDescription: "At\u0131lma yetene\u011Finin s\xFCresini doldurur."
   materials: []
-  sprite_HUD: {fileID: 0}
+  sprite_HUD: {fileID: 21300000, guid: fd7ab348a7a02414d8ca1e9e9a0283f2, type: 3}
   functionName: dashAdder
   modelPrefab: {fileID: 919132149155446097, guid: 5a83addec15f0f5479c2b7687cc92777,
     type: 3}

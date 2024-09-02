@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: SkillMenu Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: SkillMenu
+  m_TableCollectionNameGuidString: 0290846406ebd9846bae10f25d45253f
+  m_Entries:
+  - m_Id: 2196849709056
+    m_Key: Name0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2949223960576
+    m_Key: Name1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3523680030720
+    m_Key: Name2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4255783211008
+    m_Key: Name3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4532309479424
+    m_Key: Name4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5080215605248
+    m_Key: Name5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5280921440256
+    m_Key: Desc0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13094263869440
+    m_Key: Desc1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17299154292736
+    m_Key: Desc2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18019257569280
+    m_Key: Desc3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19601416146944
+    m_Key: Desc4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20512595136512
+    m_Key: Desc5
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 8062087697709400072
+  references:
+    version: 2
+    RefIds:
+    - rid: 8062087697709400072
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1725267556901

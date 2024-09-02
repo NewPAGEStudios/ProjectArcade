@@ -14,5 +14,8 @@ public class getSpeed : MonoBehaviour
         GameController gController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
         player.GetComponent<PController>().SetSpeed(1.2f, 4f);
+
+        getSpeed gs = GetComponent<getSpeed>();
+        Destroy(gs);
     }
 }

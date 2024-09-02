@@ -16,20 +16,6 @@ public class stunInstanSkill : MonoBehaviour
         go.transform.localPosition = new(0, -1, 0);
 
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
-
-        performfunc();
-    }
-    void performfunc()
-    {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        for(int i = 0; i < enemies.Length; i++)
-        {
-            if (Vector3.Distance(gameObject.transform.position, enemies[i].transform.position) < 5)//düþman 5 birim uzaklýktan küçükse stunla
-            {
-                //enemies[i].actionState = ActionState.stunned;
-                Debug.Log(enemies[i].name + " stunned");
-            }
-        }
         StartCoroutine(endEffect());
     }
     IEnumerator endEffect()
@@ -43,6 +29,13 @@ public class stunInstanSkill : MonoBehaviour
             go.GetComponent<Renderer>().SetPropertyBlock(m_propertyBlock);
             yield return new WaitForSeconds(0.1f);
         }
-
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("EnemyCol"))
+        {
+            //other.transform.parent.parent.GetComponent<EnemyHealth>().stun();
+            Debug.Log("Enemy Bombed");
+        }
     }
 }

@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   st: 1
   skillTypeID: 2
-  skillName: "H\u0131zMastik"
-  skillDescription: "H\u0131z\u0131nArt\u0131yor okadar"
+  skillName: Swift Performer
+  skillDescription: "H\u0131z\u0131n\u0131 2 saniyeli\u011Fine 1.2x kadar artt\u0131r\u0131r."
   materials: []
-  sprite_HUD: {fileID: 0}
+  sprite_HUD: {fileID: 21300000, guid: e7e6eb19b7044174cb2cfed7e0e6ecb1, type: 3}
   functionName: getSpeed
   modelPrefab: {fileID: 919132149155446097, guid: 5a83addec15f0f5479c2b7687cc92777,
     type: 3}

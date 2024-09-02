@@ -23,6 +23,18 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-it-IT
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8b18bc6260dcb424f9ee4f0b46b6173b
+    m_Address: SkillMenu_it-IT
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-it-IT
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e4d1229f0d0fdad49a859b0cfa9532ef
+    m_Address: ConsMenu_it-IT
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-it-IT
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 0cf587d562396904b80b8cb87f224a93, type: 2}
   m_SchemaSet:

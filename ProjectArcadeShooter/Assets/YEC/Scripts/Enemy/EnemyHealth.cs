@@ -42,9 +42,6 @@ public class EnemyHealth : MonoBehaviour
         mainMPB = new MaterialPropertyBlock();
         baseColor = mainMat.color;
 
-
-        Debug.Log("Base" + baseColor.r);
-
         currentHealth = maxHealth;
     }
 

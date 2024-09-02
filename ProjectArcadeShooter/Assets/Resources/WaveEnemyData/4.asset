@@ -22,4 +22,4 @@ MonoBehaviour:
     enemyPiece: 7
   enemyStatMultiplier: 1
   maxConsSpawn: 12
-  maxAmmoSpawn: 0
+  maxAmmoSpawn: 3

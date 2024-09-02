@@ -14,5 +14,8 @@ public class dashAdder : MonoBehaviour
         GameController gController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
         player.GetComponent<PController>().addDash();
+
+        dashAdder da = GetComponent<dashAdder>();
+        Destroy(da);
     }
 }
