@@ -20,4 +20,8 @@ public class LccalApplierToScriptable : MonoBehaviour
     {
         return LocalizationSettings.StringDatabase.GetLocalizedString("SkillMenu", keyName + val.skillTypeID.ToString());
     }
+    public string applyWeapon(Weapon val, string keyName)
+    {
+        return LocalizationSettings.StringDatabase.GetLocalizedString("WeaponMenu", keyName + val.WeaponTypeID.ToString());
+    }
 }

@@ -17,7 +17,31 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 2d7360a5707ec49478408f0aafbc30b7, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 457862781489152
+    m_Localized: Passive skill overloader
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458253241831424
+    m_Localized: 'Weapon: Overloader'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458386616504320
+    m_Localized: 'Active Skill: Overloader'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458798757203968
+    m_Localized: You acquire a new weapon or ammunition.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 459445657292800
+    m_Localized: You acquire an active skill.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 459357660794880
+    m_Localized: You acquire a passive skill.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

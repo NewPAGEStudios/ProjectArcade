@@ -10,44 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
-  m_Name: ConsMenu Shared Data
+  m_Name: WeaponMenu Shared Data
   m_EditorClassIdentifier: 
-  m_TableCollectionName: ConsMenu
-  m_TableCollectionNameGuidString: 2d7360a5707ec49478408f0aafbc30b7
+  m_TableCollectionName: WeaponMenu
+  m_TableCollectionNameGuidString: 6526f750e71f2ae40b77088e1ab4f8ea
   m_Entries:
-  - m_Id: 457862781489152
-    m_Key: Name2
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458253241831424
+  - m_Id: 48900493312
     m_Key: Name0
     m_Metadata:
       m_Items: []
-  - m_Id: 458386616504320
+  - m_Id: 768915689472
     m_Key: Name1
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458798757203968
-    m_Key: Desc0
-    m_Metadata:
-      m_Items: []
-  - m_Id: 459357660794880
-    m_Key: Desc2
-    m_Metadata:
-      m_Items: []
-  - m_Id: 459445657292800
-    m_Key: Desc1
     m_Metadata:
       m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
-    rid: 8062087697709400079
+    rid: 8062087728657596418
   references:
     version: 2
     RefIds:
-    - rid: 8062087697709400079
+    - rid: 8062087728657596418
       type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
         asm: Unity.Localization}
       data:
-        m_CustomEpoch: 1725267635310
+        m_CustomEpoch: 1725375323930

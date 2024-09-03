@@ -17,7 +17,31 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 2d7360a5707ec49478408f0aafbc30b7, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 457862781489152
+    m_Localized: "Pasif Yetenek A\u015F\u0131r\u0131 Y\xFCkleyici"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458253241831424
+    m_Localized: "Silah A\u015F\u0131r\u0131 Y\xFCkleyici"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458386616504320
+    m_Localized: "Aktif Yetenek A\u015F\u0131r\u0131 Y\xFCkleyici"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458798757203968
+    m_Localized: 'Yeni silah ya da mermi edinirsin. '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 459357660794880
+    m_Localized: Pasif yetenek edinirsin.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 459445657292800
+    m_Localized: Aktif yetenek edinirsin
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

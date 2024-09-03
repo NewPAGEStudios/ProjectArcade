@@ -7,6 +7,7 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Rendering.Universal;
@@ -191,14 +192,33 @@ public class GameController : MonoBehaviour
             weaponGO.SetActive(false);
 
             //UI Instanttiate
-            GameObject imaj = Instantiate(shopButton, shopPanel.transform.GetChild(0).GetChild(0));
+            GameObject imaj = Instantiate(shopButton, shopPanel.transform.GetChild(0).GetChild(0).GetChild(0));
             imaj.AddComponent<Image>();
             imaj.GetComponent<Image>().sprite = weapons[i].UIRef;
             imaj.name = weapons[i].WeaponName + "Shop";
+            imaj.GetComponent<RectTransform>().sizeDelta = new Vector2(150, 150);
+            //button click event
             Button but = imaj.AddComponent<Button>();
             but.targetGraphic=imaj.GetComponent<Image>();
 
             but.onClick.AddListener(() => weaponButtonPressed(but.gameObject.name) );
+            //button hover event
+            EventTrigger evtrigger = but.AddComponent<EventTrigger>();
+            EventTrigger.Entry hoverEvent = new()
+            {
+                eventID = EventTriggerType.PointerEnter
+            };
+            hoverEvent.callback.AddListener((functionIwant) => { weaponButtonHover(but.gameObject.name); });
+            evtrigger.triggers.Add(hoverEvent);
+            //button hover out event
+            EventTrigger evtrigger1 = but.AddComponent<EventTrigger>();
+            EventTrigger.Entry hoveroutEvent = new()
+            {
+                eventID = EventTriggerType.PointerExit
+            };
+            hoveroutEvent.callback.AddListener((functionIwant) => { shopNameReset(); });
+            evtrigger1.triggers.Add(hoverEvent);
+
 
             GameObject imajChild = Instantiate(shopTXT, imaj.transform);
             TextMeshProUGUI tmp = imajChild.AddComponent<TextMeshProUGUI>();
@@ -220,14 +240,32 @@ public class GameController : MonoBehaviour
 
             }
             //UI Instanttiate
-            GameObject imaj = Instantiate(shopButton, shopPanel.transform.GetChild(0).GetChild(0));
+            GameObject imaj = Instantiate(shopButton, shopPanel.transform.GetChild(0).GetChild(0).GetChild(0));
             imaj.AddComponent<Image>();
             imaj.GetComponent<Image>().sprite = skills[i].sprite_HUD;
             imaj.name = "id_" + skills[i].skillTypeID + "Shop";
+            imaj.GetComponent<RectTransform>().sizeDelta = new Vector2(150, 150);
+            //button click event
             Button but = imaj.AddComponent<Button>();
             but.targetGraphic = imaj.GetComponent<Image>();
 
             but.onClick.AddListener(() => skillButtonPressed(but.gameObject.name));
+            //button hover event
+            EventTrigger evtrigger = but.AddComponent<EventTrigger>();
+            EventTrigger.Entry hoverEvent = new()
+            {
+                eventID = EventTriggerType.PointerEnter
+            };
+            hoverEvent.callback.AddListener((functionIwant) => { skillButtonHover(but.gameObject.name); });
+            evtrigger.triggers.Add(hoverEvent);
+            //button hover out event
+            EventTrigger evtrigger1 = but.AddComponent<EventTrigger>();
+            EventTrigger.Entry hoveroutEvent = new()
+            {
+                eventID = EventTriggerType.PointerExit
+            };
+            hoveroutEvent.callback.AddListener((functionIwant) => { shopNameReset(); });
+            evtrigger1.triggers.Add(hoverEvent);
 
             GameObject imajChild = Instantiate(shopTXT, imaj.transform);
             TextMeshProUGUI tmp = imajChild.AddComponent<TextMeshProUGUI>();
@@ -313,8 +351,8 @@ public class GameController : MonoBehaviour
         cUnit = gamePanel.transform.GetChild(6).GetChild(1).GetComponent<RawImage>().rectTransform.rect.width / 360f;
 
         //Cursor Handling
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
 
         /* Save on waitState
         check save and load it save elements =  
@@ -670,8 +708,8 @@ public class GameController : MonoBehaviour
         pState = PlayState.inWaiting;
         waitTimeVisualize(waitTimer);
         waveVisualzie("Wait");
-        //Enable Shops
 
+        player.transform.GetChild(1).Find("Musics").Find("MusicWait").GetComponent<AudioSource>().Play();
     }
 
     private void toBoss(int bossID)
@@ -1423,6 +1461,12 @@ public class GameController : MonoBehaviour
     }
     public void DeductMainCurrency(float amount)
     {
+        if (amount > money)
+        {
+            //TODO: add inofmation
+            return;
+        }
+        //TODO: Buy sfx
         money -= amount;
         MoneyDisplay();
     }
@@ -1445,6 +1489,22 @@ public class GameController : MonoBehaviour
         DeductMainCurrency(weapons[i].toBuyMoney);
         GetWeapon.perform_WOUTObjected(player, GetComponent<GameController>(), weapons[i].WeaponTypeID);
     }
+    public void weaponButtonHover(string nameOFWeaponName)
+    {
+        int i;
+        for (i = 0; i < weapons.Length; i++)
+        {
+            if (nameOFWeaponName == weapons[i].WeaponName + "Shop")
+            {
+                break;
+            }
+        }
+        shopPanel.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = localizer_scp.applyWeapon(weapons[i], "Name");
+    }
+    public void shopNameReset()
+    {
+        shopPanel.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "";
+    }
     public void skillButtonPressed(string nameOFSkillName)
     {
         int i;
@@ -1465,7 +1525,18 @@ public class GameController : MonoBehaviour
             PerformPassiveSkill.perform_WOUTObjected(player, GetComponent<GameController>(), skills[i].skillTypeID);
         }
     }
-
+    public void skillButtonHover(string nameOFSkillName) 
+    {
+        int i;
+        for (i = 0; i < skills.Length; i++)
+        {
+            if (nameOFSkillName == "id_" + skills[i].skillTypeID + "Shop")
+            {
+                break;
+            }
+        }
+        shopPanel.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = localizer_scp.applySkill(skills[i], "Name");
+    }
     public void decreseEnemyCount(GameObject deletedOBJ)
     {
         Destroy(cObjects.Find(x => x.irTransform == deletedOBJ.transform).uiTransform.gameObject);

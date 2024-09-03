@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Assets/Begum/Scenes/MainMenuScene.unity
     guid: a75daa2655104a14d804cf2d02290ef9
   - enabled: 1
-    path: Assets/MBC/Scenes/MainScene.unity
-    guid: 71275eacf7be2b54597332628fa3d1b3
+    path: Assets/Scenes/MainScene_harbiMain.unity
+    guid: 29e713b1879eee44bb3f67925fd3eb7e
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: bcb63eaadce421247b599d565f4c6243,
       type: 2}

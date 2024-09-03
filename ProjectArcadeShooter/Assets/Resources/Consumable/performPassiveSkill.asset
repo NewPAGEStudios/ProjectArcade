@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   nameOfC: performPassiveSkill
-  descriptionOfC: "Pssif yetene\u011Fi yetenek kutuna ekler."
+  descriptionOfC: Psa
   functionName: PerformPassiveSkill
   modelMesh: {fileID: -3541629673168548286, guid: 3c2c81f4f15dc174aa63610f10108c57,
     type: 3}
