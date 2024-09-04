@@ -17,7 +17,7 @@ public class  AgentControl : MonoBehaviour
     
     void Start()
     {
-        InvokeRepeating("agentListAdd",1f,10f);
+        // InvokeRepeating("agentListAdd",1f,10f);
     }
 
     // Update is called once per frame
