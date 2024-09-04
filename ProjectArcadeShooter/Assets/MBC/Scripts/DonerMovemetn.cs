@@ -16,9 +16,9 @@ public class DonerMovemetn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(gc.pState == GameController.PlayState.inWaiting && gc.pState == GameController.PlayState.inWave)
+        transform.Rotate(new Vector3(0, 15, 0) * speedOfRotation * Time.deltaTime);
+        if (gc.pState == GameController.PlayState.inWaiting && gc.pState == GameController.PlayState.inWave)
         {
-            transform.Rotate(new Vector3(0, 15, 0) * speedOfRotation * Time.deltaTime);
         }
     }
 }

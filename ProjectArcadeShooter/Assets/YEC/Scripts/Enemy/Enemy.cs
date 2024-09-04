@@ -121,14 +121,6 @@ public class Enemy : MonoBehaviour
         }
         currentState = stateMachine.activeState.ToString();
     }
-    // void FixedUpdate(){
-    //     if (e_type.EnemyTypeID == 1)
-    //     {
-
-    //         BaseOffsetValueControl();
-    //     }
-        
-    // }
     public bool CanSeePlayer()
     {
         if(player != null)
