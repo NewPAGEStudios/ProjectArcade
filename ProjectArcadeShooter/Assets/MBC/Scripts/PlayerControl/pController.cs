@@ -321,6 +321,8 @@ public class PController : MonoBehaviour
         }
         actiontp = ActionStateDependecyToPlayer.idle;
         Camera.main.transform.localPosition = Vector3.zero;
+
+        transform.GetChild(0).localScale = new Vector3(1, 1, 1);
     }
     //EĞilme Bit
 
@@ -503,6 +505,7 @@ public class PController : MonoBehaviour
 
         targetPosExchangeUnit.position = new Vector3(pos.x, pos.y + scale.y, pos.z);
         targetScaleExchangeUnit.localScale = new Vector3(scale.x, scale.y * 2, scale.z);
+        transform.GetChild(0).localScale = new Vector3(1, 1, 1);
 
         actiontp = ActionStateDependecyToPlayer.idle;
     }
