@@ -27,4 +27,4 @@ MonoBehaviour:
   isRanged: 0
   isFlyable: 1
   rangeDistance: 0
-  attackDMG: 0
+  attackDMG: 20

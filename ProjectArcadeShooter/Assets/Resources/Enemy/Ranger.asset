@@ -15,7 +15,7 @@ MonoBehaviour:
   EnemyTypeID: 1
   modelGameObject: {fileID: 2924280648218503077, guid: f4241a986cce98f48ada47a4c3b0797d,
     type: 3}
-  ammo: {fileID: 11400000, guid: 11a3b18b96a292d4ca57c0107bb46267, type: 2}
+  ammo: {fileID: 11400000, guid: 613712c60d3a40645a8eb734129c6ed7, type: 2}
   agentName: EnemyWALKER
   firePos: {x: -0.22, y: 4.4, z: 5.37}
   mainMat: {fileID: 2100000, guid: f2601df4fbcb6df49953a5e9f7963f45, type: 2}

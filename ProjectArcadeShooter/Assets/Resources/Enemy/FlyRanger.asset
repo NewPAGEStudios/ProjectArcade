@@ -15,7 +15,7 @@ MonoBehaviour:
   EnemyTypeID: 5
   modelGameObject: {fileID: 3145569629705970632, guid: 5d9e81014a636a24a836470b9b8a5b68,
     type: 3}
-  ammo: {fileID: 11400000, guid: 11a3b18b96a292d4ca57c0107bb46267, type: 2}
+  ammo: {fileID: 11400000, guid: 613712c60d3a40645a8eb734129c6ed7, type: 2}
   agentName: EnemyFly
   firePos: {x: 0, y: 0, z: 0}
   mainMat: {fileID: 2100000, guid: f2601df4fbcb6df49953a5e9f7963f45, type: 2}
@@ -26,5 +26,5 @@ MonoBehaviour:
   attackRatio: 0.66
   isRanged: 1
   isFlyable: 1
-  rangeDistance: 10
+  rangeDistance: 7.5
   attackDMG: 20

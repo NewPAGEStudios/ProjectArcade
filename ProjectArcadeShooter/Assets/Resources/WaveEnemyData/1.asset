@@ -15,13 +15,17 @@ MonoBehaviour:
   waveNumber: 1
   enemyTypes:
   - enemyId: 0
-    enemyPiece: 0
+    enemyPiece: 2
   - enemyId: 1
-    enemyPiece: 0
+    enemyPiece: 2
   - enemyId: 2
-    enemyPiece: 3
-  - enemyId: 3
-    enemyPiece: 0
+    enemyPiece: 2
+  - enemyId: 4
+    enemyPiece: 2
+  - enemyId: 5
+    enemyPiece: 2
+  - enemyId: 6
+    enemyPiece: 2
   enemyStatMultiplier: 1
   maxConsSpawn: 12
   maxAmmoSpawn: 3

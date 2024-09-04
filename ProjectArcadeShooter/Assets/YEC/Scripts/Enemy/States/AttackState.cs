@@ -7,13 +7,14 @@ using UnityEngine.AI;
 public class AttackState : BaseState
 {
     private float moveTimer;
-    private float losePlayerTimer;
+//    private float losePlayerTimer;
     private float shotTimer;
     private Quaternion targetRotation;
     private NavMeshAgent agent;
     private GameObject Player;
-    
 
+    //OTEvent
+    private bool oteventForanimator_id3 = true;
 
     public override void Enter()
     {
@@ -31,19 +32,18 @@ public class AttackState : BaseState
 
     public override void Perform()
     {
-        if(enemy.e_type.isFlyable)
-        {
-            BaseOffsetValueControl();
-        }
         // stateMachine.agentControl.AllAgentsAttack();//
         if(enemy.e_type.isFlyable)//uçabilen
         {
             if (!enemy.e_type.isRanged)//yakın
             {
-                //TODO: uçan ve yakın patlama şeysi yazlıcak
+                enemy.Agent.SetDestination(enemy.Player.transform.position);
+                BaseOffsetValueControl();
             }
             else//uzak
             {
+                enemy.transform.LookAt(enemy.Player.transform.position);
+
                 moveTimer += Time.deltaTime;
                 shotTimer += Time.deltaTime;
 
@@ -63,7 +63,6 @@ public class AttackState : BaseState
         {
             if (!enemy.e_type.isRanged)//yakın
             {
-                losePlayerTimer = 0;
                 shotTimer += Time.deltaTime;
                 if (shotTimer > enemy.fireRate)
                 {
@@ -94,38 +93,112 @@ public class AttackState : BaseState
             {
                 moveTimer += Time.deltaTime;
                 shotTimer += Time.deltaTime;
-                if (shotTimer > enemy.fireRate)
+                //move
+                if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.e_type.rangeDistance - 2)
                 {
-                    Shoot();
+                    enemy.Agent.SetDestination(enemy.Player.transform.position);
+                    enemy.animator.SetBool("isWalking", true);
+                }
+                else
+                {
+                    enemy.animator.SetBool("isWalking", false);
+                }
+                //Shoot
+                if (enemy.e_type.EnemyTypeID == 3)//FüzeAtarSpecialState
+                {
+                    if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) < enemy.e_type.rangeDistance)
+                    {
+                        if (oteventForanimator_id3)
+                        {
+                            enemy.animator.SetTrigger("Attack");
+                            enemy.animator.SetBool("AttackEnd", false);
+                        }
+                        if (shotTimer > enemy.fireRate)
+                        {
+                            Shoot();
+                        }
+                    }
+                    else
+                    {
+                        enemy.animator.SetBool("AttackEnd", true);
+                    }
+                }
+                else//gerisi
+                {
+                    if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) < enemy.e_type.rangeDistance && shotTimer > enemy.fireRate)
+                    {
+                        Shoot();
+                        if (moveTimer > Random.Range(3, 7))
+                        {
+                            enemy.Agent.SetDestination(enemy.transform.position + (Random.insideUnitSphere * 15));
+                            moveTimer = 0;
+                        }
+                    }
+                }
 
-                }
-                if (moveTimer > Random.Range(3, 7) && enemy.e_type.EnemyTypeID != 3)
-                {
-                    enemy.Agent.SetDestination(enemy.transform.position + (Random.insideUnitSphere * 15));
-                    moveTimer = 0;
-                }
             }
         }
     }
     //Functions
     public void Shoot()
     {
-        if(enemy.e_type.EnemyTypeID == 3)
-        {
-            
-        }
         //  enemy.animator.SetTrigger("Throw");//*
-        enemy.transform.LookAt(enemy.Player.transform);
 
-        Transform gunbarrel = enemy.GunBarrel;
+        if (enemy.e_type.EnemyTypeID != 5)
+        {
+            enemy.transform.LookAt(enemy.Player.transform);
+            enemy.transform.eulerAngles = new Vector3(0, enemy.transform.eulerAngles.y, 0);
+        }
+        else//uçan olduğu için daha iyi gözükür
+        {
+            enemy.transform.LookAt(enemy.Player.transform);
+        }
 
-        GameObject bullet = GameObject.Instantiate(Resources.Load("Prefabs/Bullet") as GameObject, gunbarrel.position, enemy.transform.rotation);
+        Transform[] gunbarrel = enemy.gunBarrel.ToArray();
 
-        Vector3 shootDirection = (enemy.Player.transform.position - gunbarrel.transform.position).normalized;
+        for (int c = 0; c < gunbarrel.Length; c++)
+        {
 
-        bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(Random.Range(-3f, 3f), Vector3.up) * shootDirection * 40;
-        enemy.animator.SetTrigger("shoot");
-        enemy.animator.SetBool("isWalking",true);
+            GameObject bullet = new();
+
+            bullet.name = "bullet";
+
+            bullet.transform.position = gunbarrel[c].transform.position;
+            bullet.transform.LookAt(enemy.Player.transform.position);
+            if (enemy.e_type.EnemyTypeID == 3)
+            {
+                bullet.transform.eulerAngles = gunbarrel[c].transform.eulerAngles;
+            }
+
+
+            System.Type scriptAmmo = System.Type.GetType(enemy.e_type.ammo.functionName + ",Assembly-CSharp");
+            bullet.AddComponent(scriptAmmo);
+
+
+            //ManuelAdding
+            if (bullet.TryGetComponent<ReflectBulletFunctions>(out ReflectBulletFunctions rbf))
+            {
+                //Şuan yok
+            }
+            else if (bullet.TryGetComponent<FuseFunction>(out FuseFunction ff))
+            {
+                ff.baseAmmo = enemy.e_type.ammo;
+                ff.firedBy = enemy.gameObject;
+                ff.simulatedPos = GameObject.Instantiate(Resources.Load("Prefabs/FuzeIndicator") as GameObject, Vector3.zero, Quaternion.identity);
+            }
+            else if(bullet.TryGetComponent<NormalBulletFunction>(out NormalBulletFunction nbf))
+            {
+                nbf.baseAmmo = enemy.e_type.ammo;
+                nbf.firedBy = enemy.gameObject;
+            }
+            GameObject go = GameObject.Instantiate(enemy.e_type.ammo.modelGO, bullet.transform);
+            go.name = "Model";
+            go.layer = 7;
+        }
+        if(enemy.e_type.EnemyTypeID != 3)
+        {
+            enemy.animator.SetTrigger("shoot");
+        }
 
         shotTimer = 0;
 
