@@ -17,7 +17,7 @@ public class AttackState : BaseState
 
     public override void Enter()
     {
-        stateMachine.agentControl.AllAgentsAttack();//
+        // stateMachine.agentControl.AllAgentsAttack();//
     }
 
     public override void Exit()
@@ -33,112 +33,91 @@ public class AttackState : BaseState
     {
         if(enemy.e_type.isFlyable)
         {
-            if(!enemy.e_type.isRanged)
-            {
-                enemy.Agent.SetDestination(enemy.Player.transform.position);
-            }
             BaseOffsetValueControl();
         }
-        if (enemy.CanSeePlayer())
+        // stateMachine.agentControl.AllAgentsAttack();//
+        if(enemy.e_type.isFlyable)//uçabilen
         {
-            stateMachine.agentControl.AllAgentsAttack();//
-            if(enemy.e_type.isFlyable)//uçabilen
+            if (!enemy.e_type.isRanged)//yakın
             {
-                if (!enemy.e_type.isRanged)//yakın
-                {
-                    //TODO: uçan ve yakın patlama şeysi yazlıcak
-                }
-                else//uzak
-                {
-                    losePlayerTimer = 0;
-                    moveTimer += Time.deltaTime;
-                    shotTimer += Time.deltaTime;
-
-                    if (shotTimer > enemy.fireRate)
-                    {
-                        Shoot();
-                    }
-                    if (moveTimer > Random.Range(3, 7))
-                    {
-                        enemy.Agent.SetDestination(enemy.transform.position + (Random.insideUnitSphere * 15));
-                        moveTimer = 0;
-                    }
-                    enemy.LastKnowPos = enemy.Player.transform.position;
-                }
+                //TODO: uçan ve yakın patlama şeysi yazlıcak
             }
-            else//uçamayan
+            else//uzak
             {
-                if (!enemy.e_type.isRanged)//yakın
+                moveTimer += Time.deltaTime;
+                shotTimer += Time.deltaTime;
+
+                if (shotTimer > enemy.fireRate)
                 {
-                    losePlayerTimer = 0;
-                    shotTimer += Time.deltaTime;
-                    if (shotTimer > enemy.fireRate)
-                    {
-                        if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) <= enemy.e_type.rangeDistance)
-                        {
-                            Attack();
-                        }
-                    }
-                    if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.e_type.rangeDistance - 1f)
-                    {
-                        enemy.Agent.SetDestination(enemy.Player.transform.position);
-                        enemy.animator.SetBool("isWalking", true);
-
-                    }
-                    else
-                    {
-                        enemy.Agent.SetDestination(enemy.transform.position);
-
-                        enemy.animator.SetBool("isWalking", false);
-
-                        targetRotation = Quaternion.LookRotation(enemy.Player.transform.position - enemy.transform.position);
-                        enemy.transform.rotation = Quaternion.Lerp(enemy.transform.rotation, targetRotation, .4f);
-                        enemy.transform.eulerAngles = new Vector3(0, enemy.transform.eulerAngles.y, enemy.transform.eulerAngles.z);
-
-                    }
+                    Shoot();
                 }
-                else//uzak
+                if (moveTimer > Random.Range(3, 7))
                 {
-                    losePlayerTimer = 0;
-                    moveTimer += Time.deltaTime;
-                    shotTimer += Time.deltaTime;
-
-                    if (shotTimer > enemy.fireRate)
-                    {
-                        Shoot();
-                    }
-                    if (moveTimer > Random.Range(3, 7))
-                    {
-                        enemy.Agent.SetDestination(enemy.transform.position + (Random.insideUnitSphere * 15));
-                        moveTimer = 0;
-                    }
-                    enemy.LastKnowPos = enemy.Player.transform.position;
+                    enemy.Agent.SetDestination(enemy.transform.position + (Random.insideUnitSphere * 15));
+                    moveTimer = 0;
                 }
+
             }
-            
         }
-        else
+        else//uçamayan
         {
-            stateMachine.agentControl.LastKnowPos = enemy.Player.transform.position;//playerin son bulunduğu konumu diğer enemylere aktarmak için
-            losePlayerTimer += Time.deltaTime;
-            if (losePlayerTimer > 8)
+            if (!enemy.e_type.isRanged)//yakın
             {
-                if(enemy.e_type.isFlyable && !enemy.e_type.isRanged)
+                losePlayerTimer = 0;
+                shotTimer += Time.deltaTime;
+                if (shotTimer > enemy.fireRate)
                 {
+                    if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) <= enemy.e_type.rangeDistance)
+                    {
+                        Attack();
+                    }
+                }
+                if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.e_type.rangeDistance - 1f)
+                {
+                    enemy.Agent.SetDestination(enemy.Player.transform.position);
+                    enemy.animator.SetBool("isWalking", true);
 
                 }
                 else
-                    stateMachine.ChangesState(new SearchState());
+                {
+                    enemy.Agent.SetDestination(enemy.transform.position);
+
+                    enemy.animator.SetBool("isWalking", false);
+
+                    targetRotation = Quaternion.LookRotation(enemy.Player.transform.position - enemy.transform.position);
+                    enemy.transform.rotation = Quaternion.Lerp(enemy.transform.rotation, targetRotation, .4f);
+                    enemy.transform.eulerAngles = new Vector3(0, enemy.transform.eulerAngles.y, enemy.transform.eulerAngles.z);
+
+                }
+            }
+            else//uzak
+            {
+                moveTimer += Time.deltaTime;
+                shotTimer += Time.deltaTime;
+                if (shotTimer > enemy.fireRate)
+                {
+                    Shoot();
+
+                }
+                if (moveTimer > Random.Range(3, 7) && enemy.e_type.EnemyTypeID != 3)
+                {
+                    enemy.Agent.SetDestination(enemy.transform.position + (Random.insideUnitSphere * 15));
+                    moveTimer = 0;
+                }
             }
         }
     }
     //Functions
     public void Shoot()
     {
+        if(enemy.e_type.EnemyTypeID == 3)
+        {
+            
+        }
         //  enemy.animator.SetTrigger("Throw");//*
         enemy.transform.LookAt(enemy.Player.transform);
 
-        Transform gunbarrel = enemy.gunBarrel;
+        Transform gunbarrel = enemy.GunBarrel;
 
         GameObject bullet = GameObject.Instantiate(Resources.Load("Prefabs/Bullet") as GameObject, gunbarrel.position, enemy.transform.rotation);
 
@@ -149,6 +128,7 @@ public class AttackState : BaseState
         enemy.animator.SetBool("isWalking",true);
 
         shotTimer = 0;
+
     }
     public void Attack()
     {

@@ -18,7 +18,7 @@ public class MeleeDmg : MonoBehaviour
         if (other.gameObject.CompareTag("PlayerColl"))
         {
             pController = other.transform.parent.GetComponent<PController>();
-            pController.TakeDMG(20, enemyModel.transform.parent.gameObject);
+            pController.TakeDMG(enemyModel.transform.parent.GetComponent<Enemy>().e_type.attackDMG, enemyModel.transform.parent.gameObject);
         }
     }
 

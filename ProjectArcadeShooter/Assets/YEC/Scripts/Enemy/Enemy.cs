@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour
     public float eyeHeight;
 
     [Header("Weapon Values")]
-    public Transform gunBarrel;
+    public List<Transform> gunBarrel = new();
     
 
     public float fireRate;
@@ -42,6 +42,8 @@ public class Enemy : MonoBehaviour
     public Animator animator;
     public float currentBaseOffeset;
     public GameObject meleeObj;
+    
+    public Transform GunBarrel;
 
     private enum ccState
     {
@@ -63,7 +65,12 @@ public class Enemy : MonoBehaviour
 
         if (e_type.isRanged)
         {
-            gunBarrel = transform.Find("Model").Find("firePos");
+            GunBarrel = transform.Find("Model").Find("firePos");
+            // Transform tempObject = transform.Find("Model").Find("firePos");
+            // for (int i = 0; i < tempObject.childCount; i++)
+            // {
+
+            // }
         }
 
         animator = model.GetComponent<Animator>();
@@ -105,6 +112,8 @@ public class Enemy : MonoBehaviour
 
 
         fireRate = e_type.attackRatio;
+
+        agent.speed = e_type.moveSpeed;
         
         player = GameObject.FindGameObjectWithTag("Player");
 

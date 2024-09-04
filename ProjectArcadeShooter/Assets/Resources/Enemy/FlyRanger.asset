@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83af2c1cfa181454ab5d6314b130aec2, type: 3}
   m_Name: FlyRanger
   m_EditorClassIdentifier: 
-  EnemyTypeID: 3
-  modelGameObject: {fileID: 4036601811464304549, guid: 1e7cac2a9f29e1d48a0ab2586ec6fb66,
+  EnemyTypeID: 5
+  modelGameObject: {fileID: 3145569629705970632, guid: 5d9e81014a636a24a836470b9b8a5b68,
     type: 3}
   ammo: {fileID: 11400000, guid: 11a3b18b96a292d4ca57c0107bb46267, type: 2}
   agentName: EnemyFly
@@ -21,7 +21,7 @@ MonoBehaviour:
   mainMat: {fileID: 2100000, guid: f2601df4fbcb6df49953a5e9f7963f45, type: 2}
   getDmgMat: {fileID: 2100000, guid: d9f6cacbf86f0734ab3af54209544245, type: 2}
   deathMat: {fileID: 2100000, guid: c247b988d50dec8448cb5b642c740654, type: 2}
-  hitPoint: 20
+  hitPoint: 30
   moveSpeed: 5
   attackRatio: 0.66
   isRanged: 1

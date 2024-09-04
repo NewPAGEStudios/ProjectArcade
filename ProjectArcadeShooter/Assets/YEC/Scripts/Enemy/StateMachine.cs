@@ -18,12 +18,8 @@ public class StateMachine : MonoBehaviour
     }
 
     public void Initialise(){
-        if(enemy.e_type.isFlyable && !enemy.e_type.isRanged)
-        {
-            ChangesState(new AttackState());
-        }
-        else
-            ChangesState( new PatrolState());
+        
+        ChangesState( new AttackState());
     }
     void Start()
     {
