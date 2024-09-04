@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 83af2c1cfa181454ab5d6314b130aec2, type: 3}
-  m_Name: Fly
+  m_Name: RangedDrone
   m_EditorClassIdentifier: 
-  EnemyTypeID: 4
-  modelGameObject: {fileID: 1672027476823096463, guid: a2ebbc02fa088944f88fb1f508dd7a85,
+  EnemyTypeID: 5
+  modelGameObject: {fileID: 3145569629705970632, guid: 5d9e81014a636a24a836470b9b8a5b68,
     type: 3}
   ammo: {fileID: 0}
   agentName: EnemyFly
@@ -21,10 +21,10 @@ MonoBehaviour:
   mainMat: {fileID: 2100000, guid: f2601df4fbcb6df49953a5e9f7963f45, type: 2}
   getDmgMat: {fileID: 2100000, guid: d9f6cacbf86f0734ab3af54209544245, type: 2}
   deathMat: {fileID: 2100000, guid: c247b988d50dec8448cb5b642c740654, type: 2}
-  hitPoint: 20
-  moveSpeed: 20
+  hitPoint: 30
+  moveSpeed: 0
   attackRatio: 0.1
   isRanged: 0
-  isFlyable: 1
+  isFlyable: 0
   rangeDistance: 0
   attackDMG: 0

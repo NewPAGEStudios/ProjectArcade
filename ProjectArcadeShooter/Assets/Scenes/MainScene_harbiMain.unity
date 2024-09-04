@@ -21763,7 +21763,7 @@ MonoBehaviour:
   boss: []
   perks: []
   waveEnemyDatas: []
-  weaponGetAmmoData: {fileID: 0}
+  weaponGetAmmoData: {fileID: 11400000, guid: 5c8c4aac34667114ebe3f8cdb1c8b910, type: 2}
   skillIndicatorParent: {fileID: 1421504720}
   skillObject: {fileID: 1147648187}
   skillIndicatorMaterial: {fileID: 2100000, guid: f40655604f57ecf4284b7fa96524cbd0,
@@ -35521,6 +35521,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1735158040}
+  - component: {fileID: 1735158041}
   m_Layer: 0
   m_Name: "D\xF6ner"
   m_TagString: Untagged
@@ -35558,6 +35559,19 @@ Transform:
   - {fileID: 544009941}
   m_Father: {fileID: 543450652888348972}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1735158041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1735158039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86898ee42d9b6c448ba3db66f720ce82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedOfRotation: 0
 --- !u!1 &1737318632
 GameObject:
   m_ObjectHideFlags: 0

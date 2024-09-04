@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2a6166bb0aa51f43b6be1395d2b4fac, type: 3}
+  m_Name: Fuze
+  m_EditorClassIdentifier: 
+  AmmoTypeID: 2
+  functionName: FuseFunction
+  modelGO: {fileID: 7116538236815477793, guid: d3cd8f52c70a90b4681780918267c610, type: 3}
+  trail: {fileID: 0}
+  trail3D: {fileID: 0}
+  materials: []
+  bulletSpeed: 15
+  dmg: 50
+  maxReflectionTime: 0

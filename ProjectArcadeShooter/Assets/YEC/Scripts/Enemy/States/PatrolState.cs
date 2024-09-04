@@ -30,7 +30,7 @@ public class PatrolState : BaseState
         else
         {
             // Update animator walking state
-//            enemy.animator.SetBool("isWalking", isWalking);
+            //enemy.animator.SetBool("isWalking", isWalking);
         }
     }
 

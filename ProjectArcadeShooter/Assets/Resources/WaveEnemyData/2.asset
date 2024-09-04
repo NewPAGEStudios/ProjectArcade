@@ -17,9 +17,15 @@ MonoBehaviour:
   - enemyId: 0
     enemyPiece: 15
   - enemyId: 1
-    enemyPiece: 0
-  - enemyId: 2
     enemyPiece: 3
+  - enemyId: 2
+    enemyPiece: 0
+  - enemyId: 3
+    enemyPiece: 0
+  - enemyId: 4
+    enemyPiece: 0
+  - enemyId: 5
+    enemyPiece: 0
   enemyStatMultiplier: 1
   maxConsSpawn: 12
   maxAmmoSpawn: 3
