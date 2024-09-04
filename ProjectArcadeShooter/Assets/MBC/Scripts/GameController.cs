@@ -351,8 +351,8 @@ public class GameController : MonoBehaviour
         cUnit = gamePanel.transform.GetChild(6).GetChild(1).GetComponent<RawImage>().rectTransform.rect.width / 360f;
 
         //Cursor Handling
-        //Cursor.visible = false;
-        //Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
 
         /* Save on waitState
         check save and load it save elements =  

@@ -38,7 +38,11 @@ public class FuseFunction : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (firedBy.CompareTag("Enemy"))
+        if(firedBy == null)
+        {
+
+        }
+        else if (firedBy.CompareTag("Enemy"))
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player").gameObject;
             if(Vector3.Distance(player.gameObject.transform.position,gameObject.transform.position) <= 7.5f)

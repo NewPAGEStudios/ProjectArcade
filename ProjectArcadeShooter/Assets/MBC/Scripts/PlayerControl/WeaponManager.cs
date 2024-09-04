@@ -137,6 +137,7 @@ public class WeaponManager : MonoBehaviour
         {
             if (currWeaponID == -1)
             {
+//                Debug.Log("Kod");
                 return;
             }
             if (handStates == ActionStateOFHands.idle)
