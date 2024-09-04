@@ -8,15 +8,22 @@ public class StateMachine : MonoBehaviour
 {
 
     public BaseState activeState;
-    public AgentControl agentControl;//
+    public AgentControl agentControl;
+    private Enemy enemy;
 
     private void Awake()
     {
         agentControl = GameObject.FindGameObjectWithTag("GameController").GetComponent<AgentControl>();
+        enemy = GetComponent<Enemy>();
     }
 
     public void Initialise(){
-        ChangesState( new PatrolState());
+        if(enemy.e_type.isFlyable && !enemy.e_type.isRanged)
+        {
+            ChangesState(new AttackState());
+        }
+        else
+            ChangesState( new PatrolState());
     }
     void Start()
     {

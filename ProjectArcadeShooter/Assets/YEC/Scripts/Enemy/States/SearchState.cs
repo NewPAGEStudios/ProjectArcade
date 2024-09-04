@@ -21,7 +21,9 @@ public class SearchState : BaseState
         }
         
         //direkt bu kodu kullanmış olsaydık uzakta olan enemy sürekli rastgele konum üretmiş olup acık sapıtırdı 
-        else{//hepsi aynı konumda sıkışmasın diye rastgele konumlarda player aranır
+        //hepsi aynı konumda sıkışmasın diye rastgele konumlarda player aranır
+        else
+        {
             randomPos = Random.insideUnitSphere * 10 ;
             enemy.Agent.SetDestination(stateMachine.agentControl.LastKnowPos + randomPos);
             //enemy'nin o anki hedefi(hedef sürekli değişeceği için tek bir değişkene atıp daha rahat  kontrol etmek için oluşturdum)

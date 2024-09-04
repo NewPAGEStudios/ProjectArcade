@@ -17,23 +17,29 @@ public class  AgentControl : MonoBehaviour
     
     void Start()
     {
+        InvokeRepeating("agentListAdd",1f,10f);
     }
 
     // Update is called once per frame
     
     public void AllAgentsAttack()
     {
-        allAgents = Object.FindObjectsByType<NavMeshAgent>(FindObjectsSortMode.None).ToList();
-        
         foreach (var agent in allAgents)
         {
 
             var enemy = agent.GetComponent<Enemy>();
             if (enemy.CanSeePlayer() == false)
-            {//Her düşmanın playeri görüp görmediğini kontrol ederiz.
-                enemy.stateMachine.ChangesState(new SearchState());
-                // Debug.Log($"search state agent: {agent.name}");
-
+            {
+                
+                //Her düşmanın playeri görüp görmediğini kontrol ederiz.
+                if(enemy.e_type.isFlyable && !enemy.e_type.isRanged)//uçan yakın
+                {
+                    enemy.stateMachine.ChangesState(new AttackState());
+                }
+                else
+                {
+                    enemy.stateMachine.ChangesState(new SearchState());
+                }
             }
             else
             {
@@ -41,9 +47,8 @@ public class  AgentControl : MonoBehaviour
             }
         }
     }
-    void Update()
+    private void agentListAdd()
     {
+        allAgents = Object.FindObjectsByType<NavMeshAgent>(FindObjectsSortMode.None).ToList();
     }
-
-    
 }

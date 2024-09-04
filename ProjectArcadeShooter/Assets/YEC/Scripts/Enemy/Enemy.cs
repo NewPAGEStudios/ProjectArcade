@@ -55,6 +55,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         GameObject model = Instantiate(e_type.modelGameObject, gameObject.transform);
+        
 
         model.name = "Model";
 
@@ -104,10 +105,11 @@ public class Enemy : MonoBehaviour
 
 
         fireRate = e_type.attackRatio;
+        
+        player = GameObject.FindGameObjectWithTag("Player");
 
         stateMachine.Initialise();
 
-        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
@@ -119,14 +121,14 @@ public class Enemy : MonoBehaviour
         }
         currentState = stateMachine.activeState.ToString();
     }
-    void FixedUpdate(){
-        if (e_type.EnemyTypeID == 1)
-        {
+    // void FixedUpdate(){
+    //     if (e_type.EnemyTypeID == 1)
+    //     {
 
-            BaseOffsetValueControl();
-        }
+    //         BaseOffsetValueControl();
+    //     }
         
-    }
+    // }
     public bool CanSeePlayer()
     {
         if(player != null)

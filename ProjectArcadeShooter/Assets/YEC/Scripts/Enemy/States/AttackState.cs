@@ -12,6 +12,8 @@ public class AttackState : BaseState
     private Quaternion targetRotation;
     private NavMeshAgent agent;
     private GameObject Player;
+    
+
 
     public override void Enter()
     {
@@ -29,12 +31,14 @@ public class AttackState : BaseState
 
     public override void Perform()
     {
-        // if(enemy.e_type.EnemyTypeID == 1)
-        // {
-        //     enemy.Agent.SetDestination(enemy.Player.transform.position);
-        //     BaseOffsetValueControl();
-
-        // }
+        if(enemy.e_type.isFlyable)
+        {
+            if(!enemy.e_type.isRanged)
+            {
+                enemy.Agent.SetDestination(enemy.Player.transform.position);
+            }
+            BaseOffsetValueControl();
+        }
         if (enemy.CanSeePlayer())
         {
             stateMachine.agentControl.AllAgentsAttack();//
@@ -119,7 +123,12 @@ public class AttackState : BaseState
             losePlayerTimer += Time.deltaTime;
             if (losePlayerTimer > 8)
             {
-                stateMachine.ChangesState(new SearchState());
+                if(enemy.e_type.isFlyable && !enemy.e_type.isRanged)
+                {
+
+                }
+                else
+                    stateMachine.ChangesState(new SearchState());
             }
         }
     }
@@ -146,68 +155,26 @@ public class AttackState : BaseState
         enemy.MeleeAttack();
     }
     public void BaseOffsetValueControl(){
-        // enemy.Agent.SetDestination(enemy.Player.transform.position);
-        // Debug.Log("aradaki mesafe"+distance+"range"+ e_type.rangeDistance);
         agent = enemy.Agent;
         Player = enemy.Player;
         agent.radius = 0.6f;// nedense 0.5 değerinde player yüksekteyken takip etmiyor
         float distance = Vector3.Distance(Player.transform.position, enemy.transform.position);
         float playerHight = Player.transform.position.y - enemy.transform.position.y;
+
         // Debug.Log(playerHight);
         RaycastHit hitInfo = new RaycastHit();
+        //duvar ile karşılaştığında
         if(Physics.Raycast(enemy.transform.position, enemy.transform.forward, out hitInfo, 3) && hitInfo.collider.gameObject.tag != "PlayerColl" && hitInfo.collider.gameObject.tag != "EnemyColl")
         {
-            Debug.Log("nesne:" + hitInfo.collider.name+ "tag:"+ hitInfo.collider.gameObject.tag);
+            // Debug.Log("nesne:" + hitInfo.collider.name+ "tag:"+ hitInfo.collider.gameObject.tag);
             agent.speed = 0.1f;
             agent.baseOffset += 0.07f;
-            // if(hitInfo.distance < 5){
-
-            // }
-            // else{
-            //     Debug.Log("hızlan");
-            //     agent.speed = 5;
-            // }
         }
         else
         {
             agent.speed = 5;
         }
-
-        if(distance <= 15 && agent.baseOffset >= agent.baseOffset + playerHight)
-        {
-
-            // -8.935724
-            // if(Physics.Raycast(transform.position, transform.forward, out hitInfo, 15))
-            // {
-
-            //     /////////////////
-            //     // if(hitInfo.transform.CompareTag("PlayerColl"))
-            //     // {
-
-            //     // }
-            //     // else
-            //     // {
-            //     //     if(player.transform.position.y > transform.position.y)
-            //     //     {
-                        
-            //     //         // Mathf.MoveTowards(agent.baseOffset,transform.position.y,2);
-
-            //     //         agent.baseOffset += playerHight;
-            //     //     }
-            //     // }
-            // }
-            for(float i = distance + 1f; i >= distance; i-= 0.5f)
-            {
-                agent.baseOffset -= 0.01f; 
-            }
-        }
         
-        if(agent.baseOffset < enemy.currentBaseOffeset + playerHight && distance >=15)
-        {
-            agent.baseOffset += 0.01f;
-        }
-
-        /////////////////////////////////////////////////////////////////////////////////////////////
         //rampada
         Ray downwardRay = new Ray(enemy.transform.position, Vector3.down);
         RaycastHit hitDownInfo = new RaycastHit();
@@ -218,5 +185,37 @@ public class AttackState : BaseState
                 agent.baseOffset += 0.04f;
             }
         }
+
+        if(!enemy.e_type.isRanged)//uçan yakın
+        {
+            if(distance <= 15 && agent.baseOffset >= agent.baseOffset + playerHight)
+            {
+                for(float i = distance + 1f; i >= distance; i-= 0.5f)//dronun yavaş yavaş indiği izlenimini vermek için for döngüsü kullanılır.
+                {
+                    agent.baseOffset -= 0.01f; 
+                }
+            }
+            if(agent.baseOffset < enemy.currentBaseOffeset + playerHight /*&& distance >=15*/)
+            {
+                agent.baseOffset += 0.01f;
+            }
+        }
+        else//uçan uzak
+        {
+            playerHight += enemy.currentBaseOffeset;
+            if(0 < playerHight /*&& distance >=15*/)
+            {
+                agent.baseOffset += 0.02f;
+            }
+            else
+            {
+                agent.baseOffset -= 0.02f;
+            }
+        }
+        
+
+        
+
+        
     }
 }
