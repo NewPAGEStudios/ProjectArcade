@@ -16,7 +16,7 @@ public class NormalBulletFunction : MonoBehaviour
         rb.freezeRotation = true;
         rb.useGravity = false;
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-        Invoke("startMovement", 0.5f);
+        Invoke("startMovement", 0.1f);
     }
 
     private void startMovement()
@@ -24,9 +24,22 @@ public class NormalBulletFunction : MonoBehaviour
         Debug.Log(rb.name);
         rb.AddForce(transform.forward * baseAmmo.bulletSpeed, ForceMode.Impulse);
     }
-    private void OnCollisionEnter(Collision collision)
+    // private void OnCollisionEnter(Collision collision)
+    // {
+    //     Transform hitTransform = collision.transform;
+    //         // Debug.Log("temas etti");
+
+    //     if(hitTransform.CompareTag("PlayerColl"))
+    //     {
+    //         Debug.Log("temas etti");
+    //         hitTransform.parent.GetComponent<PController>().TakeDMG(baseAmmo.dmg, firedBy);
+    //     }
+    //     Destroy(gameObject);
+    // }
+    private void OnTriggerEnter(Collider collider)
     {
-        Transform hitTransform = collision.transform;
+        Transform hitTransform = collider.transform;
+            // Debug.Log("temas etti");
 
         if(hitTransform.CompareTag("PlayerColl"))
         {

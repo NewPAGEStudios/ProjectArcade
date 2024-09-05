@@ -32378,6 +32378,11 @@ PrefabInstance:
       propertyPath: m_ProvidesContacts
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 439593044425858780, guid: 54ce6288cbd155e4bb144da5cbfcf9e8,
+        type: 3}
+      propertyPath: m_IncludeLayers.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1900400475145454234, guid: 54ce6288cbd155e4bb144da5cbfcf9e8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -32432,6 +32437,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Capsule
+      objectReference: {fileID: 0}
+    - target: {fileID: 5256796578356332801, guid: 54ce6288cbd155e4bb144da5cbfcf9e8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6341188165977372418, guid: 54ce6288cbd155e4bb144da5cbfcf9e8,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

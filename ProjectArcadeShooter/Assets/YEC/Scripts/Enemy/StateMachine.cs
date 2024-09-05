@@ -10,6 +10,7 @@ public class StateMachine : MonoBehaviour
     public BaseState activeState;
     public AgentControl agentControl;
     private Enemy enemy;
+    private GameController gc;
 
     private void Awake()
     {
@@ -23,14 +24,19 @@ public class StateMachine : MonoBehaviour
     }
     void Start()
     {
-        
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(gc.state == GameController.GameState.pause)
+        {
+            return;
+        }
         if(activeState != null){
             activeState.Perform();
+            Debug.Log("state machine girdi" + Time.timeScale);
         }
     }
     public void ChangesState(BaseState newState){

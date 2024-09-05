@@ -128,6 +128,7 @@ public class Enemy : MonoBehaviour
             return;//Updateyi patlat
         }
         currentState = stateMachine.activeState.ToString();
+        Debug.Log("enemy içerisine girdi");
     }
     public bool CanSeePlayer()
     {

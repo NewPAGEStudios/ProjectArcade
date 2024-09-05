@@ -566,6 +566,7 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log("game controllerrrrrr");
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             if(state == GameState.pause)
@@ -1795,7 +1796,7 @@ public class GameController : MonoBehaviour
     }
     IEnumerator startAgainLoadingRoutine()
     {
-        AsyncOperation operation = SceneManager.LoadSceneAsync("MainScene");
+        AsyncOperation operation = SceneManager.LoadSceneAsync("MainScene_harbiMain");
         operation.allowSceneActivation = false;
         
         while (!operation.isDone)

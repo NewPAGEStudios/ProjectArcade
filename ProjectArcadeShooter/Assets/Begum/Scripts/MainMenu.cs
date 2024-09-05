@@ -33,7 +33,7 @@ public class MainMenu : MonoBehaviour
         bool val = true;
         PlayerPrefs.SetInt("newGame",val ? 1 : 0);
         PlayerPrefs.Save();
-        GetComponent<UIMenuManager>().LoadScene("MainScene");
+        GetComponent<UIMenuManager>().LoadScene("MainScene_harbiMain");
 
     }
     public void Continue()
@@ -41,7 +41,7 @@ public class MainMenu : MonoBehaviour
         bool val = false;
         PlayerPrefs.SetInt("newGame", val ? 1 : 0);
         PlayerPrefs.Save();
-        GetComponent<UIMenuManager>().LoadScene("MainScene");
+        GetComponent<UIMenuManager>().LoadScene("MainScene_harbiMain");
     }
     public void deleteSave()
     {

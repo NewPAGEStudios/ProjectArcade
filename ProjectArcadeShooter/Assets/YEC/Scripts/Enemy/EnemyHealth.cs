@@ -55,12 +55,22 @@ public class EnemyHealth : MonoBehaviour
 
     public void EnemyHealthUpdate(float amount)
     {
+        
         currentHealth += amount;
         
         Debug.Log("CurrentHealth: "+ currentHealth);
 
         if (currentHealth <= 0)
         {
+            Destroy(GetComponent<StateMachine>());
+            GetComponent<Enemy>().Agent.SetDestination(transform.position);
+            if(GetComponent<Enemy>().animator != null)
+            {
+                GetComponent<Enemy>().animator.SetBool("isWalking", false);
+                Destroy(GetComponent<Enemy>().animator);
+            }
+
+
             currentHealth = 0;
             Die();
             return;
