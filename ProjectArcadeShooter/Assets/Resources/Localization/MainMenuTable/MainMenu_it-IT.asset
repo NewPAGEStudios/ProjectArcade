@@ -180,6 +180,10 @@ MonoBehaviour:
     m_Localized: Volume del Suono
     m_Metadata:
       m_Items: []
+  - m_Id: 9771483533561856
+    m_Localized: Non hai abbastanza soldi!
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

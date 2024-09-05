@@ -147,6 +147,8 @@ public class GameController : MonoBehaviour
     private Coroutine dmgGivenUICoroutine;
     private Coroutine dmgTakenEffectCoroutine;
     private Coroutine dashEffectCoroutine;
+    private Coroutine shopInfoVis;
+
 
     //PostProcessing Settings
     AmbientOcclusion ao;
@@ -338,9 +340,9 @@ public class GameController : MonoBehaviour
         {
             state = GameState.inGame;
             pState = PlayState.inStart;
-
-            currentLevel = mainLevel;
-            changeMap(currentLevel);
+    
+            currentLevel = startMap;
+            DefaultMap();
 
             ComboBG(0);
             ComboVisualize(0);
@@ -566,7 +568,6 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("game controllerrrrrr");
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             if(state == GameState.pause)
@@ -674,12 +675,19 @@ public class GameController : MonoBehaviour
         {
             pState = PlayState.inWave;
         }
+
         waitTimeVisualize(waitTimer);
         waveVisualzie("Wave " + waveNumber);
+
+
+        for (int i = 0; i < currentLevel.transform.Find("Shops").childCount; i++)
+        {
+            currentLevel.transform.Find("Shops").GetChild(i).GetComponent<Shop>().close();
+        }
+
         //WaveConfigiration
         //EnemySpawn
-        Debug.Log("EnemyStartSpawn");
-        foreach(WaveEnemyData wed in waveEnemyDatas)
+        foreach (WaveEnemyData wed in waveEnemyDatas)
         {
             if (wed.waveNumber == waveNumber)
             {
@@ -696,7 +704,6 @@ public class GameController : MonoBehaviour
                 break;
             }
         }
-        Debug.Log("EnemyStartEnd");
     }
     public void callToWait()
     {
@@ -705,8 +712,16 @@ public class GameController : MonoBehaviour
     private void toWait()
     {
         SaveElements();
+
         waitTimer = waitTime;
         pState = PlayState.inWaiting;
+
+
+        for (int i = 0; i < currentLevel.transform.Find("Shops").childCount; i++)
+        {
+            currentLevel.transform.Find("Shops").GetChild(i).GetComponent<Shop>().open();
+        }
+
         waitTimeVisualize(waitTimer);
         waveVisualzie("Wait");
 
@@ -808,6 +823,11 @@ public class GameController : MonoBehaviour
             gamePanel.transform.GetChild(4).gameObject.SetActive(false);
             Time.timeScale = 1f;
 
+            if (pState == PlayState.inWaiting)
+            {
+                player.transform.GetChild(1).Find("Musics").Find("MusicWait").GetComponent<AudioSource>().UnPause();
+            }
+
             globalProfile.profile = mainEffect;
 
             Cursor.visible = false;
@@ -825,6 +845,11 @@ public class GameController : MonoBehaviour
         state = GameState.pause;
         gamePanel.transform.GetChild(4).gameObject.SetActive(true);
         Time.timeScale = 0f;
+
+        if(pState == PlayState.inWaiting)
+        {
+            player.transform.GetChild(1).Find("Musics").Find("MusicWait").GetComponent<AudioSource>().Pause();
+        }
 
         globalProfile.profile = pauseEffect;
 
@@ -1055,15 +1080,49 @@ public class GameController : MonoBehaviour
     }
     public void ShopOpener()
     {
+        if (pState == PlayState.inWaiting)
+        {
+            player.transform.GetChild(1).Find("Musics").Find("MusicWait").GetComponent<AudioSource>().Pause();
+        }
         playerPanel.SetActive(false);
         gamePanel.SetActive(false);
         shopPanel.SetActive(true);
     }
     public void ShopCloser()
     {
+        if (pState == PlayState.inWaiting)
+        {
+            player.transform.GetChild(1).Find("Musics").Find("MusicWait").GetComponent<AudioSource>().UnPause();
+        }
         playerPanel.SetActive(true);
         gamePanel.SetActive(true);
         shopPanel.SetActive(false);
+    }
+    public void ShopInfo(string infoStr)
+    {
+        shopPanel.transform.GetChild(0).Find("Info").GetComponent<TextMeshProUGUI>().text = infoStr;
+        shopPanel.transform.GetChild(0).Find("Info").GetComponent<TextMeshProUGUI>().color = Color.black;
+        shopPanel.transform.GetChild(0).Find("InfoBG").GetComponent<Image>().color = new Color(0.03137255f, 0.09803922f, 0.1098039f, 0.7843137f);
+        if (shopInfoVis != null)
+        {
+            StopCoroutine(shopInfoVis);
+        }
+        shopInfoVis = StartCoroutine(ShopInfoRoutine());
+    }
+    IEnumerator ShopInfoRoutine()
+    {
+        TextMeshProUGUI tmpInfo = shopPanel.transform.GetChild(0).Find("Info").GetComponent<TextMeshProUGUI>();
+        Image ImInfo = shopPanel.transform.GetChild(0).Find("InfoBG").GetComponent<Image>();
+        while (true)
+        {
+            tmpInfo.color = new Color(tmpInfo.color.r, tmpInfo.color.g, tmpInfo.color.b, Mathf.MoveTowards(tmpInfo.color.a, 0, 0.002f * 10));
+            ImInfo.color = new Color(ImInfo.color.r, ImInfo.color.g, ImInfo.color.b, Mathf.MoveTowards(ImInfo.color.a, 0, 0.002f * 10));
+            yield return new WaitForSecondsRealtime(0.002f);
+            if(tmpInfo.color.a <= 0 && ImInfo.color.a <= 0)
+            {
+                break;
+            }
+        }
     }
 
     public void CompassVisualize(float value)
@@ -1487,6 +1546,11 @@ public class GameController : MonoBehaviour
                 break;
             }
         }
+        if(money < weapons[i].toBuyMoney)
+        {
+            ShopInfo(localizer_scp.applyMainMenu("ShopNoMoney"));
+            return;
+        }
         DeductMainCurrency(weapons[i].toBuyMoney);
         GetWeapon.perform_WOUTObjected(player, GetComponent<GameController>(), weapons[i].WeaponTypeID);
     }
@@ -1515,6 +1579,11 @@ public class GameController : MonoBehaviour
             {
                 break;
             }
+        }
+        if (money < skills[i].toBuyMoney)
+        {
+            ShopInfo(localizer_scp.applyMainMenu("ShopNoMoney"));
+            return;
         }
         DeductMainCurrency(skills[i].toBuyMoney);
         if (skills[i].st == Skill.skillType.active)

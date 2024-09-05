@@ -12,6 +12,9 @@ public class Shop : MonoBehaviour
     bool OTEventforOpen;
     bool OTEventforClose;
     Animator animator;
+
+    Coroutine coroutine1;
+    Coroutine coroutine2;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,33 +25,18 @@ public class Shop : MonoBehaviour
         col = GetComponent<Collider>();
         animator.SetTrigger("Start");
     }
-    private void Update()
+    public void open()
     {
-        if (gc.pState == GameController.PlayState.inWaiting)
-        {
-            if (OTEventforOpen)
-            {
-                StartCoroutine(OpenRoutine());
-                OTEventforOpen = false;
-                OTEventforClose = true;
-            }
-        }
-        else
-        {
-            if (OTEventforClose)
-            {
-                col.enabled = false;
-                StartCoroutine(CloseRoutine());
-                OTEventforOpen = true;
-                OTEventforClose = false;
-            }
-
-        }
+        StartCoroutine(OpenRoutine());
+    }
+    public void close()
+    {
+        col.enabled = false;
+        StartCoroutine(CloseRoutine());
     }
     IEnumerator OpenRoutine()
     {
         animator.SetBool("close", false);
-        yield return new WaitForEndOfFrame();
         animator.SetBool("open", true);
         while (true)
         {
@@ -64,7 +52,6 @@ public class Shop : MonoBehaviour
     IEnumerator CloseRoutine()
     {
         animator.SetBool("open", false);
-        yield return new WaitForEndOfFrame();
         animator.SetBool("close", true);
         while (true)
         {

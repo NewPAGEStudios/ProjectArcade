@@ -158,6 +158,10 @@ public class Enemy : MonoBehaviour
     }
     public void MeleeAttack()
     {
+        if (animator == null)
+        {
+            return;
+        }
         animator.SetTrigger("Attack");
         meleeObj.GetComponent<Collider>().enabled = true;
         animator.SetBool("AttackEnd", true);
@@ -174,6 +178,10 @@ public class Enemy : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
 
+            if (animator == null)
+            {
+                break;
+            }
             if (animator.GetCurrentAnimatorStateInfo(1).IsName("AttackEnd"))
             {
                 meleeObj.GetComponent<Collider>().enabled = false;
@@ -181,9 +189,12 @@ public class Enemy : MonoBehaviour
             }
 
         }
+        if (animator != null)
+        {
+            animator.SetBool("AttackEnd", false);
+        }
 
-        animator.SetBool("AttackEnd", false);
-        
+
     }
     public void BaseOffsetValueControl(){
         // enemy.Agent.SetDestination(enemy.Player.transform.position);

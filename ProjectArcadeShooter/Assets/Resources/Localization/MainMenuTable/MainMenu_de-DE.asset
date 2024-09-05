@@ -185,6 +185,10 @@ MonoBehaviour:
     m_Localized: "Lautst\xE4rke"
     m_Metadata:
       m_Items: []
+  - m_Id: 9771483533561856
+    m_Localized: Nicht genug Geld!
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

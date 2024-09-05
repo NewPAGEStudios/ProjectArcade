@@ -180,6 +180,10 @@ MonoBehaviour:
     m_Localized: "Ses D\xFCzeyi"
     m_Metadata:
       m_Items: []
+  - m_Id: 9771483533561856
+    m_Localized: "Paran\u0131z yeterli de\u011Fil !"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
