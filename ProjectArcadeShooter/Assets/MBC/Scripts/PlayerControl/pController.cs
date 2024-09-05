@@ -138,19 +138,17 @@ public class PController : MonoBehaviour
         weaponManager.IManager = iManager;
         gc.IManager = iManager;
 
-        sensX = PlayerPrefs.GetFloat("XSensitivity");
-        sensY = PlayerPrefs.GetFloat("YSensitivity");
+        sensX = PlayerPrefs.GetFloat("XSensitivity", 10f);
+        sensY = PlayerPrefs.GetFloat("YSensitivity", 10f);
 
-        snb = PlayerPrefs.GetInt("SwayNBobbing") == 1 ? true : false;
-        dv = PlayerPrefs.GetInt("DMGVibration") == 1 ? true : false;
+        snb = PlayerPrefs.GetInt("SwayNBobbing", 1) == 1 ? true : false;
+        dv = PlayerPrefs.GetInt("DMGVibration", 1) == 1 ? true : false;
 
 
         gc.AddDashIndicator(maxdashmeter);
         currentdashMeter = maxdashmeter;
         gc.DashIndicator(currentdashMeter);
 
-        sensX = 10f;
-        sensY = 10f;
     }
 
     // Update is called once per frame
@@ -694,7 +692,7 @@ public class PController : MonoBehaviour
     {
         if (duration == -1)
         {
-            maxHP += amount;
+            maxHP = amount;
         }
         else
         {

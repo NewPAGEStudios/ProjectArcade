@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -33,6 +34,11 @@ public class Pause_Menu : MonoBehaviour
     }
     public void LoadMenu(bool deleteSave)
     {
+        if (deleteSave)
+        {
+            string path = Application.persistentDataPath + "/player.newp";
+            File.Delete(path);
+        }
         Time.timeScale = 1f;
         SceneManager.LoadScene(0);
     }

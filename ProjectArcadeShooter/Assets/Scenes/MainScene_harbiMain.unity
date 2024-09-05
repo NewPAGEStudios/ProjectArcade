@@ -23589,6 +23589,7 @@ MonoBehaviour:
   inActiveWeapon: {fileID: 2001263146}
   player: {fileID: 1906974777}
   IManager: {fileID: 0}
+  audioM: {fileID: 0}
   waveNumber: 0
   waitTime: 20
   comboDuration: 8
@@ -25408,7 +25409,7 @@ GameObject:
   - component: {fileID: 1292479845}
   - component: {fileID: 1292479844}
   m_Layer: 5
-  m_Name: Image
+  m_Name: InfoBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52692,7 +52693,7 @@ GameObject:
   - component: {fileID: 3469287837783448488}
   m_Layer: 0
   m_Name: Container 1 (1)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52711,7 +52712,7 @@ GameObject:
   - component: {fileID: 3469287837656686192}
   m_Layer: 0
   m_Name: ContainerV2 (1)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52746,7 +52747,7 @@ GameObject:
   - component: {fileID: 3469287838615498400}
   m_Layer: 0
   m_Name: Container 1
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52819,7 +52820,7 @@ GameObject:
   - component: {fileID: 3469287838420888575}
   m_Layer: 0
   m_Name: ContainerV3
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52838,7 +52839,7 @@ GameObject:
   - component: {fileID: 3469287838303754964}
   m_Layer: 0
   m_Name: ContainerV3 (1)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -53095,7 +53096,7 @@ GameObject:
   - component: {fileID: 3469287836658587974}
   m_Layer: 0
   m_Name: ContainerV2
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

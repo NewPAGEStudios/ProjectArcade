@@ -5,8 +5,8 @@ using System.Linq;
 using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.PostProcessing;
@@ -14,7 +14,7 @@ using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameController : MonoBehaviour
+public class GameController : MonoBehaviour//TODO: Compass add cons
 {
     //Game Main Init
     public enum GameState
@@ -112,6 +112,7 @@ public class GameController : MonoBehaviour
     private LccalApplierToScriptable localizer_scp;
     [HideInInspector]
     public InputManager IManager;
+    public AudioMixer audioM;
 
 
     public int waveNumber;
@@ -168,14 +169,15 @@ public class GameController : MonoBehaviour
         //MainMenu Referances
 
         mainCam.GetComponent<PostProcessVolume>().profile.TryGetSettings(out ao);
-        if (PlayerPrefs.GetInt("AmbientOcclusion") == 0)
+        if (PlayerPrefs.GetInt("AmbientOcclusion", 1) == 0)
         {
             ao.active = false;
         }
-        else if (PlayerPrefs.GetInt("AmbientOcclusion") == 1)
+        else if (PlayerPrefs.GetInt("AmbientOcclusion", 1) == 1)
         {
             ao.active = true;
         }
+
 
         ammos = Resources.LoadAll<Ammo>("Ammo");
         weapons = Resources.LoadAll<Weapon>("Weapon");
@@ -1393,12 +1395,11 @@ public class GameController : MonoBehaviour
 
             if (gamePanel.transform.GetChild(7).GetComponent<Image>().color.a == bgColor.a)
             {
-                Debug.Log("Color Comp");
+
             }
 
             if (Time.timeScale == 0)
             {
-                Debug.Log("Time Stopeed");
                 break;
             }
             yield return new WaitForSecondsRealtime(frametime);
@@ -1407,7 +1408,7 @@ public class GameController : MonoBehaviour
     }
     IEnumerator skillMenuWaitInput(int pageNumber,float frametime)
     {
-        int pageCount = (player.GetComponent<WeaponManager>().stocked_Skills.Count / 8) + 1;
+        int pageCount = (int)Mathf.Ceil((float)player.GetComponent<WeaponManager>().stocked_Skills.Count / 8f);
 
         while (true)
         {
@@ -1572,11 +1573,13 @@ public class GameController : MonoBehaviour
     }
     public void skillButtonPressed(string nameOFSkillName)
     {
+        Debug.Log(nameOFSkillName);
         int i;
         for (i = 0; i < skills.Length; i++)
         {
             if (nameOFSkillName == "id_" + skills[i].skillTypeID + "Shop")
             {
+                Debug.Log(i);
                 break;
             }
         }
@@ -1588,11 +1591,11 @@ public class GameController : MonoBehaviour
         DeductMainCurrency(skills[i].toBuyMoney);
         if (skills[i].st == Skill.skillType.active)
         {
-            GetActiveSkill.perform_WOUTObjected(player, GetComponent<GameController>(), skills[i].skillTypeID);
+            GetActiveSkill.perform_WOUTObjected(player, GetComponent<GameController>(), i);
         }
         else if (skills[i].st == Skill.skillType.passive)
         {
-            PerformPassiveSkill.perform_WOUTObjected(player, GetComponent<GameController>(), skills[i].skillTypeID);
+            PerformPassiveSkill.perform_WOUTObjected(player, GetComponent<GameController>(), i);
         }
     }
     public void skillButtonHover(string nameOFSkillName) 

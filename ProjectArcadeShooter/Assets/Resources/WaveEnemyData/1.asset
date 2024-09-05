@@ -15,15 +15,15 @@ MonoBehaviour:
   waveNumber: 1
   enemyTypes:
   - enemyId: 0
-    enemyPiece: 0
+    enemyPiece: 12
   - enemyId: 1
-    enemyPiece: 1
+    enemyPiece: 0
   - enemyId: 2
     enemyPiece: 0
   - enemyId: 4
     enemyPiece: 0
   - enemyId: 5
-    enemyPiece: 1
+    enemyPiece: 0
   - enemyId: 6
     enemyPiece: 0
   enemyStatMultiplier: 1

@@ -30,13 +30,12 @@ public class StateMachine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(gc.state == GameController.GameState.pause)
+        if(gc.state == GameController.GameState.pause || gc.state == GameController.GameState.inSkillMenu)
         {
             return;
         }
         if(activeState != null){
             activeState.Perform();
-            Debug.Log("state machine girdi" + Time.timeScale);
         }
     }
     public void ChangesState(BaseState newState){
