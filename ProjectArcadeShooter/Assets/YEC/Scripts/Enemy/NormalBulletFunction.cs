@@ -30,7 +30,8 @@ public class NormalBulletFunction : MonoBehaviour
 
         if(hitTransform.CompareTag("PlayerColl"))
         {
-            hitTransform.GetComponent<PController>().TakeDMG(baseAmmo.dmg, firedBy);
+            Debug.Log("temas etti");
+            hitTransform.parent.GetComponent<PController>().TakeDMG(baseAmmo.dmg, firedBy);
         }
         Destroy(gameObject);
     }

@@ -103,7 +103,7 @@ public class Enemy : MonoBehaviour
             agent.agentTypeID = agenjtFindClass.GetAgentTypeIDbyName(e_type.agentName);
             agent.speed = e_type.moveSpeed;
             if(e_type.agentName == "EnemyFly"){
-                agent.baseOffset = 15;
+                agent.baseOffset = 5;
                 currentBaseOffeset = agent.baseOffset;
 
             }

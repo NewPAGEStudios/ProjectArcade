@@ -26,5 +26,5 @@ MonoBehaviour:
   attackRatio: 0.66
   isRanged: 1
   isFlyable: 1
-  rangeDistance: 7.5
+  rangeDistance: 30
   attackDMG: 20

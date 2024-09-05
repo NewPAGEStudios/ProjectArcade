@@ -32370,6 +32370,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 439593044425858780, guid: 54ce6288cbd155e4bb144da5cbfcf9e8,
         type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 439593044425858780, guid: 54ce6288cbd155e4bb144da5cbfcf9e8,
+        type: 3}
       propertyPath: m_ProvidesContacts
       value: 1
       objectReference: {fileID: 0}

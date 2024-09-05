@@ -42,6 +42,11 @@ public class AttackState : BaseState
             }
             else//uzak
             {
+                BaseOffsetValueControl();
+                if(Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.e_type.rangeDistance)
+                {
+                    enemy.Agent.SetDestination(enemy.Player.transform.position);
+                }
                 enemy.transform.LookAt(enemy.Player.transform.position);
 
                 moveTimer += Time.deltaTime;
@@ -49,7 +54,10 @@ public class AttackState : BaseState
 
                 if (shotTimer > enemy.fireRate)
                 {
-                    Shoot();
+                    if(Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) <= enemy.e_type.rangeDistance)
+                    {
+                        Shoot();
+                    }
                 }
                 if (moveTimer > Random.Range(3, 7))
                 {
@@ -115,6 +123,7 @@ public class AttackState : BaseState
                         }
                         if (shotTimer > enemy.fireRate)
                         {
+                            if(Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) <= enemy.e_type.rangeDistance)
                             Shoot();
                         }
                     }
@@ -238,7 +247,6 @@ public class AttackState : BaseState
                 agent.baseOffset += 0.04f;
             }
         }
-
         if(!enemy.e_type.isRanged)//uçan yakın
         {
             if(distance <= 15 && agent.baseOffset >= agent.baseOffset + playerHight)
@@ -255,7 +263,9 @@ public class AttackState : BaseState
         }
         else//uçan uzak
         {
-            playerHight += enemy.currentBaseOffeset;
+
+            playerHight += enemy.currentBaseOffeset - 2;
+
             if(0 < playerHight /*&& distance >=15*/)
             {
                 agent.baseOffset += 0.02f;
@@ -265,10 +275,5 @@ public class AttackState : BaseState
                 agent.baseOffset -= 0.02f;
             }
         }
-        
-
-        
-
-        
     }
 }
