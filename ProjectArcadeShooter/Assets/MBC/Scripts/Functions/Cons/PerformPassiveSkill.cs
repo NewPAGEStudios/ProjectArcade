@@ -49,6 +49,7 @@ public class PerformPassiveSkill : MonoBehaviour
         }
 
         gameObject.transform.parent.parent = gc.consumableSpawnPointParent.transform;
+        gc.decreseCompassObject(gameObject);
         Destroy(gameObject);
 
     }

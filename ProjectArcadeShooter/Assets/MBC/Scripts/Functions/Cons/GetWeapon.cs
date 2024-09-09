@@ -48,7 +48,6 @@ public class GetWeapon : MonoBehaviour
 
     private void apply(GameObject player)
     {
-        Debug.Log("EscapeStart");
         if (gc.pState == GameController.PlayState.inStart)
         {
             player.GetComponent<PController>().HealDMG(100, gameObject);
@@ -64,6 +63,7 @@ public class GetWeapon : MonoBehaviour
             gc.activeConsSkill.RemoveAt(id);
             gc.activeConsWeapID.RemoveAt(id);
         }
+        gc.decreseCompassObject(gameObject);
         Destroy(gameObject);
         return;
     }

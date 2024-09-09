@@ -141,6 +141,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public GameObject shopButton;
     public GameObject shopTXT;
     public GameObject enemiesIndicator;
+    public GameObject consSkillIndicator;
+    public GameObject consAmmoIndicator;
 
     //IEnumerators
     private Coroutine comboDisplayRoutine;
@@ -457,6 +459,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 activeConsWeapID.Add(gw.weaponID);
                 activeConsSkill.Add(-1);
             }
+            //compassVisualition
+            CompassSpawnAmmo(gw.transform.gameObject);
         }
         //skills
         else if(consumableobject.TryGetComponent<GetActiveSkill>(out GetActiveSkill gas))
@@ -475,6 +479,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 activeConsWeapID.Add(-1);
                 activeConsSkill.Add(gas.skillId);
             }
+            //compassVisualition
+            CompassSpawnSkill(gas.transform.gameObject,skillID);
         }
         else if(consumableobject.TryGetComponent<PerformPassiveSkill>(out PerformPassiveSkill pps))
         {
@@ -498,6 +504,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 activeConsWeapID.Add(-1);
                 activeConsSkill.Add(pps.thisSkill.skillTypeID);
             }
+            //compassVisualition
+            CompassSpawnSkill(pps.transform.gameObject,skillID);
         }
         else
         {
@@ -1147,7 +1155,25 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         var compassObject = new CompassObject(ir: enemi.transform, ui: uiGO.transform);
         cObjects.Add(compassObject);
     }
-
+    public void CompassSpawnSkill(GameObject skillGO, int skillid)
+    {
+        GameObject uiGO = Instantiate(consSkillIndicator, gamePanel.transform.GetChild(6).GetChild(1));
+        for (int i = 0; i < skills.Length; i++)
+        {
+            if (skills[i].skillTypeID == skillid)
+            {
+                uiGO.GetComponent<Image>().sprite = skills[i].sprite_HUD;
+            }
+        }
+        var compassObject = new CompassObject(ir: skillGO.transform, ui: uiGO.transform);
+        cObjects.Add(compassObject);
+    }
+    public void CompassSpawnAmmo(GameObject ammo)
+    {
+        GameObject uiGO = Instantiate(consAmmoIndicator, gamePanel.transform.GetChild(6).GetChild(1));
+        var compassObject = new CompassObject(ir: ammo.transform, ui: uiGO.transform);
+        cObjects.Add(compassObject);
+    }
     //player based UI Events
 
     public void changeHPOfPlayer(float maxH, float currentH)
@@ -1615,6 +1641,11 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         Destroy(cObjects.Find(x => x.irTransform == deletedOBJ.transform).uiTransform.gameObject);
         cObjects.Remove(cObjects.Find(x => x.irTransform == deletedOBJ.transform));
         enemyCount -= 1;
+    }
+    public void decreseCompassObject(GameObject deletedOBJ)
+    {
+        Destroy(cObjects.Find(x => x.irTransform == deletedOBJ.transform).uiTransform.gameObject);
+        cObjects.Remove(cObjects.Find(x => x.irTransform == deletedOBJ.transform));
     }
     public void ComboVombo(int comboTime)
     {
