@@ -53,7 +53,7 @@ public class InGameSettings : MonoBehaviour
 
     public void initValues()
     {
-        player.ChangeSens(sliderValueYSensitivity, sliderValueYSensitivity);
+        player.ChangeSens(PlayerPrefs.GetFloat("YSensitivity" ,10f), PlayerPrefs.GetFloat("XSensitivity", 10));
         player.handleSNB(PlayerPrefs.GetInt("SwayNBobbing", 1) == 1 ? true : false);
         player.handleDV(PlayerPrefs.GetInt("DMGVibration", 1) == 1 ? true : false);
         player.handleDV(PlayerPrefs.GetInt("DMGVibration", 1) == 1 ? true : false);
