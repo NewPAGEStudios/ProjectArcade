@@ -53,6 +53,7 @@ public class InGameSettings : MonoBehaviour
 
     public void initValues()
     {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PController>();
         player.ChangeSens(PlayerPrefs.GetFloat("YSensitivity" ,10f), PlayerPrefs.GetFloat("XSensitivity", 10));
         player.handleSNB(PlayerPrefs.GetInt("SwayNBobbing", 1) == 1 ? true : false);
         player.handleDV(PlayerPrefs.GetInt("DMGVibration", 1) == 1 ? true : false);
@@ -62,13 +63,14 @@ public class InGameSettings : MonoBehaviour
         PlayerPrefs.SetFloat("SFXVolume", PlayerPrefs.GetFloat("SFXVolume", 10));
         PlayerPrefs.SetFloat("SoundVolume", PlayerPrefs.GetFloat("SoundVolume", 10));
     }
+    private void Awake()
+    {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PController>();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PController>();
-
-
         masterSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MasterVolume");
         musicSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MusicVolume");
         sFXSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("SFXVolume");

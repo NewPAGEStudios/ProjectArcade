@@ -79,15 +79,15 @@ namespace SlimUI.ModernMenu{
 			*/
 			// check slider values
 			musicSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MusicVolume");
-			sensitivityXSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("XSensitivity");
-			sensitivityYSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("YSensitivity");
+			sensitivityXSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("XSensitivity", 10);
+			sensitivityYSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("YSensitivity", 10);
             //			mouseSmoothSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MouseSmoothing");
 
 
 
 
             // check sway n Bobbing
-            bool snb = PlayerPrefs.GetInt("SwayNBobbing") == 1 ? true : false;
+            bool snb = PlayerPrefs.GetInt("SwayNBobbing",1) == 1 ? true : false;
 			GameObject snbParent = swayBobtext.transform.parent.gameObject;
 			snbParent.transform.GetChild(0).gameObject.SetActive(false);
 			snbParent.transform.GetChild(1).gameObject.SetActive(false);
@@ -102,7 +102,7 @@ namespace SlimUI.ModernMenu{
             }
 
 			// check DamageVibration
-			bool dv = PlayerPrefs.GetInt("DMGVibration") == 1 ? true : false;
+			bool dv = PlayerPrefs.GetInt("DMGVibration",1) == 1 ? true : false;
 			GameObject dvParent = damageVibrationtext.transform.parent.gameObject;
 			dvParent.transform.GetChild(0).gameObject.SetActive(false);
 			dvParent.transform.GetChild(1).gameObject.SetActive(false);
@@ -229,11 +229,11 @@ namespace SlimUI.ModernMenu{
 			ao_parent.transform.GetChild(0).gameObject.SetActive(false);
 			ao_parent.transform.GetChild(1).gameObject.SetActive(false);
 
-			if (PlayerPrefs.GetInt("AmbientOcclusion")==0){
+			if (PlayerPrefs.GetInt("AmbientOcclusion", 1)==0){
 				ao_parent.transform.GetChild(0).gameObject.SetActive(true);
 				
 			}
-			else if(PlayerPrefs.GetInt("AmbientOcclusion")==1){
+			else if(PlayerPrefs.GetInt("AmbientOcclusion",1)==1){
 
 				ao_parent.transform.GetChild(1).gameObject.SetActive(true);
 				
