@@ -1,4 +1,5 @@
 using Cinemachine;
+using SlimUI.ModernMenu;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -307,7 +308,9 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
     private void Start()
     {
-
+        //optionInitializition;
+        gamePanel.transform.GetChild(4).GetChild(1).GetComponent<InGameSettings>().initValues();
+        GetComponent<CheckMusicVolume>().UpdateVolume();
 
         if (newGame)
         {

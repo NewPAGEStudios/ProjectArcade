@@ -51,6 +51,18 @@ public class InGameSettings : MonoBehaviour
     private float sliderValueXSensitivity = 0.0f;
     private float sliderValueYSensitivity = 0.0f;
 
+    public void initValues()
+    {
+        player.ChangeSens(sliderValueYSensitivity, sliderValueYSensitivity);
+        player.handleSNB(PlayerPrefs.GetInt("SwayNBobbing", 1) == 1 ? true : false);
+        player.handleDV(PlayerPrefs.GetInt("DMGVibration", 1) == 1 ? true : false);
+        player.handleDV(PlayerPrefs.GetInt("DMGVibration", 1) == 1 ? true : false);
+        PlayerPrefs.SetFloat("MasterVolume", PlayerPrefs.GetFloat("MasterVolume",10));
+        PlayerPrefs.SetFloat("MusicVolume", PlayerPrefs.GetFloat("MusicVolume", 10));
+        PlayerPrefs.SetFloat("SFXVolume", PlayerPrefs.GetFloat("SFXVolume", 10));
+        PlayerPrefs.SetFloat("SoundVolume", PlayerPrefs.GetFloat("SoundVolume", 10));
+    }
+
     // Start is called before the first frame update
     void Start()
     {
