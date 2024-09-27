@@ -622,57 +622,56 @@ public class PController : MonoBehaviour
     public void TakeDMG(float dmgAmmount, GameObject dmgTakenFrom)
     {
         currentHP -= dmgAmmount;
+
+        //0ön 1ön sağ 2 sağ 3 arka sağ 4 arka 5 arka sol 6sol 7 sol ön
+        //DamageVisualzie
+        gc.changeHPOfPlayer(maxHP, currentHP);
+
+
+        GameObject capsule = gameObject.transform.GetChild(0).gameObject;
+        GameObject ori = capsule.transform.GetChild(0).gameObject;
+
+        int pos = 0;
+
+        if (Vector3.Dot(ori.transform.right, Vector3.Normalize(ori.transform.position - dmgTakenFrom.transform.position)) > 0)
+        {
+            //soll
+            Vector3 targetDirection = dmgTakenFrom.transform.position - gameObject.transform.position;
+            float angle = Vector3.Angle(ori.transform.forward, targetDirection.normalized);
+            angle = 360 - angle;
+
+            pos = (int)(angle / 45);
+        }
+        else
+        {
+            //sağ
+            Vector3 targetDirection = dmgTakenFrom.transform.position - gameObject.transform.position;
+            float angle = Vector3.Angle(ori.transform.forward, targetDirection);
+
+            pos = (int)(angle / 45);
+        }
+        //0:back 1:left 2:rigth 3:front
+        switch (pos)
+        {
+            case 0: gc.HandleDMGtakenUI(3); break;
+            case 1: gc.HandleDMGtakenUI(3); gc.HandleDMGtakenUI(2); break;
+            case 2: gc.HandleDMGtakenUI(2); break;
+            case 3: gc.HandleDMGtakenUI(0); gc.HandleDMGtakenUI(2); break;
+            case 4: gc.HandleDMGtakenUI(0); break;
+            case 5: gc.HandleDMGtakenUI(0); gc.HandleDMGtakenUI(1); break;
+            case 6: gc.HandleDMGtakenUI(1); break;
+            case 7: gc.HandleDMGtakenUI(1); gc.HandleDMGtakenUI(3); break;
+            default: break;
+        }
+        dv = true;
+        if (dv)//check get damage effect
+        {
+            mainCam.gameObject.GetComponent<CameraShake>().StartCamShake();
+        }
+
         if (currentHP <= 0)
         {
             gc.EndGame();
-        }
-        else
-        {//0ön 1ön sağ 2 sağ 3 arka sağ 4 arka 5 arka sol 6sol 7 sol ön
-            
-            //DamageVisualzie
-            gc.changeHPOfPlayer(maxHP, currentHP);
-
-
-            GameObject capsule = gameObject.transform.GetChild(0).gameObject;
-            GameObject ori = capsule.transform.GetChild(0).gameObject;
-
-            int pos = 0;
-
-            if(Vector3.Dot(ori.transform.right,Vector3.Normalize(ori.transform.position - dmgTakenFrom.transform.position)) > 0)
-            {
-                //soll
-                Vector3 targetDirection = dmgTakenFrom.transform.position - gameObject.transform.position;
-                float angle = Vector3.Angle(ori.transform.forward, targetDirection.normalized);
-                angle = 360 - angle;
-
-                pos = (int)(angle / 45);
-            }
-            else
-            {
-                //sağ
-                Vector3 targetDirection = dmgTakenFrom.transform.position - gameObject.transform.position;
-                float angle = Vector3.Angle(ori.transform.forward, targetDirection);
-
-                pos = (int)(angle / 45);
-            }
-            //0:back 1:left 2:rigth 3:front
-            switch (pos)
-            {
-                case 0: gc.HandleDMGtakenUI(3); break;
-                case 1: gc.HandleDMGtakenUI(3); gc.HandleDMGtakenUI(2); break;
-                case 2: gc.HandleDMGtakenUI(2); break;
-                case 3: gc.HandleDMGtakenUI(0); gc.HandleDMGtakenUI(2); break;
-                case 4: gc.HandleDMGtakenUI(0); break;
-                case 5: gc.HandleDMGtakenUI(0); gc.HandleDMGtakenUI(1); break;
-                case 6: gc.HandleDMGtakenUI(1); break;
-                case 7: gc.HandleDMGtakenUI(1); gc.HandleDMGtakenUI(3); break;
-                default:break;
-            }
-            dv = true;
-            if (dv)//check get damage effect
-            {
-                mainCam.gameObject.GetComponent<CameraShake>().StartCamShake();
-            }
         }
     }
     public void HealDMG(float healAmount, GameObject healTakenFrom)

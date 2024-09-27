@@ -30,7 +30,7 @@ public class StateMachine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(gc.state == GameController.GameState.pause || gc.state == GameController.GameState.inSkillMenu)
+        if(gc.state == GameController.GameState.pause || gc.state == GameController.GameState.inSkillMenu || enemy.state == Enemy.ccState.stun)
         {
             return;
         }

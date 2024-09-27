@@ -201,34 +201,38 @@ public class WeaponManager : MonoBehaviour
         //skillUsing
         if (active_Skill != null)
         {
-            if (!skill_usageCooldown)
+            if(handStates != ActionStateOFHands.inReload)
             {
-                if (Input.GetKey(KeyCode.Q))
+                if (!skill_usageCooldown)
                 {
-                    if (Input.GetKeyDown(KeyCode.C))
+                    if (Input.GetKey(KeyCode.Q))
                     {
-                        skillCancel();
-                    }
-                    else
-                    {
-                        //visualize
-                        skillStayOpen();
+                        if (Input.GetKeyDown(KeyCode.C))
+                        {
+                            skillCancel();
+                        }
+                        else
+                        {
+                            //visualize
+                            skillStayOpen();
 
+                        }
+                    }
+                    else if (Input.GetKeyUp(KeyCode.Q))
+                    {
+                        skill_usageCooldown = false;
+                        skillPerform();
                     }
                 }
-                else if (Input.GetKeyUp(KeyCode.Q))
+                else
                 {
-                    skill_usageCooldown = false;
-                    skillPerform();
+                    if (Input.GetKeyUp(KeyCode.Q))
+                    {
+                        skill_usageCooldown = false;
+                    }
                 }
-            }
-            else
-            {
-                if (Input.GetKeyUp(KeyCode.Q))
-                {
-                    skill_usageCooldown = false;
-                }
-            }
+            }//HandState Control
+
         }
     }
     private void FixedUpdate()
@@ -658,7 +662,6 @@ public class WeaponManager : MonoBehaviour
             return;
         }
         active_Skill = stocked_Skills.Find(x => x.skillTypeID == skill_id);
-        Debug.Log(active_Skill.skillName);
         gc.changeSpriteOfActiveSkill(active_Skill.sprite_HUD);
 
     }
@@ -702,7 +705,11 @@ public class WeaponManager : MonoBehaviour
                 tf.gameObject.SetActive(true);
                 tf.position = hit.point;
                 tf.forward = (tf.position - gameObject.transform.position).normalized;
-                tf.eulerAngles = new Vector3(0, tf.eulerAngles.y, tf.eulerAngles.z);
+                tf.up = hit.normal;
+                if(active_Skill.skillTypeID == 0)
+                {
+                    tf.eulerAngles = new Vector3(0, tf.eulerAngles.y, tf.eulerAngles.z);
+                }
                 skill_canbePerformed = true;
             }
             else
@@ -774,6 +781,7 @@ public class WeaponManager : MonoBehaviour
 
             active_Skill = null;
             gc.closeSpriteOfActiveSkill(null);
+            skillDisplay.SetActive(false);
         }
         else
         {
@@ -795,6 +803,7 @@ public class WeaponManager : MonoBehaviour
         skill_usageCooldown = true;
         StartCoroutine(CancelSkillAnim(0));//TODO: active_Skill.skillTypeID;
         skill_holdOT = true;
+        skillDisplay.SetActive(false);
     }
     IEnumerator CancelSkillAnim(int id)
     {

@@ -1,20 +1,17 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class stunInstanSkill : MonoBehaviour
 {
     public Skill thisSkilll;
-    GameObject go;
     GameController gc;
 
-    public int consPosID;
+    List <GameObject> affectedGOs = new List <GameObject>();
     // Start is called before the first frame update
     void Start()
     {
-        go = Instantiate(thisSkilll.modelPrefab,gameObject.transform);
-        go.transform.localPosition = new(0, -1, 0);
-
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         StartCoroutine(endEffect());
     }
@@ -22,20 +19,28 @@ public class stunInstanSkill : MonoBehaviour
     {
         MaterialPropertyBlock m_propertyBlock = new MaterialPropertyBlock();
         m_propertyBlock.SetColor("_BaseColor", new Color(0, 0, 0, 1));
-        go.GetComponent<Renderer>().SetPropertyBlock(m_propertyBlock);
+        gameObject.GetComponent<Renderer>().SetPropertyBlock(m_propertyBlock);
         while (m_propertyBlock.GetColor("_BaseColor").a > 0)
         {
-            m_propertyBlock.SetColor("_BaseColor", new Color(0, 0, 0, m_propertyBlock.GetColor("_BaseColor").a - 0.01f));
-            go.GetComponent<Renderer>().SetPropertyBlock(m_propertyBlock);
-            yield return new WaitForSeconds(0.1f);
+            m_propertyBlock.SetColor("_BaseColor", new Color(0, 0, 0, m_propertyBlock.GetColor("_BaseColor").a - 0.04f));
+            gameObject.GetComponent<Renderer>().SetPropertyBlock(m_propertyBlock);
+            yield return new WaitForSeconds(0.01f);
         }
+        Destroy(gameObject);
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("EnemyCol"))
+        Debug.Log(other.name);
+
+        if (other.gameObject.CompareTag("EnemyColl"))
         {
-            //other.transform.parent.parent.GetComponent<EnemyHealth>().stun();
-            Debug.Log("Enemy Bombed");
+            Debug.Log("11");
+            if (!affectedGOs.Contains(other.gameObject))
+            {
+                Debug.Log("22");
+                affectedGOs.Add(other.gameObject);
+                other.transform.parent.parent.GetComponent<Enemy>().Stun(0.5f);
+            }
         }
     }
 }

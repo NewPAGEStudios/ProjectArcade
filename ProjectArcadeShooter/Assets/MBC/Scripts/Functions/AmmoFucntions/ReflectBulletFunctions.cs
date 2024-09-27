@@ -75,6 +75,7 @@ public class ReflectBulletFunctions : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
         if(trail.transform.localScale.z < trail3D.maxYScale)
         {
             trail.transform.localScale = new Vector3(.1f, trail3D.maxYScale, .1f);

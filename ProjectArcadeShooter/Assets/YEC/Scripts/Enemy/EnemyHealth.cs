@@ -14,6 +14,7 @@ public class EnemyHealth : MonoBehaviour
     private GameController gc;
 
     private Coroutine dmgtakenRoutine;
+    private Coroutine stunRoutine;
 
     private Renderer enemyObjectRenderer;
 
@@ -29,8 +30,6 @@ public class EnemyHealth : MonoBehaviour
         level = 0;
 
         enemyObjectRenderer = gameObject.transform.Find("Model").GetComponentInChildren<Renderer>();
-
-        Debug.Log(enemyObjectRenderer.material.name);
 
         mainMat = gameObject.GetComponent<Enemy>().e_type.mainMat;
         if (gameObject.GetComponent<Enemy>().e_type.getDmgMat != null)
@@ -114,7 +113,6 @@ public class EnemyHealth : MonoBehaviour
         enemyObjectRenderer.sharedMaterial = damageMat;
         mainMPB.SetColor("_BaseColor", new Color(188, 0, 0, 1));
         enemyObjectRenderer.SetPropertyBlock(mainMPB);
-        Debug.Log(mainMPB.GetColor("_BaseColor").r);
 
         float r = mainMPB.GetColor("_BaseColor").r;
         float g = mainMPB.GetColor("_BaseColor").g;
@@ -168,5 +166,50 @@ public class EnemyHealth : MonoBehaviour
         }
         gc.decreseEnemyCount(gameObject);
         Destroy(gameObject);
+    }
+    public void stunEffect(float duration)
+    {
+        if (stunRoutine != null)
+        {
+            StopCoroutine(stunRoutine);
+        }
+        stunRoutine = StartCoroutine(stunEffectRoutine(duration));
+    }
+    IEnumerator stunEffectRoutine(float duration)
+    {
+        mainMPB = new MaterialPropertyBlock();
+        enemyObjectRenderer.sharedMaterial = damageMat;
+        mainMPB.SetColor("_BaseColor", Color.blue);
+        enemyObjectRenderer.SetPropertyBlock(mainMPB);
+
+        float vec = duration / Time.deltaTime;
+
+        float r = mainMPB.GetColor("_BaseColor").r;
+        float g = mainMPB.GetColor("_BaseColor").g;
+        float b = mainMPB.GetColor("_BaseColor").b;
+
+        float rtime = (r - baseColor.r * 255) / vec;
+        float gtime = (g - baseColor.g * 255) / vec;
+        float btime = (b - baseColor.b * 255) / vec;
+
+        while (true)
+        {
+            r = Mathf.MoveTowards(r, baseColor.r * 255, rtime);
+            g = Mathf.MoveTowards(g, baseColor.g * 255, gtime);
+            b = Mathf.MoveTowards(b, baseColor.b * 255, btime);
+
+            mainMPB.SetColor("_BaseColor", new Color(r / 255, g / 255, b / 255, 1));
+
+            enemyObjectRenderer.SetPropertyBlock(mainMPB);
+
+
+
+            yield return new WaitForEndOfFrame();
+            if (duration <= 0) {  break; }
+        }
+        mainMPB = new MaterialPropertyBlock();
+        mainMPB.SetColor("_BaseColor", baseColor);
+        enemyObjectRenderer.SetPropertyBlock(mainMPB);
+        enemyObjectRenderer.sharedMaterial = mainMat;
     }
 }

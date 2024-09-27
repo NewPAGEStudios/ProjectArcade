@@ -756,7 +756,6 @@ GameObject:
   m_Component:
   - component: {fileID: 161031830}
   - component: {fileID: 161031833}
-  - component: {fileID: 161031832}
   - component: {fileID: 161031831}
   - component: {fileID: 161031834}
   m_Layer: 0
@@ -878,14 +877,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 161031833}
   m_maskType: 0
---- !u!222 &161031832
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 161031829}
-  m_CullTransparentMesh: 0
 --- !u!23 &161031833
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2554,7 +2545,6 @@ GameObject:
   m_Component:
   - component: {fileID: 503038554}
   - component: {fileID: 503038557}
-  - component: {fileID: 503038556}
   - component: {fileID: 503038555}
   - component: {fileID: 503038558}
   m_Layer: 0
@@ -2676,14 +2666,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 503038557}
   m_maskType: 0
---- !u!222 &503038556
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 503038553}
-  m_CullTransparentMesh: 0
 --- !u!23 &503038557
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2812,7 +2794,6 @@ GameObject:
   m_Component:
   - component: {fileID: 621052029}
   - component: {fileID: 621052032}
-  - component: {fileID: 621052031}
   - component: {fileID: 621052030}
   - component: {fileID: 621052033}
   m_Layer: 0
@@ -2934,14 +2915,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 621052032}
   m_maskType: 0
---- !u!222 &621052031
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 621052028}
-  m_CullTransparentMesh: 0
 --- !u!23 &621052032
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3190,7 +3163,6 @@ GameObject:
   m_Component:
   - component: {fileID: 698612690}
   - component: {fileID: 698612693}
-  - component: {fileID: 698612692}
   - component: {fileID: 698612691}
   - component: {fileID: 698612694}
   m_Layer: 0
@@ -3312,14 +3284,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 698612693}
   m_maskType: 0
---- !u!222 &698612692
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 698612689}
-  m_CullTransparentMesh: 0
 --- !u!23 &698612693
 MeshRenderer:
   m_ObjectHideFlags: 0

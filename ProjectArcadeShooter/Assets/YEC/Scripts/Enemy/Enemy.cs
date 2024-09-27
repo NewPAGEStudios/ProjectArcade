@@ -44,12 +44,12 @@ public class Enemy : MonoBehaviour
     public GameObject meleeObj;
     
 
-    private enum ccState
+    public enum ccState
     {
         normal,
         stun,
     }
-    ccState state;
+    public ccState state;
 
 
     // Start is called before the first frame update
@@ -268,17 +268,18 @@ public class Enemy : MonoBehaviour
         }
     }
     //crowd controll
-    public void stun()
+    public void Stun(float dur)
     {
-        StartCoroutine(stunEffect());
+        ehp.stunEffect(dur);
+        agent.speed = 0;
+        state = ccState.stun;
+        Debug.Log(agent.speed);
+    }
+    public void StunEnd()
+    {
+        agent.speed = e_type.moveSpeed;
+        state = ccState.normal;
     }
 
     //crowd controll effect
-    IEnumerator stunEffect()
-    //visualize et material rengi ve material property block ile // //ayr�ca hareketi k�sacak stateyi ayarla//
-    {
-        yield return null;
-
-    }
-
 }
