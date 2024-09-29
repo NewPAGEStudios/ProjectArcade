@@ -324,7 +324,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             player.transform.position = playerTeleportPoint.transform.position;
             player.GetComponent<PController>().HealDMG(1, gameObject);
 
-            SpawnCons(0, 0, 0, -1);
+            SpawnCons(0, 0, 1, -1);
             waveVisualzie("Get the weapon");
             waveNumber = 0;
 
