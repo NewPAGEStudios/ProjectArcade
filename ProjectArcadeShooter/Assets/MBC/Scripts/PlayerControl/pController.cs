@@ -79,7 +79,8 @@ public class PController : MonoBehaviour
     [SerializeField]
     private Camera mainCam;
     private Vector3 cam_StartingRotation;
-
+    [Header(header: "SoundsParent Objects")]
+    public GameObject soundParent;
     private bool snb;
     private bool dv;
 
@@ -92,6 +93,9 @@ public class PController : MonoBehaviour
     private int extrajump;
     //Coroutines
     private Coroutine speedEfect;
+    //Timer
+    private float moveTimerSound=0.5f;
+
     public enum ActionStateDependecyToPlayer
     {
         idle,
@@ -383,6 +387,17 @@ public class PController : MonoBehaviour
 
 
         float speedTemp = temp.magnitude;
+
+        if (moveTimerSound <= 0)
+        {
+            soundParent.transform.Find("Footsteps").GetComponent<AudioSource>().Play();
+            moveTimerSound = 0.5f;
+        }
+        else
+        {
+            moveTimerSound -= Time.fixedDeltaTime;
+        }
+
 
         if (speedTemp > maxSpeed)
         {
