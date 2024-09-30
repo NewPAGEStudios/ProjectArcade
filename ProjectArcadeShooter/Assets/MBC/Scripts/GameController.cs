@@ -1554,15 +1554,18 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         if (amount > money)
         {
             //TODO: add inofmation
+            player.transform.GetChild(1).Find("SoundSFX").GetChild(0).Find("SFX_NoMoney").GetComponent<AudioSource>().Play();
             return;
         }
         //TODO: Buy sfx
         money -= amount;
+        player.transform.GetChild(1).Find("SoundSFX").GetChild(0).Find("SFX_Cash").GetComponent<AudioSource>().Play();
         MoneyDisplay();
     }
     public void AddMainCurrency(float amount)
     {
         money += amount;
+        player.transform.GetChild(1).Find("SoundSFX").GetChild(0).Find("SFX_Cash").GetComponent<AudioSource>().Play();
         MoneyDisplay();
     }
 

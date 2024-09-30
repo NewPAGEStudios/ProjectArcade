@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     private NavMeshAgent agent;
     private GameObject player;
     private Vector3 lastKnowPos;
+    public EnemySoundController soundController;
 
     public EnemyHealth ehp;
     public NavMeshAgent Agent { get => agent;}
@@ -94,7 +95,8 @@ public class Enemy : MonoBehaviour
         //}
 
         stateMachine = gameObject.AddComponent<StateMachine>();
-        
+        soundController = gameObject.AddComponent<EnemySoundController>();
+
         if(NavMesh.SamplePosition(gameObject.transform.position,out NavMeshHit hit, 500f, NavMesh.AllAreas))
         {
             gameObject.transform.position = hit.position;
