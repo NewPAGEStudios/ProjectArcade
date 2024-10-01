@@ -74,11 +74,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 724742012669952
-    m_Localized: aus
+    m_Localized: Aus
     m_Metadata:
       m_Items: []
   - m_Id: 725014747287552
-    m_Localized: ein
+    m_Localized: Ein
     m_Metadata:
       m_Items: []
   - m_Id: 725819374178304
@@ -170,7 +170,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6005410833256448
-    m_Localized: Ton
+    m_Localized: TON
     m_Metadata:
       m_Items: []
   - m_Id: 6012249885003776
@@ -187,6 +187,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 9771483533561856
     m_Localized: Nicht genug Geld!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19225778064752640
+    m_Localized: Ton
     m_Metadata:
       m_Items: []
   references:

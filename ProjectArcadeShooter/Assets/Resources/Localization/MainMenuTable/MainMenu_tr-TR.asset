@@ -73,11 +73,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 724742012669952
-    m_Localized: "kapal\u0131"
+    m_Localized: "Kapal\u0131"
     m_Metadata:
       m_Items: []
   - m_Id: 725014747287552
-    m_Localized: "a\xE7\u0131k"
+    m_Localized: "A\xE7\u0131k"
     m_Metadata:
       m_Items: []
   - m_Id: 725819374178304
@@ -165,7 +165,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6005410833256448
-    m_Localized: Ses
+    m_Localized: SES
     m_Metadata:
       m_Items: []
   - m_Id: 6012249885003776
@@ -182,6 +182,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 9771483533561856
     m_Localized: "Paran\u0131z yeterli de\u011Fil !"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19225778064752640
+    m_Localized: Ses
     m_Metadata:
       m_Items: []
   references:

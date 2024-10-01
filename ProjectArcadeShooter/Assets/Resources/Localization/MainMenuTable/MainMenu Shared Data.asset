@@ -179,6 +179,10 @@ MonoBehaviour:
     m_Key: ShopNoMoney
     m_Metadata:
       m_Items: []
+  - m_Id: 19225778064752640
+    m_Key: soundTXT
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
