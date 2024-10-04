@@ -11,6 +11,6 @@ public class Consumable : ScriptableObject
     [TextArea(15,20)]
     public string descriptionOfC;
     public string functionName;
-    public Mesh modelMesh;
+//    public Mesh modelMesh;
     public Material[] mats;
 }

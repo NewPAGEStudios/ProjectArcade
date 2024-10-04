@@ -21,3 +21,5 @@ MonoBehaviour:
   functionName: dashAdder
   modelPrefab: {fileID: 919132149155446097, guid: 5a83addec15f0f5479c2b7687cc92777,
     type: 3}
+  modelShow: {fileID: 100000, guid: 97d2b5f212fdaea4c945e42da71da052, type: 3}
+  toBuyMoney: 50

@@ -21,3 +21,5 @@ MonoBehaviour:
   functionName: extraJumpAdder
   modelPrefab: {fileID: 919132149155446097, guid: 5a83addec15f0f5479c2b7687cc92777,
     type: 3}
+  modelShow: {fileID: 1103892459537272, guid: a5bc136c5e87fb14888b1af7d82802f5, type: 3}
+  toBuyMoney: 10

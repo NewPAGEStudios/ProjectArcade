@@ -46,9 +46,9 @@ public class ReflectBulletFunctions : MonoBehaviour
         modelRender.SetPropertyBlock(m_PropertyBlock);
         tempFWD = transform.forward;
 
-        trail = Instantiate(trail3D.trail, transform);
-        trail.transform.localEulerAngles = new Vector3(-90,0,0);
-        /*
+        //trail = Instantiate(trail3D.trail, transform);
+        //trail.transform.localEulerAngles = new Vector3(-90,0,0);
+        
         //Trail Renderer
         trail = new();
         trail.transform.parent = transform;
@@ -59,7 +59,7 @@ public class ReflectBulletFunctions : MonoBehaviour
         trail.GetComponent<TrailRenderer>().colorGradient = trailType.gradient;
         trail.GetComponent<TrailRenderer>().widthCurve = trailType.curve;
         trail.GetComponent<TrailRenderer>().time = trailType.Time;
-        */
+        
 
         GetComponent<Rigidbody>().freezeRotation = true;
         GetComponent<Rigidbody>().AddForce(transform.forward * bulletSpeed, ForceMode.Impulse);
@@ -76,14 +76,14 @@ public class ReflectBulletFunctions : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if(trail.transform.localScale.z < trail3D.maxYScale)
-        {
-            trail.transform.localScale = new Vector3(.1f, trail3D.maxYScale, .1f);
-        }
-        else
-        {
+        //if(trail.transform.localScale.z < trail3D.maxYScale)
+        //{
+        //    trail.transform.localScale = new Vector3(.1f, trail3D.maxYScale, .1f);
+        //}
+        //else
+        //{
 
-        }
+        //}
 
     }
 
@@ -156,6 +156,6 @@ public class ReflectBulletFunctions : MonoBehaviour
     }
     private void OnDestroy()
     {
-//        trail.transform.parent = null;
+        trail.transform.parent = null;
     }
 }

@@ -144,6 +144,9 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public GameObject enemiesIndicator;
     public GameObject consSkillIndicator;
     public GameObject consAmmoIndicator;
+    [Header(header: "Prefab Referances")]
+    public GameObject consIndicator;
+
 
     //IEnumerators
     private Coroutine comboDisplayRoutine;
@@ -519,11 +522,16 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         consumableobject.AddComponent<SphereCollider>();
         consumableobject.GetComponent<SphereCollider>().isTrigger = true;
 
-        consumableobject.AddComponent<MeshFilter>();
-        consumableobject.GetComponent<MeshFilter>().mesh = consumables[consID].modelMesh;
+        GameObject arrow = Instantiate(consIndicator, consumableobject.transform);
+        arrow.transform.localPosition = new Vector3(0, 1f, 0);
+        arrow.transform.localEulerAngles = new Vector3(90, 0, 0);
 
-        consumableobject.AddComponent<MeshRenderer>();
-        consumableobject.GetComponent<MeshRenderer>().materials = consumables[consID].mats;
+
+        //consumableobject.AddComponent<MeshFilter>();
+        //consumableobject.GetComponent<MeshFilter>().mesh = consumables[consID].modelMesh;
+
+        //consumableobject.AddComponent<MeshRenderer>();
+        //consumableobject.GetComponent<MeshRenderer>().materials = consumables[consID].mats;
 
         //add indicator for location guide
 

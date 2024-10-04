@@ -26,14 +26,14 @@ public class GetActiveSkill : MonoBehaviour
         }
 
 
-        go = Instantiate(gc.skills[i].modelPrefab,gameObject.transform);
+        go = Instantiate(gc.skills[i].modelShow,gameObject.transform);
         go.transform.localScale = go.transform.localScale/4;
 
         player = GameObject.FindGameObjectWithTag("Player");
     }
     private void Update()
     {
-        go.transform.forward = (transform.GetChild(0).position - player.transform.position).normalized;
+        go.transform.forward = (transform.GetChild(1).position - player.transform.position).normalized;
     }
 
     private void OnTriggerEnter(Collider other)

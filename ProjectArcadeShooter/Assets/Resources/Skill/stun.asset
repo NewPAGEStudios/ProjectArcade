@@ -22,3 +22,6 @@ MonoBehaviour:
   functionName: stunInstanSkill
   modelPrefab: {fileID: 4831038042603890499, guid: ce1d7a8e0fdfe6d4dadb3237e731043d,
     type: 3}
+  modelShow: {fileID: 4831038042603890499, guid: ce1d7a8e0fdfe6d4dadb3237e731043d,
+    type: 3}
+  toBuyMoney: 0

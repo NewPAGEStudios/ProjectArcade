@@ -30,7 +30,7 @@ public class GetWeapon : MonoBehaviour
     }
     private void Update()
     {
-        transform.GetChild(0).Rotate(0f, 45f * Time.deltaTime, 0f);
+        transform.GetChild(1).Rotate(0f, 45f * Time.deltaTime, 0f);
     }
     private void OnTriggerEnter(Collider other)
     {

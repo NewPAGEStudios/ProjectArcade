@@ -15,7 +15,7 @@ public class PerformPassiveSkill : MonoBehaviour
     {
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
-        go = Instantiate(thisSkill.modelPrefab, gameObject.transform);
+        go = Instantiate(thisSkill.modelShow, gameObject.transform);
         go.transform.localScale = go.transform.localScale / 4;
 
 
@@ -26,7 +26,7 @@ public class PerformPassiveSkill : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        go.transform.forward = (transform.GetChild(0).position - player.transform.position).normalized;
+        go.transform.forward = (transform.GetChild(1).position - player.transform.position).normalized;
     }
     private void OnTriggerEnter(Collider other)
     {

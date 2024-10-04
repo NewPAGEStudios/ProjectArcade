@@ -22,5 +22,7 @@ public class Skill : ScriptableObject
     public string functionName;
     public GameObject modelPrefab;
 
+    public GameObject modelShow;
+
     public float toBuyMoney;
 }
