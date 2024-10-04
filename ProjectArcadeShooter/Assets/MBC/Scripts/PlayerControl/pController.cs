@@ -678,7 +678,7 @@ public class PController : MonoBehaviour
             case 7: gc.HandleDMGtakenUI(1); gc.HandleDMGtakenUI(3); break;
             default: break;
         }
-        dv = true;
+        
         if (dv)//check get damage effect
         {
             mainCam.gameObject.GetComponent<CameraShake>().StartCamShake();

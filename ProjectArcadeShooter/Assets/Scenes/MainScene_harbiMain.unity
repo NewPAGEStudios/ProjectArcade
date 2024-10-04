@@ -12125,8 +12125,8 @@ MonoBehaviour:
   lineVideo: {fileID: 512363204}
   lineControls: {fileID: 1435567674}
   fullscreentext: {fileID: 406754674}
-  swayBobtext: {fileID: 2000636972}
-  damageVibrationtext: {fileID: 1507359523}
+  swayBobtext: {fileID: 1507359523}
+  damageVibrationtext: {fileID: 2000636972}
   masterSlider: {fileID: 1678516028}
   musicSlider: {fileID: 1881895045}
   sFXSlider: {fileID: 869984052}

@@ -221,7 +221,6 @@ public class InGameSettings : MonoBehaviour
         {
             PlayerPrefs.SetInt("SwayNBobbing", 0);
             snbParent.transform.GetChild(0).gameObject.SetActive(true);
-
         }
         else
         {
