@@ -38,14 +38,14 @@ public class RayLine : MonoBehaviour
         {
             if (Physics.Raycast(ray.origin, ray.direction, out hit, remainLength, layerMask))
             {
-                //if (hit.transform.gameObject.CompareTag("Enem"))
-                //{
-                //    _lineRenderer.material = mats[1];
-                //}
-                //else
-                //{
-                //    _lineRenderer.material = mats[0];
-                //}
+                if (hit.transform.gameObject.CompareTag("Enem"))
+                {
+                    _lineRenderer.material = mats[1];
+                }
+                else
+                {
+                    _lineRenderer.material = mats[0];
+                }
                 _lineRenderer.positionCount += 1;
                 _lineRenderer.SetPosition(_lineRenderer.positionCount - 1, hit.point);
                 remainLength -= Vector3.Distance(ray.origin, hit.point);

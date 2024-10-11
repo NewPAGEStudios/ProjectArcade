@@ -7485,7 +7485,9 @@ MonoBehaviour:
     m_Bits: 4599
   defaultLength: 150
   maxReflection: 5
-  mats: []
+  mats:
+  - {fileID: 2100000, guid: 1dff1fed6303207418c8fe648de5519b, type: 2}
+  - {fileID: 2100000, guid: e4168b99eec47d847b17352ac055d801, type: 2}
 --- !u!120 &401959124
 LineRenderer:
   serializedVersion: 2
