@@ -12,7 +12,15 @@ public class WeaponManager : MonoBehaviour
     //Reference
     private GameController gc;
     public Animator hand_Animator;
+    public RayLine rl;
 
+
+    [Header("Laser Settings")]
+    public float laserDropRate;
+    public float laserCharge = 0;
+    public float maxLaserCharge;
+    public float reqLaserCharge = 10;
+    private bool laserFinished = false;
 
     //RuntimeObject
     private int currWeaponID = -1;
@@ -118,6 +126,9 @@ public class WeaponManager : MonoBehaviour
         {
             stocked_Skills.Add(gc.skills[UnityEngine.Random.Range(0, gc.skills.Length)]);
         }
+
+        laserCharge = maxLaserCharge;
+
 
     }
 
@@ -255,6 +266,75 @@ public class WeaponManager : MonoBehaviour
             gc.DisplayInstruction(false);
         }
 
+    }
+    public void addLaser(float amount)
+    {
+        if (laserFinished)
+        {
+            laserCharge += amount;
+            if (laserCharge > reqLaserCharge)
+            {
+                laserFinished = false;
+            }
+        }
+
+        if (laserCharge > maxLaserCharge)
+        {
+            laserCharge = maxLaserCharge;
+        }
+        gc.LaserIndicator(laserCharge, maxLaserCharge);
+    }
+    public void laserOpen()//CallsFrom fixed
+    {
+        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || gc.state != GameController.GameState.inGame || player.ccstate != PController.CCStateOfPlayer.normal)
+        {
+            rl.gameObject.SetActive(false);
+            return;
+        }
+        if (handStates != ActionStateOFHands.idle && handStates != ActionStateOFHands.inFire)
+        {
+            rl.gameObject.SetActive(false);
+            laserCharge += Time.fixedDeltaTime * laserDropRate / 4;
+            if (laserCharge >= maxLaserCharge)
+            {
+                laserCharge = maxLaserCharge;
+            }
+            gc.LaserIndicator(maxLaserCharge, laserCharge);
+            return;
+        }
+        if (laserFinished)
+        {
+            rl.gameObject.SetActive(false);
+            laserCharge += Time.fixedDeltaTime * laserDropRate / 4;
+            if (laserCharge >= reqLaserCharge)
+            {
+                laserFinished = false;
+            }
+            gc.LaserIndicator(maxLaserCharge, laserCharge);
+            return;
+        }
+        if (IManager.laserOpen)
+        {
+            rl.gameObject.SetActive(true);
+//            rl.ReflectLaser();
+            laserCharge -= Time.fixedDeltaTime * laserDropRate;
+            if (laserCharge <= 0)
+            {
+                laserCharge = 0;
+                laserFinished = true;
+                return;
+            }
+        }
+        else
+        {
+            rl.gameObject.SetActive(false);
+            laserCharge += Time.fixedDeltaTime * laserDropRate/4;
+            if (laserCharge >= maxLaserCharge)
+            {
+                laserCharge = maxLaserCharge;
+            }
+        }
+        gc.LaserIndicator(maxLaserCharge, laserCharge);
     }
 
     public void GetWeaponR(int weaponID)

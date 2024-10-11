@@ -14,6 +14,8 @@ public class InputManager : MonoBehaviour
     public bool crouching = false;
     public bool fireHolding = false;
     public bool skillMenu = false;
+    public bool laserOpen = false;
+
 
     private PlayerActionMaps inputActions;
     private void Awake()
@@ -37,6 +39,18 @@ public class InputManager : MonoBehaviour
         inputActions.handMap.ChangeSkill.performed += CSPerformed;
         inputActions.handMap.ChangeSkill.canceled += CSCanceled;
 
+        inputActions.handMap.Laser.performed += LaserPerformed;
+        inputActions.handMap.Laser.canceled += LaserCanceled;
+    }
+
+    private void LaserPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        laserOpen = true;
+    }
+
+    private void LaserCanceled(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        laserOpen = false;
     }
 
     private void CSCanceled(UnityEngine.InputSystem.InputAction.CallbackContext context)

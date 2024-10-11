@@ -168,7 +168,6 @@ public class PController : MonoBehaviour
             gc.DashIndicator(currentdashMeter);
         }
 
-        CamRotation();
 
         Jump();
         Crouch();
@@ -192,7 +191,9 @@ public class PController : MonoBehaviour
             return;
         }
         Move();
+        CamRotation();
 
+        weaponManager.laserOpen();
     }
     private void CamRotation()//tmmland�
     {
@@ -388,14 +389,17 @@ public class PController : MonoBehaviour
 
         float speedTemp = temp.magnitude;
 
-        if (moveTimerSound <= 0)
+        if (actiontg != ActionStateDependecyToGround.onAir)
         {
-            soundParent.transform.Find("Footsteps").GetComponent<AudioSource>().Play();
-            moveTimerSound = 0.5f;
-        }
-        else
-        {
-            moveTimerSound -= Time.fixedDeltaTime;
+            if (moveTimerSound <= 0)
+            {
+                soundParent.transform.Find("Footsteps").GetComponent<AudioSource>().Play();
+                moveTimerSound = 0.5f;
+            }
+            else
+            {
+                moveTimerSound -= Time.fixedDeltaTime;
+            }
         }
 
 

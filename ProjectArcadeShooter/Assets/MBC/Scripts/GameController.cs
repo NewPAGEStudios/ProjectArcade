@@ -1238,6 +1238,18 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         playerPanel.transform.GetChild(4).GetChild(0).GetComponent<Image>().sprite = null;
         playerPanel.transform.GetChild(4).GetChild(0).GetComponent<Image>().enabled = false;
     }
+    public void LaserIndicator(float maxMeter,float curMeter)
+    {
+        for(int c = 0; c < playerPanel.transform.GetChild(9).childCount; c++)
+        {
+            if (playerPanel.transform.GetChild(9).GetChild(c).gameObject.activeInHierarchy)
+            {
+                playerPanel.transform.GetChild(9).GetChild(c).GetChild(0).GetComponent<Image>().fillAmount = (maxMeter - curMeter) / maxMeter;
+            }
+        }
+    }
+
+
     public void DashIndicator(float dashMeter)
     {
         float lastMeter = dashMeter % 25;

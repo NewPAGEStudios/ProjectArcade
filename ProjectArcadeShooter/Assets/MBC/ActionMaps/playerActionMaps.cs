@@ -243,6 +243,15 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Laser"",
+                    ""type"": ""Button"",
+                    ""id"": ""d8ee08fa-1b0b-4d17-9867-f75a2a6ecf07"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -320,6 +329,17 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ChangeSkill"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""004ca4e2-3d04-4fd8-9244-507221aa941a"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Laser"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -408,6 +428,7 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
         m_handMap_FireAuto = m_handMap.FindAction("FireAuto", throwIfNotFound: true);
         m_handMap_Scroll = m_handMap.FindAction("Scroll", throwIfNotFound: true);
         m_handMap_ChangeSkill = m_handMap.FindAction("ChangeSkill", throwIfNotFound: true);
+        m_handMap_Laser = m_handMap.FindAction("Laser", throwIfNotFound: true);
         // GameControllerMap
         m_GameControllerMap = asset.FindActionMap("GameControllerMap", throwIfNotFound: true);
         m_GameControllerMap_backSpace = m_GameControllerMap.FindAction("backSpace", throwIfNotFound: true);
@@ -564,6 +585,7 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
     private readonly InputAction m_handMap_FireAuto;
     private readonly InputAction m_handMap_Scroll;
     private readonly InputAction m_handMap_ChangeSkill;
+    private readonly InputAction m_handMap_Laser;
     public struct HandMapActions
     {
         private @PlayerActionMaps m_Wrapper;
@@ -573,6 +595,7 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
         public InputAction @FireAuto => m_Wrapper.m_handMap_FireAuto;
         public InputAction @Scroll => m_Wrapper.m_handMap_Scroll;
         public InputAction @ChangeSkill => m_Wrapper.m_handMap_ChangeSkill;
+        public InputAction @Laser => m_Wrapper.m_handMap_Laser;
         public InputActionMap Get() { return m_Wrapper.m_handMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -597,6 +620,9 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
             @ChangeSkill.started += instance.OnChangeSkill;
             @ChangeSkill.performed += instance.OnChangeSkill;
             @ChangeSkill.canceled += instance.OnChangeSkill;
+            @Laser.started += instance.OnLaser;
+            @Laser.performed += instance.OnLaser;
+            @Laser.canceled += instance.OnLaser;
         }
 
         private void UnregisterCallbacks(IHandMapActions instance)
@@ -616,6 +642,9 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
             @ChangeSkill.started -= instance.OnChangeSkill;
             @ChangeSkill.performed -= instance.OnChangeSkill;
             @ChangeSkill.canceled -= instance.OnChangeSkill;
+            @Laser.started -= instance.OnLaser;
+            @Laser.performed -= instance.OnLaser;
+            @Laser.canceled -= instance.OnLaser;
         }
 
         public void RemoveCallbacks(IHandMapActions instance)
@@ -712,6 +741,7 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
         void OnFireAuto(InputAction.CallbackContext context);
         void OnScroll(InputAction.CallbackContext context);
         void OnChangeSkill(InputAction.CallbackContext context);
+        void OnLaser(InputAction.CallbackContext context);
     }
     public interface IGameControllerMapActions
     {
