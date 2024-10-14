@@ -80,19 +80,6 @@ public class Enemy : MonoBehaviour
         meleeDmg = e_type.attackDMG;
 
 
-        //path = gameObject.AddComponent<Path>();
-
-        ////PathInitialization
-        //int mostPath = 2;//TODO change to random.range System with different
-
-        //for(int i = 0; i < mostPath; i++)
-        //{
-        //    float x = UnityEngine.Random.Range(parentSelectedPosition.transform.Find("min").position.x, parentSelectedPosition.transform.Find("max").position.x);
-        //    float y = parentSelectedPosition.position.y + model.transform.localScale.y;
-        //    float z = UnityEngine.Random.Range(parentSelectedPosition.transform.Find("min").position.z, parentSelectedPosition.transform.Find("max").position.z);
-
-        //    path.waypoints.Add(new Vector3(x, y, z));
-        //}
 
         stateMachine = gameObject.AddComponent<StateMachine>();
         soundController = gameObject.AddComponent<EnemySoundController>();
