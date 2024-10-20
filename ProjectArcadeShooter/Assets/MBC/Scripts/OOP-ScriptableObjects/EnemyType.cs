@@ -15,7 +15,7 @@ public class EnemyType : ScriptableObject
     public Material mainMat;
     public Material getDmgMat;
     public Material deathMat;
-
+    public string agentFunction;
 
     [Header(header: "EnemyObjectProperties")]
     public float hitPoint;

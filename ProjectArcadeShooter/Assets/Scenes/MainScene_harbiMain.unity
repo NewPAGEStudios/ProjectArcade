@@ -23776,7 +23776,6 @@ GameObject:
   - component: {fileID: 1203979082}
   - component: {fileID: 1203979081}
   - component: {fileID: 1203979083}
-  - component: {fileID: 1203979085}
   - component: {fileID: 1203979086}
   - component: {fileID: 1203979087}
   m_Layer: 0
@@ -23893,20 +23892,6 @@ MonoBehaviour:
   fireHolding: 0
   skillMenu: 0
   laserOpen: 0
---- !u!114 &1203979085
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1203979080}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c57a9bf20a5091a4fbf4b53026763720, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allAgents: []
-  anybodySee: 0
 --- !u!114 &1203979086
 MonoBehaviour:
   m_ObjectHideFlags: 0

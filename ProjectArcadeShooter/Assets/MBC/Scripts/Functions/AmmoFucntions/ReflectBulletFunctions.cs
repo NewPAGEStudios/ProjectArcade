@@ -154,8 +154,8 @@ public class ReflectBulletFunctions : MonoBehaviour
         GetComponent<Rigidbody>().velocity = Vector3.zero;
         Destroy(gameObject);
     }
-    private void OnDestroy()
-    {
-        trail.transform.parent = null;
-    }
+    //private void OnDestroy()
+    //{
+    //    trail.transform.parent = null;
+    //}
 }

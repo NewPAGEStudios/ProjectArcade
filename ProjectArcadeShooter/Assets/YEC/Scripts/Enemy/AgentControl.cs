@@ -25,23 +25,23 @@ public class  AgentControl : MonoBehaviour
         {
 
             var enemy = agent.GetComponent<Enemy>();
-            if (enemy.CanSeePlayer() == false)
-            {
+            //if (enemy.CanSeePlayer() == false)
+            //{
                 
-                //Her düşmanın playeri görüp görmediğini kontrol ederiz.
-                if(enemy.e_type.isFlyable && !enemy.e_type.isRanged)//uçan yakın
-                {
-                    enemy.stateMachine.ChangesState(new AttackState());
-                }
-                else
-                {
-                    enemy.stateMachine.ChangesState(new SearchState());
-                }
-            }
-            else
-            {
-                anybodySee = true;
-            }
+            //    //Her düşmanın playeri görüp görmediğini kontrol ederiz.
+            //    if(enemy.e_type.isFlyable && !enemy.e_type.isRanged)//uçan yakın
+            //    {
+            //        enemy.stateMachine.ChangesState(new AttackState());
+            //    }
+            //    else
+            //    {
+            //        enemy.stateMachine.ChangesState(new SearchState());
+            //    }
+            //}
+            //else
+            //{
+            //    anybodySee = true;
+            //}
         }
     }
     private void agentListAdd()

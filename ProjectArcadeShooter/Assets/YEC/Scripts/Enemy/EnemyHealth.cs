@@ -142,6 +142,8 @@ public class EnemyHealth : MonoBehaviour
 
     public void Die()
     {//id check
+
+        GetComponent<Enemy>().eState = Enemy.enemyState.dead;
         StartCoroutine(EnemyDeathRoutine());
     }
     IEnumerator EnemyDeathRoutine()

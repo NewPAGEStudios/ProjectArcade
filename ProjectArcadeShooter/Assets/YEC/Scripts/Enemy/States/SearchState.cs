@@ -33,9 +33,9 @@ public class SearchState : BaseState
     }
         public override void Perform()
     {
-        if(enemy.CanSeePlayer()){
-            stateMachine.ChangesState(new AttackState());
-        }
+        //if(enemy.CanSeePlayer()){
+        //    stateMachine.ChangesState(new AttackState());
+        //}
 
         if(Vector3.Distance(enemy.Agent.transform.position, target) < 10.0f/*enemy.Agent.remainingDistance < enemy.Agent.stoppingDistance*/){
             searchTimer += Time.deltaTime;

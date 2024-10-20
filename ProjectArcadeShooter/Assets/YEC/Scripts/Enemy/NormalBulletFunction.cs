@@ -46,7 +46,7 @@ public class NormalBulletFunction : MonoBehaviour
             Debug.Log("temas etti");
             hitTransform.parent.GetComponent<PController>().TakeDMG(baseAmmo.dmg, firedBy);
         }
-        Destroy(gameObject);
+//        Destroy(gameObject);
     }
 }
  

@@ -23,15 +23,15 @@ public class PatrolState : BaseState
     {
         PatrolCycle();
 
-        if (enemy.CanSeePlayer())
-        {
-            stateMachine.ChangesState(new AttackState());
-        }
-        else
-        {
-            // Update animator walking state
-            //enemy.animator.SetBool("isWalking", isWalking);
-        }
+        //if (enemy.CanSeePlayer())
+        //{
+        //    stateMachine.ChangesState(new AttackState());
+        //}
+        //else
+        //{
+        //    // Update animator walking state
+        //    //enemy.animator.SetBool("isWalking", isWalking);
+        //}
     }
 
     public override void Exit()

@@ -7,7 +7,6 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    public StateMachine stateMachine;
     private NavMeshAgent agent;
     private GameObject player;
     private Vector3 lastKnowPos;
@@ -44,7 +43,12 @@ public class Enemy : MonoBehaviour
     public float currentBaseOffeset;
     public GameObject meleeObj;
     
-
+    public enum enemyState
+    {
+        alive,
+        dead
+    }
+    public enemyState eState;
     public enum ccState
     {
         normal,
@@ -56,6 +60,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        eState = enemyState.alive;
         GameObject model = Instantiate(e_type.modelGameObject, gameObject.transform);
         
 
@@ -81,7 +86,6 @@ public class Enemy : MonoBehaviour
 
 
 
-        stateMachine = gameObject.AddComponent<StateMachine>();
         soundController = gameObject.AddComponent<EnemySoundController>();
 
         if(NavMesh.SamplePosition(gameObject.transform.position,out NavMeshHit hit, 500f, NavMesh.AllAreas))
@@ -98,6 +102,19 @@ public class Enemy : MonoBehaviour
             }
         }
 
+        System.Type scriptMB = System.Type.GetType(e_type.agentFunction + ",Assembly-CSharp");
+        gameObject.AddComponent(scriptMB);
+
+        //ManuelAdding
+        if(gameObject.TryGetComponent<WalkerMelee>(out WalkerMelee wm))
+        {
+
+        }
+        else if (gameObject.TryGetComponent<WalkerRanged>(out WalkerRanged wr))
+        {
+
+        }
+
 
         fireRate = e_type.attackRatio;
 
@@ -105,85 +122,44 @@ public class Enemy : MonoBehaviour
         
         player = GameObject.FindGameObjectWithTag("Player");
 
-        stateMachine.Initialise();
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (state == ccState.stun)
+        if (state == ccState.stun || eState == enemyState.dead)
         {
             return;//Updateyi patlat
         }
-        currentState = stateMachine.activeState.ToString();
     }
-    public bool CanSeePlayer()
-    {
-        if(player != null)
-        {
-            if(Vector3.Distance(transform.position, player.transform.position) < sightDistance)
-            {
-                Vector3 targetDirection = player.transform.position - transform.position - (Vector3.up * eyeHeight);
-                float angleToPlayer = Vector3.Angle(targetDirection, transform.forward);
-                if(angleToPlayer >= -fieldOfView && angleToPlayer <= fieldOfView)
-                {
-                    Ray ray = new Ray(transform.position + (Vector3.up * eyeHeight), targetDirection);
-                    RaycastHit hitInfo = new RaycastHit();
-                    if(Physics.Raycast(ray, out hitInfo, sightDistance))
-                    {
-                        if(hitInfo.transform.gameObject == player)
-                        {
-                            stateMachine.agentControl.LastKnowPos = player.transform.position;
-                            return true;
-                        }
-                    }
-                    Debug.DrawRay(ray.origin, ray.direction * sightDistance);
-                }
-            }
-        }
-        return false;
-    }
-    public void MeleeAttack()
-    {
-        if (animator == null)
-        {
-            return;
-        }
-        animator.SetTrigger("Attack");
-        meleeObj.GetComponent<Collider>().enabled = true;
-        animator.SetBool("AttackEnd", true);
-        
-        transform.LookAt(Player.transform);
-        transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, transform.eulerAngles.z);
-        StartCoroutine(AttackAnim_Routine());
+    //public bool CanSeePlayer()
+    //{
+    //    if(player != null)
+    //    {
+    //        if(Vector3.Distance(transform.position, player.transform.position) < sightDistance)
+    //        {
+    //            Vector3 targetDirection = player.transform.position - transform.position - (Vector3.up * eyeHeight);
+    //            float angleToPlayer = Vector3.Angle(targetDirection, transform.forward);
+    //            if(angleToPlayer >= -fieldOfView && angleToPlayer <= fieldOfView)
+    //            {
+    //                Ray ray = new Ray(transform.position + (Vector3.up * eyeHeight), targetDirection);
+    //                RaycastHit hitInfo = new RaycastHit();
+    //                if(Physics.Raycast(ray, out hitInfo, sightDistance))
+    //                {
+    //                    if(hitInfo.transform.gameObject == player)
+    //                    {
+    //                        stateMachine.agentControl.LastKnowPos = player.transform.position;
+    //                        return true;
+    //                    }
+    //                }
+    //                Debug.DrawRay(ray.origin, ray.direction * sightDistance);
+    //            }
+    //        }
+    //    }
+    //    return false;
+    //}
 
-    }
-    IEnumerator AttackAnim_Routine()
-    {
-        while (true)
-        {
-
-            yield return new WaitForEndOfFrame();
-
-            if (animator == null)
-            {
-                break;
-            }
-            if (animator.GetCurrentAnimatorStateInfo(1).IsName("AttackEnd"))
-            {
-                meleeObj.GetComponent<Collider>().enabled = false;
-                break;
-            }
-
-        }
-        if (animator != null)
-        {
-            animator.SetBool("AttackEnd", false);
-        }
-
-
-    }
     public void BaseOffsetValueControl(){
         // enemy.Agent.SetDestination(enemy.Player.transform.position);
         // Debug.Log("aradaki mesafe"+distance+"range"+ e_type.rangeDistance);

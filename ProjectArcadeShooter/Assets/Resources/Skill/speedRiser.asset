@@ -19,8 +19,7 @@ MonoBehaviour:
   materials: []
   sprite_HUD: {fileID: 21300000, guid: e7e6eb19b7044174cb2cfed7e0e6ecb1, type: 3}
   functionName: getSpeed
-  modelPrefab: {fileID: 919132149155446097, guid: 5a83addec15f0f5479c2b7687cc92777,
-    type: 3}
+  modelPrefab: {fileID: 0}
   modelShow: {fileID: 665336908148057112, guid: a00a4e6b870f8504eb3069d77cb61e77,
     type: 3}
   toBuyMoney: 150

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -78,7 +79,7 @@ public class AttackState : BaseState
                 {
                     if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) <= enemy.e_type.rangeDistance)
                     {
-                        Attack();
+                        //Attack();
                     }
                 }
                 if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.e_type.rangeDistance - 1f)
@@ -218,7 +219,7 @@ public class AttackState : BaseState
     //Functions
     public void Shoot()
     {
-        //  enemy.animator.SetTrigger("Throw");//*
+        //  enemy.animator.SetTrigger("Throw");/
 
         if (enemy.e_type.EnemyTypeID != 5)
         {
@@ -262,7 +263,7 @@ public class AttackState : BaseState
                 ff.firedBy = enemy.gameObject;
                 ff.simulatedPos = GameObject.Instantiate(Resources.Load("Prefabs/FuzeIndicator") as GameObject, Vector3.zero, Quaternion.identity);
             }
-            else if(bullet.TryGetComponent<NormalBulletFunction>(out NormalBulletFunction nbf))
+            else if (bullet.TryGetComponent<NormalBulletFunction>(out NormalBulletFunction nbf))
             {
                 nbf.baseAmmo = enemy.e_type.ammo;
                 nbf.firedBy = enemy.gameObject;
@@ -271,7 +272,7 @@ public class AttackState : BaseState
             go.name = "Model";
             go.layer = 7;
         }
-        if(enemy.e_type.EnemyTypeID != 3)
+        if (enemy.e_type.EnemyTypeID != 3)
         {
             enemy.animator.SetTrigger("shoot");
         }
@@ -279,11 +280,12 @@ public class AttackState : BaseState
         shotTimer = 0;
 
     }
-    public void Attack()
+    //public void Attack()
+    //{
+    //    enemy.MeleeAttack();
+    //}
+    public void BaseOffsetValueControl()
     {
-        enemy.MeleeAttack();
-    }
-    public void BaseOffsetValueControl(){
         agent = enemy.Agent;
         Player = enemy.Player;
         agent.radius = 0.6f;// nedense 0.5 değerinde player yüksekteyken takip etmiyor
@@ -293,7 +295,7 @@ public class AttackState : BaseState
         // Debug.Log(playerHight);
         RaycastHit hitInfo = new RaycastHit();
         //duvar ile karşılaştığında
-        if(Physics.Raycast(enemy.transform.position, enemy.transform.forward, out hitInfo, 3) && hitInfo.collider.gameObject.tag != "PlayerColl" && hitInfo.collider.gameObject.tag != "EnemyColl")
+        if (Physics.Raycast(enemy.transform.position, enemy.transform.forward, out hitInfo, 3) && hitInfo.collider.gameObject.tag != "PlayerColl" && hitInfo.collider.gameObject.tag != "EnemyColl")
         {
             // Debug.Log("nesne:" + hitInfo.collider.name+ "tag:"+ hitInfo.collider.gameObject.tag);
             agent.speed = 0.1f;
@@ -303,27 +305,27 @@ public class AttackState : BaseState
         {
             agent.speed = 5;
         }
-        
+
         //rampada
         Ray downwardRay = new Ray(enemy.transform.position, Vector3.down);
         RaycastHit hitDownInfo = new RaycastHit();
-        if(Physics.Raycast(downwardRay, out hitDownInfo))
+        if (Physics.Raycast(downwardRay, out hitDownInfo))
         {
-            if(hitDownInfo.distance < 0.9)
+            if (hitDownInfo.distance < 0.9)
             {
                 agent.baseOffset += 0.04f;
             }
         }
-        if(!enemy.e_type.isRanged)//uçan yakın
+        if (!enemy.e_type.isRanged)//uçan yakın
         {
-            if(distance <= 15 && agent.baseOffset >= agent.baseOffset + playerHight)
+            if (distance <= 15 && agent.baseOffset >= agent.baseOffset + playerHight)
             {
-                for(float i = distance + 1f; i >= distance; i-= 0.5f)//dronun yavaş yavaş indiği izlenimini vermek için for döngüsü kullanılır.
+                for (float i = distance + 1f; i >= distance; i -= 0.5f)//dronun yavaş yavaş indiği izlenimini vermek için for döngüsü kullanılır.
                 {
-                    agent.baseOffset -= 0.01f; 
+                    agent.baseOffset -= 0.01f;
                 }
             }
-            if(agent.baseOffset < enemy.currentBaseOffeset + playerHight /*&& distance >=15*/)
+            if (agent.baseOffset < enemy.currentBaseOffeset + playerHight /*&& distance >=15)
             {
                 agent.baseOffset += 0.01f;
             }

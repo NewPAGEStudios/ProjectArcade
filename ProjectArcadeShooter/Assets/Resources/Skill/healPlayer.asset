@@ -19,7 +19,6 @@ MonoBehaviour:
   materials: []
   sprite_HUD: {fileID: 21300000, guid: ca63d6a57a52bf2488a23ec3840c5ce4, type: 3}
   functionName: healPlayer
-  modelPrefab: {fileID: 919132149155446097, guid: 5a83addec15f0f5479c2b7687cc92777,
-    type: 3}
+  modelPrefab: {fileID: 0}
   modelShow: {fileID: 1481440290192140, guid: 7ffd6822b816c9b428b2295eb5d7fa00, type: 3}
   toBuyMoney: 250
