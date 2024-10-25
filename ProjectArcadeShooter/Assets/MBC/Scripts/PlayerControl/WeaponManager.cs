@@ -499,6 +499,7 @@ public class WeaponManager : MonoBehaviour
             rbf.trailType = w.usedAmmo.trail;
             rbf.trail3D = w.usedAmmo.trail3D;
 
+            rbf.layerMask = w.usedAmmo.lmask;
 
             GameObject go = Instantiate(w.usedAmmo.modelGO, ammo.transform);
             go.layer = 7;

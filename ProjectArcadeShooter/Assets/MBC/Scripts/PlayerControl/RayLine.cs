@@ -36,7 +36,7 @@ public class RayLine : MonoBehaviour
         //_lineRenderer.material = mats[0];
         for (int i = 0; i < maxReflection; i++)
         {
-            if (Physics.Raycast(ray.origin, ray.direction, out hit, remainLength, layerMask))
+            if (Physics.Raycast(ray.origin, ray.direction, out hit, remainLength, layerMask, QueryTriggerInteraction.Ignore))
             {
                 _lineRenderer.positionCount += 1;
                 _lineRenderer.SetPosition(_lineRenderer.positionCount - 1, hit.point);
@@ -46,7 +46,6 @@ public class RayLine : MonoBehaviour
                 if (hit.transform.gameObject.CompareTag("EnemyColl"))
                 {
                     _lineRenderer.material = mats[1];
-                    Debug.Log("Kapp");
                     break;
                 }
                 else

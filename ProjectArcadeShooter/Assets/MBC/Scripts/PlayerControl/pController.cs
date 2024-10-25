@@ -169,6 +169,7 @@ public class PController : MonoBehaviour
         }
 
 
+
         Jump();
         Crouch();
         CrouchExit();
@@ -536,25 +537,6 @@ public class PController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            float angleOfPlane = Vector3.Angle(Vector3.up, collision.contacts[0].normal);
-
-            if(angleOfPlane > max_angleOfPlane || angleOfPlane == 0)
-            {
-                actiontg = ActionStateDependecyToGround.flat;
-
-
-                slopePlaneNormal = Vector3.up;
-                rb.useGravity = true;
-            }
-            else
-            {//is Slope granted
-                actiontg = ActionStateDependecyToGround.slope;
-                slopePlaneNormal = collision.contacts[0].normal;
-                rb.useGravity = false;
-            }
-        }
         if (collision.transform.gameObject.layer == 7)//7 is ammo
         {
             return;
@@ -586,11 +568,28 @@ public class PController : MonoBehaviour
         {
             checkGroundVector = -slopePlaneNormal.normalized;
         }
-        Debug.DrawRay(gameObject.transform.position, checkGroundVector * (offsetScale + 0.2f), Color.red, Time.deltaTime);
-        if (Physics.Raycast(gameObject.transform.position, checkGroundVector, offsetScale + 0.2f))
+        Debug.DrawRay(gameObject.transform.position, checkGroundVector * (offsetScale + 0.3f), Color.red, Time.deltaTime);
+        if (Physics.Raycast(gameObject.transform.position, checkGroundVector,out RaycastHit hit,offsetScale + 0.3f))
         {
+            float angleOfPlane = Vector3.Angle(Vector3.up, hit.normal);
+
             rb.drag = moveDrag;
             maxSpeed = maxSpeedOnGround;
+
+            if (angleOfPlane > max_angleOfPlane || angleOfPlane == 0)
+            {
+                actiontg = ActionStateDependecyToGround.flat;
+
+                slopePlaneNormal = Vector3.up;
+                rb.useGravity = true;
+            }
+            else
+            {//is Slope granted
+                actiontg = ActionStateDependecyToGround.slope;
+                slopePlaneNormal = hit.normal;
+                rb.useGravity = false;
+            }
+
         }
         else
         {

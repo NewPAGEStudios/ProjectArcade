@@ -17,4 +17,6 @@ public class Ammo : ScriptableObject
     public float bulletSpeed;
     public float dmg;
     public int maxReflectionTime;
+
+    public LayerMask lmask;
 }

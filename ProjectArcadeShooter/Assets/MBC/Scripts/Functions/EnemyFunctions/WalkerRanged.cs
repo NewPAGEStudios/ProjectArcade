@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -36,7 +34,12 @@ public class WalkerRanged : MonoBehaviour
         moveTimer += Time.deltaTime;
         shotTimer += Time.deltaTime;
         //move
-        if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.e_type.rangeDistance - 2)
+        Debug.DrawRay(gameObject.transform.position + gameObject.transform.right, enemy.Player.transform.position - gameObject.transform.position, Color.green, Time.deltaTime);
+        //if(Physics.Raycast(gameObject.transform.position + new Vector3(0, 1, 0), enemy.Player.transform.position - gameObject.transform.position, out RaycastHit hit,Vector3.Distance(gameObject.transform.position, enemy.Player.transform.position),1))
+        //{
+        //    Debug.Log("Bomba " + hit.transform.gameObject.layer);
+        //}
+        if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.e_type.rangeDistance - 2 || Physics.Raycast(gameObject.transform.position + new Vector3(0,1,0), enemy.Player.transform.position - gameObject.transform.position,Vector3.Distance(gameObject.transform.position, enemy.Player.transform.position),16384))
         {
             enemy.Agent.SetDestination(enemy.Player.transform.position);
             lookPlayer();
@@ -72,7 +75,7 @@ public class WalkerRanged : MonoBehaviour
         //Shoot
         if (enemy.e_type.EnemyTypeID == 3)//FüzeAtarSpecialState
         {
-            if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) < enemy.e_type.rangeDistance)
+            if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) < enemy.e_type.rangeDistance && !Physics.Raycast(gameObject.transform.position + new Vector3(0, 1, 0), enemy.Player.transform.position - gameObject.transform.position, Vector3.Distance(gameObject.transform.position, enemy.Player.transform.position), 16384))
             {
                 if (oteventForanimator_id3)
                 {
@@ -81,8 +84,8 @@ public class WalkerRanged : MonoBehaviour
                 }
                 if (shotTimer > enemy.fireRate)
                 {
-                    if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) <= enemy.e_type.rangeDistance)
-                        Shoot();
+                    //if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) <= enemy.e_type.rangeDistance)
+                    //    Shoot();
                 }
             }
             else
@@ -92,11 +95,14 @@ public class WalkerRanged : MonoBehaviour
         }
         else//gerisi
         {
-            if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) < enemy.e_type.rangeDistance && shotTimer > enemy.fireRate)
+            if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) < enemy.e_type.rangeDistance && !Physics.Raycast(gameObject.transform.position + new Vector3(0, 1, 0), enemy.Player.transform.position - gameObject.transform.position, Vector3.Distance(gameObject.transform.position, enemy.Player.transform.position), 16384))
             {
-                Shoot();
-                shotTimer = 0;
-                if (moveTimer > Random.Range(3, 7))
+                if(shotTimer >= enemy.e_type.attackRatio)
+                {
+                    Shoot();
+                    shotTimer = 0;
+                }
+                if (moveTimer > Random.Range(1.5f, 3))
                 {
                     enemy.Agent.SetDestination(enemy.transform.position + (Random.insideUnitSphere * 15));
                     moveTimer = 0;
@@ -120,7 +126,6 @@ public class WalkerRanged : MonoBehaviour
         }
         enemy.soundController.PlaySound("ShootSound", 0f);
         Transform[] gunbarrel = enemy.gunBarrel.ToArray();
-        Debug.Log(gunbarrel.Length);
 
         for (int c = 0; c < gunbarrel.Length; c++)
         {
@@ -176,7 +181,6 @@ public class WalkerRanged : MonoBehaviour
     private void spawnAmmo(Transform gunbarrel)
     {
         GameObject bullet = new();
-        Debug.Log("Kappa");
         bullet.name = "bullet";
 
         bullet.transform.position = gunbarrel.transform.position;

@@ -20,6 +20,9 @@ MonoBehaviour:
   materials:
   - {fileID: 2100000, guid: 0b68180e4a4139c4fb79d861793029e8, type: 2}
   - {fileID: 2100000, guid: 67d06aebc8875f44ba16dbe0a723b468, type: 2}
-  bulletSpeed: 250
+  bulletSpeed: 150
   dmg: 5
   maxReflectionTime: 6
+  lmask:
+    serializedVersion: 2
+    m_Bits: 16384

@@ -26,7 +26,7 @@ public class PerformPassiveSkill : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        go.transform.forward = (transform.GetChild(1).position - player.transform.position).normalized;
+//        go.transform.forward = (transform.GetChild(1).position - player.transform.position).normalized;
     }
     private void OnTriggerEnter(Collider other)
     {

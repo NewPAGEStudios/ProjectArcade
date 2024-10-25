@@ -21,3 +21,6 @@ MonoBehaviour:
   bulletSpeed: 75
   dmg: 10
   maxReflectionTime: 0
+  lmask:
+    serializedVersion: 2
+    m_Bits: 0
