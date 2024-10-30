@@ -230,13 +230,13 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             evtrigger1.triggers.Add(hoverEvent);
 
 
-            GameObject imajChild = Instantiate(shopTXT, imaj.transform);
-            TextMeshProUGUI tmp = imajChild.AddComponent<TextMeshProUGUI>();
-            tmp.color = Color.white;
-            tmp.text = weapons[i].toBuyMoney.ToString();
-            tmp.fontSize = 36;
-            tmp.fontStyle = FontStyles.Bold;
-            tmp.alignment = TextAlignmentOptions.MidlineGeoAligned;
+            //GameObject imajChild = Instantiate(shopTXT, imaj.transform);
+            //TextMeshProUGUI tmp = imajChild.AddComponent<TextMeshProUGUI>();
+            //tmp.color = Color.white;
+            //tmp.text = weapons[i].toBuyMoney.ToString();
+            //tmp.fontSize = 18;
+            //tmp.fontStyle = FontStyles.Bold;
+            //tmp.alignment = TextAlignmentOptions.MidlineGeoAligned;
         }
         for (int i = 0; i < skills.Length; i++)
         {
@@ -275,7 +275,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 eventID = EventTriggerType.PointerExit
             };
             hoveroutEvent.callback.AddListener((functionIwant) => { shopNameReset(); });
-            evtrigger1.triggers.Add(hoverEvent);
+            evtrigger1.triggers.Add(hoveroutEvent);
 
             GameObject imajChild = Instantiate(shopTXT, imaj.transform);
             TextMeshProUGUI tmp = imajChild.AddComponent<TextMeshProUGUI>();
@@ -682,7 +682,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public void endBoss(GameObject bossObject)
     {
         bossPanel.SetActive(false);
-        toCinematic(pState, PlayState.inWaiting, bossObject.GetComponent<Animator>(), bossObject.GetComponentInChildren<Camera>(),bossObject);
+        toCinematicBossFight(pState, PlayState.inWaiting, bossObject.GetComponent<Animator>(), bossObject.GetComponentInChildren<Camera>(),bossObject);
     }
     private void toWave()
     {
@@ -737,7 +737,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         waitTimer = waitTime;
         pState = PlayState.inWaiting;
 
-
+        Debug.Log(currentLevel);
+        
         for (int i = 0; i < currentLevel.transform.Find("Shops").childCount; i++)
         {
             currentLevel.transform.Find("Shops").GetChild(i).GetComponent<Shop>().open();
@@ -779,10 +780,10 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         bossPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = boss[i].bossName;
 
 
-        toCinematic(pState, PlayState.inBoss, go.GetComponent<Animator>(), go.GetComponentInChildren<Camera>(),null);
+        toCinematicBossFight(pState, PlayState.inBoss, go.GetComponent<Animator>(), go.GetComponentInChildren<Camera>(),null);
 
     }
-    private void toCinematic(PlayState from,PlayState to,Animator anim,Camera animCam,GameObject targetting)
+    private void toCinematicBossFight(PlayState from,PlayState to,Animator anim,Camera animCam,GameObject targetting)
     {
         pState = PlayState.inCinematic;
         //DisableUI
@@ -810,6 +811,22 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         }
         //Addable
     }
+    private void toCinematicShop(GameState? from , GameState to, Shop sh)
+    {
+        pState=PlayState.inCinematic;
+
+        playerPanel.SetActive(false);
+
+        if(from == GameState.inGame && to == GameState.inShop)
+        {
+            StartCoroutine(ShopStartAnim(sh));
+        }
+        else if(from == GameState.inShop && to == GameState.inGame)
+        {
+            StartCoroutine(ShopEndAnim());
+        }
+    }
+
 
     //MapChanges
     public void changeMap(GameObject mapParent)
@@ -1063,6 +1080,74 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         //change GameState
         pState = PlayState.inBoss;
     }
+
+    IEnumerator ShopStartAnim(Shop sh)
+    {
+        player.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        player.GetComponent<Rigidbody>().useGravity = false;
+
+        Vector3 vec = sh.HeadPOS.transform.position;
+
+        while (true)
+        {
+            player.transform.forward = Vector3.MoveTowards(player.transform.forward, sh.HeadPOS.transform.forward, 0.0001f * 100f);
+            player.transform.position = Vector3.MoveTowards(player.transform.position, vec, 0.0001f * 100f);
+            if (player.transform.position == vec)
+            {
+                player.transform.forward = sh.HeadPOS.transform.forward;
+                break;
+            }
+            Debug.Log("1");
+            yield return new WaitForSecondsRealtime(0.0001f);
+        }
+        float xRot=10f;
+        mainCam.transform.localEulerAngles = new Vector3(xRot, 0, 0);
+//        while (true)
+//        {
+//            xRot = Mathf.MoveTowards(mainCam.transform.localEulerAngles.x, 10f, 0.0001f * 500f);
+//            mainCam.transform.localEulerAngles = new Vector3(xRot, 0, 0);
+//            Debug.Log("kombo:" + mainCam.transform.localEulerAngles.x);
+//            if (mainCam.transform.localEulerAngles.x == 10f)
+//            {
+//                break;
+//            }
+//            yield return new WaitForSecondsRealtime(0.0001f);
+////            Debug.Log("2");
+//        }
+        //startAnim;
+        player.GetComponent<WeaponManager>().doubleHandAnimation(0);
+        while (true)
+        {
+            if (player.GetComponent<WeaponManager>().hand_Animator.GetCurrentAnimatorStateInfo(2).IsName("WaitingEnd")) { break; }
+            yield return new WaitForSecondsRealtime(0.0001f);
+            Debug.Log("3");
+        }
+        while (true)
+        {
+            mainCam.transform.localEulerAngles = Vector3.MoveTowards(mainCam.transform.localEulerAngles, new Vector3(0, 0, 0), 0.0001f * 100f);
+            if (mainCam.transform.localEulerAngles.x == 0f)
+            {
+                break;
+            }
+            yield return new WaitForSecondsRealtime(0.0001f);
+            Debug.Log("4");
+        }
+
+        Time.timeScale = 0;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
+        pState = PlayState.inWaiting;
+        state = GameState.inShop;
+        ShopOpener();
+    }
+    IEnumerator ShopEndAnim()
+    {
+        yield return null;
+    }
+
+
+
     //UI Events
     //GameBasedUI Evvents
     public void waitTimeVisualize(float timer)
@@ -1111,6 +1196,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     }
     public void ShopCloser()
     {
+
+
         if (pState == PlayState.inWaiting)
         {
             player.transform.GetChild(1).Find("Musics").Find("MusicWait").GetComponent<AudioSource>().UnPause();
@@ -1292,6 +1379,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public void MoneyDisplay()
     {
         playerPanel.transform.GetChild(7).GetChild(0).GetComponent<TextMeshProUGUI>().text = money.ToString() + " $";
+        shopPanel.transform.GetChild(0).GetChild(5).GetComponent<TextMeshProUGUI>().text = money.ToString() + " $";
     }
     public void DisplayInstruction(bool display)
     {
@@ -1549,21 +1637,22 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         gamePanel.transform.GetChild(7).GetChild(2).Find("Name").GetComponent<TextMeshProUGUI>().text = localizer_scp.applySkill(player.GetComponent<WeaponManager>().stocked_Skills[index], "Name");
     }
     //functions
-    public void Interact(int interactID)
+    public void Interact(int interactID,GameObject interactedOBJ)
     {
         if (interactID == 0) 
         {
-            Time.timeScale = 0;
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-            state = GameState.inShop;
-            ShopOpener();
+            if(interactedOBJ.TryGetComponent<Shop>(out Shop sh))
+            {
+                toCinematicShop(GameState.inGame, GameState.inShop, sh);
+            }
         }
     }
     //function -> interactions closer function
     public void shopCloserfunc()
     {
         Time.timeScale = 1f;
+
+        player.GetComponent<WeaponManager>().doubleHandAnimationStop();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         state = GameState.inGame;

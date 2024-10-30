@@ -184,7 +184,9 @@ public class PController : MonoBehaviour
         }
 
         CheckGround();
+
     }
+
     private void FixedUpdate()
     {
         if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || gc.state == GameController.GameState.inShop || ccstate != CCStateOfPlayer.normal)
@@ -600,10 +602,27 @@ public class PController : MonoBehaviour
         }
     }
 
+    public void cinmeatic_Movement()
+    {
+
+    }
+    IEnumerator moveTowards()
+    {
+        while (true) 
+        {
+            yield return null;
+        }
+    }
+
+
+
     public InputManager getIManager()
     {
         return iManager;
     }
+
+
+
 
     //CC Handling
     public void ThrowPlayer(Vector3 source)

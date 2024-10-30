@@ -105,7 +105,7 @@ public class ReflectBulletFunctions : MonoBehaviour
                 if (numberOfCollisionHit == mostHitCanBeDone)
                 {
                     interrupt_Movement = true;
-                    //startDesttroyObject();
+                    startDesttroyObject();
                 }
                 dmg += 50;
             }

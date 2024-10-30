@@ -157,10 +157,10 @@ public class EnemyHealth : MonoBehaviour
         while (true)
         {
             mainMPB.SetFloat("_NoiseStrength", valueOfStrentgh);
-            valueOfStrentgh = Mathf.MoveTowards(valueOfStrentgh, -1, Time.deltaTime * 5f);
+            valueOfStrentgh = Mathf.MoveTowards(valueOfStrentgh, -1, Time.deltaTime * 7.5f);
 
             enemyObjectRenderer.SetPropertyBlock(mainMPB);
-            yield return new WaitForEndOfFrame();
+            yield return null;
             if (valueOfStrentgh <= -1)
             {
                 break;

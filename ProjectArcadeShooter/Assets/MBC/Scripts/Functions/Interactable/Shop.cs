@@ -15,6 +15,9 @@ public class Shop : MonoBehaviour
 
     Coroutine coroutine1;
     Coroutine coroutine2;
+
+    public GameObject LightOBJ;
+    public GameObject HeadPOS;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +35,7 @@ public class Shop : MonoBehaviour
     public void close()
     {
         col.enabled = false;
+        LightOBJ.SetActive(false);
         StartCoroutine(CloseRoutine());
     }
     IEnumerator OpenRoutine()
@@ -47,6 +51,7 @@ public class Shop : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         col.enabled = true;
+        LightOBJ.SetActive(true);
         yield return null;
     }
     IEnumerator CloseRoutine()

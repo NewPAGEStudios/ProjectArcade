@@ -245,18 +245,11 @@ public class WeaponManager : MonoBehaviour
             }//HandState Control
 
         }
-    }
-    private void FixedUpdate()
-    {
-        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || gc.state == GameController.GameState.inShop || player.ccstate != PController.CCStateOfPlayer.normal)
-        {
-            return;
-        }
-        if (Physics.Raycast(firePos.transform.parent.position, firePos.transform.forward,2f,1<<11))
+        if (Physics.Raycast(firePos.transform.parent.position, firePos.transform.forward, out RaycastHit hitInfo ,2f, 1 << 11))
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                gc.Interact(0);
+                gc.Interact(0, hitInfo.transform.gameObject);
             }
             gc.DisplayInstruction(true);
             Debug.DrawRay(firePos.transform.position, firePos.transform.forward, Color.red);
@@ -264,6 +257,14 @@ public class WeaponManager : MonoBehaviour
         else
         {
             gc.DisplayInstruction(false);
+        }
+
+    }
+    private void FixedUpdate()
+    {
+        if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || gc.state == GameController.GameState.inShop || player.ccstate != PController.CCStateOfPlayer.normal)
+        {
+            return;
         }
 
     }
@@ -423,7 +424,17 @@ public class WeaponManager : MonoBehaviour
         {
             FindWeaponOnRuntime(currWeaponID).inWeapon_ammoAmount = currWeapon_inWeapon_ammoAmount;
             FindWeaponOnRuntime(currWeaponID).sum_ammoAmount = currWeapon_sum_ammoAmount;
+            if (currentWeaponGO.TryGetComponent<Animator>(out Animator anim))
+            {
+                anim.SetTrigger("Interruption");
+            }
         }
+        else
+        {
+        }
+
+
+        StopAllCoroutines();
 
         currWeapon_sum_ammoAmount = FindWeaponOnRuntime(weaponID).sum_ammoAmount;
         currWeapon_inWeapon_ammoAmount = FindWeaponOnRuntime(weaponID).inWeapon_ammoAmount;
@@ -886,6 +897,20 @@ public class WeaponManager : MonoBehaviour
         skill_holdOT = true;
         skillDisplay.SetActive(false);
     }
+    //Animation
+    public void doubleHandAnimation(int interaction)
+    {
+        StopAllCoroutines();
+
+        hand_Animator.SetInteger("Interaction_id", interaction);
+        hand_Animator.SetTrigger("interaction");
+    }
+    public void doubleHandAnimationStop()
+    {
+        hand_Animator.SetInteger("Interaction_id", -1);
+    }
+
+
     IEnumerator CancelSkillAnim(int id)
     {
         hand_Animator.SetBool("cancel_skill" + id, true);
