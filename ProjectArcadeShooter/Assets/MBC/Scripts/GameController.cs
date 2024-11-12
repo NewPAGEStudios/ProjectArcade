@@ -160,7 +160,12 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     private Coroutine shopInfoVis;
     private Coroutine moneyBoom;
     private Coroutine dmgDeal;
-
+    [Header("MapSpecifications")]
+    [Header("Map1")]
+    public RoomManager roomManager;
+    public float roomCloseTime;
+    public float roomRoutineRate;
+    private float roomTimer;
     //PostProcessing Settings
     AmbientOcclusion ao;
 
@@ -368,7 +373,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         //Cursor Handling
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-
+        roomTimer = roomRoutineRate;
         /* Save on waitState
         check save and load it save elements =  
         player,char's ammo,weapon,ability,hp,dashMeter,Money,,
@@ -647,6 +652,16 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 else
                 {
                     spawnTimer -= Time.deltaTime;
+                }
+                //MapSpecification
+                if (roomTimer <= 0f)
+                {
+                    roomManager.startRoutineOfRoom(roomCloseTime);
+                    roomTimer = roomRoutineRate;
+                }
+                else
+                {
+                    roomTimer -= Time.deltaTime;
                 }
                 if (enemyCount == 0)
                 {
