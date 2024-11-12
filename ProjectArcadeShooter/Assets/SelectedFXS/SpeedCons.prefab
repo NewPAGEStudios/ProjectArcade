@@ -10,7 +10,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1103892459537272, guid: a5bc136c5e87fb14888b1af7d82802f5, type: 3}
       propertyPath: m_Name
-      value: FX_Pickup_Boost_01 Variant
+      value: SpeedCons
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188013617515376, guid: a5bc136c5e87fb14888b1af7d82802f5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1281752795108610, guid: a5bc136c5e87fb14888b1af7d82802f5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1967580776404822, guid: a5bc136c5e87fb14888b1af7d82802f5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4044686677627860, guid: a5bc136c5e87fb14888b1af7d82802f5, type: 3}
       propertyPath: m_LocalPosition.x
