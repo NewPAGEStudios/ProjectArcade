@@ -25,4 +25,5 @@ MonoBehaviour:
   maxReflectionTime: 6
   lmask:
     serializedVersion: 2
-    m_Bits: 16384
+    m_Bits: 31159
+  wallTrace: {fileID: 21299647934069206, guid: 0077c60851286de4cb583b7796b3556d, type: 3}

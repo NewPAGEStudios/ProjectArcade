@@ -12,7 +12,6 @@ public class WalkerRanged : MonoBehaviour
     private NavMeshAgent agent;
     private GameObject Player;
 
-    private bool oteventForanimator_id3 = true;
 
     public Enemy enemy;
 
@@ -33,37 +32,13 @@ public class WalkerRanged : MonoBehaviour
         }
         moveTimer += Time.deltaTime;
         shotTimer += Time.deltaTime;
-        //move
-        Debug.DrawRay(gameObject.transform.position + gameObject.transform.right, enemy.Player.transform.position - gameObject.transform.position, Color.green, Time.deltaTime);
-        //if(Physics.Raycast(gameObject.transform.position + new Vector3(0, 1, 0), enemy.Player.transform.position - gameObject.transform.position, out RaycastHit hit,Vector3.Distance(gameObject.transform.position, enemy.Player.transform.position),1))
-        //{
-        //    Debug.Log("Bomba " + hit.transform.gameObject.layer);
-        //}
+
         if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.e_type.rangeDistance - 2 || Physics.Raycast(gameObject.transform.position + new Vector3(0,1,0), enemy.Player.transform.position - gameObject.transform.position,Vector3.Distance(gameObject.transform.position, enemy.Player.transform.position),16384))
         {
             enemy.Agent.SetDestination(enemy.Player.transform.position);
             lookPlayer();
             enemy.animator.SetBool("isWalking", true);
-            switch (enemy.e_type.EnemyTypeID)
-            {
-                case 0:
-                    enemy.soundController.PlaySound("Footsteps", 0.12f);
-                    break;
-                case 1:
-                    enemy.soundController.PlaySound("Footsteps", 0.11f);
-                    break;
-                case 2:
-                    enemy.soundController.PlaySound("Footsteps", 0.10f);
-                    break;
-                case 3:
-                    enemy.soundController.PlaySound("Footsteps", 0.10f);
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                default: break;
-            }
+            enemy.soundController.PlaySound("Footsteps", 0.11f);
 
         }
         else
@@ -73,40 +48,17 @@ public class WalkerRanged : MonoBehaviour
             enemy.soundController.StopSound("Footsteps", 0f);
         }
         //Shoot
-        if (enemy.e_type.EnemyTypeID == 3)//FüzeAtarSpecialState
+        if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) < enemy.e_type.rangeDistance && !Physics.Raycast(gameObject.transform.position + new Vector3(0, 1, 0), enemy.Player.transform.position - gameObject.transform.position, Vector3.Distance(gameObject.transform.position, enemy.Player.transform.position), 16384))
         {
-            if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) < enemy.e_type.rangeDistance && !Physics.Raycast(gameObject.transform.position + new Vector3(0, 1, 0), enemy.Player.transform.position - gameObject.transform.position, Vector3.Distance(gameObject.transform.position, enemy.Player.transform.position), 16384))
+            if(shotTimer >= enemy.e_type.attackRatio)
             {
-                if (oteventForanimator_id3)
-                {
-                    enemy.animator.SetTrigger("Attack");
-                    enemy.animator.SetBool("AttackEnd", false);
-                }
-                if (shotTimer > enemy.fireRate)
-                {
-                    //if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) <= enemy.e_type.rangeDistance)
-                    //    Shoot();
-                }
+                Shoot();
+                shotTimer = 0;
             }
-            else
+            if (moveTimer > Random.Range(1.5f, 3))
             {
-                enemy.animator.SetBool("AttackEnd", true);
-            }
-        }
-        else//gerisi
-        {
-            if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) < enemy.e_type.rangeDistance && !Physics.Raycast(gameObject.transform.position + new Vector3(0, 1, 0), enemy.Player.transform.position - gameObject.transform.position, Vector3.Distance(gameObject.transform.position, enemy.Player.transform.position), 16384))
-            {
-                if(shotTimer >= enemy.e_type.attackRatio)
-                {
-                    Shoot();
-                    shotTimer = 0;
-                }
-                if (moveTimer > Random.Range(1.5f, 3))
-                {
-                    enemy.Agent.SetDestination(enemy.transform.position + (Random.insideUnitSphere * 15));
-                    moveTimer = 0;
-                }
+                enemy.Agent.SetDestination(enemy.transform.position + (Random.insideUnitSphere * 15));
+                moveTimer = 0;
             }
         }
 
@@ -195,18 +147,7 @@ public class WalkerRanged : MonoBehaviour
         bullet.AddComponent(scriptAmmo);
 
 
-        //ManuelAdding
-        if (bullet.TryGetComponent<ReflectBulletFunctions>(out ReflectBulletFunctions rbf))
-        {
-            //Þuan yok
-        }
-        else if (bullet.TryGetComponent<FuseFunction>(out FuseFunction ff))
-        {
-            ff.baseAmmo = enemy.e_type.ammo;
-            ff.firedBy = enemy.gameObject;
-            ff.simulatedPos = GameObject.Instantiate(Resources.Load("Prefabs/FuzeIndicator") as GameObject, Vector3.zero, Quaternion.identity);
-        }
-        else if (bullet.TryGetComponent<NormalBulletFunction>(out NormalBulletFunction nbf))
+        if (bullet.TryGetComponent<NormalBulletFunction>(out NormalBulletFunction nbf))
         {
             nbf.baseAmmo = enemy.e_type.ammo;
             nbf.firedBy = enemy.gameObject;

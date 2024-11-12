@@ -45,22 +45,22 @@ public class WalkerMelee : MonoBehaviour
             if (footstepTimer <= 0)
             {
                 enemy.soundController.PlaySound("Footsteps", 0);
-                switch (enemy.e_type.EnemyTypeID)
-                {
-                    case 0:
-                        footstepTimer = 0.75f;
-                        break;
-                    case 1:
-                        footstepTimer = 0.75f;
-                        break;
-                    case 2:
-                        footstepTimer = 0.35f;
-                        break;
-                    case 3:
-                        footstepTimer = 0.35f;
-                        break;
-                    default: break;
-                }
+                footstepTimer = 0.75f;
+                //switch (enemy.e_type.EnemyTypeID)
+                //{
+                //    case 0:
+                //        break;
+                //    case 1:
+                //        footstepTimer = 0.75f;
+                //        break;
+                //    case 2:
+                //        footstepTimer = 0.35f;
+                //        break;
+                //    case 3:
+                //        footstepTimer = 0.35f;
+                //        break;
+                //    default: break;
+                //}
 
             }
             else
@@ -75,22 +75,22 @@ public class WalkerMelee : MonoBehaviour
             enemy.animator.SetBool("isWalking", false);
 
             enemy.soundController.StopSound("Footsteps", 0f);
-            switch (enemy.e_type.EnemyTypeID)
-            {
-                case 0:
-                    footstepTimer = 0.12f;
-                    break;
-                case 1:
-                    footstepTimer = 0.11f;
-                    break;
-                case 2:
-                    footstepTimer = 0.1f;
-                    break;
-                case 3:
-                    footstepTimer = 0.1f;
-                    break;
-                default: break;
-            }
+            footstepTimer = 0.12f;
+            //switch (enemy.e_type.EnemyTypeID)
+            //{
+            //    case 0:
+            //        break;
+            //    case 1:
+            //        footstepTimer = 0.11f;
+            //        break;
+            //    case 2:
+            //        footstepTimer = 0.1f;
+            //        break;
+            //    case 3:
+            //        footstepTimer = 0.1f;
+            //        break;
+            //    default: break;
+            //}
 
             targetRotation = Quaternion.LookRotation(enemy.Player.transform.position - enemy.transform.position);
             enemy.transform.rotation = Quaternion.Lerp(enemy.transform.rotation, targetRotation, .4f);

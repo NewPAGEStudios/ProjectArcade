@@ -39,11 +39,9 @@ public class NormalBulletFunction : MonoBehaviour
     private void OnTriggerEnter(Collider collider)
     {
         Transform hitTransform = collider.transform;
-            // Debug.Log("temas etti");
 
         if(hitTransform.CompareTag("PlayerColl"))
         {
-            Debug.Log("temas etti");
             hitTransform.parent.GetComponent<PController>().TakeDMG(baseAmmo.dmg, firedBy);
         }
         Destroy(gameObject);

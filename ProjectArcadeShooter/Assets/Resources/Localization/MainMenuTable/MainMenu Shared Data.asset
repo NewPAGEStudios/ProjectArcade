@@ -183,6 +183,18 @@ MonoBehaviour:
     m_Key: soundTXT
     m_Metadata:
       m_Items: []
+  - m_Id: 33241977287151616
+    m_Key: Default_Btn_Txt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33587921924984832
+    m_Key: Resolution_TXT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33966878033776640
+    m_Key: RefreshRate_TXT
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

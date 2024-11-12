@@ -84,6 +84,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public GameObject mainLevel;
     public GameObject mapParentM;
     private GameObject currentLevel;
+    public GameObject tracesParent;
     //spawnPoint Variables
     [HideInInspector]
     public GameObject consumableSpawnPointParent;
@@ -135,6 +136,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     private float baseFixedUpdate;
     public int bossTimePerWave;
     public int bossTimePerWaveLoop;
+    public float wallTraceLifeTime;
     [Tooltip("PercentageOfSpawningWeapon")]
     public int ammoSpawn = 50;
 
@@ -146,7 +148,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public GameObject consAmmoIndicator;
     [Header(header: "Prefab Referances")]
     public GameObject consIndicator;
-
+    public GameObject moneyOBJ_Parent;
+    public GameObject moneyOBJ;
 
     //IEnumerators
     private Coroutine comboDisplayRoutine;
@@ -155,7 +158,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     private Coroutine dmgTakenEffectCoroutine;
     private Coroutine dashEffectCoroutine;
     private Coroutine shopInfoVis;
-
+    private Coroutine moneyBoom;
+    private Coroutine dmgDeal;
 
     //PostProcessing Settings
     AmbientOcclusion ao;
@@ -201,33 +205,33 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             weaponGO.name = weapons[i].WeaponName;
             weaponGO.SetActive(false);
 
-            //UI Instanttiate
-            GameObject imaj = Instantiate(shopButton, shopPanel.transform.GetChild(0).GetChild(0).GetChild(0));
-            imaj.AddComponent<Image>();
-            imaj.GetComponent<Image>().sprite = weapons[i].UIRef;
-            imaj.name = weapons[i].WeaponName + "Shop";
-            imaj.GetComponent<RectTransform>().sizeDelta = new Vector2(150, 150);
-            //button click event
-            Button but = imaj.AddComponent<Button>();
-            but.targetGraphic=imaj.GetComponent<Image>();
+            ////UI Instanttiate
+            //GameObject imaj = Instantiate(shopButton, shopPanel.transform.GetChild(0).GetChild(0).GetChild(0));
+            //imaj.AddComponent<Image>();
+            //imaj.GetComponent<Image>().sprite = weapons[i].UIRef;
+            //imaj.name = weapons[i].WeaponName + "Shop";
+            //imaj.GetComponent<RectTransform>().sizeDelta = new Vector2(150, 150);
+            ////button click event
+            //Button but = imaj.AddComponent<Button>();
+            //but.targetGraphic=imaj.GetComponent<Image>();
 
-            but.onClick.AddListener(() => weaponButtonPressed(but.gameObject.name) );
-            //button hover event
-            EventTrigger evtrigger = but.AddComponent<EventTrigger>();
-            EventTrigger.Entry hoverEvent = new()
-            {
-                eventID = EventTriggerType.PointerEnter
-            };
-            hoverEvent.callback.AddListener((functionIwant) => { weaponButtonHover(but.gameObject.name); });
-            evtrigger.triggers.Add(hoverEvent);
-            //button hover out event
-            EventTrigger evtrigger1 = but.AddComponent<EventTrigger>();
-            EventTrigger.Entry hoveroutEvent = new()
-            {
-                eventID = EventTriggerType.PointerExit
-            };
-            hoveroutEvent.callback.AddListener((functionIwant) => { shopNameReset(); });
-            evtrigger1.triggers.Add(hoverEvent);
+            //but.onClick.AddListener(() => weaponButtonPressed(but.gameObject.name) );
+            ////button hover event
+            //EventTrigger evtrigger = but.AddComponent<EventTrigger>();
+            //EventTrigger.Entry hoverEvent = new()
+            //{
+            //    eventID = EventTriggerType.PointerEnter
+            //};
+            //hoverEvent.callback.AddListener((functionIwant) => { weaponButtonHover(but.gameObject.name); });
+            //evtrigger.triggers.Add(hoverEvent);
+            ////button hover out event
+            //EventTrigger evtrigger1 = but.AddComponent<EventTrigger>();
+            //EventTrigger.Entry hoveroutEvent = new()
+            //{
+            //    eventID = EventTriggerType.PointerExit
+            //};
+            //hoveroutEvent.callback.AddListener((functionIwant) => { shopNameReset(); });
+            //evtrigger1.triggers.Add(hoverEvent);
 
 
             //GameObject imajChild = Instantiate(shopTXT, imaj.transform);
@@ -250,7 +254,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
             }
             //UI Instanttiate
-            GameObject imaj = Instantiate(shopButton, shopPanel.transform.GetChild(0).GetChild(0).GetChild(0));
+            GameObject imaj = Instantiate(shopButton, shopPanel.transform.GetChild(0).GetChild(0).GetChild(1));
             imaj.AddComponent<Image>();
             imaj.GetComponent<Image>().sprite = skills[i].sprite_HUD;
             imaj.name = "id_" + skills[i].skillTypeID + "Shop";
@@ -285,6 +289,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             tmp.fontStyle = FontStyles.Bold;
             tmp.alignment = TextAlignmentOptions.MidlineGeoAligned;
         }
+        ShopGridChange(0);
         //spawnMaps;
         for (int i = 0; i < boss.Length; i++)
         {
@@ -305,14 +310,14 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         }
 
 
-        newGame = PlayerPrefs.GetInt("newGame") == 1 ? true : false;
+        newGame = PlayerPrefs.GetInt("newGame", 1) == 1 ? true : false;
 
     }
 
     private void Start()
     {
         //optionInitializition;
-        gamePanel.transform.GetChild(4).GetChild(1).GetComponent<InGameSettings>().initValues();
+//        gamePanel.transform.GetChild(4).GetChild(1).GetComponent<InGameSettings>().initValues();
         GetComponent<CheckMusicVolume>().UpdateVolume();
 
         if (newGame)
@@ -334,9 +339,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             waitTimeVisualize(-1);
 
             //UI INIT
-            ChangeAmmoText(-1, false);
-            ChangeVisibilityofSlash(false);
-            ChangefullAmmoText(-1,false);
+            ChangeAmmoText(-1, -1,false);
 
             ComboBG(0);
             ComboVisualize(0);
@@ -1097,7 +1100,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 player.transform.forward = sh.HeadPOS.transform.forward;
                 break;
             }
-            Debug.Log("1");
             yield return new WaitForSecondsRealtime(0.0001f);
         }
         float xRot=10f;
@@ -1120,7 +1122,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         {
             if (player.GetComponent<WeaponManager>().hand_Animator.GetCurrentAnimatorStateInfo(2).IsName("WaitingEnd")) { break; }
             yield return new WaitForSecondsRealtime(0.0001f);
-            Debug.Log("3");
         }
         while (true)
         {
@@ -1130,7 +1131,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 break;
             }
             yield return new WaitForSecondsRealtime(0.0001f);
-            Debug.Log("4");
         }
 
         Time.timeScale = 0;
@@ -1150,6 +1150,46 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
     //UI Events
     //GameBasedUI Evvents
+
+    public void crossColorChange(Color col)
+    {
+        foreach(RawImage im in playerPanel.transform.GetChild(1).GetComponentsInChildren<RawImage>())
+        {
+            im.color = col;
+        }
+    }
+
+    public void dmgDoneFeedBack()
+    {
+        if (dmgDeal != null)
+        {
+            StopCoroutine(dmgDeal);
+        }
+        dmgDeal = StartCoroutine(dmgDoneRoutine());
+    }
+    IEnumerator dmgDoneRoutine()
+    {
+        float a = 1f;
+        Color col = playerPanel.transform.GetChild(6).GetChild(0).GetComponent<Image>().color;
+        for (int c = 0; c < playerPanel.transform.GetChild(6).childCount; c++)
+        {
+            playerPanel.transform.GetChild(6).GetChild(c).GetComponent<Image>().color = new Color(col.r, col.g, col.b, 1);
+        }
+        while (true)
+        {
+            a = Mathf.MoveTowards(a, 0f, Time.deltaTime * 4);
+            for(int c = 0; c < playerPanel.transform.GetChild(6).childCount; c++)
+            {
+                playerPanel.transform.GetChild(6).GetChild(c).GetComponent<Image>().color = new Color(col.r, col.g, col.b, a);
+            }
+            if (a == 0f)
+            {
+                break;
+            }
+            yield return null;
+        }
+    }
+
     public void waitTimeVisualize(float timer)
     {
         if (timer < 0)
@@ -1217,6 +1257,17 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         }
         shopInfoVis = StartCoroutine(ShopInfoRoutine());
     }
+    public void ShopGridChange(int id)
+    {
+        for(int i = 0; i< shopPanel.transform.GetChild(0).GetChild(0).childCount; i++)
+        {
+            shopPanel.transform.GetChild(0).GetChild(0).GetChild(i).gameObject.SetActive(false);
+            if (id == i)
+            {
+                shopPanel.transform.GetChild(0).GetChild(0).GetChild(i).gameObject.SetActive(true);
+            }
+        }
+    }
     IEnumerator ShopInfoRoutine()
     {
         TextMeshProUGUI tmpInfo = shopPanel.transform.GetChild(0).Find("Info").GetComponent<TextMeshProUGUI>();
@@ -1276,38 +1327,30 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
     public void changeHPOfPlayer(float maxH, float currentH)
     {
-        playerPanel.transform.GetChild(6).GetChild(0).GetComponent<Image>().fillAmount = currentH/maxH;
-        playerPanel.transform.GetChild(6).GetChild(1).GetComponent<TextMeshProUGUI>().text = currentH.ToString() + "/" + maxH.ToString();
+        playerPanel.transform.GetChild(4).GetChild(1).GetComponent<Image>().fillAmount = currentH/maxH;
+        playerPanel.transform.GetChild(4).GetChild(2).GetComponent<TextMeshProUGUI>().text = currentH.ToString() + "/" + maxH.ToString();
     }
-    public void ChangeAmmoText(int? newAmmo = -1, bool? value = true)
+
+
+    public void ChangeAmmoText(int? newAmmo = -1, int? newMaxAmmo = -1, bool? value = true)
     {
-        playerPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = newAmmo.ToString();
+        playerPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = newAmmo.ToString() + "/" + newMaxAmmo.ToString();
+
         playerPanel.transform.GetChild(0).transform.gameObject.SetActive(value.Value);
     }
 
 
-    
-    public void ChangeVisibilityofSlash(bool value)
-    {
-        playerPanel.transform.GetChild(1).gameObject.SetActive(value);
-    }
-    public void ChangefullAmmoText(int? newAmmo = -1, bool? value = true)
-    {
-         playerPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = newAmmo.ToString();
-         playerPanel.transform.GetChild(2).transform.gameObject.SetActive(value.Value);
-    }
-
     public void ChangeActiveWeapon(int id)
     {
-        for (int c = 0; c < playerPanel.transform.GetChild(9).childCount; c++)
+        for (int c = 0; c < playerPanel.transform.GetChild(7).childCount; c++)
         {
             if(c == id)
             {
-                playerPanel.transform.GetChild(9).GetChild(c).gameObject.SetActive(true);
+                playerPanel.transform.GetChild(7).GetChild(c).gameObject.SetActive(true);
             }
             else
             {
-                playerPanel.transform.GetChild(9).GetChild(c).gameObject.SetActive(false);
+                playerPanel.transform.GetChild(7).GetChild(c).gameObject.SetActive(false);
             }
         }
     }
@@ -1317,21 +1360,21 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
     public void changeSpriteOfActiveSkill(Sprite sprite)
     {
-        playerPanel.transform.GetChild(4).GetChild(0).GetComponent<Image>().enabled = true;
-        playerPanel.transform.GetChild(4).GetChild(0).GetComponent<Image>().sprite = sprite;
+        playerPanel.transform.GetChild(2).GetChild(0).GetComponent<Image>().enabled = true;
+        playerPanel.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = sprite;
     }
     public void closeSpriteOfActiveSkill(Sprite sprite)
     {
-        playerPanel.transform.GetChild(4).GetChild(0).GetComponent<Image>().sprite = null;
-        playerPanel.transform.GetChild(4).GetChild(0).GetComponent<Image>().enabled = false;
+        playerPanel.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = null;
+        playerPanel.transform.GetChild(2).GetChild(0).GetComponent<Image>().enabled = false;
     }
     public void LaserIndicator(float maxMeter,float curMeter)
     {
-        for(int c = 0; c < playerPanel.transform.GetChild(9).childCount; c++)
+        for(int c = 0; c < playerPanel.transform.GetChild(7).childCount; c++)
         {
-            if (playerPanel.transform.GetChild(9).GetChild(c).gameObject.activeInHierarchy)
+            if (playerPanel.transform.GetChild(7).GetChild(c).gameObject.activeInHierarchy)
             {
-                playerPanel.transform.GetChild(9).GetChild(c).GetChild(0).GetComponent<Image>().fillAmount = (maxMeter - curMeter) / maxMeter;
+                playerPanel.transform.GetChild(7).GetChild(c).GetChild(0).GetComponent<Image>().fillAmount = (maxMeter - curMeter) / maxMeter;
             }
         }
     }
@@ -1341,20 +1384,19 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     {
         float lastMeter = dashMeter % 25;
         int opennedMeters = (int) dashMeter / 25;
-        playerPanel.transform.GetChild(5);
-        for(int i = playerPanel.transform.GetChild(5).childCount - 1; i >= 0 ; i--)
+        for(int i = 0; i <= playerPanel.transform.GetChild(3).childCount - 1; i++)
         {
             if (opennedMeters > 0)
             {
-                playerPanel.transform.GetChild(5).GetChild(i).GetComponent<Image>().fillAmount = 1;
+                playerPanel.transform.GetChild(3).GetChild(i).GetComponent<Image>().fillAmount = 1;
             }
             else if(opennedMeters == 0)
             {
-                playerPanel.transform.GetChild(5).GetChild(i).GetComponent<Image>().fillAmount = lastMeter / 25;
+                playerPanel.transform.GetChild(3).GetChild(i).GetComponent<Image>().fillAmount = lastMeter / 25;
             }
             else
             {
-                playerPanel.transform.GetChild(5).GetChild(i).GetComponent<Image>().fillAmount = 0;
+                playerPanel.transform.GetChild(3).GetChild(i).GetComponent<Image>().fillAmount = 0;
             }
             opennedMeters--;
         }
@@ -1365,8 +1407,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         float maxDashN = dashNumber;
         while(dashNumber > 0)
         {
-            GameObject go = Instantiate(dashVisualized, playerPanel.transform.GetChild(5));
-            go.GetComponent<RectTransform>().anchoredPosition = new Vector2(800-(200 * (maxDashN - dashNumber)),400);
+            GameObject go = Instantiate(dashVisualized, playerPanel.transform.GetChild(3));
+            go.GetComponent<RectTransform>().anchoredPosition = new Vector2(-125 + (55.875f * (maxDashN - dashNumber)),0);
             dashNumber--;
         }
     }
@@ -1378,8 +1420,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     }
     public void MoneyDisplay()
     {
-        playerPanel.transform.GetChild(7).GetChild(0).GetComponent<TextMeshProUGUI>().text = money.ToString() + " $";
-        shopPanel.transform.GetChild(0).GetChild(5).GetComponent<TextMeshProUGUI>().text = money.ToString() + " $";
+        playerPanel.transform.GetChild(5).GetChild(0).GetComponent<TextMeshProUGUI>().text = money.ToString();
+        shopPanel.transform.GetChild(0).GetChild(5).GetComponent<TextMeshProUGUI>().text = money.ToString();
     }
     public void DisplayInstruction(bool display)
     {
@@ -1419,11 +1461,10 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     }
     IEnumerator DMG_UI_Give_Routine()
     {
-        Image[] ima = new Image[playerPanel.transform.GetChild(8).childCount];
-        Debug.Log("rAMBABA");
-        for (int z = 0; z < playerPanel.transform.GetChild(8).childCount; z++)
+        Image[] ima = new Image[playerPanel.transform.GetChild(6).childCount];
+        for (int z = 0; z < playerPanel.transform.GetChild(6).childCount; z++)
         {
-            ima[z] = playerPanel.transform.GetChild(8).GetChild(z).GetComponent<Image>();
+            ima[z] = playerPanel.transform.GetChild(6).GetChild(z).GetComponent<Image>();
             ima[z].color = new Color(ima[z].color.r, ima[z].color.g, ima[z].color.b, 0.4F);
         }
         while (true)
@@ -1666,16 +1707,54 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             player.transform.GetChild(1).Find("SoundSFX").GetChild(0).Find("SFX_NoMoney").GetComponent<AudioSource>().Play();
             return;
         }
-        //TODO: Buy sfx
         money -= amount;
         player.transform.GetChild(1).Find("SoundSFX").GetChild(0).Find("SFX_Cash").GetComponent<AudioSource>().Play();
+
+        if (moneyBoom != null)
+        {
+            StopCoroutine(moneyBoom);
+        }
+        moneyBoom = StartCoroutine(currencyAdding(amount, Color.red));
+
         MoneyDisplay();
     }
     public void AddMainCurrency(float amount)
     {
         money += amount;
         player.transform.GetChild(1).Find("SoundSFX").GetChild(0).Find("SFX_Cash").GetComponent<AudioSource>().Play();
+
+        if (moneyBoom != null)
+        {
+            StopCoroutine(moneyBoom);
+        }
+        moneyBoom = StartCoroutine(currencyAdding(amount, Color.green));
+
         MoneyDisplay();
+    }
+    IEnumerator currencyAdding(float amount,Color col)
+    {
+        playerPanel.transform.GetChild(5).GetChild(1).GetComponent<TextMeshProUGUI>().text = amount.ToString() + "$";
+        playerPanel.transform.GetChild(5).GetChild(1).GetComponent<TextMeshProUGUI>().color = col;
+
+        Color ICol = playerPanel.transform.GetChild(5).GetChild(1).GetChild(0).GetComponent<Image>().color;
+        playerPanel.transform.GetChild(5).GetChild(1).GetChild(0).GetComponent<Image>().color = new Color(ICol.r, ICol.g, ICol.r, 1f);
+
+        float a = 1f;
+        while (true)
+        {
+            a = Mathf.MoveTowards(a, 0f, Time.deltaTime);
+            playerPanel.transform.GetChild(5).GetChild(1).GetComponent<TextMeshProUGUI>().color = new Color(col.r, col.g, col.b, a);
+            playerPanel.transform.GetChild(5).GetChild(1).GetChild(0).GetComponent<Image>().color = new Color(ICol.r, ICol.g, ICol.r, a);
+            if (a == 0f)
+            {
+                break;
+            }
+            yield return null;
+        }
+    }
+    public void InstuctionIndicator(int consID, int? weaponID = -1, int? skillID = -1)
+    {
+
     }
 
     public void weaponButtonPressed(string nameOFWeaponName)
@@ -1767,27 +1846,28 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         comboCount += comboTime;
         if (comboCount % 5 == 0 && comboCount != 0)
         {
-            float[] possibleGainMoney = new float[1000];
-            for(int i = 0; i < 1000; i++)
-            {
-                if (i < 250)
-                {
-                    possibleGainMoney[i] = 50f;
-                }
-                else if (i < 500)
-                {
-                    possibleGainMoney[i] = 70f;
-                }
-                else if (i < 750)
-                {
-                    possibleGainMoney[i] = 90f;
-                }
-                else if (i < 999)
-                {
-                    possibleGainMoney[i] = 500f;
-                }
-            }
-            float gainMoney = possibleGainMoney[UnityEngine.Random.Range(0, possibleGainMoney.Length)]; 
+            float gainMoney = 10 * comboCount / 5;
+            //float[] possibleGainMoney = new float[100];
+            //for(int i = 0; i < 1000; i++)//TODO Revize yanlış yapmşsın
+            //{
+            //    if (i < 45)
+            //    {
+            //        possibleGainMoney[i] = 50f;
+            //    }
+            //    else if (i < 75)
+            //    {
+            //        possibleGainMoney[i] = 70f;
+            //    }
+            //    else if (i < 98)
+            //    {
+            //        possibleGainMoney[i] = 90f;
+            //    }
+            //    else if (i < 99)
+            //    {
+            //        possibleGainMoney[i] = 500f;
+            //    }
+            //}
+            //float gainMoney = possibleGainMoney[UnityEngine.Random.Range(0, possibleGainMoney.Length)]; 
             AddMainCurrency(gainMoney);
         }
         if (comboTime > 0)

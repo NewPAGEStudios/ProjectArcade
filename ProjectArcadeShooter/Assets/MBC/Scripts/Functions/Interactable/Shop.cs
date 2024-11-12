@@ -9,8 +9,6 @@ public class Shop : MonoBehaviour
     Collider col;
     MeshFilter meshFilter;
     MeshRenderer meshRenderer;
-    bool OTEventforOpen;
-    bool OTEventforClose;
     Animator animator;
 
     Coroutine coroutine1;
@@ -18,12 +16,12 @@ public class Shop : MonoBehaviour
 
     public GameObject LightOBJ;
     public GameObject HeadPOS;
+
+    public GameObject Screen;
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
-        OTEventforOpen = true;
-        OTEventforClose = true;
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         col = GetComponent<Collider>();
         animator.SetTrigger("Start");
@@ -38,6 +36,16 @@ public class Shop : MonoBehaviour
         LightOBJ.SetActive(false);
         StartCoroutine(CloseRoutine());
     }
+
+    public void openScreen()
+    {
+        Screen.SetActive(true);
+    }
+    public void closeScreen()
+    {
+        Screen.SetActive(false);
+    }
+
     IEnumerator OpenRoutine()
     {
         animator.SetBool("close", false);
@@ -52,6 +60,7 @@ public class Shop : MonoBehaviour
         }
         col.enabled = true;
         LightOBJ.SetActive(true);
+        Screen.GetComponent<zzzz>().open();
         yield return null;
     }
     IEnumerator CloseRoutine()
@@ -67,6 +76,8 @@ public class Shop : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         yield return null;
+        Screen.GetComponent<zzzz>().close();
     }
+
 
 }

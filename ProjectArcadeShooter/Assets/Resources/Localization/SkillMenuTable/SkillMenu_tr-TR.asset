@@ -75,6 +75,15 @@ MonoBehaviour:
     m_Localized: "Lazerini \u015Farjlar"
     m_Metadata:
       m_Items: []
+  - m_Id: 21572660426473472
+    m_Localized: "\xC7ekim Alan\u0131"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21573523194806272
+    m_Localized: "Merkezinde oldu\u011Fun bir yer\xE7ekimi alan\u0131 kullanarak
+      paralar\u0131 kendine \xE7eker."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

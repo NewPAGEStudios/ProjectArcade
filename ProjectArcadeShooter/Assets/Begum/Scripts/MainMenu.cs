@@ -8,9 +8,9 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     public GameObject continueBut;
+    public string sceneName;
     string path;
 
-    public GameObject LoadingScreen;
 
 
     private void Awake()
@@ -33,7 +33,7 @@ public class MainMenu : MonoBehaviour
         bool val = true;
         PlayerPrefs.SetInt("newGame",val ? 1 : 0);
         PlayerPrefs.Save();
-        GetComponent<UIMenuManager>().LoadScene("MainScene_harbiMain");
+        GetComponent<UIMenuManager>().LoadScene(sceneName);
 
     }
     public void Continue()
@@ -41,7 +41,7 @@ public class MainMenu : MonoBehaviour
         bool val = false;
         PlayerPrefs.SetInt("newGame", val ? 1 : 0);
         PlayerPrefs.Save();
-        GetComponent<UIMenuManager>().LoadScene("MainScene_harbiMain");
+        GetComponent<UIMenuManager>().LoadScene(sceneName);
     }
     public void deleteSave()
     {

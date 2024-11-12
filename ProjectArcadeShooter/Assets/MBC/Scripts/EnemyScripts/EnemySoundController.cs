@@ -20,6 +20,10 @@ public class EnemySoundController : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(delayApplyS(soundParent.transform.Find(name).GetComponent<AudioSource>(), delay));
     }
+    public bool SoundPlayState(string name)
+    {
+        return soundParent.transform.Find(name).GetComponent<AudioSource>().isPlaying;
+    }
 
 
     IEnumerator delayApplyP(AudioSource audioS,float delay)

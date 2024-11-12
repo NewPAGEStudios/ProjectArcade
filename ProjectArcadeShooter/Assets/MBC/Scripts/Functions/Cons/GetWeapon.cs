@@ -36,7 +36,7 @@ public class GetWeapon : MonoBehaviour
     {
         if(other.gameObject.CompareTag("PlayerColl"))
         {
-            Debug.Log("EscapeStart");
+//            Debug.Log("EscapeStart");
             apply(other.transform.parent.gameObject);
         }
         else

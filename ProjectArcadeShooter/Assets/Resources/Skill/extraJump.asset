@@ -20,5 +20,6 @@ MonoBehaviour:
   sprite_HUD: {fileID: 21300000, guid: f2d85f0ce2bb8eb4b9864f7937e037cc, type: 3}
   functionName: extraJumpAdder
   modelPrefab: {fileID: 0}
-  modelShow: {fileID: 1103892459537272, guid: a5bc136c5e87fb14888b1af7d82802f5, type: 3}
+  modelShow: {fileID: 665336908148057112, guid: a00a4e6b870f8504eb3069d77cb61e77,
+    type: 3}
   toBuyMoney: 10

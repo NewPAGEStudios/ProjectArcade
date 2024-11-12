@@ -41,7 +41,7 @@ public class wallriser : MonoBehaviour
         m_PropertyBlock = new MaterialPropertyBlock();
         while (m_PropertyBlock.GetFloat("_NoiseStrength") < 20f)
         {
-            m_PropertyBlock.SetFloat("_NoiseStrength", m_PropertyBlock.GetFloat("_NoiseStrength") + 0.5f);
+            m_PropertyBlock.SetFloat("_NoiseStrength", m_PropertyBlock.GetFloat("_NoiseStrength") + 0.05f);
             modelRender.SetPropertyBlock(m_PropertyBlock);
             yield return new WaitForSeconds(0.001f);
         }
@@ -49,21 +49,19 @@ public class wallriser : MonoBehaviour
         colliderOpened = true;
         yield return null;
     }
-    private void OnCollisionEnter(Collision collision)
+    public void decreaseHitNumber()
     {
         if (!colliderOpened)
         {
             return;
         }
-        if(collision.gameObject.layer == 7)//ammo
+        hitNumber += 1;
+        if (hitNumber >= 2)
         {
-            hitNumber += 1;
-            if (hitNumber >= 2)
-            {
-                StartCoroutine(disolveEffectCoroutineEnd());
-            }
+            StartCoroutine(disolveEffectCoroutineEnd());
         }
     }
+
     IEnumerator disolveEffectCoroutineEnd()
     {
         modelRender.material = skill.materials[1];

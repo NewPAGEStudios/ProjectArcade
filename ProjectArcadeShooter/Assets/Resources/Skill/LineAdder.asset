@@ -16,9 +16,7 @@ MonoBehaviour:
   skillTypeID: 6
   skillName: Laser Charger
   skillDescription: it charges your laser
-  materials:
-  - {fileID: 2100000, guid: 2ce5beb4cef3c0d47adf95c27ca755da, type: 2}
-  - {fileID: 2100000, guid: 0415c187218467747a50bfdbc178f535, type: 2}
+  materials: []
   sprite_HUD: {fileID: 21300000, guid: 603eabcd71ec55e41be090a50f8b646e, type: 3}
   functionName: addLaser
   modelPrefab: {fileID: 0}

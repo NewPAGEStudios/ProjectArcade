@@ -19,4 +19,6 @@ public class Ammo : ScriptableObject
     public int maxReflectionTime;
 
     public LayerMask lmask;
+
+    public GameObject wallTrace;
 }

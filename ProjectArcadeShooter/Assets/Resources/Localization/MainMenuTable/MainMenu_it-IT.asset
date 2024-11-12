@@ -188,6 +188,18 @@ MonoBehaviour:
     m_Localized: Suono
     m_Metadata:
       m_Items: []
+  - m_Id: 33241977287151616
+    m_Localized: Predefinite
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33587921924984832
+    m_Localized: Risoluzione
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33966878033776640
+    m_Localized: Frequenza di aggiornamento
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

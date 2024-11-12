@@ -29,3 +29,4 @@ MonoBehaviour:
   isFlyable: 0
   rangeDistance: 25
   attackDMG: 20
+  moneyToDrop: 5

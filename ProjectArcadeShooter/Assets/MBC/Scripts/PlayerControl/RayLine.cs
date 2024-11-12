@@ -15,8 +15,11 @@ public class RayLine : MonoBehaviour
 
     private Ray ray;
 
+    private GameController gc;
+
     private void Start()
     {
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         _lineRenderer = GetComponent<LineRenderer>();
 //        _lineRenderer.material = mats[0];
     }
@@ -46,11 +49,13 @@ public class RayLine : MonoBehaviour
                 if (hit.transform.gameObject.CompareTag("EnemyColl"))
                 {
                     _lineRenderer.material = mats[1];
+                    gc.crossColorChange(Color.green);
                     break;
                 }
                 else
                 {
                     _lineRenderer.material = mats[0];
+                    gc.crossColorChange(Color.white);
                 }
             }
             else
@@ -60,20 +65,8 @@ public class RayLine : MonoBehaviour
             }
         }
     }
-
-
-    //void NormalLaser()
-    //{
-    //    _lineRenderer.SetPosition(0,transform.position);
-
-    //    if(Physics.Raycast(transform.position,transform.forward,out hit, defaultLength, layerMask))
-    //    {
-    //        _lineRenderer.SetPosition(1,hit.point);
-    //    }
-    //    else
-    //    {
-    //        _lineRenderer.SetPosition(1, transform.position + (transform.forward * defaultLength));
-    //    }
-    //}
-
+    private void OnDisable()
+    {
+        gc.crossColorChange(Color.white);
+    }
 }

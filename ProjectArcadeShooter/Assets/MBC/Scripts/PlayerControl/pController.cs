@@ -193,10 +193,12 @@ public class PController : MonoBehaviour
         {
             return;
         }
+
         Move();
         CamRotation();
 
         weaponManager.laserOpen();
+
     }
     private void CamRotation()//tmmland�
     {
@@ -602,19 +604,6 @@ public class PController : MonoBehaviour
         }
     }
 
-    public void cinmeatic_Movement()
-    {
-
-    }
-    IEnumerator moveTowards()
-    {
-        while (true) 
-        {
-            yield return null;
-        }
-    }
-
-
 
     public InputManager getIManager()
     {
@@ -629,8 +618,8 @@ public class PController : MonoBehaviour
     {
         Vector3 throwDirection = gameObject.transform.position - source;
         throwDirection = throwDirection.normalized;
-        rb.AddForce(throwDirection * 3f, ForceMode.Impulse);
-        StartCoroutine(cced(CCStateOfPlayer.ccd, 0.2f));
+        rb.AddForce(throwDirection * 15f, ForceMode.Impulse);
+        StartCoroutine(cced(CCStateOfPlayer.ccd, 0.6f));
     }
 
 

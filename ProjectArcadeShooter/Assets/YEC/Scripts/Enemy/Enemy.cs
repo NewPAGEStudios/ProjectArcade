@@ -95,11 +95,6 @@ public class Enemy : MonoBehaviour
             agent = gameObject.AddComponent<NavMeshAgent>();
             agent.agentTypeID = agenjtFindClass.GetAgentTypeIDbyName(e_type.agentName);
             agent.speed = e_type.moveSpeed;
-            if(e_type.agentName == "EnemyFly"){
-                agent.baseOffset = 5;
-                currentBaseOffeset = agent.baseOffset;
-
-            }
         }
 
         System.Type scriptMB = System.Type.GetType(e_type.agentFunction + ",Assembly-CSharp");
@@ -114,11 +109,13 @@ public class Enemy : MonoBehaviour
         {
 
         }
+        else if(gameObject.TryGetComponent<DroneMA>(out DroneMA dma))
+        {
+
+        }
 
 
         fireRate = e_type.attackRatio;
-
-        agent.speed = e_type.moveSpeed;
         
         player = GameObject.FindGameObjectWithTag("Player");
 

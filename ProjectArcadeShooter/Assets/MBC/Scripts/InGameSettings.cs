@@ -1,6 +1,8 @@
 using SlimUI.ModernMenu;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +10,13 @@ public class InGameSettings : MonoBehaviour
 {
 
     private PController player;
+
+    public GameObject texturelowtextLINE;
+    public GameObject texturemedtextLINE;
+    public GameObject texturehightextLINE;
+
+
+
 
     [Header("PANELS")]
     [Tooltip("The UI Panel that holds the CONTROLS window tab")]
@@ -32,6 +41,7 @@ public class InGameSettings : MonoBehaviour
 
     [Header("VIDEO SETTINGS")]
     public GameObject fullscreentext;
+    [SerializeField] private TMP_Dropdown resDropdown;
 
 
     [Header("Game Options")]
@@ -47,9 +57,15 @@ public class InGameSettings : MonoBehaviour
     public GameObject sensitivityXSlider;
     public GameObject sensitivityYSlider;
 
-    private float sliderValue = 0.0f;
     private float sliderValueXSensitivity = 0.0f;
     private float sliderValueYSensitivity = 0.0f;
+
+    private int currentResolutionIndex = 0;
+    //Resolution
+    private Resolution[] res;
+    private List<Resolution> resList = new();
+
+
 
     public void initValues()
     {
@@ -57,20 +73,56 @@ public class InGameSettings : MonoBehaviour
         player.ChangeSens(PlayerPrefs.GetFloat("YSensitivity" ,10f), PlayerPrefs.GetFloat("XSensitivity", 10));
         player.handleSNB(PlayerPrefs.GetInt("SwayNBobbing", 1) == 1 ? true : false);
         player.handleDV(PlayerPrefs.GetInt("DMGVibration", 1) == 1 ? true : false);
-        player.handleDV(PlayerPrefs.GetInt("DMGVibration", 1) == 1 ? true : false);
-        PlayerPrefs.SetFloat("MasterVolume", PlayerPrefs.GetFloat("MasterVolume",10));
-        PlayerPrefs.SetFloat("MusicVolume", PlayerPrefs.GetFloat("MusicVolume", 10));
-        PlayerPrefs.SetFloat("SFXVolume", PlayerPrefs.GetFloat("SFXVolume", 10));
-        PlayerPrefs.SetFloat("SoundVolume", PlayerPrefs.GetFloat("SoundVolume", 10));
+
+        PlayerPrefs.SetFloat("YSensitivity", PlayerPrefs.GetFloat("YSensitivity", 10f));
+        PlayerPrefs.SetFloat("XSensitivity", PlayerPrefs.GetFloat("XSensitivity", 10f));
+
+        PlayerPrefs.SetInt("SwayNBobbing", PlayerPrefs.GetInt("SwayNBobbing", 1));
+        PlayerPrefs.SetInt("DMGVibration", PlayerPrefs.GetInt("DMGVibration", 1));
+
+        PlayerPrefs.SetFloat("MasterVolume", PlayerPrefs.GetFloat("MasterVolume",10f));
+        PlayerPrefs.SetFloat("MusicVolume", PlayerPrefs.GetFloat("MusicVolume", 10f));
+        PlayerPrefs.SetFloat("SFXVolume", PlayerPrefs.GetFloat("SFXVolume", 10f));
+        PlayerPrefs.SetFloat("SoundVolume", PlayerPrefs.GetFloat("SoundVolume", 10f));
+
+
+
+        if (PlayerPrefs.GetInt("Textures",1) == 0)
+        {
+            texturelowtextLINE.gameObject.SetActive(true);
+            texturemedtextLINE.gameObject.SetActive(false);
+            texturehightextLINE.gameObject.SetActive(false);
+        }
+        else if (PlayerPrefs.GetInt("Textures", 1) == 1)
+        {
+            texturelowtextLINE.gameObject.SetActive(false);
+            texturemedtextLINE.gameObject.SetActive(true);
+            texturehightextLINE.gameObject.SetActive(false);
+        }
+        else if (PlayerPrefs.GetInt("Textures", 1) == 2)
+        {
+            texturelowtextLINE.gameObject.SetActive(false);
+            texturemedtextLINE.gameObject.SetActive(false);
+            texturehightextLINE.gameObject.SetActive(true);
+        }
     }
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PController>();
+        initValues();
     }
 
     // Start is called before the first frame update
     void Start()
     {
+
+        //resolution init
+        res = Screen.resolutions;
+
+
+        ResDropdownUpdateValues();
+
+
         masterSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MasterVolume");
         musicSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MusicVolume");
         sFXSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("SFXVolume");
@@ -273,5 +325,45 @@ public class InGameSettings : MonoBehaviour
 
         }
     }
+    public void ResDropdownUpdateValues()
+    {
+        resDropdown.ClearOptions();
+        resList.Clear();
+        double currentRefreshRate = Screen.currentResolution.refreshRateRatio.value;
+        for (int i = 0; i < res.Length; i++)
+        {
+            if (res[i].refreshRateRatio.value == currentRefreshRate)
+            {
+                resList.Add(res[i]);
+            }
+        }
+
+
+
+        List<string> options_Res = new List<string>();
+        for (int c = 0; c < resList.Count; c++)
+        {
+            string resolutionOption = resList[c].width + "x" + resList[c].height + " " + resList[c].refreshRateRatio + " Hz";
+            options_Res.Add(resolutionOption);
+            if (resList[c].width == Screen.width && resList[c].height == Screen.height)
+            {
+                currentResolutionIndex = c;
+            }
+        }
+
+
+        resDropdown.AddOptions(options_Res);
+        resDropdown.value = currentResolutionIndex;
+        resDropdown.RefreshShownValue();
+
+    }
+    public void SetResolution(int resolutionIndex)
+    {
+        Resolution resolution = resList[resolutionIndex];
+
+        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreenMode);
+
+    }
+
 
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour
@@ -52,7 +53,7 @@ public class EnemyHealth : MonoBehaviour
 
     }
 
-    public void EnemyHealthUpdate(float amount)
+    public void EnemyHealthUpdate(float amount,GameObject damagedBy)
     {
         
         currentHealth += amount;
@@ -62,8 +63,11 @@ public class EnemyHealth : MonoBehaviour
         if (currentHealth <= 0)
         {
             Destroy(GetComponent<StateMachine>());
-            GetComponent<Enemy>().Agent.SetDestination(transform.position);
-            if(GetComponent<Enemy>().animator != null)
+            if (GetComponent<Enemy>().Agent.enabled)
+            {
+                GetComponent<Enemy>().Agent.isStopped = true;
+            }
+            if (GetComponent<Enemy>().animator != null)
             {
                 GetComponent<Enemy>().animator.SetBool("isWalking", false);
                 Destroy(GetComponent<Enemy>().animator);
@@ -71,6 +75,7 @@ public class EnemyHealth : MonoBehaviour
 
 
             currentHealth = 0;
+            gc.ComboVombo(1);
             Die();
             return;
         }
@@ -118,22 +123,23 @@ public class EnemyHealth : MonoBehaviour
         float g = mainMPB.GetColor("_BaseColor").g;
         float b = mainMPB.GetColor("_BaseColor").b;
 
-        while (true)
-        {
-            r = Mathf.MoveTowards(r, baseColor.r*255, Time.deltaTime * 100f);
-            g = Mathf.MoveTowards(g, baseColor.g*255, Time.deltaTime * 100f);
-            b = Mathf.MoveTowards(b, baseColor.b*255, Time.deltaTime * 100f);
+        //while (true)
+        //{
+        //    r = Mathf.MoveTowards(r, baseColor.r*255, Time.deltaTime * 100f);
+        //    g = Mathf.MoveTowards(g, baseColor.g*255, Time.deltaTime * 100f);
+        //    b = Mathf.MoveTowards(b, baseColor.b*255, Time.deltaTime * 100f);
 
-            mainMPB.SetColor("_BaseColor", new Color(r/255, g/255, b/255, 1));
+        //    mainMPB.SetColor("_BaseColor", new Color(r/255, g/255, b/255, 1));
+        //    mainMPB.SetColor("_EmissionColor",)
+        //    enemyObjectRenderer.SetPropertyBlock(mainMPB);
 
-            enemyObjectRenderer.SetPropertyBlock(mainMPB);
-
-            yield return new WaitForEndOfFrame();
-            if (r == baseColor.b * 255 && g == baseColor.b * 255 && b == baseColor.b * 255)
-            {
-                break;
-            }
-        }
+        //    yield return new WaitForEndOfFrame();
+        //    if (r == baseColor.b * 255 && g == baseColor.b * 255 && b == baseColor.b * 255)
+        //    {
+        //        break;
+        //    }
+        //}
+        yield return new WaitForSeconds(0.5f);
         mainMPB = new MaterialPropertyBlock();
         mainMPB.SetColor("_BaseColor", baseColor);
         enemyObjectRenderer.SetPropertyBlock(mainMPB);
@@ -144,6 +150,16 @@ public class EnemyHealth : MonoBehaviour
     {//id check
 
         GetComponent<Enemy>().eState = Enemy.enemyState.dead;
+
+        for(int i = 0;i< GetComponent<Enemy>().e_type.moneyToDrop; i++)
+        {
+            GameObject mobj = Instantiate(gc.moneyOBJ,gc.moneyOBJ_Parent.transform);
+            mobj.transform.position = gameObject.transform.position + new Vector3(0, 1, 0);
+            mobj.transform.eulerAngles = new Vector3(UnityEngine.Random.Range(0, 90), UnityEngine.Random.Range(0, 90), UnityEngine.Random.Range(0, 90));
+            mobj.GetComponent<Rigidbody>().AddForce(Vector3.up, ForceMode.Impulse);
+            mobj.GetComponent<GetMoney>().money = 5;
+        }
+
         StartCoroutine(EnemyDeathRoutine());
     }
     IEnumerator EnemyDeathRoutine()
@@ -157,7 +173,7 @@ public class EnemyHealth : MonoBehaviour
         while (true)
         {
             mainMPB.SetFloat("_NoiseStrength", valueOfStrentgh);
-            valueOfStrentgh = Mathf.MoveTowards(valueOfStrentgh, -1, Time.deltaTime * 7.5f);
+            valueOfStrentgh = Mathf.MoveTowards(valueOfStrentgh, -1, Time.deltaTime * 12.5f);
 
             enemyObjectRenderer.SetPropertyBlock(mainMPB);
             yield return null;

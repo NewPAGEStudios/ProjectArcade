@@ -26,5 +26,7 @@ public class EnemyType : ScriptableObject
     public bool isFlyable;
     public float rangeDistance;
     public float attackDMG;
+    public float moneyToDrop;
+
 
 }

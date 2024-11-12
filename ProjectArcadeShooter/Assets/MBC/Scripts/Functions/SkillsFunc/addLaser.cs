@@ -12,7 +12,7 @@ public class addLaser : MonoBehaviour
 
         GameController gController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
-        player.GetComponent<WeaponManager>().addLaser(20);
+        player.GetComponent<WeaponManager>().addLaser(40);
 
         addLaser al = GetComponent<addLaser>();
         Destroy(al);

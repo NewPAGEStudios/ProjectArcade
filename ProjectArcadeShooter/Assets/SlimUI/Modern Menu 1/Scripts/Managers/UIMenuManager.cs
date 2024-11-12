@@ -91,9 +91,11 @@ namespace SlimUI.ModernMenu{
 		[Header("LOCALESTR")]
 		[SerializeField] private LocalizedString LocalizedString;
 		private string keyCodestr;
-		
 
-		void Start(){
+
+
+
+        void Start(){
 			CameraObject = transform.GetComponent<Animator>();
 
 			playMenu.SetActive(false);
@@ -184,15 +186,6 @@ namespace SlimUI.ModernMenu{
 			lineControls.SetActive(false);
 			lineVideo.SetActive(false);
             lineSound.SetActive(false);
-            //			PanelKeyBindings.SetActive(false);
-            //			lineKeyBindings.SetActive(false);
-
-            //			PanelMovement.SetActive(false);
-            //			lineMovement.SetActive(false);
-            //			PanelCombat.SetActive(false);
-            //			lineCombat.SetActive(false);
-            //			PanelGeneral.SetActive(false);
-            //			lineGeneral.SetActive(false);
         }
 
         public void GamePanel(){
@@ -267,12 +260,6 @@ namespace SlimUI.ModernMenu{
             DisablePlayCampaign();
 		}
 
-		public void AreYouSureMobile(){
-			exitMenu.SetActive(true);
-			if(extrasMenu) extrasMenu.SetActive(false);
-			mainMenu.SetActive(false);
-			DisablePlayCampaign();
-		}
 
 		public void ExtrasMenu(){
 			playMenu.SetActive(false);

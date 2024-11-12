@@ -9,9 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5584549202448502830}
-  m_Layer: 0
+  - component: {fileID: 6492326364564171465}
+  - component: {fileID: 1551560450756885727}
+  m_Layer: 10
   m_Name: Kemik.006
-  m_TagString: Untagged
+  m_TagString: EnemyColl
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31,7 +33,41 @@ Transform:
   m_Children:
   - {fileID: 3172732772787362813}
   m_Father: {fileID: 4560835646070219488}
-  m_LocalEulerAnglesHint: {x: 1.2097493e-14, y: -4.783077e-14, z: 15.424265}
+  m_LocalEulerAnglesHint: {x: 1.1457347e-14, y: -4.3635736e-14, z: 14.581964}
+--- !u!65 &6492326364564171465
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139952813039267}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.007645936, y: 0.0134403305, z: 0.0062886057}
+  m_Center: {x: 0.0003284297, y: 0.0055419374, z: -0.000020556596}
+--- !u!114 &1551560450756885727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139952813039267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd1a56cedc8484745babfd08d6b3caf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetOBJ: {fileID: 5983812139286778894}
 --- !u!1 &1801988468678913
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,9 +202,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4894860303370027712}
-  m_Layer: 0
+  - component: {fileID: 6447342968328394496}
+  - component: {fileID: 7866499044734110093}
+  m_Layer: 10
   m_Name: Kemik.010
-  m_TagString: Untagged
+  m_TagString: EnemyColl
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -189,6 +227,40 @@ Transform:
   - {fileID: 1116768624504903829}
   m_Father: {fileID: 7059886422091406099}
   m_LocalEulerAnglesHint: {x: 89.9802, y: -0.0000031574905, z: 0}
+--- !u!65 &6447342968328394496
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356638944760369766}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.010950835, y: 0.016914852, z: 0.006209451}
+  m_Center: {x: -0.000033066848, y: 0.0004460736, z: 0.00060472527}
+--- !u!114 &7866499044734110093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356638944760369766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd1a56cedc8484745babfd08d6b3caf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetOBJ: {fileID: 5983812139286778894}
 --- !u!1 &413651068475988497
 GameObject:
   m_ObjectHideFlags: 0
@@ -276,13 +348,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1732506429226124811}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.38268274, y: -0, z: -0, w: 0.9238798}
-  m_LocalPosition: {x: 0.75, y: 2, z: -0.25}
+  m_LocalRotation: {x: -0.13052624, y: 0, z: 0, w: 0.9914449}
+  m_LocalPosition: {x: -0.25, y: 0.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1421243478576576771}
-  m_LocalEulerAnglesHint: {x: -45, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -15, y: 0, z: 0}
 --- !u!1 &1974419314467968802
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,9 +364,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 240218813740272812}
-  m_Layer: 0
+  - component: {fileID: 5681500108464225600}
+  - component: {fileID: 5146603696568485244}
+  m_Layer: 10
   m_Name: Kemik
-  m_TagString: Untagged
+  m_TagString: EnemyColl
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -314,7 +388,41 @@ Transform:
   m_Children:
   - {fileID: 8109064122393835391}
   m_Father: {fileID: 6549269617149071718}
-  m_LocalEulerAnglesHint: {x: -0.000008537736, y: 90, z: -90}
+  m_LocalEulerAnglesHint: {x: -0.0000069819716, y: 90, z: -94.38669}
+--- !u!65 &5681500108464225600
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974419314467968802}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.00754996, y: 0.012723362, z: 0.0054430882}
+  m_Center: {x: -0.0002819918, y: 0.0038616979, z: 0.00022154427}
+--- !u!114 &5146603696568485244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974419314467968802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd1a56cedc8484745babfd08d6b3caf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetOBJ: {fileID: 5983812139286778894}
 --- !u!1 &1981368644538851716
 GameObject:
   m_ObjectHideFlags: 0
@@ -324,9 +432,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8109064122393835391}
-  m_Layer: 0
+  - component: {fileID: 2287367842921018006}
+  - component: {fileID: 7974512902979225130}
+  m_Layer: 10
   m_Name: Kemik.001
-  m_TagString: Untagged
+  m_TagString: EnemyColl
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -346,7 +456,41 @@ Transform:
   m_Children:
   - {fileID: 3050293350423710805}
   m_Father: {fileID: 240218813740272812}
-  m_LocalEulerAnglesHint: {x: -0.000005744415, y: -0.000005744415, z: 1.8032665e-12}
+  m_LocalEulerAnglesHint: {x: -0.0000051993798, y: -0.000006242039, z: 5.2069983}
+--- !u!65 &2287367842921018006
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981368644538851716}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.007645936, y: 0.0134403305, z: 0.0062886057}
+  m_Center: {x: 0.0003284297, y: 0.0055419374, z: -0.000020556596}
+--- !u!114 &7974512902979225130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981368644538851716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd1a56cedc8484745babfd08d6b3caf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetOBJ: {fileID: 5983812139286778894}
 --- !u!1 &2374095697283403423
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,9 +500,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7059886422091406099}
-  m_Layer: 0
+  - component: {fileID: 5600734823265608006}
+  - component: {fileID: 8698745111418733187}
+  m_Layer: 10
   m_Name: Kemik.008
-  m_TagString: Untagged
+  m_TagString: EnemyColl
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -379,6 +525,123 @@ Transform:
   - {fileID: 4894860303370027712}
   m_Father: {fileID: 4032308330588055092}
   m_LocalEulerAnglesHint: {x: -89.98021, y: 0.0000031574896, z: 0}
+--- !u!65 &5600734823265608006
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2374095697283403423}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.010332925, y: 0.0027725634, z: 0.018700961}
+  m_Center: {x: -0.000034898545, y: 0.0014596442, z: 0.000103244805}
+--- !u!114 &8698745111418733187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2374095697283403423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd1a56cedc8484745babfd08d6b3caf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetOBJ: {fileID: 5983812139286778894}
+--- !u!1 &2811502128002315934
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6789008374809025376}
+  - component: {fileID: 2960657949825363138}
+  - component: {fileID: 9020057701624386990}
+  m_Layer: 17
+  m_Name: Cylinder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6789008374809025376
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2811502128002315934}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 50, z: 0}
+  m_LocalScale: {x: 3, y: 0.3, z: 3}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 6359388078207635124}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &2960657949825363138
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2811502128002315934}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &9020057701624386990
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2811502128002315934}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: e18c85441701e254c8b6715f8a52b650, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &4335607520751710950
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,9 +716,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4560835646070219488}
-  m_Layer: 0
+  - component: {fileID: 9083768672006498600}
+  - component: {fileID: 6550072167068652971}
+  m_Layer: 10
   m_Name: Kemik.005
-  m_TagString: Untagged
+  m_TagString: EnemyColl
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -475,7 +740,41 @@ Transform:
   m_Children:
   - {fileID: 5584549202448502830}
   m_Father: {fileID: 3583477996131674014}
-  m_LocalEulerAnglesHint: {x: -90, y: -18.718298, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: -3.8106084, z: 0}
+--- !u!65 &9083768672006498600
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4419158650343021161}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.00754996, y: 0.012723362, z: 0.0054430882}
+  m_Center: {x: -0.0002819918, y: 0.0038616979, z: 0.00022154427}
+--- !u!114 &6550072167068652971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4419158650343021161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd1a56cedc8484745babfd08d6b3caf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetOBJ: {fileID: 5983812139286778894}
 --- !u!1 &4726151868768796540
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,8 +832,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 100}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 40, y: 40, z: 40}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 240218813740272812}
   - {fileID: 4032308330588055092}
@@ -696,7 +995,7 @@ Transform:
   m_GameObject: {fileID: 5983812139286778894}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -7.5, z: -36.75}
+  m_LocalPosition: {x: 0, y: 0.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -704,6 +1003,7 @@ Transform:
   - {fileID: 2202403212154522651}
   - {fileID: 1421243478576576771}
   - {fileID: 7422957119610507862}
+  - {fileID: 6789008374809025376}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1054186562940982478
@@ -751,13 +1051,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6824655582667334427}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.38268274, y: -0, z: -0, w: 0.9238798}
-  m_LocalPosition: {x: -0.75, y: 2, z: -0.25}
+  m_LocalRotation: {x: -0.13052624, y: 0, z: 0, w: 0.9914449}
+  m_LocalPosition: {x: 0.25, y: 0.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1421243478576576771}
-  m_LocalEulerAnglesHint: {x: -45, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -15, y: 0, z: 0}
 --- !u!1 &7192450231408281525
 GameObject:
   m_ObjectHideFlags: 0
@@ -767,9 +1067,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2917746504989049910}
-  m_Layer: 0
+  - component: {fileID: 7195129050205475145}
+  - component: {fileID: 7361641212563560850}
+  m_Layer: 10
   m_Name: Kemik.009
-  m_TagString: Untagged
+  m_TagString: EnemyColl
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -790,6 +1092,40 @@ Transform:
   - {fileID: 7685370326326779800}
   m_Father: {fileID: 6017397258540744003}
   m_LocalEulerAnglesHint: {x: -89.98021, y: -0.00002332974, z: 0}
+--- !u!65 &7195129050205475145
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7192450231408281525}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.010950835, y: 0.016914852, z: 0.006209451}
+  m_Center: {x: -0.000033066848, y: 0.0004460736, z: 0.00060472527}
+--- !u!114 &7361641212563560850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7192450231408281525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd1a56cedc8484745babfd08d6b3caf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetOBJ: {fileID: 5983812139286778894}
 --- !u!1 &7757863604391518186
 GameObject:
   m_ObjectHideFlags: 0
@@ -799,9 +1135,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6017397258540744003}
-  m_Layer: 0
+  - component: {fileID: 641872072419589314}
+  - component: {fileID: 3648637883776608634}
+  m_Layer: 10
   m_Name: Kemik.007
-  m_TagString: Untagged
+  m_TagString: EnemyColl
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -822,6 +1160,40 @@ Transform:
   - {fileID: 2917746504989049910}
   m_Father: {fileID: 4032308330588055092}
   m_LocalEulerAnglesHint: {x: 89.9802, y: 0.000023329745, z: 0}
+--- !u!65 &641872072419589314
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7757863604391518186}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.010256984, y: 0.0039243414, z: 0.018846817}
+  m_Center: {x: -0.000021921513, y: 0.0020355335, z: -0.0004889334}
+--- !u!114 &3648637883776608634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7757863604391518186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd1a56cedc8484745babfd08d6b3caf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetOBJ: {fileID: 5983812139286778894}
 --- !u!1 &8722173651393007088
 GameObject:
   m_ObjectHideFlags: 0
@@ -927,9 +1299,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4032308330588055092}
-  m_Layer: 0
+  - component: {fileID: 8930098521067128850}
+  - component: {fileID: 2474336614297873305}
+  m_Layer: 10
   m_Name: Kemik.003
-  m_TagString: Untagged
+  m_TagString: EnemyColl
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -952,7 +1326,41 @@ Transform:
   - {fileID: 6017397258540744003}
   - {fileID: 7059886422091406099}
   m_Father: {fileID: 6549269617149071718}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: -95.498665}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: -93.866554}
+--- !u!65 &8930098521067128850
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8856523738005497969}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.010405895, y: 0.0058838096, z: 0.0073514143}
+  m_Center: {x: 0.00012141828, y: -0.00044190517, z: 0.00024311244}
+--- !u!114 &2474336614297873305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8856523738005497969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd1a56cedc8484745babfd08d6b3caf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetOBJ: {fileID: 5983812139286778894}
 --- !u!1001 &6427208139628659724
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -301,6 +301,7 @@ public class WeaponManager : MonoBehaviour
                 laserCharge = maxLaserCharge;
             }
             gc.LaserIndicator(maxLaserCharge, laserCharge);
+
             return;
         }
         if (laserFinished)
@@ -385,9 +386,7 @@ public class WeaponManager : MonoBehaviour
         {
 
             currWeapon_sum_ammoAmount += ammoAmount;
-            gc.ChangeAmmoText(currWeapon_inWeapon_ammoAmount);
-            gc.ChangeVisibilityofSlash(true);
-            gc.ChangefullAmmoText(currWeapon_sum_ammoAmount);
+            gc.ChangeAmmoText(currWeapon_inWeapon_ammoAmount, currWeapon_sum_ammoAmount);
             return;
         }
         //delete Returns and show a feedback for getting ammo like sound or effect
@@ -440,9 +439,7 @@ public class WeaponManager : MonoBehaviour
         currWeapon_inWeapon_ammoAmount = FindWeaponOnRuntime(weaponID).inWeapon_ammoAmount;
         magmax = FindWeaponOnRuntime(weaponID).maxMagAmount;
 
-        gc.ChangeAmmoText(currWeapon_inWeapon_ammoAmount);
-        gc.ChangeVisibilityofSlash(true);
-        gc.ChangefullAmmoText(currWeapon_sum_ammoAmount);
+        gc.ChangeAmmoText(currWeapon_inWeapon_ammoAmount, currWeapon_sum_ammoAmount);
 
 
         if (currWeaponID == -1)//special state it means you don't have any weapon
@@ -473,9 +470,7 @@ public class WeaponManager : MonoBehaviour
             activeWeapon.transform.GetChild(0).Find("ammo").GetComponent<TextMeshPro>().text = currWeapon_inWeapon_ammoAmount.ToString();
         }
 
-        gc.ChangeAmmoText(currWeapon_inWeapon_ammoAmount);
-        gc.ChangeVisibilityofSlash(true);
-        gc.ChangefullAmmoText(currWeapon_sum_ammoAmount);
+        gc.ChangeAmmoText(currWeapon_inWeapon_ammoAmount, currWeapon_sum_ammoAmount);
 
         if (soundWeapon.transform.Find(currWeaponID.ToString()).GetComponent<AudioSource>().isPlaying)
         {
@@ -491,11 +486,6 @@ public class WeaponManager : MonoBehaviour
         System.Type scriptMB = System.Type.GetType(w.usedAmmo.functionName + ",Assembly-CSharp");
         ammo.AddComponent(scriptMB);
         
-        ammo.AddComponent<Rigidbody>();
-        ammo.GetComponent<Rigidbody>().useGravity = false;
-        ammo.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
-
-
         //ManuelAdding
         if(ammo.TryGetComponent<ReflectBulletFunctions>(out ReflectBulletFunctions rbf))
         {
@@ -511,6 +501,8 @@ public class WeaponManager : MonoBehaviour
             rbf.trail3D = w.usedAmmo.trail3D;
 
             rbf.layerMask = w.usedAmmo.lmask;
+
+            rbf.trace = w.usedAmmo.wallTrace;
 
             GameObject go = Instantiate(w.usedAmmo.modelGO, ammo.transform);
             go.layer = 7;
@@ -549,12 +541,12 @@ public class WeaponManager : MonoBehaviour
     {
         if (currWeapon_inWeapon_ammoAmount == magmax)
         {
-            Debug.Log("Full Ammo");
+//            Debug.Log("Full Ammo");
             return;
         }
         else if (currWeapon_sum_ammoAmount <= 0)
         {
-            Debug.Log("You don't have enough ammo");
+ //           Debug.Log("You don't have enough ammo");
             return;
         }
         StartCoroutine(Reload());
@@ -624,9 +616,7 @@ public class WeaponManager : MonoBehaviour
         {
             activeWeapon.transform.GetChild(0).Find("ammo").GetComponent<TextMeshPro>().text = currWeapon_inWeapon_ammoAmount.ToString();
         }
-        gc.ChangeAmmoText(currWeapon_inWeapon_ammoAmount);
-        gc.ChangeVisibilityofSlash(true);
-        gc.ChangefullAmmoText(currWeapon_sum_ammoAmount);
+        gc.ChangeAmmoText(currWeapon_inWeapon_ammoAmount, currWeapon_sum_ammoAmount);
     }
     //swayNBobbing
     public void Sway(Vector3 inputCam)
@@ -841,6 +831,14 @@ public class WeaponManager : MonoBehaviour
                 else if(skillDisplay.TryGetComponent<healPlayer>(out healPlayer hp))
                 {
                     hp.doFunctionWoutObject();
+                }
+                else if (skillDisplay.TryGetComponent<addLaser>(out addLaser al))
+                {
+                    al.doFunctionWoutObject();
+                }
+                else if (skillDisplay.TryGetComponent<gravityPull>(out gravityPull gp))
+                {
+                    gp.doFunctionWoutObject();
                 }
                 StartCoroutine(PerformSkillAnim(0));
             }

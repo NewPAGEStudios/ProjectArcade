@@ -188,6 +188,18 @@ MonoBehaviour:
     m_Localized: Ses
     m_Metadata:
       m_Items: []
+  - m_Id: 33241977287151616
+    m_Localized: "Varsay\u0131lan"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33587921924984832
+    m_Localized: "\xC7\xF6z\xFCn\xFCrl\xFCk"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33966878033776640
+    m_Localized: "Yenilenme H\u0131z\u0131"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

@@ -30,11 +30,13 @@ public class ReflectBulletFunctions : MonoBehaviour
 
     private List<Vector3> reflectionVecs = new();
     private List<Vector3> reflectionPoints = new();
+    private List<Vector3> reflectionNormals = new();
 
     public TrailType trailType;
     private GameObject trail;
     public Trail3D trail3D;
 
+    public GameObject trace;
     void Start()
     {
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
@@ -60,23 +62,31 @@ public class ReflectBulletFunctions : MonoBehaviour
         trail.GetComponent<TrailRenderer>().colorGradient = trailType.gradient;
         trail.GetComponent<TrailRenderer>().widthCurve = trailType.curve;
         trail.GetComponent<TrailRenderer>().time = trailType.Time;
-        
+
+        gameObject.AddComponent<Rigidbody>();
+        gameObject.GetComponent<Rigidbody>().isKinematic = true;
+        gameObject.GetComponent<Rigidbody>().useGravity = false;
+        gameObject.GetComponent<Rigidbody>().freezeRotation = false;
+        gameObject.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
+
+        gameObject.AddComponent<SphereCollider>();
+        gameObject.GetComponent<SphereCollider>().isTrigger = true;
 
 
-        Ray ray = new Ray(transform.position, transform.forward);
+        Ray ray = new(transform.position, transform.forward);
 
-        RaycastHit hit;
 
         interrupt_Movement = false;
 
         for (int i = 0; i < mostHitCanBeDone; i++)
         {
-            if (Physics.Raycast(ray.origin, ray.direction, out hit, 100, layerMask, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(ray.origin, ray.direction, out RaycastHit hit, 100, layerMask, QueryTriggerInteraction.Ignore))
             {
                 Vector3 vec = Vector3.Reflect(ray.direction, hit.normal);
                 ray = new Ray(hit.point, vec);
                 reflectionVecs.Add(vec);
                 reflectionPoints.Add(hit.point);
+                reflectionNormals.Add(hit.normal);
             }
         }
 
@@ -88,16 +98,18 @@ public class ReflectBulletFunctions : MonoBehaviour
         {
             return;
         }
-
-
         if (lifeTime > 0)
         {
-            lifeTime -= Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, reflectionPoints[numberOfCollisionHit], Time.deltaTime * bulletSpeed);
+            lifeTime -= Time.fixedDeltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, reflectionPoints[numberOfCollisionHit], Time.deltaTime * bulletSpeed/4);
             transform.LookAt(reflectionPoints[numberOfCollisionHit]);
 
             if(transform.position == reflectionPoints[numberOfCollisionHit])
             {
+                GameObject traceGO = Instantiate(trace, gc.tracesParent.transform);
+                traceGO.transform.position = reflectionPoints[numberOfCollisionHit];
+                traceGO.transform.up = reflectionNormals[numberOfCollisionHit];
+
                 m_PropertyBlock.SetFloat("_fresnalPow", m_PropertyBlock.GetFloat("_fresnalPow") + 2);
                 modelRender.SetPropertyBlock(m_PropertyBlock);
 
@@ -117,24 +129,18 @@ public class ReflectBulletFunctions : MonoBehaviour
             startDesttroyObject();
         }
 
-        //if(trail.transform.localScale.z < trail3D.maxYScale)
-        //{
-        //    trail.transform.localScale = new Vector3(.1f, trail3D.maxYScale, .1f);
-        //}
-        //else
-        //{
-
-        //}
-
     }
-
     private void OnTriggerEnter(Collider other)
     {
+        if (interrupt_Movement)
+        {
+            return;
+        }
         if (other.transform.CompareTag("EnemyColl"))
         {
-            other.transform.parent.parent.GetComponent<EnemyHealth>().EnemyHealthUpdate(-dmg);
-            gc.ComboVombo(numberOfCollisionHit);
-
+            interrupt_Movement = true;
+            other.GetComponent<ColliderParenter>().targetOBJ.transform.parent.GetComponent<EnemyHealth>().EnemyHealthUpdate(-dmg, firedBy);
+            gc.dmgDoneFeedBack();
             interrupt_Movement = true;
             startDesttroyObject();
         }
@@ -145,52 +151,55 @@ public class ReflectBulletFunctions : MonoBehaviour
             {
                 dmf.GetDamage(dmg);
             }
-            gc.ComboVombo(numberOfCollisionHit);
             gc.HandleDmgGiven();
 
             interrupt_Movement = true;
             startDesttroyObject();
         }
+        else if (other.transform.gameObject.TryGetComponent<wallriser>(out wallriser w))
+        {
+            w.decreaseHitNumber();
+        }
     }
-    private void OnCollisionEnter(Collision collision)
-    {
+    //private void OnCollisionEnter(Collision collision)
+    //{
 
-        if (collision.transform.CompareTag("EnemyColl"))
-        {
-            collision.transform.parent.parent.GetComponent<EnemyHealth>().EnemyHealthUpdate(-dmg);
-            gc.ComboVombo(numberOfCollisionHit);
-            startDesttroyObject();
-        }
-        else if (collision.gameObject.layer == 9)//bossCollider
-        {
-            //Manuel Adding
-            if (collision.transform.parent.parent.TryGetComponent<DummyMummyFunc>(out DummyMummyFunc dmf))
-            {
-                dmf.GetDamage(dmg);
-            }
-            gc.ComboVombo(numberOfCollisionHit);
-            gc.HandleDmgGiven();
-            startDesttroyObject();
-        }
-        else if (numberOfCollisionHit >= mostHitCanBeDone)
-        {
-            startDesttroyObject();
-        }
-        else
-        {
-            m_PropertyBlock.SetFloat("_fresnalPow", m_PropertyBlock.GetFloat("_fresnalPow") + 2);
-            modelRender.SetPropertyBlock(m_PropertyBlock);
+    //    if (collision.transform.CompareTag("EnemyColl"))
+    //    {
+    //        collision.transform.parent.parent.GetComponent<EnemyHealth>().EnemyHealthUpdate(-dmg);
+    //        gc.ComboVombo(numberOfCollisionHit);
+    //        startDesttroyObject();
+    //    }
+    //    else if (collision.gameObject.layer == 9)//bossCollider
+    //    {
+    //        //Manuel Adding
+    //        if (collision.transform.parent.parent.TryGetComponent<DummyMummyFunc>(out DummyMummyFunc dmf))
+    //        {
+    //            dmf.GetDamage(dmg);
+    //        }
+    //        gc.ComboVombo(numberOfCollisionHit);
+    //        gc.HandleDmgGiven();
+    //        startDesttroyObject();
+    //    }
+    //    else if (numberOfCollisionHit >= mostHitCanBeDone)
+    //    {
+    //        startDesttroyObject();
+    //    }
+    //    else
+    //    {
+    //        m_PropertyBlock.SetFloat("_fresnalPow", m_PropertyBlock.GetFloat("_fresnalPow") + 2);
+    //        modelRender.SetPropertyBlock(m_PropertyBlock);
 
-            //GetComponent<Rigidbody>().AddForce(reflectionVecs[numberOfCollisionHit] * bulletSpeed, ForceMode.VelocityChange);
-            dmg += 50;
-            numberOfCollisionHit += 1;
-        }
-        //if (collisionRoutine != null)
-        //{
-        //    StopCoroutine(collisionRoutine);
-        //}
-        //collisionRoutine = StartCoroutine(collRotine(collision));
-    }
+    //        //GetComponent<Rigidbody>().AddForce(reflectionVecs[numberOfCollisionHit] * bulletSpeed, ForceMode.VelocityChange);
+    //        dmg += 50;
+    //        numberOfCollisionHit += 1;
+    //    }
+    //    //if (collisionRoutine != null)
+    //    //{
+    //    //    StopCoroutine(collisionRoutine);
+    //    //}
+    //    //collisionRoutine = StartCoroutine(collRotine(collision));
+    //}
 
 
     private void startDesttroyObject()
@@ -217,7 +226,6 @@ public class ReflectBulletFunctions : MonoBehaviour
             modelRender.SetPropertyBlock(m_PropertyBlock);
             yield return new WaitForSeconds(0.001f);
         }
-        GetComponent<Rigidbody>().velocity = Vector3.zero;
         Destroy(gameObject);
     }
 

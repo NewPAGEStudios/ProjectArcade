@@ -76,6 +76,15 @@ MonoBehaviour:
     m_Localized: Carica il tuo laser.
     m_Metadata:
       m_Items: []
+  - m_Id: 21572660426473472
+    m_Localized: "Tiro di Gravit\xE0"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21573523194806272
+    m_Localized: Usa un campo gravitazionale il cui centro sei tu per attirare le
+      monete.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

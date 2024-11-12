@@ -27,9 +27,9 @@ TagManager:
   - UnflyableArea
   - bombadene
   - mapObs
-  - 
-  - 
-  - 
+  - Screen_Shop_UI
+  - Screen_Shop
+  - MiniMapShowCase
   - 
   - 
   - 
@@ -50,4 +50,7 @@ TagManager:
     locked: 0
   - name: PlayerPanel
     uniqueID: 630539965
+    locked: 0
+  - name: New Layer 2
+    uniqueID: 4260349731
     locked: 0
