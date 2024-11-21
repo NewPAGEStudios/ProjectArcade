@@ -17,7 +17,7 @@ MonoBehaviour:
   skillName: Dash Fill Meter
   skillDescription: "At\u0131lma yetene\u011Finin s\xFCresini doldurur."
   materials: []
-  sprite_HUD: {fileID: 21300000, guid: fd7ab348a7a02414d8ca1e9e9a0283f2, type: 3}
+  sprite_HUD: {fileID: 21300000, guid: 78120096ad715be46a9304b97a2c90da, type: 3}
   functionName: dashAdder
   modelPrefab: {fileID: 0}
   modelShow: {fileID: 100000, guid: 97d2b5f212fdaea4c945e42da71da052, type: 3}

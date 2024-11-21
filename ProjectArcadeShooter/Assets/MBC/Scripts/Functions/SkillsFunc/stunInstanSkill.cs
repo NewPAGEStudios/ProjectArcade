@@ -12,6 +12,8 @@ public class stunInstanSkill : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameObject.AddComponent<Rigidbody>();
+        GetComponent<Rigidbody>().isKinematic = true;
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         StartCoroutine(endEffect());
     }
@@ -30,16 +32,13 @@ public class stunInstanSkill : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
 
         if (other.gameObject.CompareTag("EnemyColl"))
         {
-            Debug.Log("11");
             if (!affectedGOs.Contains(other.gameObject))
             {
-                Debug.Log("22");
                 affectedGOs.Add(other.gameObject);
-                other.transform.parent.parent.GetComponent<Enemy>().Stun(0.5f);
+                other.GetComponent<ColliderParenter>().targetOBJ.transform.parent.GetComponent<Enemy>().Stun(0.5f);
             }
         }
     }

@@ -39,12 +39,18 @@ public class zzz : MonoBehaviour
         List<RaycastResult> results = new List<RaycastResult>();
         raycaster.Raycast(mouseEvent, results);
 
+#if ENABLE_LEGACY_INPUT_MANAGER
         bool sendMouseDown = Input.GetMouseButtonDown(0);
         bool sendMouseUp = Input.GetMouseButtonUp(0);
-
         //dragging
         bool isMouseDown = Input.GetMouseButton(0);
+#else
 
+        bool sendMouseDown = UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame;
+        bool sendMouseUp = UnityEngine.InputSystem.Mouse.current.leftButton.wasReleasedThisFrame;
+        //dragging
+        bool isMouseDown = UnityEngine.InputSystem.Mouse.current.leftButton.isPressed;
+#endif
         //dragging
         if (sendMouseUp)
         {

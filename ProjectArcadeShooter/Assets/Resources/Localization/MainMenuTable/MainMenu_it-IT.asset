@@ -200,6 +200,14 @@ MonoBehaviour:
     m_Localized: Frequenza di aggiornamento
     m_Metadata:
       m_Items: []
+  - m_Id: 35391034080169984
+    m_Localized: Dimensione Della Mini Mappa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35404096875073536
+    m_Localized: Transizione fluida della mini mappa
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

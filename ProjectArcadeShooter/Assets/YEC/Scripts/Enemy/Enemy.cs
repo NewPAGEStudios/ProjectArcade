@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     private GameObject player;
     private Vector3 lastKnowPos;
     public EnemySoundController soundController;
+    public EnemyFXController fxController;
 
     public EnemyHealth ehp;
     public NavMeshAgent Agent { get => agent;}
@@ -87,8 +88,9 @@ public class Enemy : MonoBehaviour
 
 
         soundController = gameObject.AddComponent<EnemySoundController>();
+        fxController = gameObject.AddComponent<EnemyFXController>();
 
-        if(NavMesh.SamplePosition(gameObject.transform.position,out NavMeshHit hit, 500f, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(gameObject.transform.position,out NavMeshHit hit, 500f, NavMesh.AllAreas))
         {
             gameObject.transform.position = hit.position;
 
@@ -235,11 +237,13 @@ public class Enemy : MonoBehaviour
         ehp.stunEffect(dur);
         agent.speed = 0;
         state = ccState.stun;
-        Debug.Log(agent.speed);
+        animator.enabled = false;
     }
     public void StunEnd()
     {
+        Debug.Log("kbmm");
         agent.speed = e_type.moveSpeed;
+        animator.enabled = true;
         state = ccState.normal;
     }
 

@@ -10,6 +10,7 @@ public class InGameSettings : MonoBehaviour
 {
 
     private PController player;
+    private MiniMapManager miniMapManager;
 
     public GameObject texturelowtextLINE;
     public GameObject texturemedtextLINE;
@@ -45,17 +46,23 @@ public class InGameSettings : MonoBehaviour
 
 
     [Header("Game Options")]
+    public GameObject minimapSmoothnestext;
+
     public GameObject swayBobtext;
     public GameObject damageVibrationtext;
 
     [Header("Slider Options")]
+    public GameObject miniMapSizeSlider;
+    [Header("Music")]
     public GameObject masterSlider;
     public GameObject musicSlider;
     public GameObject sFXSlider;
     public GameObject soundSlider;
-    [Header("-----")]
+    [Header("Sens")]
     public GameObject sensitivityXSlider;
     public GameObject sensitivityYSlider;
+    [Header("")]
+    private float sliderValueMinimapSize = 0.0f;
 
     private float sliderValueXSensitivity = 0.0f;
     private float sliderValueYSensitivity = 0.0f;
@@ -67,49 +74,10 @@ public class InGameSettings : MonoBehaviour
 
 
 
-    public void initValues()
-    {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PController>();
-        player.ChangeSens(PlayerPrefs.GetFloat("YSensitivity" ,10f), PlayerPrefs.GetFloat("XSensitivity", 10));
-        player.handleSNB(PlayerPrefs.GetInt("SwayNBobbing", 1) == 1 ? true : false);
-        player.handleDV(PlayerPrefs.GetInt("DMGVibration", 1) == 1 ? true : false);
-
-        PlayerPrefs.SetFloat("YSensitivity", PlayerPrefs.GetFloat("YSensitivity", 10f));
-        PlayerPrefs.SetFloat("XSensitivity", PlayerPrefs.GetFloat("XSensitivity", 10f));
-
-        PlayerPrefs.SetInt("SwayNBobbing", PlayerPrefs.GetInt("SwayNBobbing", 1));
-        PlayerPrefs.SetInt("DMGVibration", PlayerPrefs.GetInt("DMGVibration", 1));
-
-        PlayerPrefs.SetFloat("MasterVolume", PlayerPrefs.GetFloat("MasterVolume",10f));
-        PlayerPrefs.SetFloat("MusicVolume", PlayerPrefs.GetFloat("MusicVolume", 10f));
-        PlayerPrefs.SetFloat("SFXVolume", PlayerPrefs.GetFloat("SFXVolume", 10f));
-        PlayerPrefs.SetFloat("SoundVolume", PlayerPrefs.GetFloat("SoundVolume", 10f));
-
-
-
-        if (PlayerPrefs.GetInt("Textures",1) == 0)
-        {
-            texturelowtextLINE.gameObject.SetActive(true);
-            texturemedtextLINE.gameObject.SetActive(false);
-            texturehightextLINE.gameObject.SetActive(false);
-        }
-        else if (PlayerPrefs.GetInt("Textures", 1) == 1)
-        {
-            texturelowtextLINE.gameObject.SetActive(false);
-            texturemedtextLINE.gameObject.SetActive(true);
-            texturehightextLINE.gameObject.SetActive(false);
-        }
-        else if (PlayerPrefs.GetInt("Textures", 1) == 2)
-        {
-            texturelowtextLINE.gameObject.SetActive(false);
-            texturemedtextLINE.gameObject.SetActive(false);
-            texturehightextLINE.gameObject.SetActive(true);
-        }
-    }
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PController>();
-        initValues();
+        miniMapManager = GameObject.FindGameObjectWithTag("MiniMap").GetComponent<MiniMapManager>();
     }
 
     // Start is called before the first frame update
@@ -123,6 +91,8 @@ public class InGameSettings : MonoBehaviour
         ResDropdownUpdateValues();
 
 
+        miniMapSizeSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MinimapSize");
+
         masterSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MasterVolume");
         musicSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MusicVolume");
         sFXSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("SFXVolume");
@@ -130,6 +100,21 @@ public class InGameSettings : MonoBehaviour
 
         sensitivityXSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("XSensitivity");
         sensitivityYSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("YSensitivity");
+
+        // check minimapSmoth
+        bool smMM = PlayerPrefs.GetInt("MinimapSmoothness") == 1f ? true : false;
+        GameObject snMMParent = minimapSmoothnestext.transform.parent.gameObject;
+        snMMParent.transform.GetChild(0).gameObject.SetActive(false);
+        snMMParent.transform.GetChild(1).gameObject.SetActive(false);
+        if (smMM)
+        {
+
+            snMMParent.transform.GetChild(1).gameObject.SetActive(true);
+        }
+        else
+        {
+            snMMParent.transform.GetChild(0).gameObject.SetActive(true);
+        }
 
         // check sway n Bobbing
         bool snb = PlayerPrefs.GetInt("SwayNBobbing") == 1 ? true : false;
@@ -178,6 +163,24 @@ public class InGameSettings : MonoBehaviour
 
             fullscreen_parent.transform.GetChild(0).gameObject.SetActive(true);
 
+        }
+        if (PlayerPrefs.GetInt("Textures") == 0)
+        {
+            texturelowtextLINE.gameObject.SetActive(true);
+            texturemedtextLINE.gameObject.SetActive(false);
+            texturehightextLINE.gameObject.SetActive(false);
+        }
+        else if (PlayerPrefs.GetInt("Textures") == 1)
+        {
+            texturelowtextLINE.gameObject.SetActive(false);
+            texturemedtextLINE.gameObject.SetActive(true);
+            texturehightextLINE.gameObject.SetActive(false);
+        }
+        else if (PlayerPrefs.GetInt("Textures") == 2)
+        {
+            texturelowtextLINE.gameObject.SetActive(false);
+            texturemedtextLINE.gameObject.SetActive(false);
+            texturehightextLINE.gameObject.SetActive(true);
         }
 
     }
@@ -249,18 +252,45 @@ public class InGameSettings : MonoBehaviour
         PlayerPrefs.SetFloat("SoundVolume", soundSlider.GetComponent<Slider>().value);
     }
 
+    public void sizeOfMinimapSlider()
+    {
+        sliderValueMinimapSize = miniMapSizeSlider.GetComponent<Slider>().value;
+        PlayerPrefs.SetFloat("MinimapSize", sliderValueMinimapSize);
+        miniMapManager.ChangeSize(50 - sliderValueMinimapSize);
+    }
+
     public void SensitivityXSlider()
     {
         sliderValueXSensitivity = sensitivityXSlider.GetComponent<Slider>().value;
         PlayerPrefs.SetFloat("XSensitivity", sliderValueXSensitivity);
-        player.ChangeSens(sliderValueYSensitivity, sliderValueYSensitivity);
+        player.ChangeSens(sliderValueXSensitivity + 1, sliderValueYSensitivity + 1);
     }
 
     public void SensitivityYSlider()
     {
         sliderValueYSensitivity = sensitivityYSlider.GetComponent<Slider>().value;
+        Debug.Log(sensitivityYSlider.GetComponent<Slider>().value);
         PlayerPrefs.SetFloat("YSensitivity", sliderValueYSensitivity);
-        player.ChangeSens(sliderValueYSensitivity, sliderValueYSensitivity);
+        player.ChangeSens(sliderValueXSensitivity + 1, sliderValueYSensitivity + 1);
+    }
+
+    public void MiniMapSmooth()
+    {
+        bool smMM = PlayerPrefs.GetInt("MinimapSmoothness") == 1f ? true : false;
+        GameObject snMMParent = minimapSmoothnestext.transform.parent.gameObject;
+        snMMParent.transform.GetChild(0).gameObject.SetActive(false);
+        snMMParent.transform.GetChild(1).gameObject.SetActive(false);
+        if (smMM)
+        {
+            PlayerPrefs.SetInt("MinimapSmoothness", 0);
+            snMMParent.transform.GetChild(0).gameObject.SetActive(true);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("MinimapSmoothness", 1);
+            snMMParent.transform.GetChild(1).gameObject.SetActive(true);
+        }
+        miniMapManager.smooth = PlayerPrefs.GetInt("MinimapSmoothness") == 1f ? true : false;
     }
 
     public void SwayNBobbing()
@@ -312,16 +342,16 @@ public class InGameSettings : MonoBehaviour
         GameObject fullscreen_parent = fullscreentext.transform.parent.gameObject;
         fullscreen_parent.transform.GetChild(0).gameObject.SetActive(false);
         fullscreen_parent.transform.GetChild(1).gameObject.SetActive(false);
-        if (Screen.fullScreen != true)
-        {
-
-            fullscreen_parent.transform.GetChild(0).gameObject.SetActive(true);
-
-        }
-        else if (Screen.fullScreen != false)
+        if (Screen.fullScreen == true)
         {
 
             fullscreen_parent.transform.GetChild(1).gameObject.SetActive(true);
+
+        }
+        else if (Screen.fullScreen == false)
+        {
+
+            fullscreen_parent.transform.GetChild(0).gameObject.SetActive(true);
 
         }
     }
@@ -361,7 +391,16 @@ public class InGameSettings : MonoBehaviour
     {
         Resolution resolution = resList[resolutionIndex];
 
+//        player.GetComponent<PController>().fovChange(60f);
+
+        float scaleRatio = ((float)resolution.width / (float)resolution.height) / 1.78f;
+
+//        player.GetComponent<PController>().fovChange(60f / scaleRatio);
+//        player.GetComponent<PController>().aspectChange((float)resolution.width / (float)resolution.height);
+
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreenMode);
+
+
 
     }
 

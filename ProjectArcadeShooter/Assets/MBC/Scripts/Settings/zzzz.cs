@@ -30,6 +30,7 @@ public class zzzz : MonoBehaviour
         RaycastHit hit;
         if(Physics.Raycast(mouseRay,out hit, distance, RaycastMask, QueryTriggerInteraction.Ignore))
         {
+            if (hit.collider.gameObject != gameObject) return;
             OnCursorInput.Invoke(hit.textureCoord);
 //            Debug.Log(hit.textureCoord);
         }

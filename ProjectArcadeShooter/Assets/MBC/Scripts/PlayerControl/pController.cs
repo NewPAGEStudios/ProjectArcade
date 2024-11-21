@@ -44,8 +44,6 @@ public class PController : MonoBehaviour
     [SerializeField]
     private float slideDuration;
     [SerializeField]
-    private float slideForce;
-    [SerializeField]
     private float dashForce;
     [SerializeField]
     private float maxdashmeter;
@@ -83,7 +81,8 @@ public class PController : MonoBehaviour
     public GameObject soundParent;
     private bool snb;
     private bool dv;
-
+    [Header("Effects Ref")]
+    public GameObject dashEffect;
     private CameraPOVExtension cpove;
 
     GameController gc;
@@ -91,6 +90,8 @@ public class PController : MonoBehaviour
 
     //skill variables
     private int extrajump;
+    private float targetFOV;
+    private float targetFOVnormal;
     //Coroutines
     private Coroutine speedEfect;
     //Timer
@@ -142,14 +143,14 @@ public class PController : MonoBehaviour
         weaponManager.IManager = iManager;
         gc.IManager = iManager;
 
-        sensX = PlayerPrefs.GetFloat("XSensitivity", 10f);
-        sensY = PlayerPrefs.GetFloat("YSensitivity", 10f);
+        sensX = PlayerPrefs.GetFloat("XSensitivity", 10f) + 1;
+        sensY = PlayerPrefs.GetFloat("YSensitivity", 10f) + 1;
 
         snb = PlayerPrefs.GetInt("SwayNBobbing", 1) == 1 ? true : false;
         dv = PlayerPrefs.GetInt("DMGVibration", 1) == 1 ? true : false;
 
 
-        gc.AddDashIndicator(maxdashmeter);
+//        gc.AddDashIndicator(maxdashmeter);
         currentdashMeter = maxdashmeter;
         gc.DashIndicator(currentdashMeter);
 
@@ -173,7 +174,6 @@ public class PController : MonoBehaviour
         Jump();
         Crouch();
         CrouchExit();
-        Sliding();
         Dashing();
 
         if (snb)//apply sway
@@ -214,7 +214,6 @@ public class PController : MonoBehaviour
         gameObject.transform.localRotation = Quaternion.Euler(gameObject.transform.localRotation.x, cam_StartingRotation.x, gameObject.transform.localRotation.z);
         //compass Visualize
 
-        gc.CompassVisualize(gameObject.transform.localEulerAngles.y);
 
 
         //weaponProcedural Anim
@@ -328,9 +327,10 @@ public class PController : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         actiontp = ActionStateDependecyToPlayer.idle;
-        Camera.main.transform.localPosition = Vector3.zero;
 
-        transform.GetChild(0).localScale = new Vector3(1, 1, 1);
+        Camera.main.transform.localPosition = new Vector3(0, 1.5f, 0);
+        transform.GetChild(0).localScale = new Vector3(1, 1.5f, 1);
+
     }
     //EĞilme Bit
 
@@ -430,49 +430,6 @@ public class PController : MonoBehaviour
     }
 
 
-    //KaymaDodge
-    private void Sliding()
-    {
-        if (iManager.getSlidePressed())
-        {
-            if(actiontp != ActionStateDependecyToPlayer.idle || actiontg == ActionStateDependecyToGround.onAir)
-            {
-                return;
-            }
-            if (currentdashMeter < 25)
-            {
-                return;
-            }
-
-            Transform targetScaleExchangeUnit = gameObject.transform.GetChild(0);//getchild(0) = firts child of hierarcy it will be model be sure to do that
-            Transform targetPosExchangeUnit = gameObject.transform;
-
-
-            scale = targetScaleExchangeUnit.localScale;
-            pos = targetPosExchangeUnit.position;
-
-            targetScaleExchangeUnit.localScale = new Vector3(scale.x, scale.y / 2, scale.z);
-            targetPosExchangeUnit.position = new Vector3(pos.x, pos.y - scale.y / 2, pos.z);
-
-            switch (actiontg)
-            {
-                case ActionStateDependecyToGround.flat:
-                    rb.AddForce(transform.forward * slideForce, ForceMode.VelocityChange);
-                    break;
-                case ActionStateDependecyToGround.slope:
-                    rb.AddForce(Slope(transform.forward) * slideForce, ForceMode.VelocityChange);
-                    break;
-            }
-
-            actiontp = ActionStateDependecyToPlayer.slide;
-
-            currentdashMeter -= 25;
-            gc.DashIndicator(currentdashMeter);
-
-            gc.DashEffectOpener(slideDuration - 0.03f);
-            Invoke(nameof(SlidingNormal), slideDuration);
-        }
-    }
     private void Dashing()
     {
         if (iManager.getDashPressed())
@@ -485,15 +442,36 @@ public class PController : MonoBehaviour
             {
                 return;
             }
+            Vector2 moveDirVect2 = iManager.getPlayerMovement();// (x,y) (x,y,z) (x,0,y)
+            if (moveDirVect2 == Vector2.zero)
+            {
+                return;
+            }
 
             actiontp = ActionStateDependecyToPlayer.dash;
 
             currentdashMeter -= 25;
             gc.DashIndicator(currentdashMeter);
 
-            Vector2 moveDirVect2 = iManager.getPlayerMovement();// (x,y) (x,y,z) (x,0,y)
             Vector3 moveDir = new(moveDirVect2.x, 0f, moveDirVect2.y);
             moveDir = gameObject.transform.right * moveDir.x + gameObject.transform.forward * moveDir.z;
+
+            if(moveDirVect2.x > 0f)
+            {
+                dashEffect.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
+            } 
+            else if(moveDirVect2.x < 0f)
+            {
+                dashEffect.transform.GetChild(1).GetComponent<ParticleSystem>().Play();
+            }
+            if(moveDirVect2.y > 0f)
+            {
+                dashEffect.transform.GetChild(0).GetComponent<ParticleSystem>().Play();
+            }
+            else if (moveDirVect2.y < 0f)
+            {
+                dashEffect.transform.GetChild(3).GetComponent<ParticleSystem>().Play();
+            }
 
             switch (actiontg)
             {
@@ -508,31 +486,15 @@ public class PController : MonoBehaviour
                     break;
             }
             gc.DashEffectOpener(slideDuration - 0.03f);
-            Invoke(nameof(DashingNormal), slideDuration - 0.03f);
+            StartCoroutine(DashingNormal(slideDuration - 0.03f, moveDir));
         }
     }
-    private void DashingNormal()
+    IEnumerator DashingNormal(float remainingTime,Vector3 moveDir)
     {
-        rb.velocity = Vector3.zero;
+        yield return new WaitForSeconds(remainingTime);
+        rb.velocity = moveDir*10f;
         actiontp = ActionStateDependecyToPlayer.idle;
     }
-    private void SlidingNormal()
-    {
-        Transform targetScaleExchangeUnit = gameObject.transform.GetChild(0);//getchild(0) = firts child of hierarcy it will be model be sure to do that
-        Transform targetPosExchangeUnit = gameObject.transform;
-
-        rb.velocity = new Vector3(0, 0, 0);
-        scale = targetScaleExchangeUnit.localScale;
-        pos = targetPosExchangeUnit.position;
-
-        targetPosExchangeUnit.position = new Vector3(pos.x, pos.y + scale.y, pos.z);
-        targetScaleExchangeUnit.localScale = new Vector3(scale.x, scale.y * 2, scale.z);
-        transform.GetChild(0).localScale = new Vector3(1, 1, 1);
-
-        actiontp = ActionStateDependecyToPlayer.idle;
-    }
-
-
     private Vector3 Slope(Vector3 directionOnNormalPlane)
     {
         return Vector3.ProjectOnPlane(directionOnNormalPlane, slopePlaneNormal).normalized;
@@ -572,8 +534,8 @@ public class PController : MonoBehaviour
         {
             checkGroundVector = -slopePlaneNormal.normalized;
         }
-        Debug.DrawRay(gameObject.transform.position, checkGroundVector * (offsetScale + 0.3f), Color.red, Time.deltaTime);
-        if (Physics.Raycast(gameObject.transform.position, checkGroundVector,out RaycastHit hit,offsetScale + 0.3f))
+        Debug.DrawRay(gameObject.transform.position, checkGroundVector * (offsetScale + 1.2f), Color.red, Time.deltaTime);
+        if (Physics.Raycast(gameObject.transform.position, checkGroundVector,out RaycastHit hit,offsetScale + 1.2f))
         {
             float angleOfPlane = Vector3.Angle(Vector3.up, hit.normal);
 
@@ -734,7 +696,6 @@ public class PController : MonoBehaviour
         else
         {
             moveSpeed *= multiplier;
-            slideForce *= multiplier;
             dashForce *= multiplier;
             if (speedEfect != null)
             {
@@ -746,28 +707,45 @@ public class PController : MonoBehaviour
     IEnumerator SpeedMultiplierDuration(float multiplier,float duration)
     {
         Camera handCam = mainCam.transform.GetChild(0).GetComponent<Camera>();
+        targetFOV = mainCam.fieldOfView + (mainCam.fieldOfView * 20 / 60);
         float minusDuration = 0f;
         while (true)
-        {
-            handCam.fieldOfView = Mathf.MoveTowards(handCam.fieldOfView, 80, Time.deltaTime * 30);
-            mainCam.fieldOfView = Mathf.MoveTowards(mainCam.fieldOfView, 80, Time.deltaTime * 30);
-            if (handCam.fieldOfView == 80 && mainCam.fieldOfView == 80)
+        {            
+            handCam.fieldOfView = Mathf.MoveTowards(handCam.fieldOfView, targetFOV, Time.deltaTime * 30);
+            mainCam.fieldOfView = Mathf.MoveTowards(mainCam.fieldOfView, targetFOV, Time.deltaTime * 30);
+            if (handCam.fieldOfView == targetFOV && mainCam.fieldOfView == targetFOV)
             {
                 break;
             }
             yield return new WaitForEndOfFrame();
             minusDuration += Time.deltaTime;
         }
-        yield return new WaitForSeconds(duration-minusDuration);
+
+        float timer= duration-minusDuration;
+        while (true)
+        {
+            handCam.fieldOfView = targetFOV;
+            mainCam.fieldOfView = targetFOV;
+
+
+            yield return new WaitForEndOfFrame();
+            if (timer <= 0)
+            {
+                break;
+            }
+            timer -= Time.deltaTime;
+        }
+        
         moveSpeed /= multiplier;
-        slideForce /= multiplier;
         dashForce /= multiplier;
+
+        targetFOVnormal = mainCam.fieldOfView - (mainCam.fieldOfView * 20 / 60);
 
         while (true)
         {
-            handCam.fieldOfView = Mathf.MoveTowards(handCam.fieldOfView, 60, Time.deltaTime * 30);
-            mainCam.fieldOfView = Mathf.MoveTowards(mainCam.fieldOfView, 60, Time.deltaTime * 30);
-            if (handCam.fieldOfView == 60 && mainCam.fieldOfView == 60)
+            handCam.fieldOfView = Mathf.MoveTowards(handCam.fieldOfView, targetFOVnormal, Time.deltaTime * 30);
+            mainCam.fieldOfView = Mathf.MoveTowards(mainCam.fieldOfView, targetFOVnormal, Time.deltaTime * 30);
+            if (handCam.fieldOfView == targetFOVnormal&& mainCam.fieldOfView == targetFOVnormal)
             {
                 break;
             }
@@ -786,5 +764,22 @@ public class PController : MonoBehaviour
             currentdashMeter = maxdashmeter;
         }
         gc.DashIndicator(currentdashMeter);
+    }
+    public void fovChange(float fov)
+    {
+        Camera handCam = mainCam.transform.GetChild(0).GetComponent<Camera>();
+
+        mainCam.fieldOfView = fov;
+        handCam.fieldOfView = fov;
+        targetFOV = fov + (fov * 20 / 60);
+        targetFOVnormal = fov - (fov * 20 / 60);
+    }
+    public void aspectChange(float aspect)
+    {
+        Camera handCam = mainCam.transform.GetChild(0).GetComponent<Camera>();
+
+        mainCam.aspect = aspect;
+        handCam.aspect = aspect;
+
     }
 }

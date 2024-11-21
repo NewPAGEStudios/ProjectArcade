@@ -11,6 +11,7 @@ TagManager:
   - PlayerColl
   - EnemyColl
   - MeleePoint
+  - MiniMap
   layers:
   - Default
   - TransparentFX
@@ -30,7 +31,7 @@ TagManager:
   - Screen_Shop_UI
   - Screen_Shop
   - MiniMapShowCase
-  - 
+  - Killzone
   - 
   - 
   - 

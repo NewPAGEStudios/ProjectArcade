@@ -17,9 +17,9 @@ MonoBehaviour:
   skillName: extraJump
   skillDescription: "Havada iken ekstra z\u0131plama hakk\u0131 tan\u0131r."
   materials: []
-  sprite_HUD: {fileID: 21300000, guid: f2d85f0ce2bb8eb4b9864f7937e037cc, type: 3}
+  sprite_HUD: {fileID: 21300000, guid: 53e687ad7ac5b0345b6501541d1567ba, type: 3}
   functionName: extraJumpAdder
   modelPrefab: {fileID: 0}
-  modelShow: {fileID: 665336908148057112, guid: a00a4e6b870f8504eb3069d77cb61e77,
+  modelShow: {fileID: 665336908148057112, guid: c047ee7962a488c45be38cbefafafc01,
     type: 3}
   toBuyMoney: 10

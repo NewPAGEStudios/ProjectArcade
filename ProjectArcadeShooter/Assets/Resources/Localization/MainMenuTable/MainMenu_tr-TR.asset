@@ -200,6 +200,14 @@ MonoBehaviour:
     m_Localized: "Yenilenme H\u0131z\u0131"
     m_Metadata:
       m_Items: []
+  - m_Id: 35391034080169984
+    m_Localized: Mini Harita Boyutu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35404096875073536
+    m_Localized: "Mini Harita Ge\xE7i\u015Fi"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

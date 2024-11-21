@@ -6,6 +6,11 @@ public class CameraShake : MonoBehaviour
 {
     public AnimationCurve curve;
     public float duration;
+    private Vector3 initMCam;
+    private void Awake()
+    {
+        initMCam = transform.localPosition; 
+    }
 
     public void StartCamShake()
     {
@@ -18,10 +23,10 @@ public class CameraShake : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
             float strength = curve.Evaluate(elapsedTime/duration);
-            transform.localPosition = Vector3.zero + Random.insideUnitSphere * strength;
+            transform.localPosition = initMCam + Random.insideUnitSphere * strength;
             yield return null;
         }
-        transform.localPosition = Vector3.zero;
+        transform.localPosition = initMCam;
     }
 
 }

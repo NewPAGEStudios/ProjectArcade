@@ -19,7 +19,7 @@ MonoBehaviour:
   materials:
   - {fileID: 2100000, guid: 2ce5beb4cef3c0d47adf95c27ca755da, type: 2}
   - {fileID: 2100000, guid: 0415c187218467747a50bfdbc178f535, type: 2}
-  sprite_HUD: {fileID: 21300000, guid: 6d913ab2770860a42872c96740ef9f08, type: 3}
+  sprite_HUD: {fileID: 21300000, guid: bf0abff57e633c042aabb08cd91c18a3, type: 3}
   functionName: wallriser
   modelPrefab: {fileID: 6726647790736306412, guid: cf000de6ac7435b40987291a5c045a78,
     type: 3}

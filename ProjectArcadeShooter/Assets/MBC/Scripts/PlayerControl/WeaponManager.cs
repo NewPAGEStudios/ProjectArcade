@@ -72,10 +72,12 @@ public class WeaponManager : MonoBehaviour
     private GameObject currentWeaponGO;
     [Header("Sounds")]
     public GameObject soundWeapon;
+    [Header("Interaction")]
+    public LayerMask lMaskOFInteraction;
 
     [HideInInspector]
     public Skill active_Skill;
-    public List<Skill> stocked_Skills = new();
+    public List<SkillRuntimeHolder> stocked_Skills = new();
     [HideInInspector]
     public bool ot_event_skillMenuOpen = true;
 
@@ -122,9 +124,10 @@ public class WeaponManager : MonoBehaviour
         skill_holdOT = true;
         skill_usageCooldown = false;
 
-        for(int i = 0; i< 19; i++)
+
+        for(int i = 0; i< gc.skills.Length; i++)
         {
-            stocked_Skills.Add(gc.skills[UnityEngine.Random.Range(0, gc.skills.Length)]);
+            stocked_Skills.Add(new SkillRuntimeHolder(gc.skills[i], 0));
         }
 
         laserCharge = maxLaserCharge;
@@ -245,18 +248,21 @@ public class WeaponManager : MonoBehaviour
             }//HandState Control
 
         }
-        if (Physics.Raycast(firePos.transform.parent.position, firePos.transform.forward, out RaycastHit hitInfo ,2f, 1 << 11))
+        if (Physics.Raycast(firePos.transform.parent.position, firePos.transform.forward, out RaycastHit hitInfo ,2f,lMaskOFInteraction))
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                gc.Interact(0, hitInfo.transform.gameObject);
+                if(hitInfo.transform.TryGetComponent<Shop>(out Shop sh))
+                {
+                    gc.Interact(0, hitInfo.transform.gameObject);
+                }
             }
-            gc.DisplayInstruction(true);
+            gc.DisplayInstruction(true,0);
             Debug.DrawRay(firePos.transform.position, firePos.transform.forward, Color.red);
         }
         else
         {
-            gc.DisplayInstruction(false);
+            gc.DisplayInstruction(false,0);
         }
 
     }
@@ -288,6 +294,11 @@ public class WeaponManager : MonoBehaviour
     public void laserOpen()//CallsFrom fixed
     {
         if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || gc.state != GameController.GameState.inGame || player.ccstate != PController.CCStateOfPlayer.normal)
+        {
+            rl.gameObject.SetActive(false);
+            return;
+        }
+        if(currWeaponID == -1)
         {
             rl.gameObject.SetActive(false);
             return;
@@ -370,6 +381,7 @@ public class WeaponManager : MonoBehaviour
                 }
             }
         }
+        gc.notification(3, -1, null, FindWeapon(weaponID));
         if (currWeaponID == -1)
         {
             ChangeWeapon(weaponID);
@@ -492,6 +504,8 @@ public class WeaponManager : MonoBehaviour
             rbf.modelMat = w.usedAmmo.materials;
             rbf.bulletSpeed = w.usedAmmo.bulletSpeed;
             rbf.mostHitCanBeDone = w.usedAmmo.maxReflectionTime;
+
+            rbf.calcvec = firePos.transform.GetChild(0).transform.position;
 
             rbf.firedBy = gameObject;
 
@@ -724,14 +738,15 @@ public class WeaponManager : MonoBehaviour
     //Skills
     public void getSkill(Skill sk)
     {
-        if (stocked_Skills.Count == 0)
+        int skillnm = stocked_Skills.IndexOf(stocked_Skills.Find(x => x.skill == sk));
+        if (stocked_Skills[skillnm].count == 0)
         {
             active_Skill = sk;
             gc.changeSpriteOfActiveSkill(sk.sprite_HUD);
         }
-
-        stocked_Skills.Add(sk);
-    }
+        gc.notification(2, -1, sk, null);
+        stocked_Skills[skillnm].count += 1;
+        }
     public void changeSkills(int skill_id)
     {
         ot_event_skillMenuOpen = true;
@@ -739,11 +754,12 @@ public class WeaponManager : MonoBehaviour
         {
             return;
         }
-        if (stocked_Skills.Count == 0)
+        int skillnm = stocked_Skills.IndexOf(stocked_Skills.Find(x => x.skill.skillTypeID == skill_id));
+        if (stocked_Skills[skillnm].count == 0)
         {
             return;
         }
-        active_Skill = stocked_Skills.Find(x => x.skillTypeID == skill_id);
+        active_Skill = stocked_Skills[skillnm].skill;
         gc.changeSpriteOfActiveSkill(active_Skill.sprite_HUD);
 
     }
@@ -867,11 +883,20 @@ public class WeaponManager : MonoBehaviour
             }
             skill_holdOT = true;
 
-            stocked_Skills.Remove(stocked_Skills.Find(x => x.skillTypeID == active_Skill.skillTypeID));
+            int skillnm = stocked_Skills.IndexOf(stocked_Skills.Find(x => x.skill == active_Skill));
 
-            active_Skill = null;
-            gc.closeSpriteOfActiveSkill(null);
-            skillDisplay.SetActive(false);
+            stocked_Skills[skillnm].count -= 1;
+            gc.notification(4, -1, stocked_Skills[skillnm].skill, null);
+            if (stocked_Skills[skillnm].count > 0)
+            {
+                changeSkills(stocked_Skills[skillnm].skill.skillTypeID);
+            }
+            else
+            {
+                active_Skill = null;
+                gc.closeSpriteOfActiveSkill(null);
+                skillDisplay.SetActive(false);
+            }
         }
         else
         {
@@ -968,5 +993,16 @@ public class WeaponRuntimeHolder
         this.inWeapon_ammoAmount = 0;
         this.maxMagAmount = maxmagAmount;
         this.isOwned = false;
+    }
+}
+[System.Serializable]
+public class SkillRuntimeHolder
+{
+    public Skill skill;
+    public int count;
+    public SkillRuntimeHolder(Skill sk , int count)
+    {
+        skill = sk;
+        this.count = count;
     }
 }

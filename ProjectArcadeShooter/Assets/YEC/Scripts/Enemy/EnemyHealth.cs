@@ -25,6 +25,9 @@ public class EnemyHealth : MonoBehaviour
     private Material deathMat;
     private Color baseColor;
     // Start is called before the first frame update
+    private Coroutine deathRoutine;
+
+
     void Start()
     {
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
@@ -75,7 +78,7 @@ public class EnemyHealth : MonoBehaviour
 
 
             currentHealth = 0;
-            gc.ComboVombo(1);
+            gc.comboTimerReset();
             Die();
             return;
         }
@@ -159,8 +162,11 @@ public class EnemyHealth : MonoBehaviour
             mobj.GetComponent<Rigidbody>().AddForce(Vector3.up, ForceMode.Impulse);
             mobj.GetComponent<GetMoney>().money = 5;
         }
-
-        StartCoroutine(EnemyDeathRoutine());
+        if(deathRoutine != null)
+        {
+            return;
+        }
+        deathRoutine = StartCoroutine(EnemyDeathRoutine());
     }
     IEnumerator EnemyDeathRoutine()
     {
@@ -221,13 +227,14 @@ public class EnemyHealth : MonoBehaviour
             enemyObjectRenderer.SetPropertyBlock(mainMPB);
 
 
-
-            yield return new WaitForEndOfFrame();
+            duration -= Time.deltaTime;
+            yield return null;
             if (duration <= 0) {  break; }
         }
         mainMPB = new MaterialPropertyBlock();
         mainMPB.SetColor("_BaseColor", baseColor);
         enemyObjectRenderer.SetPropertyBlock(mainMPB);
         enemyObjectRenderer.sharedMaterial = mainMat;
+        GetComponent<Enemy>().StunEnd();
     }
 }

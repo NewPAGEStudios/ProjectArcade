@@ -6,11 +6,6 @@ using UnityEngine.Localization.Settings;
 
 public class LccalApplierToScriptable : MonoBehaviour
 {
-    public Locale locale;
-    public Locale localeq;
-    public Locale localew;
-    public Locale localee;
-
     public string applyCons(Consumable val,string keyName)
     {
         return LocalizationSettings.StringDatabase.GetLocalizedString("ConsMenu", keyName + val.id.ToString());
@@ -26,5 +21,9 @@ public class LccalApplierToScriptable : MonoBehaviour
     public string applyMainMenu(string keyName)
     {
         return LocalizationSettings.StringDatabase.GetLocalizedString("MainMenu", keyName);
+    }
+    public string applyGeneral(string keyName)
+    {
+        return LocalizationSettings.StringDatabase.GetLocalizedString("General", keyName);
     }
 }

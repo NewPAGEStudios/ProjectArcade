@@ -87,8 +87,10 @@ namespace SlimUI.ModernMenu{
         public AudioSource sliderSound;
         [Tooltip("The GameObject holding the Audio Source component for the SWOOSH SOUND when switching to the Settings Screen")]
         public AudioSource swooshSound;
+        [Tooltip("The GameObject holding the Audio Source component for the SWOOSH SOUND when switching to the Settings Screen")]
+        public AudioSource clickSound;
 
-		[Header("LOCALESTR")]
+        [Header("LOCALESTR")]
 		[SerializeField] private LocalizedString LocalizedString;
 		private string keyCodestr;
 
@@ -251,7 +253,10 @@ namespace SlimUI.ModernMenu{
 		public void PlaySwoosh(){
 			swooshSound.Play();
 		}
-
+		public void PlayClick()
+		{
+			clickSound.Play();
+		}
 		// Are You Sure - Quit Panel Pop Up
 		public void AreYouSure(){
 			exitMenu.SetActive(true);

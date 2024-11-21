@@ -18495,7 +18495,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 32768
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: bb4edbb75e487bb48805b866ab6968e3, type: 2}
+  m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
@@ -23668,10 +23668,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a46245c35e0d6ce48aeb137ac5216381, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locale: {fileID: 0}
-  localeq: {fileID: 0}
-  localew: {fileID: 0}
-  localee: {fileID: 0}
 --- !u!114 &1329626063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23750,6 +23746,7 @@ MonoBehaviour:
   consumableSpawnPointParent: {fileID: 0}
   enemySpawnPointParent: {fileID: 0}
   playerTeleportPoint: {fileID: 0}
+  shops: []
   activeCons: 
   activeConsID: 
   activeConsWeapID: 
@@ -23758,6 +23755,7 @@ MonoBehaviour:
   player: {fileID: 2136969295}
   IManager: {fileID: 0}
   audioM: {fileID: 24100000, guid: 204ae77320b536d459d12c2126255a73, type: 2}
+  Minimap: {fileID: 0}
   waveNumber: 0
   waitTime: 20
   comboDuration: 1.5
@@ -23777,11 +23775,19 @@ MonoBehaviour:
     type: 3}
   consAmmoIndicator: {fileID: 6320073927340386341, guid: ecc577c23c898bf42aef3866d157b726,
     type: 3}
+  notfsaved: {fileID: 0}
+  notfMoneyAdd: {fileID: 0}
+  notfSkll: {fileID: 0}
+  notfWAadd: {fileID: 0}
+  notfSkUsed: {fileID: 0}
   consIndicator: {fileID: 2705442297713813397, guid: 98afc5ae1be423642b60e16b3fce15d0,
     type: 3}
   moneyOBJ_Parent: {fileID: 576521051}
   moneyOBJ: {fileID: 2200244662305456985, guid: e58f7621795fd9848b6390ce8ff53e46,
     type: 3}
+  roomManager: {fileID: 0}
+  roomCloseTime: 0
+  roomRoutineRate: 0
 --- !u!4 &1329626066
 Transform:
   m_ObjectHideFlags: 0
@@ -30377,8 +30383,10 @@ MonoBehaviour:
   lineControls: {fileID: 129101788}
   fullscreentext: {fileID: 255648241}
   resDropdown: {fileID: 1290652796}
+  minimapSmoothnestext: {fileID: 0}
   swayBobtext: {fileID: 958271722}
   damageVibrationtext: {fileID: 1794777895}
+  miniMapSizeSlider: {fileID: 0}
   masterSlider: {fileID: 973319190}
   musicSlider: {fileID: 1826661783}
   sFXSlider: {fileID: 1136853070}
@@ -39967,6 +39975,9 @@ MonoBehaviour:
   activeWeapon: {fileID: 1426616261}
   inActiveWeapon: {fileID: 2002595645}
   soundWeapon: {fileID: 314982351}
+  lMaskOFInteraction:
+    serializedVersion: 2
+    m_Bits: 0
   active_Skill: {fileID: 0}
   stocked_Skills: []
   ot_event_skillMenuOpen: 1
@@ -40020,7 +40031,6 @@ MonoBehaviour:
   jumpDrag: 1
   crouchSpeed: 10
   slideDuration: 0.2
-  slideForce: 50
   dashForce: 40
   maxdashmeter: 50
   dashslideadder: 2.5
@@ -40028,6 +40038,7 @@ MonoBehaviour:
   sensX: 0
   mainCam: {fileID: 992809656}
   soundParent: {fileID: 2145612816}
+  dashEffect: {fileID: 0}
   ccstate: 0
   actiontp: 0
   actiontg: 0

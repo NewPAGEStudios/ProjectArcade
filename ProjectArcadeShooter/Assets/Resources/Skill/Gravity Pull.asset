@@ -17,7 +17,7 @@ MonoBehaviour:
   skillName: Gravity Pull
   skillDescription: Uses a gravity field that's center is you to pull coins
   materials: []
-  sprite_HUD: {fileID: 21300000, guid: d5f8eb0b9bcf15e479252787e857690f, type: 3}
+  sprite_HUD: {fileID: 21300000, guid: 296bd2dd2ad6940409c0619d9c03737d, type: 3}
   functionName: gravityPull
   modelPrefab: {fileID: 0}
   modelShow: {fileID: 919132149155446097, guid: 38e39211c33b9674193292c1cd1d5531,

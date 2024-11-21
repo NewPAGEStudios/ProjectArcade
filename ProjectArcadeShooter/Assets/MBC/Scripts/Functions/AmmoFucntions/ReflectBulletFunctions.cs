@@ -10,6 +10,8 @@ public class ReflectBulletFunctions : MonoBehaviour
     MaterialPropertyBlock m_PropertyBlock;
     Renderer modelRender;
 
+    public Vector3 calcvec;
+
     public GameObject firedBy;
 
     public LayerMask layerMask;
@@ -37,6 +39,8 @@ public class ReflectBulletFunctions : MonoBehaviour
     public Trail3D trail3D;
 
     public GameObject trace;
+
+    private AudioSource hitSound;
     void Start()
     {
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
@@ -73,10 +77,12 @@ public class ReflectBulletFunctions : MonoBehaviour
         gameObject.GetComponent<SphereCollider>().isTrigger = true;
 
 
-        Ray ray = new(transform.position, transform.forward);
+        Ray ray = new(calcvec, transform.forward);
 
 
         interrupt_Movement = false;
+
+        hitSound = modelRender.transform.Find("Sounds").GetChild(0).GetComponent<AudioSource>();
 
         for (int i = 0; i < mostHitCanBeDone; i++)
         {
@@ -136,8 +142,11 @@ public class ReflectBulletFunctions : MonoBehaviour
         {
             return;
         }
+        hitSound.Play();
         if (other.transform.CompareTag("EnemyColl"))
         {
+            gc.ComboVombo(numberOfCollisionHit);
+
             interrupt_Movement = true;
             other.GetComponent<ColliderParenter>().targetOBJ.transform.parent.GetComponent<EnemyHealth>().EnemyHealthUpdate(-dmg, firedBy);
             gc.dmgDoneFeedBack();

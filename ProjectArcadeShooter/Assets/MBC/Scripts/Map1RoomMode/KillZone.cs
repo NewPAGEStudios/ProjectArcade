@@ -5,32 +5,43 @@ using UnityEngine;
 public class KillZone : MonoBehaviour
 {
     public GameObject[] doors;
-    private bool work;
-    public void startKZ()
+    public bool work;
+    public bool alertSound;
+    private RoomManager roomManager;
+    private void Start()
     {
-        work = true;
-
+        roomManager = transform.parent.parent.GetChild(0).GetComponent<RoomManager>();
     }
-    public void closeKZ()
+    private void Update()
     {
-        work = false;
-
+        
     }
     private void OnTriggerEnter(Collider other)
     {
         if (work)
         {
-            //check other tag or layer and start death of it //Player or Enemy
-            Debug.Log(other.name + "'s death has been started");
+
+        }
+        if(alertSound)
+        {
+            Debug.Log("kmb");
+            if (other.CompareTag("PlayerColl"))
+            {
+                Debug.Log("kmbXXL");
+                GetComponent<AudioSource>().volume = 1f;
+            }
         }
     }
-    IEnumerator startKZone()
+    private void OnTriggerExit(Collider other)
     {
-        yield return null;
-    }
-    IEnumerator closeKZone()
-    {
-        yield return null;
+        if (alertSound)
+        {
+            if (other.CompareTag("PlayerColl"))
+            {
+                GetComponent<AudioSource>().volume = 0f;
+            }
+        }
+
     }
 }
 

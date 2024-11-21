@@ -92,6 +92,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public GameObject enemySpawnPointParent;
     [HideInInspector]
     public GameObject playerTeleportPoint;
+    [HideInInspector]
+    public Shop[] shops;
 
     //Save Holders
     [HideInInspector]
@@ -115,12 +117,14 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     [HideInInspector]
     public InputManager IManager;
     public AudioMixer audioM;
+    public GameObject Minimap;
 
 
     public int waveNumber;
     private int enemyCount;
 
     private int comboCount;
+    private int mostComboCount = 0;
     private float mon;
     public float money {  get { return mon; } set { mon = value; } }
 
@@ -130,6 +134,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public float waitTime;
     private float waitTimer;
     public float comboDuration;
+    private float comboDurationTimer;
+
     public float fadeSpeedDMGVisualizetion;
     public float cameraShakeIntensity;
     public float cameraShakeDuration;
@@ -146,6 +152,14 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public GameObject enemiesIndicator;
     public GameObject consSkillIndicator;
     public GameObject consAmmoIndicator;
+    [Header(header: "UI Prefab Referances Notifications")]
+    public GameObject notfsaved;
+    public GameObject notfMoneyAdd;
+    public GameObject notfSkll;
+    public GameObject notfWAadd;
+    public GameObject notfSkUsed;
+    private float waitMultiplier;
+
     [Header(header: "Prefab Referances")]
     public GameObject consIndicator;
     public GameObject moneyOBJ_Parent;
@@ -160,6 +174,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     private Coroutine shopInfoVis;
     private Coroutine moneyBoom;
     private Coroutine dmgDeal;
+    private Coroutine comboVisualizeRoutine;
+    private Coroutine notfWaitRoutine;
     [Header("MapSpecifications")]
     [Header("Map1")]
     public RoomManager roomManager;
@@ -169,9 +185,19 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     //PostProcessing Settings
     AmbientOcclusion ao;
 
-    //Compass
-    float cUnit;
-    List<CompassObject> cObjects = new List<CompassObject>();
+
+    private void confirmSettings()
+    {
+        player.GetComponent<PController>().ChangeSens(PlayerPrefs.GetFloat("YSensitivity", 10f), PlayerPrefs.GetFloat("XSensitivity", 10));
+        player.GetComponent<PController>().handleSNB(PlayerPrefs.GetInt("SwayNBobbing", 1) == 1 ? true : false);
+        player.GetComponent<PController>().handleDV(PlayerPrefs.GetInt("DMGVibration", 1) == 1 ? true : false);
+
+        Minimap.GetComponent<MiniMapManager>().ChangeSize(50 - PlayerPrefs.GetFloat("MinimapSize", 0f));
+        Minimap.GetComponent<MiniMapManager>().smooth = PlayerPrefs.GetInt("MinimapSmoothness") == 1f ? true : false;
+
+        Resolution resolution = Screen.currentResolution;
+
+    }
     private void Awake()
     {
 
@@ -210,42 +236,36 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             weaponGO.name = weapons[i].WeaponName;
             weaponGO.SetActive(false);
 
-            ////UI Instanttiate
-            //GameObject imaj = Instantiate(shopButton, shopPanel.transform.GetChild(0).GetChild(0).GetChild(0));
-            //imaj.AddComponent<Image>();
-            //imaj.GetComponent<Image>().sprite = weapons[i].UIRef;
-            //imaj.name = weapons[i].WeaponName + "Shop";
-            //imaj.GetComponent<RectTransform>().sizeDelta = new Vector2(150, 150);
-            ////button click event
-            //Button but = imaj.AddComponent<Button>();
-            //but.targetGraphic=imaj.GetComponent<Image>();
+            //UI Instanttiate
+            GameObject imaj = Instantiate(shopButton, shopPanel.transform.GetChild(0).GetChild(0).GetChild(0));
+            imaj.AddComponent<Image>();
+            imaj.GetComponent<Image>().sprite = weapons[i].UIRef;
+            imaj.name = weapons[i].WeaponName + "Shop";
+            imaj.GetComponent<RectTransform>().sizeDelta = new Vector2(150, 150);
+            //button click event
+            Button but = imaj.AddComponent<Button>();
+            but.targetGraphic = imaj.GetComponent<Image>();
 
-            //but.onClick.AddListener(() => weaponButtonPressed(but.gameObject.name) );
-            ////button hover event
-            //EventTrigger evtrigger = but.AddComponent<EventTrigger>();
-            //EventTrigger.Entry hoverEvent = new()
-            //{
-            //    eventID = EventTriggerType.PointerEnter
-            //};
-            //hoverEvent.callback.AddListener((functionIwant) => { weaponButtonHover(but.gameObject.name); });
-            //evtrigger.triggers.Add(hoverEvent);
-            ////button hover out event
-            //EventTrigger evtrigger1 = but.AddComponent<EventTrigger>();
-            //EventTrigger.Entry hoveroutEvent = new()
-            //{
-            //    eventID = EventTriggerType.PointerExit
-            //};
-            //hoveroutEvent.callback.AddListener((functionIwant) => { shopNameReset(); });
-            //evtrigger1.triggers.Add(hoverEvent);
+            but.onClick.AddListener(() => weaponButtonPressed(but.gameObject.name));
+            //button hover event
+            EventTrigger evtrigger = but.AddComponent<EventTrigger>();
+            EventTrigger.Entry hoverEvent = new()
+            {
+                eventID = EventTriggerType.PointerEnter
+            };
+            hoverEvent.callback.AddListener((functionIwant) => { weaponButtonHover(but.gameObject.name); });
+            evtrigger.triggers.Add(hoverEvent);
+            //button hover out event
+            EventTrigger evtrigger1 = but.AddComponent<EventTrigger>();
+            EventTrigger.Entry hoveroutEvent = new()
+            {
+                eventID = EventTriggerType.PointerExit
+            };
+            hoveroutEvent.callback.AddListener((functionIwant) => { shopNameReset(); });
+            evtrigger1.triggers.Add(hoverEvent);
 
 
-            //GameObject imajChild = Instantiate(shopTXT, imaj.transform);
-            //TextMeshProUGUI tmp = imajChild.AddComponent<TextMeshProUGUI>();
-            //tmp.color = Color.white;
-            //tmp.text = weapons[i].toBuyMoney.ToString();
-            //tmp.fontSize = 18;
-            //tmp.fontStyle = FontStyles.Bold;
-            //tmp.alignment = TextAlignmentOptions.MidlineGeoAligned;
+            GameObject imajChild = Instantiate(shopTXT, imaj.transform);
         }
         for (int i = 0; i < skills.Length; i++)
         {
@@ -287,12 +307,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             evtrigger1.triggers.Add(hoveroutEvent);
 
             GameObject imajChild = Instantiate(shopTXT, imaj.transform);
-            TextMeshProUGUI tmp = imajChild.AddComponent<TextMeshProUGUI>();
-            tmp.color = Color.white;
-            tmp.text = skills[i].toBuyMoney.ToString();
-            tmp.fontSize = 36;
-            tmp.fontStyle = FontStyles.Bold;
-            tmp.alignment = TextAlignmentOptions.MidlineGeoAligned;
         }
         ShopGridChange(0);
         //spawnMaps;
@@ -321,6 +335,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
     private void Start()
     {
+        confirmSettings();
         //optionInitializition;
 //        gamePanel.transform.GetChild(4).GetChild(1).GetComponent<InGameSettings>().initValues();
         GetComponent<CheckMusicVolume>().UpdateVolume();
@@ -347,7 +362,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             ChangeAmmoText(-1, -1,false);
 
             ComboBG(0);
-            ComboVisualize(0);
+            ComboVisualize();
 
 
             //Money Handling
@@ -363,17 +378,17 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             DefaultMap();
 
             ComboBG(0);
-            ComboVisualize(0);
+            ComboVisualize();
 
             Invoke(nameof(LoadElements), Time.deltaTime);
         }
 
-        cUnit = gamePanel.transform.GetChild(6).GetChild(1).GetComponent<RawImage>().rectTransform.rect.width / 360f;
 
         //Cursor Handling
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         roomTimer = roomRoutineRate;
+        confirmSettings();
         /* Save on waitState
         check save and load it save elements =  
         player,char's ammo,weapon,ability,hp,dashMeter,Money,,
@@ -431,6 +446,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         Vector3 posOFC = new(vec.x, vec.y + 1f, vec.z);
 
         GameObject consumableobject = new();
+        consumableobject.transform.localScale = Vector3.one * 2;
         int i = 0;
         for (i = 0; i < consumables.Length; i++)
         {
@@ -473,8 +489,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 activeConsWeapID.Add(gw.weaponID);
                 activeConsSkill.Add(-1);
             }
-            //compassVisualition
-            CompassSpawnAmmo(gw.transform.gameObject);
         }
         //skills
         else if(consumableobject.TryGetComponent<GetActiveSkill>(out GetActiveSkill gas))
@@ -493,8 +507,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 activeConsWeapID.Add(-1);
                 activeConsSkill.Add(gas.skillId);
             }
-            //compassVisualition
-            CompassSpawnSkill(gas.transform.gameObject,skillID);
         }
         else if(consumableobject.TryGetComponent<PerformPassiveSkill>(out PerformPassiveSkill pps))
         {
@@ -518,8 +530,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 activeConsWeapID.Add(-1);
                 activeConsSkill.Add(pps.thisSkill.skillTypeID);
             }
-            //compassVisualition
-            CompassSpawnSkill(pps.transform.gameObject,skillID);
         }
         else
         {
@@ -590,7 +600,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
         enemy.name = "enemy";
         enemy.tag = "Enemy";
-        CompassSpawnEnemy(enemy);
     }
 
 
@@ -605,7 +614,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             }
             else if(state == GameState.inShop)
             {
-                shopCloserfunc();
+                toCinematicShop(GameState.inShop, GameState.inGame, null);
             }
             else if(state == GameState.inGame)
             {
@@ -616,10 +625,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         {
             if (pState == PlayState.inStart)
             {
-                if (Input.GetKeyDown(KeyCode.F))
-                {
-                    player.GetComponent<PController>().TakeDMG(5, gameObject);
-                }
                 return;
             }
             else if (pState == PlayState.inWave)
@@ -653,6 +658,23 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 {
                     spawnTimer -= Time.deltaTime;
                 }
+                ////Deneme
+                //if(Input.GetKeyDown(KeyCode.G))
+                //{
+                //    roomManager.OpenAll();
+                //}
+                //if (Input.GetKeyDown(KeyCode.H))
+                //{
+                //    roomManager.CloseAll();
+                //}
+                if (Input.GetKeyDown(KeyCode.N))
+                {
+                    roomManager.startRoutineOfRoom(roomCloseTime, 0);
+                }
+                //if (Input.GetKeyDown(KeyCode.M))
+                //{
+                //    roomManager.startRoutineOfRoom(roomCloseTime, 1);
+                //}
                 //MapSpecification
                 if (roomTimer <= 0f)
                 {
@@ -719,9 +741,9 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         waveVisualzie("Wave " + waveNumber);
 
 
-        for (int i = 0; i < currentLevel.transform.Find("Shops").childCount; i++)
+        for (int i = 0; i < currentLevel.GetComponent<Map>().shops.Length; i++)
         {
-            currentLevel.transform.Find("Shops").GetChild(i).GetComponent<Shop>().close();
+            currentLevel.GetComponent<Map>().shops[i].close();
         }
 
         //WaveConfigiration
@@ -757,9 +779,9 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
         Debug.Log(currentLevel);
         
-        for (int i = 0; i < currentLevel.transform.Find("Shops").childCount; i++)
+        for (int i = 0; i < currentLevel.GetComponent<Map>().shops.Length; i++)
         {
-            currentLevel.transform.Find("Shops").GetChild(i).GetComponent<Shop>().open();
+            currentLevel.GetComponent<Map>().shops[i].open();
         }
 
         waitTimeVisualize(waitTimer);
@@ -851,32 +873,34 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     {
         currentLevel = mapParent;
         currentLevel.SetActive(true);
-        consumableSpawnPointParent = currentLevel.transform.Find("ConsumableCreatePos").gameObject;
-        playerTeleportPoint = currentLevel.transform.Find("PlayerTeleportPoint").gameObject;
+        consumableSpawnPointParent = currentLevel.GetComponent<Map>().ConsSpawnPointParent;
+        playerTeleportPoint = currentLevel.GetComponent<Map>().playerTeleportPos.gameObject;
 
         player.transform.position = playerTeleportPoint.transform.position;
-        mainCam.transform.localPosition = Vector3.zero;
+
+        Minimap.GetComponent<MiniMapManager>().teleportMM();
     }
     public void DefaultMap()
     {
         currentLevel.SetActive(false);
         currentLevel = mainLevel;
-        consumableSpawnPointParent = mainLevel.transform.Find("ConsumableCreatePos").gameObject;
-        enemySpawnPointParent = mainLevel.transform.Find("EnemySpawnPosParent").gameObject;
-        playerTeleportPoint = mainLevel.transform.Find("PlayerTeleportPoint").gameObject;
+        consumableSpawnPointParent = mainLevel.GetComponent<Map>().ConsSpawnPointParent;
+        enemySpawnPointParent = mainLevel.GetComponent<Map>().enemySpawnPointParent;
+        playerTeleportPoint = mainLevel.GetComponent<Map>().playerTeleportPos.gameObject;
 
         player.transform.position = playerTeleportPoint.transform.position;
 
+        Minimap.GetComponent<MiniMapManager>().teleportMM();
     }
 
     //GameStatesChanger
     public void ResumeGame()
     {
-        if (gamePanel.transform.GetChild(4).GetChild(0).gameObject.activeInHierarchy)
+        if (gamePanel.transform.GetChild(7).GetChild(0).gameObject.activeInHierarchy)
         {
             state = GameState.inGame;
 
-            gamePanel.transform.GetChild(4).gameObject.SetActive(false);
+            gamePanel.transform.GetChild(7).gameObject.SetActive(false);
             Time.timeScale = 1f;
 
             if (pState == PlayState.inWaiting)
@@ -891,15 +915,15 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         }
         else
         {
-            gamePanel.transform.GetChild(4).GetChild(0).gameObject.SetActive(true);
-            gamePanel.transform.GetChild(4).GetChild(1).gameObject.SetActive(false);
+            gamePanel.transform.GetChild(7).GetChild(0).gameObject.SetActive(true);
+            gamePanel.transform.GetChild(7).GetChild(1).gameObject.SetActive(false);
         }
     }
 
     public void StopGame()
     {
         state = GameState.pause;
-        gamePanel.transform.GetChild(4).gameObject.SetActive(true);
+        gamePanel.transform.GetChild(7).gameObject.SetActive(true);
         Time.timeScale = 0f;
 
         if(pState == PlayState.inWaiting)
@@ -930,6 +954,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public void SaveElements()
     {
         SaveSystem.SavePlayer(player.GetComponent<PController>(), player.GetComponent<WeaponManager>(), GetComponent<GameController>());
+        notification(0,-1,null,null);
     }
     public void LoadElements()
     {
@@ -995,7 +1020,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             lst = skills.ToList();
             for(int count = 0; count < de.stockedSkill_ID.Length; count++)
             {
-                player.GetComponent<WeaponManager>().stocked_Skills.Add(lst.Find(x => x.skillTypeID == de.stockedSkill_ID[count]));
+                player.GetComponent<WeaponManager>().stocked_Skills[count].count = de.stockedSkill_Count[count];
             }
         }
         toWait();
@@ -1004,24 +1029,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
 
     //Animations
-    IEnumerator waveStartAnim()//UI//TODO:Düzenle
-    {
-        TextMeshProUGUI tmp = gamePanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
-        Vector3 tmp_truePos = tmp.rectTransform.localPosition;
-        tmp.rectTransform.localPosition = Vector3.zero;
-        tmp.fontSize = 144;
-        float speedAnim = 250f;
-        while (true)
-        {
-            tmp.rectTransform.localPosition = Vector3.MoveTowards(tmp.rectTransform.localPosition, tmp_truePos,Time.deltaTime * speedAnim);
-            tmp.fontSize = Mathf.MoveTowards(tmp.fontSize, 36, Time.deltaTime * speedAnim);
-            yield return new WaitForEndOfFrame();
-            if (tmp.rectTransform.localPosition == tmp_truePos && tmp.fontSize == 36)
-            {
-                break;
-            }
-        }
-    }
     IEnumerator bossStartAnim(Animator selectedAnim,Camera selectedCam)
     {
         while (true) 
@@ -1104,33 +1111,32 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         player.GetComponent<Rigidbody>().velocity = Vector3.zero;
         player.GetComponent<Rigidbody>().useGravity = false;
 
-        Vector3 vec = sh.HeadPOS.transform.position;
-
+        Vector3 vec = sh.BodyPos.transform.position;
         while (true)
         {
-            player.transform.forward = Vector3.MoveTowards(player.transform.forward, sh.HeadPOS.transform.forward, 0.0001f * 100f);
+            player.transform.forward = Vector3.MoveTowards(player.transform.forward, sh.BodyPos.transform.forward, 0.0001f * 300f);
             player.transform.position = Vector3.MoveTowards(player.transform.position, vec, 0.0001f * 100f);
             if (player.transform.position == vec)
             {
-                player.transform.forward = sh.HeadPOS.transform.forward;
+                player.transform.forward = sh.BodyPos.transform.forward;
+                break;
+            }
+            yield return new WaitForSecondsRealtime(0.0001f);
+        }
+        vec = sh.HeadPOS.transform.position;
+        while (true)
+        {
+            mainCam.transform.position = Vector3.MoveTowards(mainCam.transform.position, vec, 0.0001f * 150f);
+            mainCam.transform.forward = Vector3.MoveTowards(mainCam.transform.forward, sh.HeadPOS.transform.forward, 0.0001f * 150f);
+            if (mainCam.transform.position == vec)
+            {       
+                mainCam.transform.forward = sh.HeadPOS.transform.forward;
                 break;
             }
             yield return new WaitForSecondsRealtime(0.0001f);
         }
         float xRot=10f;
         mainCam.transform.localEulerAngles = new Vector3(xRot, 0, 0);
-//        while (true)
-//        {
-//            xRot = Mathf.MoveTowards(mainCam.transform.localEulerAngles.x, 10f, 0.0001f * 500f);
-//            mainCam.transform.localEulerAngles = new Vector3(xRot, 0, 0);
-//            Debug.Log("kombo:" + mainCam.transform.localEulerAngles.x);
-//            if (mainCam.transform.localEulerAngles.x == 10f)
-//            {
-//                break;
-//            }
-//            yield return new WaitForSecondsRealtime(0.0001f);
-////            Debug.Log("2");
-//        }
         //startAnim;
         player.GetComponent<WeaponManager>().doubleHandAnimation(0);
         while (true)
@@ -1140,7 +1146,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         }
         while (true)
         {
-            mainCam.transform.localEulerAngles = Vector3.MoveTowards(mainCam.transform.localEulerAngles, new Vector3(0, 0, 0), 0.0001f * 100f);
+            mainCam.transform.localEulerAngles = Vector3.MoveTowards(mainCam.transform.localEulerAngles, new Vector3(0, 0, 0), 0.0001f * 500f);
             if (mainCam.transform.localEulerAngles.x == 0f)
             {
                 break;
@@ -1154,11 +1160,29 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
         pState = PlayState.inWaiting;
         state = GameState.inShop;
+        sh.workScreen();
         ShopOpener();
     }
     IEnumerator ShopEndAnim()
     {
+        state = GameState.inGame;
+        pState = PlayState.inWaiting;
+        Vector3 vec= new Vector3(0, 1.5f, 0);
+        foreach(Shop shop in currentLevel.GetComponent<Map>().shops)
+        {
+            shop.unWorkScreen();
+        }
+        while (true)
+        {
+            mainCam.transform.localPosition = Vector3.MoveTowards(mainCam.transform.localPosition, vec, 0.0001f * 300f);
+            if (mainCam.transform.localPosition == vec)
+            {
+                break;
+            }
+            yield return new WaitForSecondsRealtime(0.0001f);
+        }
         yield return null;
+        shopCloserfunc();
     }
 
 
@@ -1185,17 +1209,17 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     IEnumerator dmgDoneRoutine()
     {
         float a = 1f;
-        Color col = playerPanel.transform.GetChild(6).GetChild(0).GetComponent<Image>().color;
-        for (int c = 0; c < playerPanel.transform.GetChild(6).childCount; c++)
+        Color col = playerPanel.transform.GetChild(2).GetChild(0).GetComponent<Image>().color;
+        for (int c = 0; c < playerPanel.transform.GetChild(2).childCount; c++)
         {
-            playerPanel.transform.GetChild(6).GetChild(c).GetComponent<Image>().color = new Color(col.r, col.g, col.b, 1);
+            playerPanel.transform.GetChild(2).GetChild(c).GetComponent<Image>().color = new Color(col.r, col.g, col.b, 1);
         }
         while (true)
         {
             a = Mathf.MoveTowards(a, 0f, Time.deltaTime * 4);
-            for(int c = 0; c < playerPanel.transform.GetChild(6).childCount; c++)
+            for(int c = 0; c < playerPanel.transform.GetChild(2).childCount; c++)
             {
-                playerPanel.transform.GetChild(6).GetChild(c).GetComponent<Image>().color = new Color(col.r, col.g, col.b, a);
+                playerPanel.transform.GetChild(2).GetChild(c).GetComponent<Image>().color = new Color(col.r, col.g, col.b, a);
             }
             if (a == 0f)
             {
@@ -1220,10 +1244,20 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     }
     public void waveVisualzie(string waveIndicator)
     {
-        gamePanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = waveIndicator;
-        StartCoroutine(waveStartAnim());
+        if(pState == PlayState.inWave)
+        {
+            gamePanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = localizer_scp.applyGeneral("Wave_txt") + " " + waveNumber;
+        }
+        else
+        {
+            gamePanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = waveIndicator;
+        }
     }
-    public void ComboVisualize(int combo)
+    public void mostComboVis()
+    {
+        gamePanel.transform.GetChild(2).GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = localizer_scp.applyGeneral("MostCombo_txt") + " " + mostComboCount.ToString();
+    }
+    public void ComboVisualize()
     {
         if (comboCount <= 0)
         {
@@ -1232,8 +1266,30 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         else
         {
             gamePanel.transform.GetChild(2).gameObject.SetActive(true);
-            gamePanel.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = comboCount + " Combo";
+            gamePanel.transform.GetChild(2).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = comboCount + " Combo";
         }
+    }
+    IEnumerator ComboVisRoutine()
+    {
+        Transform txt = gamePanel.transform.GetChild(2).GetChild(0).GetChild(0);
+        Transform txt1 = gamePanel.transform.GetChild(2).GetChild(0).GetChild(1);
+
+        txt.GetComponent<RectTransform>().anchoredPosition = new Vector2(-250, 0);
+        txt1.GetComponent<RectTransform>().anchoredPosition = new Vector2(-250, -30);
+
+        while (true)
+        {
+            txt.GetComponent<RectTransform>().anchoredPosition = Vector2.MoveTowards(txt.GetComponent<RectTransform>().anchoredPosition, Vector2.zero, Time.deltaTime * 500f);
+            txt1.GetComponent<RectTransform>().anchoredPosition = Vector2.MoveTowards(txt.GetComponent<RectTransform>().anchoredPosition, new Vector2(0,-30), Time.deltaTime * 500f);
+            if (txt.GetComponent<RectTransform>().anchoredPosition == Vector2.zero)
+            {
+                txt.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+                txt1.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -30);
+                break;
+            }
+            yield return null;
+        }
+        comboVisualizeRoutine = null;
     }
     public void ComboBG(float fa)
     {
@@ -1241,6 +1297,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     }
     public void ShopOpener()
     {
+        ShopScreenChange(0);
         if (pState == PlayState.inWaiting)
         {
             player.transform.GetChild(1).Find("Musics").Find("MusicWait").GetComponent<AudioSource>().Pause();
@@ -1251,15 +1308,13 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     }
     public void ShopCloser()
     {
-
-
         if (pState == PlayState.inWaiting)
         {
             player.transform.GetChild(1).Find("Musics").Find("MusicWait").GetComponent<AudioSource>().UnPause();
         }
         playerPanel.SetActive(true);
         gamePanel.SetActive(true);
-        shopPanel.SetActive(false);
+        ShopScreenChange(1);
     }
     public void ShopInfo(string infoStr)
     {
@@ -1283,6 +1338,13 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             }
         }
     }
+    public void ShopScreenChange(int childNum)
+    {
+        shopPanel.transform.GetChild(0).gameObject.SetActive(false);
+        shopPanel.transform.GetChild(1).gameObject.SetActive(false);
+
+        shopPanel.transform.GetChild(childNum).gameObject.SetActive(true);
+    }
     IEnumerator ShopInfoRoutine()
     {
         TextMeshProUGUI tmpInfo = shopPanel.transform.GetChild(0).Find("Info").GetComponent<TextMeshProUGUI>();
@@ -1298,52 +1360,81 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             }
         }
     }
-
-    public void CompassVisualize(float value)
+    public void notification(int id, float addedMoney, Skill skill, Weapon weap)
     {
-        gamePanel.transform.GetChild(6).GetChild(1).GetComponent<RawImage>().uvRect = new Rect(value/360f,0f,1f,1f);
-
-        foreach(CompassObject cobject in cObjects)
+        switch (id)
         {
-            Vector2 pPos = new Vector2(player.transform.position.x, player.transform.position.z);
-            Vector2 pFwd = new Vector2(player.transform.forward.x, player.transform.forward.z);
-
-            float angle = Vector2.SignedAngle(new Vector2(cobject.irTransform.position.x, cobject.irTransform.position.z) - pPos, pFwd);
-
-            cobject.uiTransform.GetComponent<Image>().rectTransform.anchoredPosition = new Vector2(cUnit * angle, 0f);
+            case 0:
+                GameObject goS = Instantiate(notfsaved, gamePanel.transform.GetChild(6));
+                notfWaitRoutine = StartCoroutine(notf_AnimNonVectorized(goS));
+                break;
+            case 1:
+                GameObject goM = Instantiate(notfMoneyAdd, gamePanel.transform.GetChild(6));
+                goM.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = addedMoney.ToString() + " " + localizer_scp.applyGeneral("AddCurency_txt");
+                notfWaitRoutine = StartCoroutine(notf_Anim(goM));
+                break;
+            case 2:
+                GameObject goSk = Instantiate(notfSkll, gamePanel.transform.GetChild(6));
+                goSk.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = localizer_scp.applySkill(skill, "Name") + " " + localizer_scp.applyGeneral("addSkill");
+                goSk.transform.GetChild(1).GetComponent<Image>().sprite = skill.sprite_HUD;
+                notfWaitRoutine = StartCoroutine(notf_Anim(goSk));
+                break;
+            case 3:
+                GameObject goW = Instantiate(notfWAadd, gamePanel.transform.GetChild(6));
+                goW.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = localizer_scp.applyWeapon(weap, "Name") + " " + localizer_scp.applyGeneral("WA_txt");
+                notfWaitRoutine = StartCoroutine(notf_Anim(goW));
+                break;
+            case 4:
+                GameObject goSkU = Instantiate(notfSkUsed, gamePanel.transform.GetChild(6));
+                goSkU.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = localizer_scp.applyGeneral("usingSkill_txt") + " " + localizer_scp.applySkill(skill, "Name");
+                goSkU.transform.GetChild(1).GetComponent<Image>().sprite = skill.sprite_HUD;
+                notfWaitRoutine = StartCoroutine(notf_Anim(goSkU));
+                break;
         }
     }
-    public void CompassSpawnEnemy(GameObject enemi)
+    IEnumerator notf_AnimNonVectorized(GameObject notfParent)
     {
-        GameObject uiGO = Instantiate(enemiesIndicator, gamePanel.transform.GetChild(6).GetChild(1));
-        var compassObject = new CompassObject(ir: enemi.transform, ui: uiGO.transform);
-        cObjects.Add(compassObject);
-    }
-    public void CompassSpawnSkill(GameObject skillGO, int skillid)
-    {
-        GameObject uiGO = Instantiate(consSkillIndicator, gamePanel.transform.GetChild(6).GetChild(1));
-        for (int i = 0; i < skills.Length; i++)
+        Color col = notfParent.transform.GetChild(1).GetComponent<Image>().color;
+        float alph = col.a;
+        while (true)
         {
-            if (skills[i].skillTypeID == skillid)
-            {
-                uiGO.GetComponent<Image>().sprite = skills[i].sprite_HUD;
-            }
+            alph = Mathf.MoveTowards(alph, 0f, Time.deltaTime * 1.5f);
+            col = new Color(col.r, col.g, col.b, alph);
+            notfParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = col;
+            notfParent.transform.GetChild(1).GetComponent<Image>().color = col;
+            if (alph == 0) break;
+            yield return null;
         }
-        var compassObject = new CompassObject(ir: skillGO.transform, ui: uiGO.transform);
-        cObjects.Add(compassObject);
+        yield return null;
+        Destroy(notfParent);
+        notfWaitRoutine = null;
     }
-    public void CompassSpawnAmmo(GameObject ammo)
+    IEnumerator notf_Anim(GameObject notfParent)
     {
-        GameObject uiGO = Instantiate(consAmmoIndicator, gamePanel.transform.GetChild(6).GetChild(1));
-        var compassObject = new CompassObject(ir: ammo.transform, ui: uiGO.transform);
-        cObjects.Add(compassObject);
+        Color col = notfParent.transform.GetChild(1).GetComponent<Image>().color;
+        float alph = col.a;
+        while (true)
+        {
+            alph = Mathf.MoveTowards(alph, 0f, Time.deltaTime * 1.5f);
+            col = new Color(col.r,col.g,col.b,alph);
+            notfParent.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = col;
+            notfParent.transform.GetChild(1).GetComponent<Image>().color = col;
+            notfParent.GetComponent<RectTransform>().anchoredPosition += 100f * Time.deltaTime * Vector2.up;
+            if (alph == 0) break;
+            yield return null;
+        }
+        yield return null;
+        Destroy(notfParent);
+        notfWaitRoutine = null;
     }
+
+
     //player based UI Events
 
     public void changeHPOfPlayer(float maxH, float currentH)
     {
-        playerPanel.transform.GetChild(4).GetChild(1).GetComponent<Image>().fillAmount = currentH/maxH;
-        playerPanel.transform.GetChild(4).GetChild(2).GetComponent<TextMeshProUGUI>().text = currentH.ToString() + "/" + maxH.ToString();
+        playerPanel.transform.GetChild(5).GetChild(0).GetComponent<Image>().fillAmount = currentH/maxH;
+        playerPanel.transform.GetChild(5).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = currentH.ToString() + "/" + maxH.ToString();
     }
 
 
@@ -1357,15 +1448,15 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
     public void ChangeActiveWeapon(int id)
     {
-        for (int c = 0; c < playerPanel.transform.GetChild(7).childCount; c++)
+        for (int c = 0; c < playerPanel.transform.GetChild(4).childCount; c++)
         {
             if(c == id)
             {
-                playerPanel.transform.GetChild(7).GetChild(c).gameObject.SetActive(true);
+                playerPanel.transform.GetChild(4).GetChild(c).gameObject.SetActive(true);
             }
             else
             {
-                playerPanel.transform.GetChild(7).GetChild(c).gameObject.SetActive(false);
+                playerPanel.transform.GetChild(4).GetChild(c).gameObject.SetActive(false);
             }
         }
     }
@@ -1375,21 +1466,21 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
     public void changeSpriteOfActiveSkill(Sprite sprite)
     {
-        playerPanel.transform.GetChild(2).GetChild(0).GetComponent<Image>().enabled = true;
-        playerPanel.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = sprite;
+        playerPanel.transform.GetChild(3).GetChild(0).GetComponent<Image>().enabled = true;
+        playerPanel.transform.GetChild(3).GetChild(0).GetComponent<Image>().sprite = sprite;
     }
     public void closeSpriteOfActiveSkill(Sprite sprite)
     {
-        playerPanel.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = null;
-        playerPanel.transform.GetChild(2).GetChild(0).GetComponent<Image>().enabled = false;
+        playerPanel.transform.GetChild(3).GetChild(0).GetComponent<Image>().sprite = null;
+        playerPanel.transform.GetChild(3).GetChild(0).GetComponent<Image>().enabled = false;
     }
     public void LaserIndicator(float maxMeter,float curMeter)
     {
-        for(int c = 0; c < playerPanel.transform.GetChild(7).childCount; c++)
+        for(int c = 0; c < playerPanel.transform.GetChild(4).childCount; c++)
         {
-            if (playerPanel.transform.GetChild(7).GetChild(c).gameObject.activeInHierarchy)
+            if (playerPanel.transform.GetChild(4).GetChild(c).gameObject.activeInHierarchy)
             {
-                playerPanel.transform.GetChild(7).GetChild(c).GetChild(0).GetComponent<Image>().fillAmount = (maxMeter - curMeter) / maxMeter;
+                playerPanel.transform.GetChild(4).GetChild(c).GetChild(0).GetComponent<Image>().fillAmount = (maxMeter - curMeter) / maxMeter;
             }
         }
     }
@@ -1399,48 +1490,50 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     {
         float lastMeter = dashMeter % 25;
         int opennedMeters = (int) dashMeter / 25;
-        for(int i = 0; i <= playerPanel.transform.GetChild(3).childCount - 1; i++)
+        for(int i = 0; i <= playerPanel.transform.GetChild(5).GetChild(1).childCount - 1; i++)
         {
             if (opennedMeters > 0)
             {
-                playerPanel.transform.GetChild(3).GetChild(i).GetComponent<Image>().fillAmount = 1;
+                playerPanel.transform.GetChild(5).GetChild(1).GetChild(i).GetComponent<Image>().fillAmount = 1;
             }
             else if(opennedMeters == 0)
             {
-                playerPanel.transform.GetChild(3).GetChild(i).GetComponent<Image>().fillAmount = lastMeter / 25;
+                playerPanel.transform.GetChild(5).GetChild(1).GetChild(i).GetComponent<Image>().fillAmount = lastMeter / 25;
             }
             else
             {
-                playerPanel.transform.GetChild(3).GetChild(i).GetComponent<Image>().fillAmount = 0;
+                playerPanel.transform.GetChild(5).GetChild(1).GetChild(i).GetComponent<Image>().fillAmount = 0;
             }
             opennedMeters--;
         }
     }
-    public void AddDashIndicator(float dashMeter)
-    {
-        float dashNumber = Mathf.Round(dashMeter / 25);
-        float maxDashN = dashNumber;
-        while(dashNumber > 0)
-        {
-            GameObject go = Instantiate(dashVisualized, playerPanel.transform.GetChild(3));
-            go.GetComponent<RectTransform>().anchoredPosition = new Vector2(-125 + (55.875f * (maxDashN - dashNumber)),0);
-            dashNumber--;
-        }
-    }
+    //public void AddDashIndicator(float dashMeter)//Not in Actual Game
+    //{
+    //    float dashNumber = Mathf.Round(dashMeter / 25);
+    //    float maxDashN = dashNumber;
+    //    while(dashNumber > 0)
+    //    {
+    //        GameObject go = Instantiate(dashVisualized, playerPanel.transform.GetChild(5).GetChild(1));
+    //        go.GetComponent<RectTransform>().anchoredPosition = new Vector2(-125 + (55.875f * (maxDashN - dashNumber)),0);
+    //        dashNumber--;
+    //    }
+    //}
     public void BossHPChange(float fa)
     {
         bossPanel.transform.GetChild(1).GetChild(0).GetComponent<Image>().fillAmount = fa;
-        RectTransform rt = bossPanel.transform.GetChild(2).GetChild(0).GetComponent<Image>().rectTransform;
-        rt.localPosition = new Vector3(rt.localPosition.x, fa * 100, rt.localPosition.z);
     }
-    public void MoneyDisplay()
+    public void MoneyDisplay()//TODO Make it gamePanel
     {
-        playerPanel.transform.GetChild(5).GetChild(0).GetComponent<TextMeshProUGUI>().text = money.ToString();
-        shopPanel.transform.GetChild(0).GetChild(5).GetComponent<TextMeshProUGUI>().text = money.ToString();
+        gamePanel.transform.GetChild(5).GetChild(0).GetComponent<TextMeshProUGUI>().text = money.ToString() + " $";
+        shopPanel.transform.GetChild(0).GetChild(7).GetComponent<TextMeshProUGUI>().text = money.ToString() + " $";
     }
-    public void DisplayInstruction(bool display)
+    public void DisplayInstruction(bool display, int id_text)
     {
         gamePanel.transform.GetChild(3).gameObject.SetActive(display);
+        if(id_text == 0)
+        {
+            gamePanel.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = localizer_scp.applyGeneral("Interraction_txt");
+        }
     }
     public void HandleDMGtakenUI(int childNumber)//0:back 1:left 2:rigth 3:front
     {
@@ -1476,10 +1569,10 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     }
     IEnumerator DMG_UI_Give_Routine()
     {
-        Image[] ima = new Image[playerPanel.transform.GetChild(6).childCount];
-        for (int z = 0; z < playerPanel.transform.GetChild(6).childCount; z++)
+        Image[] ima = new Image[playerPanel.transform.GetChild(2).childCount];
+        for (int z = 0; z < playerPanel.transform.GetChild(2).childCount; z++)
         {
-            ima[z] = playerPanel.transform.GetChild(6).GetChild(z).GetComponent<Image>();
+            ima[z] = playerPanel.transform.GetChild(2).GetChild(z).GetComponent<Image>();
             ima[z].color = new Color(ima[z].color.r, ima[z].color.g, ima[z].color.b, 0.4F);
         }
         while (true)
@@ -1502,20 +1595,21 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        gamePanel.transform.GetChild(7).gameObject.SetActive(true);
+        gamePanel.transform.GetChild(9).gameObject.SetActive(true);
 
-        Color col = gamePanel.transform.GetChild(7).GetComponent<Image>().color;
-        gamePanel.transform.GetChild(7).GetComponent<Image>().color = new Color(col.r, col.g, col.b, 0);
+
+        Color col = gamePanel.transform.GetChild(9).GetComponent<Image>().color;
+        gamePanel.transform.GetChild(9).GetComponent<Image>().color = new Color(col.r, col.g, col.b, 0);
         StartCoroutine(skillMenuOpenAnim(col));
         //TODO: place skills
         skillFullfillSkillMenu(0, 8);
     }
     public void skillFullfillSkillMenu(int startInt, int endInt)
     {
-        for (int count=0; count < gamePanel.transform.GetChild(7).GetChild(1).childCount; count++)
+        for (int count=0; count < gamePanel.transform.GetChild(9).GetChild(1).childCount; count++)
         {
-            gamePanel.transform.GetChild(7).GetChild(1).GetChild(count).GetComponent<Button>().interactable = false;
-            gamePanel.transform.GetChild(7).GetChild(1).GetChild(count).GetChild(0).gameObject.SetActive(false);
+            gamePanel.transform.GetChild(9).GetChild(1).GetChild(count).GetComponent<Button>().interactable = false;
+            gamePanel.transform.GetChild(9).GetChild(1).GetChild(count).GetChild(0).gameObject.SetActive(false);
         }
         for (int c = startInt; c < endInt; c++)
         {
@@ -1523,11 +1617,15 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             {
                 break;
             }
-            gamePanel.transform.GetChild(7).GetChild(1).GetChild(c - startInt).GetComponent<Button>().interactable = true;
-            gamePanel.transform.GetChild(7).GetChild(1).GetChild(c - startInt).GetChild(0).gameObject.SetActive(true);
+            gamePanel.transform.GetChild(9).GetChild(1).GetChild(c - startInt).GetComponent<Button>().interactable = true;
+            gamePanel.transform.GetChild(9).GetChild(1).GetChild(c - startInt).GetChild(0).gameObject.SetActive(true);
 
-
-            gamePanel.transform.GetChild(7).GetChild(1).GetChild(c - startInt).GetChild(0).GetComponent<Image>().sprite = player.GetComponent<WeaponManager>().stocked_Skills[c].sprite_HUD;
+            gamePanel.transform.GetChild(9).GetChild(1).GetChild(c - startInt).GetChild(0).GetComponent<Image>().sprite = player.GetComponent<WeaponManager>().stocked_Skills[c].skill.sprite_HUD;
+            if (player.GetComponent<WeaponManager>().stocked_Skills[c].count <= 0)
+            {
+                gamePanel.transform.GetChild(9).GetChild(1).GetChild(c - startInt).GetComponent<Button>().interactable = false;
+            }
+            gamePanel.transform.GetChild(9).GetChild(1).GetChild(c - startInt).GetChild(1).GetComponent<TextMeshProUGUI>().text = player.GetComponent<WeaponManager>().stocked_Skills[c].count.ToString();
         }
     }
     public void changePageSkillMenu(int multiplier)
@@ -1540,15 +1638,15 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         float frametime = Time.deltaTime;
 
         int pageNumber = 1;
-        gamePanel.transform.GetChild(7).GetChild(3).GetComponent<TextMeshProUGUI>().text = pageNumber.ToString();
+        gamePanel.transform.GetChild(9).GetChild(3).GetComponent<TextMeshProUGUI>().text = pageNumber.ToString();
 
-        int pageCount = (player.GetComponent<WeaponManager>().stocked_Skills.Count / 8) + 1;
+        int pageCount = (player.GetComponent<WeaponManager>().stocked_Skills.Count/ 8) + 1;
 
         while (true)
         {
             Time.timeScale = Mathf.MoveTowards(Time.timeScale, 0f, frametime * 10);
             Time.fixedDeltaTime *= Time.timeScale;
-            gamePanel.transform.GetChild(7).GetComponent<Image>().color = new Color(bgColor.r, bgColor.g, bgColor.b, Mathf.MoveTowards(gamePanel.transform.GetChild(7).GetComponent<Image>().color.a, bgColor.a, frametime * 20));
+            gamePanel.transform.GetChild(9).GetComponent<Image>().color = new Color(bgColor.r, bgColor.g, bgColor.b, Mathf.MoveTowards(gamePanel.transform.GetChild(9).GetComponent<Image>().color.a, bgColor.a, frametime * 20));
 
 
 
@@ -1560,9 +1658,9 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                     pageNumber = 1;
                 }
                 changePageSkillMenu(pageNumber);
-                gamePanel.transform.GetChild(7).GetChild(3).GetComponent<TextMeshProUGUI>().text = pageNumber.ToString();
+                gamePanel.transform.GetChild(9).GetChild(3).GetComponent<TextMeshProUGUI>().text = pageNumber.ToString();
 
-                gamePanel.transform.GetChild(7).GetChild(1).GetComponent<skillMenuControll>().pageChangeSkillID();
+                gamePanel.transform.GetChild(9).GetChild(1).GetComponent<skillMenuControll>().pageChangeSkillID();
             }
             else if (IManager.getMouseScroll() < 0)
             {
@@ -1573,20 +1671,20 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 }
                 changePageSkillMenu(pageNumber);
                 
-                gamePanel.transform.GetChild(7).GetChild(3).GetComponent<TextMeshProUGUI>().text = pageNumber.ToString();
+                gamePanel.transform.GetChild(9).GetChild(3).GetComponent<TextMeshProUGUI>().text = pageNumber.ToString();
 
-                gamePanel.transform.GetChild(7).GetChild(1).GetComponent<skillMenuControll>().pageChangeSkillID();
+                gamePanel.transform.GetChild(9).GetChild(1).GetComponent<skillMenuControll>().pageChangeSkillID();
             }
 
             if (!IManager.skillMenu)
             {
-                closeSKillMenu(gamePanel.transform.GetChild(7).GetChild(1).GetComponent<skillMenuControll>().currentSkill + (8 * (pageNumber - 1)));
+                closeSKillMenu(gamePanel.transform.GetChild(9).GetChild(1).GetComponent<skillMenuControll>().currentSkill + (8 * (pageNumber - 1)));
                 break;
             }
 
-            skillMenuTXT(gamePanel.transform.GetChild(7).GetChild(1).GetComponent<skillMenuControll>().currentSkill + (8 * (pageNumber - 1)));
+            skillMenuTXT(gamePanel.transform.GetChild(9).GetChild(1).GetComponent<skillMenuControll>().currentSkill + (8 * (pageNumber - 1)));
 
-            if (gamePanel.transform.GetChild(7).GetComponent<Image>().color.a == bgColor.a)
+            if (gamePanel.transform.GetChild(9).GetComponent<Image>().color.a == bgColor.a)
             {
 
             }
@@ -1613,9 +1711,9 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                     pageNumber = 1;
                 }
                 changePageSkillMenu(pageNumber);
-                gamePanel.transform.GetChild(7).GetChild(3).GetComponent<TextMeshProUGUI>().text = pageNumber.ToString();
+                gamePanel.transform.GetChild(9).GetChild(3).GetComponent<TextMeshProUGUI>().text = pageNumber.ToString();
 
-                gamePanel.transform.GetChild(7).GetChild(1).GetComponent<skillMenuControll>().pageChangeSkillID();
+                gamePanel.transform.GetChild(9).GetChild(1).GetComponent<skillMenuControll>().pageChangeSkillID();
             }
             else if (IManager.getMouseScroll() < 0)
             {
@@ -1625,22 +1723,23 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                     pageNumber = pageCount;
                 }
                 changePageSkillMenu(pageNumber);
-                gamePanel.transform.GetChild(7).GetChild(3).GetComponent<TextMeshProUGUI>().text = pageNumber.ToString();
+                gamePanel.transform.GetChild(9).GetChild(3).GetComponent<TextMeshProUGUI>().text = pageNumber.ToString();
 
-                gamePanel.transform.GetChild(7).GetChild(1).GetComponent<skillMenuControll>().pageChangeSkillID();
+                gamePanel.transform.GetChild(9).GetChild(1).GetComponent<skillMenuControll>().pageChangeSkillID();
             }
 
-            skillMenuTXT(gamePanel.transform.GetChild(7).GetChild(1).GetComponent<skillMenuControll>().currentSkill + (8 * (pageNumber - 1)));
+            skillMenuTXT(gamePanel.transform.GetChild(9).GetChild(1).GetComponent<skillMenuControll>().currentSkill + (8 * (pageNumber - 1)));
 
             if (!IManager.skillMenu)
             {
-                if (gamePanel.transform.GetChild(7).GetChild(1).GetComponent<skillMenuControll>().currentSkill == -1)
+                if (gamePanel.transform.GetChild(9).GetChild(1).GetComponent<skillMenuControll>().currentSkill == -1)
                 {
-
+                    closeSKillMenu(-1);
+                    break;
                 }
                 else
                 {
-                    closeSKillMenu(gamePanel.transform.GetChild(7).GetChild(1).GetComponent<skillMenuControll>().currentSkill + (8 * (pageNumber - 1)));
+                    closeSKillMenu(gamePanel.transform.GetChild(9).GetChild(1).GetComponent<skillMenuControll>().currentSkill + (8 * (pageNumber - 1)));
                     break;
                 }
             }
@@ -1659,16 +1758,17 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        for (int count = 0; count < gamePanel.transform.GetChild(7).GetChild(1).childCount; count++)
+        for (int count = 0; count < gamePanel.transform.GetChild(9).GetChild(1).childCount; count++)
         {
-            gamePanel.transform.GetChild(7).GetChild(1).GetChild(count).GetComponent<Button>().interactable = false;
-            gamePanel.transform.GetChild(7).GetChild(1).GetChild(count).GetChild(0).gameObject.SetActive(false);
+            gamePanel.transform.GetChild(9).GetChild(1).GetChild(count).GetComponent<Button>().interactable = false;
+            gamePanel.transform.GetChild(9).GetChild(1).GetChild(count).GetChild(0).gameObject.SetActive(false);
         }
 
-        Color col = gamePanel.transform.GetChild(7).GetComponent<Image>().color;
-        gamePanel.transform.GetChild(7).GetComponent<Image>().color = new Color(col.r, col.g, col.b, 0.8f);
+        Color col = gamePanel.transform.GetChild(9).GetComponent<Image>().color;
+        gamePanel.transform.GetChild(9).GetComponent<Image>().color = new Color(col.r, col.g, col.b, 0.8f);
 
-        gamePanel.transform.GetChild(7).gameObject.SetActive(false);
+        gamePanel.transform.GetChild(9).gameObject.SetActive(false);
+
         int targetID = 0;
         if (indexOfMenu == -1)
         {
@@ -1676,7 +1776,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         }
         else
         {
-            targetID = player.GetComponent<WeaponManager>().stocked_Skills[indexOfMenu].skillTypeID;
+            targetID = player.GetComponent<WeaponManager>().stocked_Skills[indexOfMenu].skill.skillTypeID;
         }
         //TODO: Change Skill functionally
         player.GetComponent<WeaponManager>().changeSkills(targetID);
@@ -1685,12 +1785,12 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     {
         if (index == -1)
         {
-            gamePanel.transform.GetChild(7).GetChild(2).Find("Desc").GetComponent<TextMeshProUGUI>().text = ";";
-            gamePanel.transform.GetChild(7).GetChild(2).Find("Name").GetComponent<TextMeshProUGUI>().text = ";";
+            gamePanel.transform.GetChild(9).GetChild(2).Find("Desc").GetComponent<TextMeshProUGUI>().text = ";";
+            gamePanel.transform.GetChild(9).GetChild(2).Find("Name").GetComponent<TextMeshProUGUI>().text = ";";
             return;
         }
-        gamePanel.transform.GetChild(7).GetChild(2).Find("Desc").GetComponent<TextMeshProUGUI>().text = localizer_scp.applySkill(player.GetComponent<WeaponManager>().stocked_Skills[index],"Desc");
-        gamePanel.transform.GetChild(7).GetChild(2).Find("Name").GetComponent<TextMeshProUGUI>().text = localizer_scp.applySkill(player.GetComponent<WeaponManager>().stocked_Skills[index], "Name");
+        gamePanel.transform.GetChild(9).GetChild(2).Find("Desc").GetComponent<TextMeshProUGUI>().text = localizer_scp.applySkill(player.GetComponent<WeaponManager>().stocked_Skills[index].skill,"Desc");
+        gamePanel.transform.GetChild(9).GetChild(2).Find("Name").GetComponent<TextMeshProUGUI>().text = localizer_scp.applySkill(player.GetComponent<WeaponManager>().stocked_Skills[index].skill, "Name");
     }
     //functions
     public void Interact(int interactID,GameObject interactedOBJ)
@@ -1711,7 +1811,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         player.GetComponent<WeaponManager>().doubleHandAnimationStop();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        state = GameState.inGame;
+        Debug.Log(pState + " " + state);
         ShopCloser();
     }
     public void DeductMainCurrency(float amount)
@@ -1729,8 +1829,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         {
             StopCoroutine(moneyBoom);
         }
-        moneyBoom = StartCoroutine(currencyAdding(amount, Color.red));
-
         MoneyDisplay();
     }
     public void AddMainCurrency(float amount)
@@ -1742,30 +1840,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         {
             StopCoroutine(moneyBoom);
         }
-        moneyBoom = StartCoroutine(currencyAdding(amount, Color.green));
-
+        notification(1, amount, null, null);
         MoneyDisplay();
-    }
-    IEnumerator currencyAdding(float amount,Color col)
-    {
-        playerPanel.transform.GetChild(5).GetChild(1).GetComponent<TextMeshProUGUI>().text = amount.ToString() + "$";
-        playerPanel.transform.GetChild(5).GetChild(1).GetComponent<TextMeshProUGUI>().color = col;
-
-        Color ICol = playerPanel.transform.GetChild(5).GetChild(1).GetChild(0).GetComponent<Image>().color;
-        playerPanel.transform.GetChild(5).GetChild(1).GetChild(0).GetComponent<Image>().color = new Color(ICol.r, ICol.g, ICol.r, 1f);
-
-        float a = 1f;
-        while (true)
-        {
-            a = Mathf.MoveTowards(a, 0f, Time.deltaTime);
-            playerPanel.transform.GetChild(5).GetChild(1).GetComponent<TextMeshProUGUI>().color = new Color(col.r, col.g, col.b, a);
-            playerPanel.transform.GetChild(5).GetChild(1).GetChild(0).GetComponent<Image>().color = new Color(ICol.r, ICol.g, ICol.r, a);
-            if (a == 0f)
-            {
-                break;
-            }
-            yield return null;
-        }
     }
     public void InstuctionIndicator(int consID, int? weaponID = -1, int? skillID = -1)
     {
@@ -1801,10 +1877,14 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             }
         }
         shopPanel.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = localizer_scp.applyWeapon(weapons[i], "Name");
+        shopPanel.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>().text = weapons[i].toBuyMoney.ToString();
+        shopPanel.transform.GetChild(0).GetChild(3).GetComponent<TextMeshProUGUI>().text = "";
     }
     public void shopNameReset()
     {
         shopPanel.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "";
+        shopPanel.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>().text = "";
+        shopPanel.transform.GetChild(0).GetChild(3).GetComponent<TextMeshProUGUI>().text = "";
     }
     public void skillButtonPressed(string nameOFSkillName)
     {
@@ -1844,117 +1924,73 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             }
         }
         shopPanel.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = localizer_scp.applySkill(skills[i], "Name");
+        shopPanel.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>().text = skills[i].toBuyMoney.ToString();
+        shopPanel.transform.GetChild(0).GetChild(3).GetComponent<TextMeshProUGUI>().text = localizer_scp.applySkill(skills[i], "Desc");
     }
     public void decreseEnemyCount(GameObject deletedOBJ)
     {
-        Destroy(cObjects.Find(x => x.irTransform == deletedOBJ.transform).uiTransform.gameObject);
-        cObjects.Remove(cObjects.Find(x => x.irTransform == deletedOBJ.transform));
         enemyCount -= 1;
-    }
-    public void decreseCompassObject(GameObject deletedOBJ)
-    {
-        Destroy(cObjects.Find(x => x.irTransform == deletedOBJ.transform).uiTransform.gameObject);
-        cObjects.Remove(cObjects.Find(x => x.irTransform == deletedOBJ.transform));
     }
     public void ComboVombo(int comboTime)
     {
         comboCount += comboTime;
-        if (comboCount % 5 == 0 && comboCount != 0)
+        if (mostComboCount < comboCount)
         {
-            float gainMoney = 10 * comboCount / 5;
-            //float[] possibleGainMoney = new float[100];
-            //for(int i = 0; i < 1000; i++)//TODO Revize yanlış yapmşsın
-            //{
-            //    if (i < 45)
-            //    {
-            //        possibleGainMoney[i] = 50f;
-            //    }
-            //    else if (i < 75)
-            //    {
-            //        possibleGainMoney[i] = 70f;
-            //    }
-            //    else if (i < 98)
-            //    {
-            //        possibleGainMoney[i] = 90f;
-            //    }
-            //    else if (i < 99)
-            //    {
-            //        possibleGainMoney[i] = 500f;
-            //    }
-            //}
-            //float gainMoney = possibleGainMoney[UnityEngine.Random.Range(0, possibleGainMoney.Length)]; 
-            AddMainCurrency(gainMoney);
+            mostComboCount = comboCount;
         }
         if (comboTime > 0)
         {
-            if (comboDisplayRoutine != null)
+            if (comboDisplayRoutine == null)
+            {
+                comboTimerReset();
+                if (comboVisualizeRoutine != null)
+                {
+                    StopCoroutine(comboVisualizeRoutine);
+                }
+                comboVisualizeRoutine = StartCoroutine(ComboVisRoutine());
+            }
+            else
             {
                 StopCoroutine(comboDisplayRoutine);
             }
             comboDisplayRoutine = StartCoroutine(comboRoutine());
         }
-        ComboVisualize(comboCount);
+        mostComboVis();
+        ComboVisualize();
     }
     IEnumerator comboRoutine()
     {
-        float duration = comboDuration;
         while (true)
         {
-            duration -= Time.deltaTime;
-            ComboBG(duration / comboDuration);
+            comboDurationTimer -= Time.deltaTime;
+            ComboBG(comboDurationTimer / comboDuration);
 
             yield return new WaitForEndOfFrame();
-            if (duration <= 0)
+            if (comboDurationTimer <= 0)
             {
                 break;
             }
         }
+        comboDisplayRoutine = null;
         ComboDelete();
+    }
+    public void comboTimerReset()
+    {
+        comboDurationTimer = comboDuration;
     }
 
     public void ComboDelete()
     {
         comboCount = 0;
-        ComboVisualize(comboCount);
+        ComboVisualize();
     }
 
     public void DashEffectOpener(float duration)
     {
-        if (dashEffectCoroutine != null)
-        {
-            StopCoroutine(dashEffectCoroutine);
-
-            Camera overlayCam = mainCam.transform.GetChild(0).GetComponent<Camera>();
-
-            mainCam.GetComponent<Camera>().fieldOfView = 60f;
-            overlayCam.fieldOfView = 60f;
-        }
-        dashEffectCoroutine = StartCoroutine(DashEffect(duration));
     }
 
 
     //Effects
-    IEnumerator DashEffect(float duration)
-    {
-        Camera overlayCam = mainCam.transform.GetChild(0).GetComponent<Camera>();
-
-        mainCam.GetComponent<Camera>().fieldOfView = 55f;
-        overlayCam.fieldOfView = 55f;
-        yield return new WaitForSeconds(duration);
-        while (true)
-        {
-            mainCam.GetComponent<Camera>().fieldOfView = Mathf.MoveTowards(mainCam.GetComponent<Camera>().fieldOfView, 60, Time.deltaTime * 30);
-            overlayCam.fieldOfView = Mathf.MoveTowards(overlayCam.fieldOfView, 60, Time.deltaTime * 30);
-            yield return new WaitForEndOfFrame();
-            if(mainCam.GetComponent<Camera>().fieldOfView == 60 && overlayCam.fieldOfView == 60)
-            {
-                break;
-            }
-        }
-
-        mainCam.GetComponent<Camera>().fieldOfView = 60f;
-        overlayCam.fieldOfView = 60f;
-    }
 
 
 
@@ -2037,41 +2073,41 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             shopPanel.transform.GetChild(i).gameObject.SetActive(false);
         }
 
-        gamePanel.transform.GetChild(5).gameObject.SetActive(true);
+        gamePanel.transform.GetChild(8).gameObject.SetActive(true);
 
-        gamePanel.transform.GetChild(5).GetComponent<Image>().color = new Color(0, 0, 0, 0);
+        gamePanel.transform.GetChild(8).GetComponent<Image>().color = new Color(0, 0, 0, 0);
 
         while (true)
         {
-            gamePanel.transform.GetChild(5).GetComponent<Image>().color = new Color(gamePanel.transform.GetChild(5).GetComponent<Image>().color.r, gamePanel.transform.GetChild(5).GetComponent<Image>().color.b, gamePanel.transform.GetChild(5).GetComponent<Image>().color.g, gamePanel.transform.GetChild(5).GetComponent<Image>().color.a + 0.01f * 0.01f);
+            gamePanel.transform.GetChild(8).GetComponent<Image>().color = new Color(gamePanel.transform.GetChild(8).GetComponent<Image>().color.r, gamePanel.transform.GetChild(8).GetComponent<Image>().color.b, gamePanel.transform.GetChild(8).GetComponent<Image>().color.g, gamePanel.transform.GetChild(8).GetComponent<Image>().color.a + 0.01f * 0.01f);
             new WaitForSecondsRealtime(0.1f);
-            if (gamePanel.transform.GetChild(5).GetComponent<Image>().color.a >= 1f)
+            if (gamePanel.transform.GetChild(8).GetComponent<Image>().color.a >= 1f)
             {
                 break;
             }
         }
 
-        gamePanel.transform.GetChild(5).GetChild(0).gameObject.SetActive(true);
+        gamePanel.transform.GetChild(8).GetChild(0).gameObject.SetActive(true);
 
-        gamePanel.transform.GetChild(5).GetChild(0).GetChild(0).gameObject.SetActive(true);
-        gamePanel.transform.GetChild(5).GetChild(0).GetChild(1).gameObject.SetActive(false);
+        gamePanel.transform.GetChild(8).GetChild(0).GetChild(0).gameObject.SetActive(true);
+        gamePanel.transform.GetChild(8).GetChild(0).GetChild(1).gameObject.SetActive(false);
 
-        string tempText = gamePanel.transform.GetChild(5).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text;
-        gamePanel.transform.GetChild(5).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
+        string tempText = gamePanel.transform.GetChild(8).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text;
+        gamePanel.transform.GetChild(8).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
 
         globalProfile.profile = noiseEffect;
 
         float a = 0f;
         for (int c = 0; c < tempText.Length;)
         {
-            gamePanel.transform.GetChild(5).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text += tempText[c];
+            gamePanel.transform.GetChild(8).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text += tempText[c];
             c += 1;
             if (tempText.Length - c < 100)
             {
                 a += 0.005f;
                 if (a >= 0.065f)
                 {
-                    gamePanel.transform.GetChild(5).GetChild(0).GetChild(1).gameObject.SetActive(! gamePanel.transform.GetChild(5).GetChild(0).GetChild(1).gameObject.activeSelf);
+                    gamePanel.transform.GetChild(8).GetChild(0).GetChild(1).gameObject.SetActive(! gamePanel.transform.GetChild(8).GetChild(0).GetChild(1).gameObject.activeSelf);
                 }
             }
             yield return new WaitForSecondsRealtime(0.005f);
@@ -2079,11 +2115,11 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
         int changeCount = 0;
 
-        gamePanel.transform.GetChild(5).GetChild(0).GetChild(0).gameObject.SetActive(false);
+        gamePanel.transform.GetChild(8).GetChild(0).GetChild(0).gameObject.SetActive(false);
 
         while (true)
         {
-            gamePanel.transform.GetChild(5).GetChild(0).gameObject.SetActive(!gamePanel.transform.GetChild(5).GetChild(0).gameObject.activeSelf);
+            gamePanel.transform.GetChild(8).GetChild(0).gameObject.SetActive(!gamePanel.transform.GetChild(8).GetChild(0).gameObject.activeSelf);
             yield return new WaitForSecondsRealtime(UnityEngine.Random.Range(0.065f,0.085f));
             changeCount += 1;
             if (changeCount == 5)
@@ -2091,11 +2127,11 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 break;
             }
         }
-        gamePanel.transform.GetChild(5).GetChild(0).gameObject.SetActive(false);
+        gamePanel.transform.GetChild(8).GetChild(0).gameObject.SetActive(false);
 
-        for (int i = 1; i < gamePanel.transform.GetChild(5).childCount; i++)
+        for (int i = 1; i < gamePanel.transform.GetChild(8).childCount; i++)
         {
-            gamePanel.transform.GetChild(5).GetChild(i).gameObject.SetActive(true);
+            gamePanel.transform.GetChild(8).GetChild(i).gameObject.SetActive(true);
         }
 
         Time.timeScale = 1f;
@@ -2125,13 +2161,3 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 }
 
 
-public class CompassObject
-{
-    public Transform irTransform;
-    public Transform uiTransform;
-    public CompassObject(Transform ir , Transform ui)
-    {
-        irTransform = ir;
-        uiTransform = ui;
-    }
-}

@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: General_it-IT
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: it-IT
+  m_SharedData: {fileID: 11400000, guid: 954e92223f6ec544fa7e6b906d666de4, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 9216266240
+    m_Localized: In attesa di input
+    m_Metadata:
+      m_Items: []
+  - m_Id: 258232561242112
+    m_Localized: Premi E per interagire
+    m_Metadata:
+      m_Items: []
+  - m_Id: 358826852552704
+    m_Localized: Maggior Combo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 360887715434496
+    m_Localized: Ondata
+    m_Metadata:
+      m_Items: []
+  - m_Id: 392052912492544
+    m_Localized: Gioco salvato
+    m_Metadata:
+      m_Items: []
+  - m_Id: 393385367375872
+    m_Localized: Denaro guadagnato
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394167936421888
+    m_Localized: "Abilit\xE0 acquisita"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394711157510144
+    m_Localized: Arma/Munizioni acquisite
+    m_Metadata:
+      m_Items: []
+  - m_Id: 462428707295232
+    m_Localized: "Hai usato un'abilit\xE0:"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

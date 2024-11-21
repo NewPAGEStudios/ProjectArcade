@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Room : MonoBehaviour
 {
@@ -8,7 +10,9 @@ public class Room : MonoBehaviour
     public List<GameObject> Emergency_Lights = new();
     private RoomManager roomManager;
     public bool roomStatus;
-    private void Start()
+    private int openKZ;
+    private int closeKZ;
+    private void Awake()
     {
         roomManager = transform.parent.GetComponent<RoomManager>();
     }
@@ -16,7 +20,13 @@ public class Room : MonoBehaviour
     {
         foreach (GameObject killzone in killZones)
         {
-            killzone.SetActive(true);
+            killzone.GetComponent<Renderer>().enabled = true;
+            killzone.GetComponent<KillZone>().work = true;
+            foreach (GameObject door in killzone.GetComponent<KillZone>().doors)
+            {
+                StartCoroutine(startKZone(door));
+                closeKZ++;
+            }
         }
     }
     public void OpenRoom()
@@ -31,20 +41,120 @@ public class Room : MonoBehaviour
                     cont = true;
                     break;
                 }
+                Debug.Log(killzone.name);
             }
             if (cont)
             {
                 continue;
             }
-            killzone.SetActive(false);
+            killzone.GetComponent<Renderer>().enabled = false;
+            killzone.GetComponent<KillZone>().work = false;
+            foreach (GameObject door in killzone.GetComponent<KillZone>().doors)
+            {
+                StartCoroutine(closeKZone(door));
+                openKZ++;
+            }
+        }
+    }
+    public void ForceToOpen()
+    {
+        foreach (GameObject killzone in killZones)
+        {
+            killzone.GetComponent<Renderer>().enabled = false;
+            killzone.GetComponent<KillZone>().work = false;
+            foreach (GameObject door in killzone.GetComponent<KillZone>().doors)
+            {
+                StartCoroutine(closeKZoneFT(door));
+            }
         }
     }
     public void EmergencyLighton()
     {
-
+        foreach(GameObject kz in killZones)
+        {
+            kz.GetComponent<KillZone>().alertSound = true;
+            StartCoroutine(kzReady(kz));
+        }
+        
     }
     public void EmergencyLightoff()
     {
 
     }
+    IEnumerator startKZone(GameObject door)
+    {
+        while (true)
+        {
+            door.transform.localPosition = Vector3.MoveTowards(door.transform.localPosition, door.GetComponent<Door>().closedPos, Time.deltaTime * 2.5f);
+            yield return null;
+            if (door.transform.localPosition == door.GetComponent<Door>().closedPos)
+            {
+                break;
+            }
+        }
+        closeKZ--;
+        if (closeKZ <= 0)
+        {
+            roomManager.navme();
+        }
+    }
+
+    IEnumerator closeKZone(GameObject door)
+    {
+        door.GetComponent<AudioSource>().Play();
+        while (true)
+        {
+            door.transform.localPosition = Vector3.MoveTowards(door.transform.localPosition, door.GetComponent<Door>().openedPos, Time.deltaTime * 2.5f);
+            yield return null;
+            if (door.transform.localPosition == door.GetComponent<Door>().openedPos)
+            {
+                break;
+            }
+        }
+        openKZ--;
+        if(openKZ <= 0)
+        {
+            roomManager.navme();
+        }
+    }
+    IEnumerator closeKZoneFT(GameObject door)
+    {
+        while (true)
+        {
+            door.transform.localPosition = Vector3.MoveTowards(door.transform.localPosition, door.GetComponent<Door>().openedPos, Time.deltaTime * 2.5f);
+            yield return null;
+            if (door.transform.localPosition == door.GetComponent<Door>().openedPos)
+            {
+                break;
+            }
+        }
+
+    }
+    IEnumerator kzReady(GameObject kz)
+    {
+        kz.GetComponent<Volume>().enabled = true;
+        foreach(GameObject emergencyL in Emergency_Lights)
+        {
+            emergencyL.GetComponentInChildren<Light>().enabled = true;
+        }
+        yield return new WaitForSeconds(.6f);
+        kz.GetComponent<Volume>().enabled = false;
+        yield return new WaitForSeconds(1f);
+        kz.GetComponent<Volume>().enabled = true;
+        yield return new WaitForSeconds(.6f);
+        kz.GetComponent<Volume>().enabled = false;
+        yield return new WaitForSeconds(1f);
+        kz.GetComponent<Volume>().enabled = true;
+        yield return new WaitForSeconds(.6f);
+        kz.GetComponent<Volume>().enabled = false;
+        yield return new WaitForSeconds(.15f);
+        kz.GetComponent<Volume>().enabled = true;
+        kz.GetComponent<KillZone>().alertSound = false;
+
+        foreach (GameObject emergencyL in Emergency_Lights)
+        {
+            emergencyL.GetComponentInChildren<Light>().enabled = false;
+        }
+    }
+
 }

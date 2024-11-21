@@ -20,6 +20,7 @@ public class DataElem
 
     public int activeSkill_ID;
     public int[] stockedSkill_ID;
+    public int[] stockedSkill_Count;
 
     //GameController
     public float money;
@@ -44,6 +45,7 @@ public class DataElem
         weap_wrh_maxMagAmount = new int[player_weapon.holder.Length];
         weap_wrh_isOwned = new int[player_weapon.holder.Length];
         stockedSkill_ID = new int[player_weapon.stocked_Skills.Count];
+        stockedSkill_Count = new int[player_weapon.stocked_Skills.Count];
         for (int w = 0; w < player_weapon.holder.Length; w++)
         {
             weap_wrh_id[w] = player_weapon.holder[w].weaponTypeID;
@@ -72,7 +74,11 @@ public class DataElem
 
         for(int c = 0; c < player_weapon.stocked_Skills.Count; c++)
         {
-            stockedSkill_ID[c] = player_weapon.stocked_Skills[c].skillTypeID;
+            stockedSkill_ID[c] = player_weapon.stocked_Skills[c].skill.skillTypeID;
+        }
+        for (int c = 0; c < player_weapon.stocked_Skills.Count; c++)
+        {
+            stockedSkill_Count[c] = player_weapon.stocked_Skills[c].count;
         }
         //GameController
         money = gm.money;

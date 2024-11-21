@@ -63,7 +63,6 @@ public class GetWeapon : MonoBehaviour
             gc.activeConsSkill.RemoveAt(id);
             gc.activeConsWeapID.RemoveAt(id);
         }
-        gc.decreseCompassObject(gameObject);
         Destroy(gameObject);
         return;
     }

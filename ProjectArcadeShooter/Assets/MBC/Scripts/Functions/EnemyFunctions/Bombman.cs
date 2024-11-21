@@ -29,6 +29,8 @@ public class Bombman : MonoBehaviour
         {
             agent.speed = 0f;
             enemy.animator.SetBool("isWalking", false);
+
+            enemy.fxController.work("GetReadyToExplode");
             if (!enemy.soundController.SoundPlayState("ExplodeGettingReady"))
             {
                 enemy.soundController.PlaySound("ExplodeGettingReady", 0);
@@ -41,6 +43,8 @@ public class Bombman : MonoBehaviour
             agent.SetDestination(enemy.Player.transform.position);
             enemy.animator.SetBool("isWalking", true);
             explodeTimer += Time.deltaTime;
+
+            enemy.fxController.work("GetReadyToExplode");
             if (!enemy.soundController.SoundPlayState("ExplodeGettingReady"))
             {
                 enemy.soundController.PlaySound("ExplodeGettingReady", 0);
@@ -52,6 +56,8 @@ public class Bombman : MonoBehaviour
             agent.SetDestination(enemy.Player.transform.position);
             enemy.animator.SetBool("isWalking", true);
             explodeTimer = 0f;
+
+            enemy.fxController.stop("GetReadyToExplode");
             enemy.soundController.StopSound("ExplodeGettingReady", 0);
         }
 
