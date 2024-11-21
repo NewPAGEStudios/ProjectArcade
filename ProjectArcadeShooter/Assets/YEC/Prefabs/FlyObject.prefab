@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 30, z: 0}
-  m_LocalScale: {x: 3, y: 0.3, z: 3}
+  m_LocalScale: {x: 4.5, y: 0.3, z: 4.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 7423347620837106169}
@@ -233,7 +233,7 @@ GameObject:
   - component: {fileID: 3040573628576432749}
   m_Layer: 0
   m_Name: FlyEnemy
-  m_TagString: Untagged
+  m_TagString: EnemyColl
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

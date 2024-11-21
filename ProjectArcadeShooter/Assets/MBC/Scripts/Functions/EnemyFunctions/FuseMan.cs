@@ -84,7 +84,7 @@ public class FuseMan : MonoBehaviour
             lastShoot = 0;
         }
         spawnAmmo(attackPos);
-
+        enemy.soundController.PlaySound("Fire", 0f);
     }
     private void spawnAmmo(Transform gunbarrel)
     {

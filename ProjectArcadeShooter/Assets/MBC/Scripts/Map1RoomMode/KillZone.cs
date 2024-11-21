@@ -20,9 +20,39 @@ public class KillZone : MonoBehaviour
     {
         if (work)
         {
-
+            if (other.CompareTag("PlayerColl"))
+            {
+                other.transform.parent.GetComponent<PController>().TakeDMG(1000, gameObject);
+            }
+            else if(other.CompareTag("EnemyColl"))
+            {
+                other.GetComponent<ColliderParenter>().targetOBJ.transform.parent.GetComponent<EnemyHealth>().Die();
+            }
         }
-        if(alertSound)
+        if (alertSound)
+        {
+            Debug.Log("kmb");
+            if (other.CompareTag("PlayerColl"))
+            {
+                Debug.Log("kmbXXL");
+                GetComponent<AudioSource>().volume = 1f;
+            }
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (work)
+        {
+            if (other.CompareTag("PlayerColl"))
+            {
+                other.transform.parent.GetComponent<PController>().TakeDMG(1000, gameObject);
+            }
+            else if (other.CompareTag("EnemyColl"))
+            {
+                other.GetComponent<ColliderParenter>().targetOBJ.transform.parent.GetComponent<EnemyHealth>().Die();
+            }
+        }
+        if (alertSound)
         {
             Debug.Log("kmb");
             if (other.CompareTag("PlayerColl"))

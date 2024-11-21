@@ -12,6 +12,9 @@ public class FuseFunction : MonoBehaviour
     public GameObject target;
     public GameObject simulatedPos;
     public float speedRatio;
+
+    private AudioSource runtimeSound;
+    private AudioSource impactSound;
     void Start()
     {
         gameObject.AddComponent<Rigidbody>();
@@ -29,8 +32,9 @@ public class FuseFunction : MonoBehaviour
         {
             rb.AddForce(transform.forward * baseAmmo.bulletSpeed, ForceMode.Impulse);
         }
-
-
+        runtimeSound = transform.GetChild(0).Find("Sounds").GetChild(0).GetComponent<AudioSource>();
+        impactSound = transform.GetChild(0).Find("Sounds").GetChild(1).GetComponent<AudioSource>();
+        runtimeSound.Play();
     }
 
     // Update is called once per frame
@@ -64,7 +68,8 @@ public class FuseFunction : MonoBehaviour
                 player.GetComponent<PController>().TakeDMG(baseAmmo.dmg, gameObject);
             }
         }
-        Destroy(gameObject);
+        impactSound.Play();
+        Destroy(gameObject,1f);
         Destroy(simulatedPos);
     }
 }

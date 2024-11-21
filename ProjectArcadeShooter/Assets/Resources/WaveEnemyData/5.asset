@@ -15,11 +15,11 @@ MonoBehaviour:
   waveNumber: 5
   enemyTypes:
   - enemyId: 0
-    enemyPiece: 30
+    enemyPiece: 5
   - enemyId: 1
-    enemyPiece: 10
-  - enemyId: 2
     enemyPiece: 0
+  - enemyId: 2
+    enemyPiece: 20
   - enemyId: 3
     enemyPiece: 0
   - enemyId: 4
