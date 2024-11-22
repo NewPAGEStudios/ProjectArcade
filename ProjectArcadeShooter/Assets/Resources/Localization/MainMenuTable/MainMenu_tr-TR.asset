@@ -208,6 +208,10 @@ MonoBehaviour:
     m_Localized: "Mini Harita Ge\xE7i\u015Fi"
     m_Metadata:
       m_Items: []
+  - m_Id: 38024621589860352
+    m_Localized: "Bu s\xFCr\xFCm, demo s\xFCr\xFCm\xFCd\xFCr"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

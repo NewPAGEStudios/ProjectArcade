@@ -208,6 +208,10 @@ MonoBehaviour:
     m_Localized: Mini Map Smoothness
     m_Metadata:
       m_Items: []
+  - m_Id: 38024621589860352
+    m_Localized: This version is demo version.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

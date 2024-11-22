@@ -21,8 +21,10 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 0415c187218467747a50bfdbc178f535, type: 2}
   sprite_HUD: {fileID: 21300000, guid: bf0abff57e633c042aabb08cd91c18a3, type: 3}
   functionName: wallriser
+  indicator: {fileID: 6726647790736306412, guid: cf000de6ac7435b40987291a5c045a78,
+    type: 3}
   modelPrefab: {fileID: 6726647790736306412, guid: cf000de6ac7435b40987291a5c045a78,
     type: 3}
   modelShow: {fileID: 6726647790736306412, guid: cf000de6ac7435b40987291a5c045a78,
     type: 3}
-  toBuyMoney: 350
+  toBuyMoney: 125

@@ -19,7 +19,8 @@ MonoBehaviour:
   materials: []
   sprite_HUD: {fileID: 21300000, guid: 296bd2dd2ad6940409c0619d9c03737d, type: 3}
   functionName: gravityPull
+  indicator: {fileID: 0}
   modelPrefab: {fileID: 0}
-  modelShow: {fileID: 919132149155446097, guid: 38e39211c33b9674193292c1cd1d5531,
+  modelShow: {fileID: 8136893001191967229, guid: 5974b74b849d4c846b608d1a2b4cf416,
     type: 3}
-  toBuyMoney: 100
+  toBuyMoney: 15

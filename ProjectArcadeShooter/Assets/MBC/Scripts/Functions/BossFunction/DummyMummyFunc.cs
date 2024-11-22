@@ -8,14 +8,14 @@ public class DummyMummyFunc : MonoBehaviour
     private float currentHP;
     private int bossSearchID = 0;
 
-    private enum BossState
+    public enum BossState
     {
         interrupted,
         inIdle,
         inAttack,
         inDeath,
     }
-    private BossState bossState;
+    public BossState bossState;
 
     private float idleTimer;
 
@@ -30,10 +30,11 @@ public class DummyMummyFunc : MonoBehaviour
     public float meleeDMG = 30f;
     public bool meleeDMG_Activated = false;
     public GameObject mapParent;
+    private GameObject soundParent;
 
     private GameObject effectParent;
 
-
+    public GameObject bossStartMenu;
     private void Start()
     {
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
@@ -55,14 +56,14 @@ public class DummyMummyFunc : MonoBehaviour
         currentHP = maxHP;
         gc.BossHPChange(currentHP / maxHP);
         bossState = BossState.interrupted;
-        middle = new Vector3(-10, transform.position.y, 30);
+        middle = mapParent.transform.Find("Middle").position;
+        soundParent = transform.GetChild(6).gameObject;
 
         GameObject firePos = gameObject.transform.Find("FirePosR").gameObject;
         firePos.transform.Find("AmmoSimVis").gameObject.SetActive(true);
         firePos = gameObject.transform.Find("FirePosL").gameObject;
         firePos.transform.Find("AmmoSimVis").gameObject.SetActive(true);
 
-        toIdle();
     }
 
     // Update is called once per frame
@@ -235,19 +236,21 @@ public class DummyMummyFunc : MonoBehaviour
         }
         gc.SpawnCons(findClosestYTNKZZMN(), 2, -1, 4);
 
-        targetPos = new Vector3(targetPos.x, 100.5f, targetPos.z);
+        targetPos = new Vector3(targetPos.x, middle.y, targetPos.z);
         gameObject.transform.LookAt(targetPos);
         gameObject.transform.eulerAngles = new Vector3(60, gameObject.transform.eulerAngles.y, 0);
-        GameObject rotateObject = gameObject.transform.Find("Model").gameObject;
+        GameObject rotateObject = gameObject.transform.GetChild(0).gameObject;
         effectParent.transform.Find("HandsTrail").gameObject.SetActive(true);
 
 
         //TODO: Attack started feedback to player with sound fx
+        soundParent.transform.Find("Whoosh").GetComponent<AudioSource>().Play();
         while (true)
         {
             meleeDMG_Activated = true;
             gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, targetPos, Time.deltaTime * 30f);
-            rotateObject.transform.Rotate(new Vector3(0, 1, 0), Time.deltaTime * 150);
+            rotateObject.transform.localEulerAngles += 150 * Time.deltaTime * new Vector3(0, 10, 0);
+            Debug.Log(targetPos);
             yield return new WaitForEndOfFrame();
             if (gameObject.transform.position == targetPos)
             {
@@ -257,6 +260,8 @@ public class DummyMummyFunc : MonoBehaviour
         rotateObject.transform.localEulerAngles = Vector3.zero;
         gameObject.transform.localEulerAngles = Vector3.zero;
         meleeDMG_Activated = false;
+
+        soundParent.transform.Find("Whoosh").GetComponent<AudioSource>().Stop();
 
         attackID += 1;
         if (attackID >= attackPath.Length)
@@ -331,7 +336,7 @@ public class DummyMummyFunc : MonoBehaviour
         }
 
 
-        //TODO: Attack started feedback to player with sound fx
+        soundParent.transform.Find("Schwing").GetComponent<AudioSource>().Play();
         effectParent.transform.Find("ShootParticleR").gameObject.SetActive(true);
         for(int c = 0; c < 3; c++)
         {
@@ -396,7 +401,8 @@ public class DummyMummyFunc : MonoBehaviour
             }
         }
 
-        //TODO: Attack started feedback to player with sound fx
+        soundParent.transform.Find("Schwing").GetComponent<AudioSource>().Play();
+
         effectParent.transform.Find("ShootParticleL").gameObject.SetActive(true);
         for (int c = 0; c < 3; c++)
         {
@@ -420,6 +426,7 @@ public class DummyMummyFunc : MonoBehaviour
             go.GetComponent<Rigidbody>().freezeRotation = true;
         }
         effectParent.transform.Find("ShootParticleL").gameObject.SetActive(false);
+
         firePos.transform.Find("AmmoSimVis").gameObject.SetActive(false);
         for (int s = 0; s < firePos.transform.Find("AmmoSimVis").childCount; s++)
         {
@@ -465,35 +472,42 @@ public class DummyMummyFunc : MonoBehaviour
 
         while (true)
         {
-            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, new Vector3(gameObject.transform.position.x, 150, gameObject.transform.position.z),Time.deltaTime * 30f);
+            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, new Vector3(gameObject.transform.position.x, middle.y + 50f, gameObject.transform.position.z),Time.deltaTime * 30f);
             yield return new WaitForEndOfFrame();
-            if (gameObject.transform.position.y >= 150)
+            if (gameObject.transform.position.y >= middle.y + 50f)
             {
                 break;
             }
         }
         float timeRemainingTOAttack = Random.Range(1, 4);
+
         GameObject indicator = gameObject.transform.Find("CylinderIndicator").gameObject;
 
 
-        indicator.SetActive(true);
         while (true)
         {
             timeRemainingTOAttack -= Time.deltaTime;
-            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, new Vector3(player.transform.position.x, 150, player.transform.position.z), Time.deltaTime * 30f);
+            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, new Vector3(player.transform.position.x, middle.y + 50f, player.transform.position.z), Time.deltaTime * 30f);
             yield return new WaitForEndOfFrame();
             if (timeRemainingTOAttack <= 0)
             {
                 break;
             }
         }
+        indicator.SetActive(true);
+
+        soundParent.transform.Find("Whoosh").GetComponent<AudioSource>().Play();
+
         effectParent.transform.Find("toDownTrail").gameObject.SetActive(true);
         while (true)
         {
-            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, new Vector3(gameObject.transform.position.x, 100.5f, gameObject.transform.position.z), Time.deltaTime * 30f);
-            indicator.transform.position = Vector3.MoveTowards(indicator.transform.position, gameObject.transform.position, Time.deltaTime * 30f);
+            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, new Vector3(gameObject.transform.position.x, middle.y, gameObject.transform.position.z), Time.deltaTime * 30f);
+            if (Physics.Raycast(gameObject.transform.position, Vector3.down, out RaycastHit hit ,50, 524288,QueryTriggerInteraction.Ignore))
+            {
+                indicator.transform.position = hit.point;
+            }
             yield return new WaitForEndOfFrame();
-            if (gameObject.transform.position.y <= 100.5f)
+            if (gameObject.transform.position.y <= middle.y)
             {
                 break;
             }
@@ -505,9 +519,14 @@ public class DummyMummyFunc : MonoBehaviour
         {
             player.GetComponent<PController>().TakeDMG(30f, gameObject);
             player.GetComponent<PController>().ThrowPlayer(gameObject.transform.position);
+
+            if (Physics.Raycast(gameObject.transform.position, Vector3.down, out RaycastHit hit, 50, 524288, QueryTriggerInteraction.Ignore))
+            {
+                indicator.transform.position = hit.point;
+            }
         }
 
-
+        soundParent.transform.Find("Whoosh").GetComponent<AudioSource>().Stop();
         attackID += 1;
         if (attackID >= attackPath.Length)
         {
@@ -538,7 +557,7 @@ public class DummyMummyFunc : MonoBehaviour
     private void NormalEverything()
     {
         meleeDMG_Activated = false;
-        gameObject.transform.position = new Vector3(0, 100, 0);
+        gameObject.transform.position = middle;
         gameObject.transform.eulerAngles = Vector3.zero;
         
         gameObject.transform.Find("Model").localEulerAngles = Vector3.zero;
@@ -594,13 +613,13 @@ public class DummyMummyFunc : MonoBehaviour
     private int findClosestYTNKZZMN()
     {
         int holdingIndex = 0;
-        if(mapParent.transform.Find("ConsumableCreatePos").childCount==0 || mapParent.transform.Find("ConsumableCreatePos").childCount == 1)
+        if(mapParent.GetComponent<Map>().ConsSpawnPointParent.transform.childCount==0 || mapParent.GetComponent<Map>().ConsSpawnPointParent.transform.childCount == 1)
         {
             return holdingIndex;
         }
-        for(int c = 1; c < mapParent.transform.Find("ConsumableCreatePos").childCount ; c++)
+        for(int c = 1; c < mapParent.GetComponent<Map>().ConsSpawnPointParent.transform.childCount ; c++)
         {
-            if(Vector3.Distance(player.transform.position,mapParent.transform.Find("ConsumableCreatePos").GetChild(c).position) < Vector3.Distance(player.transform.position, mapParent.transform.Find("ConsumableCreatePos").GetChild(holdingIndex).position))
+            if(Vector3.Distance(player.transform.position,mapParent.GetComponent<Map>().ConsSpawnPointParent.transform.GetChild(c).position) < Vector3.Distance(player.transform.position, mapParent.GetComponent<Map>().ConsSpawnPointParent.transform.GetChild(holdingIndex).position))
             {
                 holdingIndex = c;
             }

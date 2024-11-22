@@ -20,6 +20,8 @@ public class Skill : ScriptableObject
     public Material[] materials;
     public Sprite sprite_HUD;
     public string functionName;
+    public GameObject indicator;
+
     public GameObject modelPrefab;
 
     public GameObject modelShow;

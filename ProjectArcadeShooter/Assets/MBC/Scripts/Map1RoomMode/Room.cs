@@ -22,6 +22,7 @@ public class Room : MonoBehaviour
         {
             killzone.GetComponent<Renderer>().enabled = true;
             killzone.GetComponent<KillZone>().work = true;
+            killzone.GetComponent<Collider>().enabled = true;
             foreach (GameObject door in killzone.GetComponent<KillZone>().doors)
             {
                 StartCoroutine(startKZone(door));
@@ -49,6 +50,7 @@ public class Room : MonoBehaviour
             }
             killzone.GetComponent<Renderer>().enabled = false;
             killzone.GetComponent<KillZone>().work = false;
+            killzone.GetComponent<Collider>().enabled = false;
             foreach (GameObject door in killzone.GetComponent<KillZone>().doors)
             {
                 StartCoroutine(closeKZone(door));
@@ -62,6 +64,7 @@ public class Room : MonoBehaviour
         {
             killzone.GetComponent<Renderer>().enabled = false;
             killzone.GetComponent<KillZone>().work = false;
+            killzone.GetComponent<Collider>().enabled = false;
             foreach (GameObject door in killzone.GetComponent<KillZone>().doors)
             {
                 StartCoroutine(closeKZoneFT(door));
@@ -133,22 +136,35 @@ public class Room : MonoBehaviour
     IEnumerator kzReady(GameObject kz)
     {
         kz.GetComponent<Volume>().enabled = true;
+        kz.transform.GetChild(0).gameObject.SetActive(true);
         foreach(GameObject emergencyL in Emergency_Lights)
         {
             emergencyL.GetComponentInChildren<Light>().enabled = true;
         }
+
         yield return new WaitForSeconds(.6f);
         kz.GetComponent<Volume>().enabled = false;
+        kz.transform.GetChild(0).gameObject.SetActive(false);
+
         yield return new WaitForSeconds(1f);
         kz.GetComponent<Volume>().enabled = true;
+        kz.transform.GetChild(0).gameObject.SetActive(true);
+
         yield return new WaitForSeconds(.6f);
         kz.GetComponent<Volume>().enabled = false;
+        kz.transform.GetChild(0).gameObject.SetActive(false);
+
         yield return new WaitForSeconds(1f);
         kz.GetComponent<Volume>().enabled = true;
+        kz.transform.GetChild(0).gameObject.SetActive(true);
+
         yield return new WaitForSeconds(.6f);
         kz.GetComponent<Volume>().enabled = false;
+        kz.transform.GetChild(0).gameObject.SetActive(false);
+
         yield return new WaitForSeconds(.15f);
         kz.GetComponent<Volume>().enabled = true;
+        kz.transform.GetChild(0).gameObject.SetActive(true);
         kz.GetComponent<KillZone>().alertSound = false;
 
         foreach (GameObject emergencyL in Emergency_Lights)

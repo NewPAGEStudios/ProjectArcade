@@ -94,10 +94,18 @@ namespace SlimUI.ModernMenu{
 		[SerializeField] private LocalizedString LocalizedString;
 		private string keyCodestr;
 
+		public GameObject betaWarning;
 
 
 
-        void Start(){
+        void Start()
+		{
+            betaWarning.SetActive(false);
+            if (PlayerPrefs.GetInt("EndBeta", 0) == 1)
+			{
+                betaWarning.SetActive(true);
+                PlayerPrefs.SetInt("EndBeta", 0);
+			}
 			CameraObject = transform.GetComponent<Animator>();
 
 			playMenu.SetActive(false);

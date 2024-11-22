@@ -63,6 +63,7 @@ public class zzz : MonoBehaviour
 
         foreach(var result in results)
         {
+//            Debug.Log(result.gameObject.name);
             PointerEventData eventData = new PointerEventData(EventSystem.current);
             eventData.position = mousePos;
             eventData.pointerCurrentRaycast = eventData.pointerPressRaycast = result;

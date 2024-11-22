@@ -19,15 +19,7 @@ public class stunInstanSkill : MonoBehaviour
     }
     IEnumerator endEffect()
     {
-        MaterialPropertyBlock m_propertyBlock = new MaterialPropertyBlock();
-        m_propertyBlock.SetColor("_BaseColor", new Color(0, 0, 0, 1));
-        gameObject.GetComponent<Renderer>().SetPropertyBlock(m_propertyBlock);
-        while (m_propertyBlock.GetColor("_BaseColor").a > 0)
-        {
-            m_propertyBlock.SetColor("_BaseColor", new Color(0, 0, 0, m_propertyBlock.GetColor("_BaseColor").a - 0.04f));
-            gameObject.GetComponent<Renderer>().SetPropertyBlock(m_propertyBlock);
-            yield return new WaitForSeconds(0.01f);
-        }
+        yield return new WaitForSeconds(0.5f);
         Destroy(gameObject);
     }
     private void OnTriggerEnter(Collider other)

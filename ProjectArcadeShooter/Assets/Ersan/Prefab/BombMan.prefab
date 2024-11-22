@@ -976,7 +976,7 @@ PrefabInstance:
     - target: {fileID: 198637889697170250, guid: 74946c98d92896042ba34c6bfcc58e59,
         type: 3}
       propertyPath: randomSeed
-      value: 0
+      value: 37946172
       objectReference: {fileID: 0}
     - target: {fileID: 198637889697170250, guid: 74946c98d92896042ba34c6bfcc58e59,
         type: 3}
@@ -986,7 +986,7 @@ PrefabInstance:
     - target: {fileID: 198637889697170250, guid: 74946c98d92896042ba34c6bfcc58e59,
         type: 3}
       propertyPath: autoRandomSeed
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198637889697170250, guid: 74946c98d92896042ba34c6bfcc58e59,
         type: 3}

@@ -213,6 +213,10 @@ MonoBehaviour:
     m_Localized: "Sanfter \xDCbergang der Minikarte"
     m_Metadata:
       m_Items: []
+  - m_Id: 38024621589860352
+    m_Localized: Diese Version ist eine Demo-Version.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

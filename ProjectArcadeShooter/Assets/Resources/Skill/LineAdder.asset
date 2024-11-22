@@ -19,6 +19,8 @@ MonoBehaviour:
   materials: []
   sprite_HUD: {fileID: 21300000, guid: 83aa423bb7b09f248b62c6d9efaf997a, type: 3}
   functionName: addLaser
+  indicator: {fileID: 0}
   modelPrefab: {fileID: 0}
-  modelShow: {fileID: 1690562511009458, guid: cd8a919d250921a47b55356e13bc37f4, type: 3}
-  toBuyMoney: 350
+  modelShow: {fileID: 2871061918738777735, guid: ce0016e4de98bc64f92e1abd4d28fb5a,
+    type: 3}
+  toBuyMoney: 25

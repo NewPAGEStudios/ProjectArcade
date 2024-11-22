@@ -70,11 +70,12 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public GameObject mainCam;
     public GameObject UIOverlayCam;
     public GameObject HandOverlayCam;
+    [Header("SoundRef")]
+    public AudioSource cinematicBoomAS;
     //UI Ref
     [Header(header: "UIReference")]
     public GameObject playerPanel;
     public GameObject gamePanel;
-    public GameObject bossIntroPanel;
     public GameObject bossPanel;
     public GameObject shopPanel;
     public GameObject damagePanel;
@@ -658,24 +659,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 {
                     spawnTimer -= Time.deltaTime;
                 }
-                ////Deneme
-                //if(Input.GetKeyDown(KeyCode.G))
-                //{
-                //    roomManager.OpenAll();
-                //}
-                //if (Input.GetKeyDown(KeyCode.H))
-                //{
-                //    roomManager.CloseAll();
-                //}
-                if (Input.GetKeyDown(KeyCode.N))
-                {
-                    roomManager.startRoutineOfRoom(roomCloseTime, 0);
-                }
-                //if (Input.GetKeyDown(KeyCode.M))
-                //{
-                //    roomManager.startRoutineOfRoom(roomCloseTime, 1);
-                //}
-                //MapSpecification
                 if (roomTimer <= 0f)
                 {
                     roomManager.startRoutineOfRoom(roomCloseTime);
@@ -748,6 +731,10 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
         //WaveConfigiration
         //EnemySpawn
+        if (waveEnemyDatas.Length < waveNumber)
+        {
+            EndBeta();
+        }
         foreach (WaveEnemyData wed in waveEnemyDatas)
         {
             if (wed.waveNumber == waveNumber)
@@ -807,20 +794,19 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
         GameObject go = Instantiate(boss[i].boss, map.transform.position + new Vector3(0,.5f,0), Quaternion.identity);
 
-        System.Type script = System.Type.GetType(boss[i].bossControllerName + ",Assembly-CSharp");
-        go.AddComponent(script);
-
         //ManuelAdding
         if(go.TryGetComponent<DummyMummyFunc>(out DummyMummyFunc dmf))
         {
-            dmf.boss = boss[i];
-            dmf.mapParent = map;     
+            dmf.bossState = DummyMummyFunc.BossState.interrupted;
+            dmf.mapParent = map;
+            dmf.bossStartMenu.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = boss[i].bossName;
         }
-        bossIntroPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = boss[i].bossName;
+
+        
         bossPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = boss[i].bossName;
 
 
-        toCinematicBossFight(pState, PlayState.inBoss, go.GetComponent<Animator>(), go.GetComponentInChildren<Camera>(),null);
+        toCinematicBossFight(pState, PlayState.inBoss, go.GetComponent<Animator>(), go.GetComponentInChildren<Camera>(),go);
 
     }
     private void toCinematicBossFight(PlayState from,PlayState to,Animator anim,Camera animCam,GameObject targetting)
@@ -842,7 +828,12 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         if(from == PlayState.inBoss && to == PlayState.inBoss)
         {
             anim.SetTrigger("Start");
-            StartCoroutine(bossStartAnim(anim,animCam));
+            //ManuelAdding
+            if (targetting.TryGetComponent<DummyMummyFunc>(out DummyMummyFunc dmf))
+            {
+                StartCoroutine(bossStartAnim(anim, animCam, dmf.bossStartMenu));
+            }
+
         }
         else if(from == PlayState.inBoss && to == PlayState.inWaiting)
         {
@@ -1029,18 +1020,28 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
 
     //Animations
-    IEnumerator bossStartAnim(Animator selectedAnim,Camera selectedCam)
+    IEnumerator bossStartAnim(Animator selectedAnim,Camera selectedCam,GameObject panel)
     {
+        for (int i = 0; i < gamePanel.transform.childCount; i++)
+        {
+            if (i == 2 || i == 3 || i == 4 || i == 5)
+            {
+                continue;
+            }
+            gamePanel.transform.GetChild(i).gameObject.SetActive(false);
+        }
         while (true) 
         {
             yield return new WaitForEndOfFrame();
             if (selectedAnim.GetCurrentAnimatorStateInfo(0).IsName("end_start"))
             {
-                bossIntroPanel.SetActive(true);
                 break;
             }
         }
-        yield return new WaitForSeconds(0.5f);
+        cinematicBoomAS.Play();
+        yield return new WaitForSeconds(.5f);
+        panel.SetActive(true);
+        yield return new WaitForSeconds(1f);
         //StopAnimation
 
         selectedAnim.SetBool("end", true);
@@ -1048,15 +1049,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         selectedAnim.SetBool("end", false);
 
         //UI Normalize
-        bossIntroPanel.SetActive(false);
-        for (int i = 0; i < gamePanel.transform.childCount; i++)
-        {
-            if(i == 2 || i == 3 || i == 4 || i == 5)
-            {
-                continue;
-            }
-            gamePanel.transform.GetChild(i).gameObject.SetActive(false);
-        }
+        panel.SetActive(false);
         playerPanel.SetActive(true);
         bossPanel.SetActive(true);
 
@@ -1066,6 +1059,10 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
         //change GameState
         pState = PlayState.inBoss;
+        if(selectedAnim.TryGetComponent<DummyMummyFunc>(out DummyMummyFunc dmf))
+        {
+            selectedAnim.GetComponent<DummyMummyFunc>().toIdle();
+        }
     }
     IEnumerator bossEndAnim(Animator selectedAnim, Camera selectedCam,GameObject willDestroyObj)
     {
@@ -1086,7 +1083,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
         for (int i = 0; i < gamePanel.transform.childCount; i++)
         {
-            if (i == 2 || i == 3 || i == 4 || i == 5)
+            if (i == 3 || i == 7 || i == 8 || i == 9)
             {
                 continue;
             }
@@ -1170,7 +1167,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         Vector3 vec= new Vector3(0, 1.5f, 0);
         foreach(Shop shop in currentLevel.GetComponent<Map>().shops)
         {
-            shop.unWorkScreen();
+//            shop.unWorkScreen();
         }
         while (true)
         {
@@ -2043,10 +2040,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             }
         }
 
-        for (int i = 0 ; i < bossIntroPanel.transform.childCount; i++)
-        {
-            bossIntroPanel.transform.GetChild(i).gameObject.SetActive(false);
-        }
 
         for (int i = 0; i < bossPanel.transform.childCount; i++)
         {
@@ -2157,6 +2150,18 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             yield return null;
         }
 
+    }
+
+
+
+
+
+
+
+    private void EndBeta()
+    {
+        PlayerPrefs.SetInt("EndBeta", 1);
+        SceneManager.LoadScene(0);
     }
 }
 

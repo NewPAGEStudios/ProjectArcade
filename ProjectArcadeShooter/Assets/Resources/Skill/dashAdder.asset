@@ -19,6 +19,8 @@ MonoBehaviour:
   materials: []
   sprite_HUD: {fileID: 21300000, guid: 78120096ad715be46a9304b97a2c90da, type: 3}
   functionName: dashAdder
+  indicator: {fileID: 0}
   modelPrefab: {fileID: 0}
-  modelShow: {fileID: 100000, guid: 97d2b5f212fdaea4c945e42da71da052, type: 3}
-  toBuyMoney: 50
+  modelShow: {fileID: 3906929703540785351, guid: 5a604f80ba2b7004ea71a7f5d425dd6c,
+    type: 3}
+  toBuyMoney: 40

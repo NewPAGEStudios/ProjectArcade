@@ -203,6 +203,10 @@ MonoBehaviour:
     m_Key: MinimapSmoothness_txt
     m_Metadata:
       m_Items: []
+  - m_Id: 38024621589860352
+    m_Key: demo_txt
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

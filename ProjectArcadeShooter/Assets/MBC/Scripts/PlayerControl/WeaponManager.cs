@@ -774,7 +774,7 @@ public class WeaponManager : MonoBehaviour
             }
             else
             {
-                GameObject go = Instantiate(active_Skill.modelPrefab, gc.skillIndicatorParent.transform);
+                GameObject go = Instantiate(active_Skill.indicator, gc.skillIndicatorParent.transform);
                 go.name = "indicator";
                 if (go.TryGetComponent<Collider>(out Collider col))
                 {

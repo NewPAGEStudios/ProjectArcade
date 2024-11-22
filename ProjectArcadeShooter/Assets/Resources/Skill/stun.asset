@@ -20,8 +20,10 @@ MonoBehaviour:
   materials: []
   sprite_HUD: {fileID: 21300000, guid: 91f4971292fa0614784a1fe40985bf29, type: 3}
   functionName: stunInstanSkill
-  modelPrefab: {fileID: 4831038042603890499, guid: ce1d7a8e0fdfe6d4dadb3237e731043d,
+  indicator: {fileID: 4831038042603890499, guid: ce1d7a8e0fdfe6d4dadb3237e731043d,
+    type: 3}
+  modelPrefab: {fileID: 1357342822470448432, guid: 026ec3280be45484b824da8f6e84159e,
     type: 3}
   modelShow: {fileID: 4831038042603890499, guid: ce1d7a8e0fdfe6d4dadb3237e731043d,
     type: 3}
-  toBuyMoney: 0
+  toBuyMoney: 75

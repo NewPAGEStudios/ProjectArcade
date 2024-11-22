@@ -9,7 +9,7 @@ public class zzzz : MonoBehaviour
     [SerializeField] float distance;
     [SerializeField] UnityEvent<Vector2> OnCursorInput = new UnityEvent<Vector2>();
     [SerializeField] Camera mainCam;
-    bool screenIsWorking = true;
+    [SerializeField] bool screenIsWorking = true;
 
     // Start is called before the first frame update
     void Start()

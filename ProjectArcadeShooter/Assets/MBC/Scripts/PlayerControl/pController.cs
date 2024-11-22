@@ -707,7 +707,7 @@ public class PController : MonoBehaviour
     IEnumerator SpeedMultiplierDuration(float multiplier,float duration)
     {
         Camera handCam = mainCam.transform.GetChild(0).GetComponent<Camera>();
-        targetFOV = mainCam.fieldOfView + (mainCam.fieldOfView * 20 / 60);
+        targetFOV = 80;
         float minusDuration = 0f;
         while (true)
         {            
@@ -739,7 +739,7 @@ public class PController : MonoBehaviour
         moveSpeed /= multiplier;
         dashForce /= multiplier;
 
-        targetFOVnormal = mainCam.fieldOfView - (mainCam.fieldOfView * 20 / 60);
+        targetFOVnormal = 60;
 
         while (true)
         {

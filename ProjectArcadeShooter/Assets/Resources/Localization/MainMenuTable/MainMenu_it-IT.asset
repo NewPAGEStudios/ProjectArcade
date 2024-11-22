@@ -208,6 +208,10 @@ MonoBehaviour:
     m_Localized: Transizione fluida della mini mappa
     m_Metadata:
       m_Items: []
+  - m_Id: 38024621589860352
+    m_Localized: "Questa versione \xE8 una versione demo."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

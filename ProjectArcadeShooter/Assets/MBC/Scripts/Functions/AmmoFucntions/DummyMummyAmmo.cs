@@ -15,6 +15,7 @@ public class DummyMummyAmmo : MonoBehaviour
         gameObject.transform.parent = null;
 
         GetComponent<Rigidbody>().AddForce(transform.forward * ammo.bulletSpeed, ForceMode.Impulse);
+        GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
     }
     private void OnCollisionEnter(Collision collision)
     {
