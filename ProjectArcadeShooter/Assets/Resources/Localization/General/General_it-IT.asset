@@ -54,6 +54,10 @@ MonoBehaviour:
     m_Localized: "Hai usato un'abilit\xE0:"
     m_Metadata:
       m_Items: []
+  - m_Id: 2952423632343040
+    m_Localized: 'Nemico:'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

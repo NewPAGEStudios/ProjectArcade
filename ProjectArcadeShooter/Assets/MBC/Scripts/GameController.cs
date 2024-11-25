@@ -9,6 +9,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.EventSystems;
+using UnityEngine.Localization.Components;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Rendering.Universal;
@@ -562,7 +563,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     {
         GameObject enemy = new();
         enemyCount += 1;
-
+        UpdateEnemyCount(false);
         int indexOfID = 0;
 
         for(int i = 0; i < enemies.Length; i++)
@@ -670,6 +671,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 }
                 if (enemyCount == 0)
                 {
+                    makeMoneyWithMostCombo();
                     toWait();
                 }
             }
@@ -720,6 +722,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             pState = PlayState.inWave;
         }
 
+        UpdateMostCombo(true);
+
         waitTimeVisualize(waitTimer);
         waveVisualzie("Wave " + waveNumber);
 
@@ -761,6 +765,10 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     {
         SaveElements();
 
+        UpdateMostCombo(true);
+        mostComboCount = 0;
+        UpdateEnemyCount(true);
+
         waitTimer = waitTime;
         pState = PlayState.inWaiting;
 
@@ -781,6 +789,10 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     {
         pState = PlayState.inBoss;
         int i;
+
+        UpdateEnemyCount(true);
+        UpdateMostCombo(true);
+
         for (i = 0; i < boss.Length; i++)
         {
             if (boss[i].BossID == bossID)
@@ -1226,6 +1238,26 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         }
     }
 
+
+    public void UpdateEnemyCount(bool reset)
+    {
+        gamePanel.transform.GetChild(1).GetChild(0).gameObject.SetActive(true);
+        if (reset)
+        {
+            gamePanel.transform.GetChild(1).GetChild(0).gameObject.SetActive(false);
+        }
+        gamePanel.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = localizer_scp.applyGeneral("EnemyNumber_txt") + " " + enemyCount;
+    }
+    public void UpdateMostCombo(bool reset)
+    {
+        gamePanel.transform.GetChild(1).GetChild(1).gameObject.SetActive(true);
+        if (reset)
+        {
+            gamePanel.transform.GetChild(1).GetChild(1).gameObject.SetActive(false);
+        }
+        gamePanel.transform.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>().text = localizer_scp.applyGeneral("MostCombo_txt") + " " + mostComboCount;
+    }
+
     public void waitTimeVisualize(float timer)
     {
         if (timer < 0)
@@ -1291,6 +1323,11 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public void ComboBG(float fa)
     {
         gamePanel.transform.GetChild(2).GetComponent<Image>().fillAmount = fa;
+    }
+    public void makeMoneyWithMostCombo()
+    {
+        AddMainCurrency(mostComboCount * 3);
+        mostComboCount = 0;
     }
     public void ShopOpener()
     {
@@ -1952,6 +1989,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             }
             comboDisplayRoutine = StartCoroutine(comboRoutine());
         }
+        UpdateMostCombo(false);
         mostComboVis();
         ComboVisualize();
     }
@@ -2138,7 +2176,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     }
     IEnumerator startAgainLoadingRoutine()
     {
-        AsyncOperation operation = SceneManager.LoadSceneAsync("MainScene_harbiMain");
+        AsyncOperation operation = SceneManager.LoadSceneAsync("MainScene");
         operation.allowSceneActivation = false;
         
         while (!operation.isDone)
@@ -2149,17 +2187,16 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             }
             yield return null;
         }
+        SceneManager.LoadScene("MainScene");
 
     }
 
 
-
-
-
-
-
     private void EndBeta()
     {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
         PlayerPrefs.SetInt("EndBeta", 1);
         SceneManager.LoadScene(0);
     }

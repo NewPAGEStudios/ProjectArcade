@@ -33,7 +33,7 @@ public class WalkerRanged : MonoBehaviour
         moveTimer += Time.deltaTime;
         shotTimer += Time.deltaTime;
 
-        if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.e_type.rangeDistance - 2 || Physics.Raycast(gameObject.transform.position + new Vector3(0,1,0), enemy.Player.transform.position - gameObject.transform.position,Vector3.Distance(gameObject.transform.position, enemy.Player.transform.position),16384))
+        if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.e_type.rangeDistance - 2 || Physics.Raycast(enemy.gunBarrel[0].transform.position + new Vector3(0,1,0), enemy.Player.transform.position - enemy.gunBarrel[0].transform.position,Vector3.Distance(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position),16384))
         {
             enemy.Agent.SetDestination(enemy.Player.transform.position);
             lookPlayer();
@@ -48,7 +48,7 @@ public class WalkerRanged : MonoBehaviour
             enemy.soundController.StopSound("Footsteps", 0f);
         }
         //Shoot
-        if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) < enemy.e_type.rangeDistance && !Physics.Raycast(gameObject.transform.position + new Vector3(0, 1, 0), enemy.Player.transform.position - gameObject.transform.position, Vector3.Distance(gameObject.transform.position, enemy.Player.transform.position), 16384))
+        if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) < enemy.e_type.rangeDistance && !Physics.Raycast(enemy.gunBarrel[0].transform.position + new Vector3(0, 1, 0), enemy.Player.transform.position - enemy.gunBarrel[0].transform.position, Vector3.Distance(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position), 16384))
         {
             if(shotTimer >= enemy.e_type.attackRatio)
             {

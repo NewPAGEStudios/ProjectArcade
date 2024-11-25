@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -142,27 +143,81 @@ public class Room : MonoBehaviour
             emergencyL.GetComponentInChildren<Light>().enabled = true;
         }
 
-        yield return new WaitForSeconds(.6f);
+        float timer = .6f;
+        while (timer > 0)
+        {
+            yield return null;
+            if (roomManager.gc.state != GameController.GameState.inGame || roomManager.gc.pState != GameController.PlayState.inWave)
+            {
+                continue;
+            }
+            timer -= Time.deltaTime;
+        }
         kz.GetComponent<Volume>().enabled = false;
         kz.transform.GetChild(0).gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(1f);
+        timer = 1f;
+        while (timer > 0)
+        {
+            yield return null;
+            if (roomManager.gc.state != GameController.GameState.inGame || roomManager.gc.pState != GameController.PlayState.inWave)
+            {
+                continue;
+            }
+            timer -= Time.deltaTime;
+        }
         kz.GetComponent<Volume>().enabled = true;
         kz.transform.GetChild(0).gameObject.SetActive(true);
 
-        yield return new WaitForSeconds(.6f);
+        timer = .6f;
+        while (timer > 0)
+        {
+            yield return null;
+            if (roomManager.gc.state != GameController.GameState.inGame || roomManager.gc.pState != GameController.PlayState.inWave)
+            {
+                continue;
+            }
+            timer -= Time.deltaTime;
+        }
         kz.GetComponent<Volume>().enabled = false;
         kz.transform.GetChild(0).gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(1f);
+        timer = 1f;
+        while (timer > 0)
+        {
+            yield return null;
+            if (roomManager.gc.state != GameController.GameState.inGame || roomManager.gc.pState != GameController.PlayState.inWave)
+            {
+                continue;
+            }
+            timer -= Time.deltaTime;
+        }
         kz.GetComponent<Volume>().enabled = true;
         kz.transform.GetChild(0).gameObject.SetActive(true);
 
-        yield return new WaitForSeconds(.6f);
+        timer = .6f;
+        while (timer > 0)
+        {
+            yield return null;
+            if (roomManager.gc.state != GameController.GameState.inGame || roomManager.gc.pState != GameController.PlayState.inWave)
+            {
+                continue;
+            }
+            timer -= Time.deltaTime;
+        }
         kz.GetComponent<Volume>().enabled = false;
         kz.transform.GetChild(0).gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(.15f);
+        timer = .15f;
+        while (timer > 0)
+        {
+            yield return null;
+            if (roomManager.gc.state != GameController.GameState.inGame || roomManager.gc.pState != GameController.PlayState.inWave)
+            {
+                continue;
+            }
+            timer -= Time.deltaTime;
+        }
         kz.GetComponent<Volume>().enabled = true;
         kz.transform.GetChild(0).gameObject.SetActive(true);
         kz.GetComponent<KillZone>().alertSound = false;

@@ -36,7 +36,6 @@ namespace SlimUI.ModernMenu{
         public GameObject sensitivityXSlider;
 		public GameObject sensitivityYSlider;
 
-		private float sliderValue = 0.0f;
 		private float sliderValueMinimapSize = 0.0f;
         private float sliderValueXSensitivity = 0.0f;
 		private float sliderValueYSensitivity = 0.0f;

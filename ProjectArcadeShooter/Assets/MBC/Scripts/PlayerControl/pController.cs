@@ -268,6 +268,7 @@ public class PController : MonoBehaviour
                 */
                 targetPosY = pos.y - scale.y / 2;
                 targetScale = scale.y / 2;
+                moveSpeed /= 2;
                 crouchEvent = false;
             }
             if(pos.y == targetPosY)
@@ -301,6 +302,7 @@ public class PController : MonoBehaviour
                 */
                 targetPosY = pos.y + scale.y;
                 targetScale = scale.y * 2;
+                moveSpeed *= 2;
                 StartCoroutine(CrouchExitEvent(targetScale, targetPosY));
                 crouchEvent = true;
             }
@@ -328,8 +330,8 @@ public class PController : MonoBehaviour
         }
         actiontp = ActionStateDependecyToPlayer.idle;
 
-        Camera.main.transform.localPosition = new Vector3(0, 1.5f, 0);
-        transform.GetChild(0).localScale = new Vector3(1, 1.5f, 1);
+        Camera.main.transform.localPosition = new Vector3(0, 1.35f, 0);
+        transform.GetChild(0).localScale = new Vector3(1, 1.35f, 1);
 
     }
     //EĞilme Bit
@@ -341,10 +343,9 @@ public class PController : MonoBehaviour
             return;
         }
         Vector2 moveDirVect2 = iManager.getPlayerMovement();// (x,y) (x,y,z) (x,0,y)
-
         if (snb)//apply bob
         {
-            weaponManager.BobOffset(this, moveDirVect2);
+            weaponManager.BobOffset(this, moveDirVect2,rb.velocity.y);
             weaponManager.BobRotation(moveDirVect2);
         }
 
@@ -359,7 +360,6 @@ public class PController : MonoBehaviour
         Vector3 moveDir = new(moveDirVect2.x, 0f, moveDirVect2.y);
 
         moveDir = gameObject.transform.right * moveDir.x + gameObject.transform.forward * moveDir.z;
-
         switch (actiontp)
         {
             case ActionStateDependecyToPlayer.idle:
@@ -370,23 +370,22 @@ public class PController : MonoBehaviour
                 Debug.LogWarning("action State to Player Sıkıntılı");
                 break;
         }
-
         switch (actiontg)
         {
             case ActionStateDependecyToGround.flat:
-                rb.AddForce(moveSpeed * Time.fixedDeltaTime * moveDir, ForceMode.Force);
+                rb.AddForce(moveSpeed * Time.fixedDeltaTime * moveDir, ForceMode.Acceleration);
                 break;
             case ActionStateDependecyToGround.slope:
-                rb.AddForce(moveSpeed * Time.fixedDeltaTime * Slope(moveDir), ForceMode.Force);
+                Vector3 sloped = Slope(moveDir);
+                rb.AddForce(moveSpeed * Time.fixedDeltaTime * sloped, ForceMode.Acceleration);
                 break;
             case ActionStateDependecyToGround.onAir:
-                rb.AddForce(moveSpeedOnAir * Time.fixedDeltaTime * moveDir, ForceMode.Force);
+                rb.AddForce(moveSpeedOnAir * Time.fixedDeltaTime * moveDir, ForceMode.Acceleration);
                 break;
             default:
                 Debug.LogWarning("action State to Ground Sıkıntılı");
                 break;
         }
-        //        rb.AddForce(Slope(moveDir) * moveSpeed * Time.fixedDeltaTime, ForceMode.Force);
 
 
         Vector3 temp = new(rb.velocity.x, rb.velocity.y, rb.velocity.z);
@@ -406,7 +405,13 @@ public class PController : MonoBehaviour
                 moveTimerSound -= Time.fixedDeltaTime;
             }
         }
+        if(actiontg == ActionStateDependecyToGround.onAir)
+        {
+            if(speedTemp > maxSpeed)
+            {
 
+            }
+        }
 
         if (speedTemp > maxSpeed)
         {
@@ -418,8 +423,10 @@ public class PController : MonoBehaviour
                     rb.velocity = new Vector3(liimitedVec.x, liimitedVec.y, liimitedVec.z);
                     break;
                 case ActionStateDependecyToGround.flat:
+                    rb.velocity = new Vector3(liimitedVec.x, liimitedVec.y, liimitedVec.z);
                     break;
                 case ActionStateDependecyToGround.onAir:
+                    rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, rb.velocity.z);
                     break;
                 default:
                     rb.velocity = new Vector3(liimitedVec.x, rb.velocity.y, liimitedVec.z);
@@ -497,7 +504,7 @@ public class PController : MonoBehaviour
     }
     private Vector3 Slope(Vector3 directionOnNormalPlane)
     {
-        return Vector3.ProjectOnPlane(directionOnNormalPlane, slopePlaneNormal).normalized;
+        return Vector3.ProjectOnPlane(directionOnNormalPlane, slopePlaneNormal);
     }
 
 
@@ -534,8 +541,8 @@ public class PController : MonoBehaviour
         {
             checkGroundVector = -slopePlaneNormal.normalized;
         }
-        Debug.DrawRay(gameObject.transform.position, checkGroundVector * (offsetScale + 1.2f), Color.red, Time.deltaTime);
-        if (Physics.Raycast(gameObject.transform.position, checkGroundVector,out RaycastHit hit,offsetScale + 1.2f))
+        Debug.DrawRay(gameObject.transform.position, checkGroundVector * (offsetScale + 0.75f), Color.red, Time.deltaTime);
+        if (Physics.Raycast(gameObject.transform.position, checkGroundVector,out RaycastHit hit,offsetScale + 0.75f))
         {
             float angleOfPlane = Vector3.Angle(Vector3.up, hit.normal);
 
@@ -553,7 +560,7 @@ public class PController : MonoBehaviour
             {//is Slope granted
                 actiontg = ActionStateDependecyToGround.slope;
                 slopePlaneNormal = hit.normal;
-                rb.useGravity = false;
+//                rb.useGravity = false;
             }
 
         }

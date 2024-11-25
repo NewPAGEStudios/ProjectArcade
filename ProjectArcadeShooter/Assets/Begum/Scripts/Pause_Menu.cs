@@ -40,6 +40,7 @@ public class Pause_Menu : MonoBehaviour
             File.Delete(path);
         }
         Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
         SceneManager.LoadScene(0);
     }
 

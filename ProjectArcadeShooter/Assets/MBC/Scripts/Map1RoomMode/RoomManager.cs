@@ -14,8 +14,11 @@ public class RoomManager : MonoBehaviour
 
     public Material KZ_Mat;
     public Material KZ_Mat_alert;
+
+    public GameController gc;
     private void Start()
     {
+        gc=GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         clsoedRoomList = rooms.ToList<Room>();
         OpenAll();
     }
@@ -31,7 +34,17 @@ public class RoomManager : MonoBehaviour
     {
         room.EmergencyLighton();
 
-        yield return new WaitForSeconds(5f);
+
+        float timer = 5f;
+        while (timer>0)
+        {
+            yield return null;
+            if (gc.state != GameController.GameState.inGame || gc.pState != GameController.PlayState.inWave)
+            {
+                continue;
+            }
+            timer -= Time.deltaTime;
+        }
 
         room.EmergencyLightoff();
 
@@ -43,7 +56,16 @@ public class RoomManager : MonoBehaviour
 
         room.roomStatus = false;
 
-        yield return new WaitForSeconds(roomCloseTime);
+        while(roomCloseTime > 0)
+        {
+            yield return null;
+            if (gc.state != GameController.GameState.inGame || gc.pState != GameController.PlayState.inWave)
+            {
+                continue;
+            }
+            roomCloseTime -= Time.deltaTime;
+        }
+
 
         roomList.Add(room);
         clsoedRoomList.Remove(room);

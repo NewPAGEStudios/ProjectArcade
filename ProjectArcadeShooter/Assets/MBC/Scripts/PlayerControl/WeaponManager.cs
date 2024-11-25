@@ -649,27 +649,28 @@ public class WeaponManager : MonoBehaviour
 
         swayEulorRot = new Vector3(invertLook.y, invertLook.x, invertLook.x);
     }
-    public void BobOffset(PController player,Vector2 moveDir)
+    public void BobOffset(PController player,Vector2 moveDir,float yjump)
     {
         if (player.actiontg == PController.ActionStateDependecyToGround.flat || player.actiontg == PController.ActionStateDependecyToGround.slope)
         {
             speedCurve += (Time.deltaTime * (moveDir.x + moveDir.y) * bobExaggeration) + 0.01f;
             bobPos.x = (CurveCos * bobLimit.x * 1) - (moveDir.x * travelLimit.x);
+            bobPos.y = (CurveSin * bobLimit.y * 0) - (travelLimit.y);
         }
         else
         {
             speedCurve += (Time.deltaTime * 1) + 0.01f;
             bobPos.x = (CurveCos * bobLimit.x * 0) - (moveDir.x * travelLimit.x);
+            bobPos.y = (bobLimit.y * yjump) - (travelLimit.y);
         }
-        bobPos.y = (CurveSin * bobLimit.y) - (moveDir.y * travelLimit.y);
-        bobPos.z = -(moveDir.y * travelLimit.z);
+        bobPos.z = - (moveDir.y * travelLimit.z);
     }
 
     public void BobRotation(Vector2 moveDir)
     {
         if(moveDir != Vector2.zero)
         {
-            bobEulorRot.x = multiplier.x * (Mathf.Sin(2 * speedCurve));
+            bobEulorRot.x = multiplier.x * Mathf.Sin(2 * speedCurve);
             bobEulorRot.y = multiplier.y * CurveCos;
             bobEulorRot.z = multiplier.z * CurveCos * moveDir.x;
         }

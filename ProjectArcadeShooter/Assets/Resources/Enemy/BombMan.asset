@@ -19,7 +19,7 @@ MonoBehaviour:
   agentName: EnemyWALKER
   firePos: {x: 0, y: 0, z: 0}
   mainMat: {fileID: 2100000, guid: f2601df4fbcb6df49953a5e9f7963f45, type: 2}
-  getDmgMat: {fileID: 2100000, guid: d9f6cacbf86f0734ab3af54209544245, type: 2}
+  getDmgMat: {fileID: 2100000, guid: 7d2499e575ecc084299b8105dbdb7a7e, type: 2}
   deathMat: {fileID: 2100000, guid: c247b988d50dec8448cb5b642c740654, type: 2}
   agentFunction: Bombman
   hitPoint: 60

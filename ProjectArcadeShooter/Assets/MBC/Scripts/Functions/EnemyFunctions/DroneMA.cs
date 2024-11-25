@@ -69,6 +69,7 @@ public class DroneMA : MonoBehaviour
     }
     IEnumerator moveRoutine(float desiredYPos)
     {
+        enemy.soundController.PlaySound("Ding", 0f);
         while (true)
         {
             agent.baseOffset = Mathf.MoveTowards(agent.baseOffset, desiredYPos, Time.deltaTime);

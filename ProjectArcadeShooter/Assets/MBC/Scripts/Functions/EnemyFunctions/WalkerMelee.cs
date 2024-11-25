@@ -46,22 +46,6 @@ public class WalkerMelee : MonoBehaviour
             {
                 enemy.soundController.PlaySound("Footsteps", 0);
                 footstepTimer = 0.75f;
-                //switch (enemy.e_type.EnemyTypeID)
-                //{
-                //    case 0:
-                //        break;
-                //    case 1:
-                //        footstepTimer = 0.75f;
-                //        break;
-                //    case 2:
-                //        footstepTimer = 0.35f;
-                //        break;
-                //    case 3:
-                //        footstepTimer = 0.35f;
-                //        break;
-                //    default: break;
-                //}
-
             }
             else
             {
@@ -76,21 +60,6 @@ public class WalkerMelee : MonoBehaviour
 
             enemy.soundController.StopSound("Footsteps", 0f);
             footstepTimer = 0.12f;
-            //switch (enemy.e_type.EnemyTypeID)
-            //{
-            //    case 0:
-            //        break;
-            //    case 1:
-            //        footstepTimer = 0.11f;
-            //        break;
-            //    case 2:
-            //        footstepTimer = 0.1f;
-            //        break;
-            //    case 3:
-            //        footstepTimer = 0.1f;
-            //        break;
-            //    default: break;
-            //}
 
             targetRotation = Quaternion.LookRotation(enemy.Player.transform.position - enemy.transform.position);
             enemy.transform.rotation = Quaternion.Lerp(enemy.transform.rotation, targetRotation, .4f);
@@ -105,6 +74,9 @@ public class WalkerMelee : MonoBehaviour
         {
             return;
         }
+
+        enemy.meleeObj.GetComponent<MeleeDmg>().attackAvaible = true;
+
         enemy.animator.SetTrigger("Attack");
         enemy.meleeObj.GetComponent<Collider>().enabled = true;
         enemy.animator.SetBool("AttackEnd", true);

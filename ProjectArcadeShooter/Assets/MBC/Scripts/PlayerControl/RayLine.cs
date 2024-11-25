@@ -46,7 +46,7 @@ public class RayLine : MonoBehaviour
                 remainLength -= Vector3.Distance(ray.origin, hit.point);
 
                 ray = new Ray(hit.point, Vector3.Reflect(ray.direction, hit.normal));
-                if (hit.transform.gameObject.CompareTag("EnemyColl"))
+                if (hit.transform.gameObject.CompareTag("EnemyColl") && hit.transform.gameObject.layer == 9)
                 {
                     _lineRenderer.material = mats[1];
                     gc.crossColorChange(Color.green);

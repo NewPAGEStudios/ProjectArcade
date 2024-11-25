@@ -54,6 +54,10 @@ MonoBehaviour:
     m_Localized: "Du hast eine F\xE4higkeit benutzt:"
     m_Metadata:
       m_Items: []
+  - m_Id: 2952423632343040
+    m_Localized: 'Feind:'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
