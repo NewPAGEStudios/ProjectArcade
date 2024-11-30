@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
@@ -89,7 +90,7 @@ public class Enemy : MonoBehaviour
 
         meleeDmg = e_type.attackDMG;
 
-
+        ehp.tmpEnemyIndicator = model.transform.Find("EnemyHPIndicator").GetChild(0).GetComponent<TextMeshPro>();
 
         soundController = gameObject.AddComponent<EnemySoundController>();
         fxController = gameObject.AddComponent<EnemyFXController>();

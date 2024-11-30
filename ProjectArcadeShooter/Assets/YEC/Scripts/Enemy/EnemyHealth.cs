@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -10,6 +11,7 @@ public class EnemyHealth : MonoBehaviour
     public float currentHealth;
     public float level;
     public Text txtLevel;
+    public TextMeshPro tmpEnemyIndicator;
     public Animator animator;
 
     private GameController gc;
@@ -51,19 +53,21 @@ public class EnemyHealth : MonoBehaviour
         baseColor = mainMat.color;
 
         currentHealth = maxHealth;
+        ChangeIndicationOfEnemyHP();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        tmpEnemyIndicator.transform.parent.LookAt(GetComponent<Enemy>().Player.transform);
     }
 
     public void EnemyHealthUpdate(float amount,GameObject damagedBy)
     {
         
         currentHealth += amount;
-        
+        ChangeIndicationOfEnemyHP();
+
         Debug.Log("CurrentHealth: "+ currentHealth);
 
         if (currentHealth <= 0)
@@ -81,6 +85,7 @@ public class EnemyHealth : MonoBehaviour
 
 
             currentHealth = 0;
+            ChangeIndicationOfEnemyHP();
             gc.comboTimerReset();
             Die();
             return;
@@ -276,5 +281,10 @@ public class EnemyHealth : MonoBehaviour
 
 
         GetComponent<Enemy>().StunEnd();
+    }
+
+    public void ChangeIndicationOfEnemyHP()
+    {
+        tmpEnemyIndicator.text = currentHealth.ToString();
     }
 }
