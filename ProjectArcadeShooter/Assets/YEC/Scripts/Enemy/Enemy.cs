@@ -62,12 +62,6 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         eState = enemyState.alive;
-        GameObject model = Instantiate(e_type.modelGameObject, gameObject.transform);
-        
-
-        model.name = "Model";
-
-        model.transform.GetChild(0).gameObject.layer = 10;
 
         if (e_type.isRanged)
         {
@@ -78,7 +72,17 @@ public class Enemy : MonoBehaviour
             }
         }
 
+        fireRate = e_type.attackRatio;
+        GameObject model = Instantiate(e_type.modelGameObject, gameObject.transform);
+        
+
+        model.name = "Model";
+
+        model.transform.GetChild(0).gameObject.layer = 10;
+
+
         animator = model.GetComponent<Animator>();
+        animator.speed = 1 * (e_type.moveSpeed / 2);
 
         ehp = gameObject.AddComponent<EnemyHealth>();
         ehp.maxHealth = e_type.hitPoint;
@@ -97,27 +101,12 @@ public class Enemy : MonoBehaviour
             agent = gameObject.AddComponent<NavMeshAgent>();
             agent.agentTypeID = agenjtFindClass.GetAgentTypeIDbyName(e_type.agentName);
             agent.speed = e_type.moveSpeed;
+            agent.angularSpeed=200f;
         }
 
         System.Type scriptMB = System.Type.GetType(e_type.agentFunction + ",Assembly-CSharp");
         gameObject.AddComponent(scriptMB);
 
-        //ManuelAdding
-        if(gameObject.TryGetComponent<WalkerMelee>(out WalkerMelee wm))
-        {
-
-        }
-        else if (gameObject.TryGetComponent<WalkerRanged>(out WalkerRanged wr))
-        {
-
-        }
-        else if(gameObject.TryGetComponent<DroneMA>(out DroneMA dma))
-        {
-
-        }
-
-
-        fireRate = e_type.attackRatio;
         
         player = GameObject.FindGameObjectWithTag("Player");
 

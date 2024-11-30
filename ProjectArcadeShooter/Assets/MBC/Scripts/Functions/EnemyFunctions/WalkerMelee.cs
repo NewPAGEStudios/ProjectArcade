@@ -7,6 +7,7 @@ public class WalkerMelee : MonoBehaviour
 {
     private float moveTimer;
     private float shotTimer;
+    private float shotTime;
     private float footstepTimer;
 
     private Quaternion targetRotation;
@@ -20,6 +21,8 @@ public class WalkerMelee : MonoBehaviour
     {
         enemy = GetComponent<Enemy>();
         agent = enemy.GetComponent<NavMeshAgent>();
+        shotTime = enemy.fireRate / enemy.animator.speed;
+        Debug.Log(shotTime);
     }
 
     // Update is called once per frame
@@ -30,14 +33,14 @@ public class WalkerMelee : MonoBehaviour
             return;
         }
         shotTimer += Time.deltaTime;
-        if (shotTimer > enemy.fireRate)
+        if (shotTimer > shotTime)
         {
             if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) <= enemy.e_type.rangeDistance)
             {
                 MeleeAttack();
             }
         }
-        if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.e_type.rangeDistance - 1f)
+        if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.e_type.rangeDistance - 0.05f)
         {
             enemy.Agent.SetDestination(enemy.Player.transform.position);
             enemy.animator.SetBool("isWalking", true);
@@ -70,15 +73,14 @@ public class WalkerMelee : MonoBehaviour
 
     public void MeleeAttack()
     {
+        shotTimer = 0f;
         if (enemy.animator == null)
         {
             return;
         }
-
-        enemy.meleeObj.GetComponent<MeleeDmg>().attackAvaible = true;
+        Debug.Log("Attack Starts");
 
         enemy.animator.SetTrigger("Attack");
-        enemy.meleeObj.GetComponent<Collider>().enabled = true;
         enemy.animator.SetBool("AttackEnd", true);
 
         transform.LookAt(enemy.Player.transform);
@@ -87,6 +89,8 @@ public class WalkerMelee : MonoBehaviour
     }
     IEnumerator AttackAnim_Routine()
     {
+        enemy.meleeObj.GetComponent<MeleeDmg>().attackAvaible = true;
+
         while (true)
         {
 
@@ -98,7 +102,7 @@ public class WalkerMelee : MonoBehaviour
             }
             if (enemy.animator.GetCurrentAnimatorStateInfo(1).IsName("AttackEnd"))
             {
-                enemy.meleeObj.GetComponent<Collider>().enabled = false;
+//                enemy.meleeObj.GetComponent<MeleeDmg>().attackAvaible = false;
                 break;
             }
 

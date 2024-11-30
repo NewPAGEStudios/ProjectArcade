@@ -199,6 +199,10 @@ public class PController : MonoBehaviour
 
         weaponManager.laserOpen();
 
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            rb.AddForce(-gameObject.transform.forward * 2, ForceMode.VelocityChange);
+        }
     }
     private void CamRotation()//tmmland�
     {
@@ -560,7 +564,7 @@ public class PController : MonoBehaviour
             {//is Slope granted
                 actiontg = ActionStateDependecyToGround.slope;
                 slopePlaneNormal = hit.normal;
-//                rb.useGravity = false;
+                rb.useGravity = false;
             }
 
         }

@@ -11,13 +11,13 @@ public class MeleeDmg : MonoBehaviour
     private void Start()
     {
         enemyModel.transform.parent.GetComponent<Enemy>().meleeObj = gameObject;
-        gameObject.GetComponent<Collider>().enabled = false;
     }
     private void OnTriggerEnter(Collider other)
     {
 
         if (other.gameObject.CompareTag("PlayerColl"))
         {
+            Debug.Log("Attack avaible: " + attackAvaible);
             if (!attackAvaible)
             {
                 return;
