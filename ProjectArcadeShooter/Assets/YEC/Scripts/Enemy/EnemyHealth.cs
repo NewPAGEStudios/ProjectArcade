@@ -9,9 +9,11 @@ public class EnemyHealth : MonoBehaviour
 {
     public float maxHealth = 100f;
     public float currentHealth;
+    private float currentHealthOverride;
     public float level;
     public Text txtLevel;
     public TextMeshPro tmpEnemyIndicator;
+    public GameObject hpBar;
     public Animator animator;
 
     private GameController gc;
@@ -53,20 +55,33 @@ public class EnemyHealth : MonoBehaviour
         baseColor = mainMat.color;
 
         currentHealth = maxHealth;
-        ChangeIndicationOfEnemyHP();
+        currentHealthOverride = currentHealth;
     }
 
     // Update is called once per frame
     void Update()
     {
         tmpEnemyIndicator.transform.parent.LookAt(GetComponent<Enemy>().Player.transform);
+
+
+        if (currentHealth != 0)
+        {
+            MaterialPropertyBlock mpb = new MaterialPropertyBlock();
+
+            currentHealthOverride = Mathf.MoveTowards(currentHealthOverride, currentHealth, Time.deltaTime * 30f);
+
+            tmpEnemyIndicator.text = Mathf.Floor(currentHealthOverride).ToString();
+
+            mpb.SetFloat("_alpha", currentHealthOverride / maxHealth);
+            hpBar.GetComponent<Renderer>().SetPropertyBlock(mpb);
+
+        }
     }
 
     public void EnemyHealthUpdate(float amount,GameObject damagedBy)
     {
         
         currentHealth += amount;
-        ChangeIndicationOfEnemyHP();
 
         Debug.Log("CurrentHealth: "+ currentHealth);
 
@@ -85,7 +100,6 @@ public class EnemyHealth : MonoBehaviour
 
 
             currentHealth = 0;
-            ChangeIndicationOfEnemyHP();
             gc.comboTimerReset();
             Die();
             return;
@@ -283,8 +297,4 @@ public class EnemyHealth : MonoBehaviour
         GetComponent<Enemy>().StunEnd();
     }
 
-    public void ChangeIndicationOfEnemyHP()
-    {
-        tmpEnemyIndicator.text = currentHealth.ToString();
-    }
 }

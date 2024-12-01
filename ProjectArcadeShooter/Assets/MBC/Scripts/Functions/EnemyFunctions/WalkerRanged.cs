@@ -33,7 +33,8 @@ public class WalkerRanged : MonoBehaviour
         moveTimer += Time.deltaTime;
         shotTimer += Time.deltaTime;
 
-        if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.e_type.rangeDistance - 2 || Physics.Raycast(enemy.gunBarrel[0].transform.position + new Vector3(0,1,0), enemy.Player.transform.position - enemy.gunBarrel[0].transform.position,Vector3.Distance(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position),16384))
+        Debug.DrawRay(enemy.gunBarrel[0].transform.position, (enemy.Player.transform.position - enemy.gunBarrel[0].transform.position) * (Vector3.Distance(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position) + 2f));
+        if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.e_type.rangeDistance || Physics.Raycast(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position - enemy.gunBarrel[0].transform.position, Vector3.Distance(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position) + 2f, enemy.e_type.LMask))
         {
             enemy.Agent.SetDestination(enemy.Player.transform.position);
             lookPlayer();
@@ -48,17 +49,12 @@ public class WalkerRanged : MonoBehaviour
             enemy.soundController.StopSound("Footsteps", 0f);
         }
         //Shoot
-        if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) < enemy.e_type.rangeDistance && !Physics.Raycast(enemy.gunBarrel[0].transform.position + new Vector3(0, 1, 0), enemy.Player.transform.position - enemy.gunBarrel[0].transform.position, Vector3.Distance(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position), 16384))
+        if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) < enemy.e_type.rangeDistance && !Physics.Raycast(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position - enemy.gunBarrel[0].transform.position, Vector3.Distance(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position) + 2f, enemy.e_type.LMask))
         {
             if(shotTimer >= enemy.e_type.attackRatio)
             {
                 Shoot();
                 shotTimer = 0;
-            }
-            if (moveTimer > Random.Range(1.5f, 3))
-            {
-                enemy.Agent.SetDestination(enemy.transform.position + (Random.insideUnitSphere * 15));
-                moveTimer = 0;
             }
         }
 
@@ -76,7 +72,6 @@ public class WalkerRanged : MonoBehaviour
         {
             enemy.transform.LookAt(enemy.Player.transform);
         }
-        enemy.soundController.PlaySound("ShootSound", 0f);
         Transform[] gunbarrel = enemy.gunBarrel.ToArray();
 
         for (int c = 0; c < gunbarrel.Length; c++)
@@ -123,6 +118,7 @@ public class WalkerRanged : MonoBehaviour
 
             if (enemy.animator.GetCurrentAnimatorStateInfo(1).IsName("ShootEnd"))
             {
+                enemy.soundController.PlaySound("ShootSound", 0f);
                 break;
             }
             yield return null;
@@ -135,7 +131,7 @@ public class WalkerRanged : MonoBehaviour
         GameObject bullet = new();
         bullet.name = "bullet";
 
-        bullet.transform.position = gunbarrel.transform.position;
+        bullet.transform.position = gunbarrel.transform.position + new Vector3(0, 0.5f, 0);
         bullet.transform.LookAt(enemy.Player.transform.position);
         if (enemy.e_type.EnemyTypeID == 3)
         {

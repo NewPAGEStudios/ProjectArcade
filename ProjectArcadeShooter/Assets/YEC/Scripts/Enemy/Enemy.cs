@@ -64,14 +64,6 @@ public class Enemy : MonoBehaviour
     {
         eState = enemyState.alive;
 
-        if (e_type.isRanged)
-        {
-            Transform tempObject = transform.Find("Model").Find("firePos");
-            for (int i = 0; i < tempObject.childCount; i++)
-            {
-                gunBarrel.Add(tempObject.GetChild(i));
-            }
-        }
 
         fireRate = e_type.attackRatio;
         GameObject model = Instantiate(e_type.modelGameObject, gameObject.transform);
@@ -82,6 +74,15 @@ public class Enemy : MonoBehaviour
         model.transform.GetChild(0).gameObject.layer = 10;
 
 
+        if (e_type.isRanged)
+        {
+            Transform tempObject = transform.GetChild(0).Find("firePos");
+            for (int i = 0; i < tempObject.childCount; i++)
+            {
+                gunBarrel.Add(tempObject.GetChild(i));
+            }
+        }
+
         animator = model.GetComponent<Animator>();
         animator.speed = 1 * (e_type.moveSpeed / 2);
 
@@ -91,6 +92,7 @@ public class Enemy : MonoBehaviour
         meleeDmg = e_type.attackDMG;
 
         ehp.tmpEnemyIndicator = model.transform.Find("EnemyHPIndicator").GetChild(0).GetComponent<TextMeshPro>();
+        ehp.hpBar = model.transform.Find("EnemyHPIndicator").GetChild(1).GetComponent<ColliderParenter>().targetOBJ;
 
         soundController = gameObject.AddComponent<EnemySoundController>();
         fxController = gameObject.AddComponent<EnemyFXController>();

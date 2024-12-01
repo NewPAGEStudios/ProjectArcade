@@ -22,7 +22,7 @@ public class NormalBulletFunction : MonoBehaviour
     private void startMovement()
     {
         Debug.Log(rb.name);
-        rb.AddForce(transform.forward * baseAmmo.bulletSpeed, ForceMode.Impulse);
+        rb.AddForce(transform.forward * baseAmmo.bulletSpeed, ForceMode.VelocityChange);
     }
     // private void OnCollisionEnter(Collision collision)
     // {
@@ -39,12 +39,16 @@ public class NormalBulletFunction : MonoBehaviour
     private void OnTriggerEnter(Collider collider)
     {
         Transform hitTransform = collider.transform;
-
+        Debug.Log(hitTransform.name);
         if(hitTransform.CompareTag("PlayerColl"))
         {
             hitTransform.parent.GetComponent<PController>().TakeDMG(baseAmmo.dmg, firedBy);
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
+        else if(hitTransform.gameObject.layer == 14 || hitTransform.gameObject.layer == 11)
+        {
+            Destroy(gameObject);
+        }
     }
 }
  

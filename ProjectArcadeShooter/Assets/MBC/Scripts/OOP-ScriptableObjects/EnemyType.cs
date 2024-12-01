@@ -23,6 +23,7 @@ public class EnemyType : ScriptableObject
     [Range(0.1f, 10f)]
     public float attackRatio;
     public bool isRanged;
+    public LayerMask LMask; 
     public bool isFlyable;
     public float rangeDistance;
     public float attackDMG;

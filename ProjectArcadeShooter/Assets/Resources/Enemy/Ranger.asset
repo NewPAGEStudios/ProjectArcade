@@ -26,6 +26,9 @@ MonoBehaviour:
   moveSpeed: 2
   attackRatio: 2
   isRanged: 1
+  LMask:
+    serializedVersion: 2
+    m_Bits: 16384
   isFlyable: 0
   rangeDistance: 25
   attackDMG: 20
