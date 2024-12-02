@@ -120,7 +120,6 @@ namespace SlimUI.ModernMenu{
 		}
         private void FixedUpdate()
         {
-            Debug.Log(Time.fixedDeltaTime);
         }
         void SetThemeColors()
 		{

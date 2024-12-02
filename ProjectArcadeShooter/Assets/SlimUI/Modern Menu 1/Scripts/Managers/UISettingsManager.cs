@@ -323,13 +323,13 @@ namespace SlimUI.ModernMenu{
 			if (Screen.fullScreen == true)
 			{
 
-				fullscreen_parent.transform.GetChild(0).gameObject.SetActive(true);
+				fullscreen_parent.transform.GetChild(1).gameObject.SetActive(true);
 
 			}
 			else if (Screen.fullScreen == false)
 			{
 
-				fullscreen_parent.transform.GetChild(1).gameObject.SetActive(true);
+				fullscreen_parent.transform.GetChild(0).gameObject.SetActive(true);
 
 			}
 		}
