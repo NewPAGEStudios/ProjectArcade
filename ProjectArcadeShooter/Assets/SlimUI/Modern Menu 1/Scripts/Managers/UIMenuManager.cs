@@ -145,8 +145,10 @@ namespace SlimUI.ModernMenu{
 		}
 
 		public void PlayCampaign(){
-			exitMenu.SetActive(false);
-			if(extrasMenu) extrasMenu.SetActive(false);
+            exitMenu.SetActive(false);
+            firstMenu.SetActive(false);
+            playMenu.SetActive(false);
+            if (extrasMenu) extrasMenu.SetActive(false);
 			playMenu.SetActive(true);
 			animator_bomba.SetTrigger("toPlay");
 		}
@@ -159,10 +161,12 @@ namespace SlimUI.ModernMenu{
 		}
 
 		public void ReturnMenu(){
-			playMenu.SetActive(false);
-			if(extrasMenu) extrasMenu.SetActive(false);
+            exitMenu.SetActive(false);
+            firstMenu.SetActive(false);
+            playMenu.SetActive(false);
+            if (extrasMenu) extrasMenu.SetActive(false);
 			exitMenu.SetActive(false);
-			mainMenu.SetActive(true);
+			firstMenu.SetActive(true);
             animator_bomba.SetTrigger("toMenu");
         }
 
@@ -266,8 +270,11 @@ namespace SlimUI.ModernMenu{
 		}
 		// Are You Sure - Quit Panel Pop Up
 		public void AreYouSure(){
-			exitMenu.SetActive(true);
-			if(extrasMenu) extrasMenu.SetActive(false);
+            exitMenu.SetActive(false);
+            firstMenu.SetActive(false);
+            playMenu.SetActive(false);
+            if (extrasMenu) extrasMenu.SetActive(false);
+            exitMenu.SetActive(true);
             animator_bomba.SetTrigger("toExit");
             DisablePlayCampaign();
 		}
