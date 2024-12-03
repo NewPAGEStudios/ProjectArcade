@@ -58,6 +58,10 @@ MonoBehaviour:
     m_Localized: 'Feind:'
     m_Metadata:
       m_Items: []
+  - m_Id: 6441347277197312
+    m_Localized: "Dr\xFCcke C, um die F\xE4higkeit abzubrechen"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

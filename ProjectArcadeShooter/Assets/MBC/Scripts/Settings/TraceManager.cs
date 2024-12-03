@@ -7,7 +7,6 @@ public class TraceManager : MonoBehaviour
 {
     private float lifeTimer;
     private GameController gc;
-
     private void Start()
     {
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();

@@ -1567,10 +1567,16 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     }
     public void DisplayInstruction(bool display, int id_text)
     {
+
         gamePanel.transform.GetChild(3).gameObject.SetActive(display);
-        if(id_text == 0)
+        switch (id_text)
         {
-            gamePanel.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = localizer_scp.applyGeneral("Interraction_txt");
+            case 0:
+                gamePanel.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = localizer_scp.applyGeneral("Interraction_txt");
+                break;
+            case 1:
+                gamePanel.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = localizer_scp.applyGeneral("cancelSkill_txt");
+                break;
         }
     }
     public void HandleDMGtakenUI(int childNumber)//0:back 1:left 2:rigth 3:front

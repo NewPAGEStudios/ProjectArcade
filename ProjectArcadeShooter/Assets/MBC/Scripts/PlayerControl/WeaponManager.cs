@@ -85,6 +85,8 @@ public class WeaponManager : MonoBehaviour
     private bool skill_usageCooldown;
     private bool skill_canbePerformed;
     private bool skill_holdOT;
+    private Transform indicator_tf;
+    private Vector3 hitnormal;
 
     [HideInInspector]
     public InputManager IManager;
@@ -142,6 +144,10 @@ public class WeaponManager : MonoBehaviour
     {
         if (gc.pState == GameController.PlayState.inPlayerInterrupt || gc.pState == GameController.PlayState.inCinematic || gc.state != GameController.GameState.inGame || player.ccstate != PController.CCStateOfPlayer.normal)
         {
+            if (onSkillUsage)
+            {
+                skillCancel();
+            }
             return;
         }
         //nonweaponedFunctiond
@@ -195,13 +201,33 @@ public class WeaponManager : MonoBehaviour
                 }
             }
             //weaponChange
-            if (IManager.getMouseScroll() < 0)
+            if (onSkillUsage)
             {
-                ChangeWeapon(currWeaponID - 1);
+                if (IManager.getMouseScroll() > 0)
+                {
+                    if(active_Skill.st == Skill.skillType.active)
+                    {
+                        indicator_tf.localEulerAngles += new Vector3(0, 5 * 50 * Time.deltaTime, 0);
+                    }
+                }
+                else if (IManager.getMouseScroll() < 0)
+                {
+                    if (active_Skill.st == Skill.skillType.active)
+                    {
+                        indicator_tf.localEulerAngles += new Vector3(0, -5 * 50 * Time.deltaTime, 0);
+                    }
+                }
             }
-            else if (IManager.getMouseScroll() > 0)
+            else
             {
-                ChangeWeapon(currWeaponID + 1);
+                if (IManager.getMouseScroll() < 0)
+                {
+                    ChangeWeapon(currWeaponID - 1);
+                }
+                else if (IManager.getMouseScroll() > 0)
+                {
+                    ChangeWeapon(currWeaponID + 1);
+                }
             }
         }
         if (IManager.skillMenu)
@@ -262,7 +288,10 @@ public class WeaponManager : MonoBehaviour
         }
         else
         {
-            gc.DisplayInstruction(false,0);
+            if (!onSkillUsage)
+            {
+                gc.DisplayInstruction(false, 0);
+            }
         }
 
     }
@@ -768,6 +797,7 @@ public class WeaponManager : MonoBehaviour
     {
         if (skill_holdOT)
         {
+            gc.DisplayInstruction(true, 1);
             hand_Animator.SetTrigger("skill" + 0);//TODO:active_Skill.skillTypeID;
             if(active_Skill.st == Skill.skillType.passive)
             {
@@ -775,13 +805,18 @@ public class WeaponManager : MonoBehaviour
             }
             else
             {
-                GameObject go = Instantiate(active_Skill.indicator, gc.skillIndicatorParent.transform);
+                GameObject goParent = new();
+                goParent.transform.parent = gc.skillIndicatorParent.transform;
+                goParent.name = "indicatorParent";
+
+                GameObject go = Instantiate(active_Skill.indicator, goParent.transform);
                 go.name = "indicator";
                 if (go.TryGetComponent<Collider>(out Collider col))
                 {
                     col.enabled = false;
                 }
                 go.GetComponent<MeshRenderer>().material = gc.skillIndicatorMaterial;
+                indicator_tf = go.transform;
             }
             onSkillUsage = true;
             skill_holdOT = false;
@@ -800,33 +835,33 @@ public class WeaponManager : MonoBehaviour
             if(hit.transform.CompareTag("Ground"))
             {
                 //indicator
-                Transform tf = gc.skillIndicatorParent.transform.Find("indicator");
-                tf.gameObject.SetActive(true);
-                tf.position = hit.point;
-                tf.forward = (tf.position - gameObject.transform.position).normalized;
-                tf.up = hit.normal;
+                indicator_tf.parent.gameObject.SetActive(true);
+                indicator_tf.parent.position = hit.point + new Vector3(0, 1, 0);
+                indicator_tf.parent.forward = (indicator_tf.position - gameObject.transform.position).normalized;
+                indicator_tf.parent.up = Vector3.up;
+
                 if(active_Skill.skillTypeID == 0)
                 {
-                    tf.eulerAngles = new Vector3(0, tf.eulerAngles.y, tf.eulerAngles.z);
+                    indicator_tf.parent.eulerAngles = new Vector3(0, indicator_tf.eulerAngles.y, indicator_tf.eulerAngles.z);
                 }
+
                 skill_canbePerformed = true;
             }
             else
             {
-                Transform tf = gc.skillIndicatorParent.transform.Find("indicator");
-                tf.gameObject.SetActive(false);
+                indicator_tf.parent.gameObject.SetActive(false);
                 skill_canbePerformed = false;
             }
         }
         else
         {
-            Transform tf = gc.skillIndicatorParent.transform.Find("indicator");
-            tf.gameObject.SetActive(false);
+            indicator_tf.parent.gameObject.SetActive(false);
             skill_canbePerformed = false;
         }
     }
     private void skillPerform()
     {
+        gc.DisplayInstruction(false, 1);
         if (skill_canbePerformed)
         {
             if(active_Skill.st == Skill.skillType.passive)
@@ -861,10 +896,9 @@ public class WeaponManager : MonoBehaviour
             }
             else
             {
-                Transform tf = gc.skillIndicatorParent.transform.Find("indicator");
-                tf.gameObject.SetActive(false);
-                GameObject skillOBJ = Instantiate(active_Skill.modelPrefab, tf.position, tf.rotation, gc.skillObject.transform);
-                Destroy(tf.gameObject);
+                indicator_tf.parent.gameObject.SetActive(false);
+                GameObject skillOBJ = Instantiate(active_Skill.modelPrefab, indicator_tf.position, indicator_tf.rotation, gc.skillObject.transform);
+                Destroy(indicator_tf.parent.gameObject);
 
                 System.Type script = System.Type.GetType(active_Skill.functionName + ",Assembly-CSharp");
                 skillOBJ.AddComponent(script);
@@ -906,14 +940,14 @@ public class WeaponManager : MonoBehaviour
     }
     private void skillCancel()
     {
-        if (active_Skill.st==Skill.skillType.passive)
+        gc.DisplayInstruction(false, 1);
+        if (active_Skill.st == Skill.skillType.passive)
         {
             skillDisplay.SetActive(false);
         }
         else
         {
-            Transform tf = gc.skillIndicatorParent.transform.Find("indicator");
-            Destroy(tf.gameObject);
+            Destroy(indicator_tf.parent.gameObject);
         }
         skill_canbePerformed = false;
         skill_usageCooldown = true;
@@ -937,18 +971,18 @@ public class WeaponManager : MonoBehaviour
 
     IEnumerator CancelSkillAnim(int id)
     {
-        hand_Animator.SetBool("cancel_skill" + id, true);
-        yield return new WaitForSeconds(0.01f);
-        hand_Animator.SetBool("cancel_skill" + id, false);
         onSkillUsage = false;
+        hand_Animator.SetBool("cancel_skill" + id, true);
+        yield return null;
+        hand_Animator.SetBool("cancel_skill" + id, false);
 
     }
     IEnumerator PerformSkillAnim(int id)
     {
-        hand_Animator.SetBool("perform_skill" + id,true);
-        yield return new WaitForSeconds(0.01f);
-        hand_Animator.SetBool("perform_skill" + id, false);
         onSkillUsage = false;
+        hand_Animator.SetBool("perform_skill" + id,true);
+        yield return null;
+        hand_Animator.SetBool("perform_skill" + id, false);
     }
 
     private Weapon FindWeapon(int searchIndex)

@@ -55,6 +55,10 @@ MonoBehaviour:
     m_Key: EnemyNumber_txt
     m_Metadata:
       m_Items: []
+  - m_Id: 6441347277197312
+    m_Key: cancelSkill_txt
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

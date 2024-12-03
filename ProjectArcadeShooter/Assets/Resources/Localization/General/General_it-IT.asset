@@ -58,6 +58,10 @@ MonoBehaviour:
     m_Localized: 'Nemico:'
     m_Metadata:
       m_Items: []
+  - m_Id: 6441347277197312
+    m_Localized: "Premi C per annullare l'abilit\xE0"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

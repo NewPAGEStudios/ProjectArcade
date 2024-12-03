@@ -35,6 +35,7 @@ public class wallriser : MonoBehaviour
 
         StartCoroutine(disolveEffectCoroutineStart());
 
+        colliderOpened = true;
     }
     IEnumerator disolveEffectCoroutineStart()
     {
@@ -46,7 +47,6 @@ public class wallriser : MonoBehaviour
             yield return new WaitForSeconds(0.001f);
         }
         modelRender.material = skill.materials[0];
-        colliderOpened = true;
         yield return null;
     }
     public void decreaseHitNumber()

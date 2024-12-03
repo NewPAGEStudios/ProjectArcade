@@ -58,6 +58,10 @@ MonoBehaviour:
     m_Localized: 'Enemy:'
     m_Metadata:
       m_Items: []
+  - m_Id: 6441347277197312
+    m_Localized: Press C to cancel skill
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
