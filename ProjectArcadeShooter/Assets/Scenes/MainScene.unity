@@ -1248,7 +1248,7 @@ GameObject:
   - component: {fileID: 17257857}
   - component: {fileID: 17257859}
   - component: {fileID: 17257858}
-  m_Layer: 11
+  m_Layer: 14
   m_Name: Shop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6996,7 +6996,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 156832586}
-  m_Layer: 11
+  m_Layer: 14
   m_Name: HeadPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9721,7 +9721,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 218743200}
-  m_Layer: 11
+  m_Layer: 14
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12438,6 +12438,8 @@ MonoBehaviour:
   moneyOBJ_Parent: {fileID: 1678658819}
   moneyOBJ: {fileID: 2200244662305456985, guid: e58f7621795fd9848b6390ce8ff53e46,
     type: 3}
+  ConsMiniMapIndicator: {fileID: 7687290089608656580, guid: 6ca1b6893eb747243a0d68fceb4957ef,
+    type: 3}
   roomManager: {fileID: 815015614}
   roomCloseTime: 15
   roomRoutineRate: 18
@@ -12753,7 +12755,7 @@ GameObject:
   - component: {fileID: 267261468}
   - component: {fileID: 267261469}
   - component: {fileID: 267261470}
-  m_Layer: 11
+  m_Layer: 14
   m_Name: Shop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20551,7 +20553,7 @@ GameObject:
   m_Component:
   - component: {fileID: 459040297}
   - component: {fileID: 459040298}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36849,7 +36851,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 603849918}
-  m_Layer: 11
+  m_Layer: 14
   m_Name: HeadPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41699,7 +41701,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 729080999}
-  m_Layer: 11
+  m_Layer: 14
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49386,7 +49388,7 @@ GameObject:
   - component: {fileID: 911936512}
   - component: {fileID: 911936511}
   - component: {fileID: 911936514}
-  m_Layer: 16
+  m_Layer: 14
   m_Name: Screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54931,6 +54933,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cab6c306b80658947b64e1424b9f9213,
         type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cab6c306b80658947b64e1424b9f9213,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -58318,7 +58325,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1118835169}
-  m_Layer: 11
+  m_Layer: 14
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63329,7 +63336,7 @@ GameObject:
   - component: {fileID: 1225927621}
   - component: {fileID: 1225927620}
   - component: {fileID: 1225927623}
-  m_Layer: 16
+  m_Layer: 14
   m_Name: Screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63759,7 +63766,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1240497255}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Interractables
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63966,7 +63973,7 @@ GameObject:
   - component: {fileID: 1248287497}
   - component: {fileID: 1248287499}
   - component: {fileID: 1248287498}
-  m_Layer: 11
+  m_Layer: 14
   m_Name: Shop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64041,8 +64048,9 @@ GameObject:
   - component: {fileID: 1248564813}
   - component: {fileID: 1248564812}
   - component: {fileID: 1248564811}
+  - component: {fileID: 1248564814}
   m_Layer: 0
-  m_Name: GAME
+  m_Name: SOUND
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64207,6 +64215,46 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1248564814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1248564809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:ee52057980c2b2646bf560cfd1a70ccc
+    m_TableEntryReference:
+      m_KeyId: 6005410833256448
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1248564812}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1254706797
 GameObject:
   m_ObjectHideFlags: 0
@@ -79092,7 +79140,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1488360127}
-  m_Layer: 11
+  m_Layer: 14
   m_Name: HeadPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88555,7 +88603,7 @@ GameObject:
   - component: {fileID: 1604909762}
   - component: {fileID: 1604909764}
   - component: {fileID: 1604909763}
-  m_Layer: 11
+  m_Layer: 14
   m_Name: Shop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89600,7 +89648,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1645672547}
-  m_Layer: 11
+  m_Layer: 14
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93537,7 +93585,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1720378026}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Shops
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98911,7 +98959,7 @@ GameObject:
   - component: {fileID: 1833415192}
   - component: {fileID: 1833415191}
   - component: {fileID: 1833415194}
-  m_Layer: 16
+  m_Layer: 14
   m_Name: Screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100939,7 +100987,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1878437399}
-  m_Layer: 11
+  m_Layer: 14
   m_Name: HeadPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106240,7 +106288,7 @@ GameObject:
   - component: {fileID: 1995045592}
   - component: {fileID: 1995045591}
   - component: {fileID: 1995045594}
-  m_Layer: 16
+  m_Layer: 14
   m_Name: Screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116647,7 +116695,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!23 &951567065382481017
 MeshRenderer:
   m_ObjectHideFlags: 0

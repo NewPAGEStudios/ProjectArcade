@@ -185,6 +185,11 @@ public class PController : MonoBehaviour
 
         CheckGround();
 
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            TakeDMG(100, gameObject);
+        }
+
     }
 
     private void FixedUpdate()
@@ -199,10 +204,6 @@ public class PController : MonoBehaviour
 
         weaponManager.laserOpen();
 
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            rb.AddForce(-gameObject.transform.forward * 2, ForceMode.VelocityChange);
-        }
     }
     private void CamRotation()//tmmland�
     {

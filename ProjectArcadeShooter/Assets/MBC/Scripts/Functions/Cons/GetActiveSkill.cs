@@ -5,6 +5,7 @@ using UnityEngine;
 public class GetActiveSkill : MonoBehaviour
 {
     public int skillId;
+    public GameObject minimapShocase;
     private GameController gc;
     private Skill thisSkill;
     private GameObject player;
@@ -21,6 +22,10 @@ public class GetActiveSkill : MonoBehaviour
             if (skillId == gc.skills[i].skillTypeID)
             {
                 thisSkill = gc.skills[i];
+                MaterialPropertyBlock mpb = new MaterialPropertyBlock();
+                mpb.SetTexture("_BTexture", thisSkill.sprite_HUD.texture);
+                minimapShocase.GetComponent<Renderer>().SetPropertyBlock(mpb);
+                minimapShocase.transform.position = new Vector3(transform.position.x, 30, transform.position.z);
                 break;
             }
         }

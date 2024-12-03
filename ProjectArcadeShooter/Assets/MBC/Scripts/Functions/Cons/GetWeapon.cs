@@ -5,6 +5,7 @@ using UnityEngine;
 public class GetWeapon : MonoBehaviour
 {
     public int weaponID;
+    public GameObject minimapShocase;
     private GameController gc;
 
     public int consPosID;
@@ -17,6 +18,10 @@ public class GetWeapon : MonoBehaviour
         {
             if(weaponID == gc.weapons[i].WeaponTypeID)
             {
+//                MaterialPropertyBlock mpb = new MaterialPropertyBlock();
+                //                mpb.set
+                //                minimapShocase.GetComponent<Renderer>()
+                minimapShocase.transform.position = new Vector3(transform.position.x, 30, transform.position.z);
                 break;
             }
         }

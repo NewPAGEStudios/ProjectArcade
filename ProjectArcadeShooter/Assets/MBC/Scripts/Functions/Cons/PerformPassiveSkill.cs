@@ -7,6 +7,7 @@ public class PerformPassiveSkill : MonoBehaviour
 {
     public Skill thisSkill;
     GameObject go;
+    public GameObject minimapShocase;
     private GameObject player;
     GameController gc;
     public int consPosID;
@@ -18,6 +19,10 @@ public class PerformPassiveSkill : MonoBehaviour
         go = Instantiate(thisSkill.modelShow, gameObject.transform);
         go.transform.localScale = go.transform.localScale / 4;
 
+        MaterialPropertyBlock mpb = new MaterialPropertyBlock();
+        mpb.SetTexture("_BTexture", thisSkill.sprite_HUD.texture);
+        minimapShocase.GetComponent<Renderer>().SetPropertyBlock(mpb);
+        minimapShocase.transform.position = new Vector3(transform.position.x, 30, transform.position.z);
 
         player = GameObject.FindGameObjectWithTag("Player");
 

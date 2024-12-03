@@ -166,7 +166,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public GameObject consIndicator;
     public GameObject moneyOBJ_Parent;
     public GameObject moneyOBJ;
-
+    public GameObject ConsMiniMapIndicator;
     //IEnumerators
     private Coroutine comboDisplayRoutine;
     private Coroutine[] fWayDMGVisualize = new Coroutine[4];
@@ -473,7 +473,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
         consumableobject.AddComponent(scriptMB);
 
-        
+        GameObject consMinimapInd = Instantiate(ConsMiniMapIndicator,consumableobject.transform);
+
         //Manuel adding
         if (consumableobject.TryGetComponent<GetWeapon>(out GetWeapon gw))
         {
@@ -485,6 +486,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             {
                 gw.weaponID = weaponID;
             }
+            gw.minimapShocase = consMinimapInd;
             gw.consPosID = pos_Holder;
             if (pState != PlayState.inBoss)
             {
@@ -503,6 +505,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             {
                 gas.skillId = skillID;
             }
+            gas.minimapShocase = consMinimapInd;
             gas.consPosID = pos_Holder;
             if (pState != PlayState.inBoss)
             {
@@ -526,6 +529,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                     }
                 }
             }
+            pps.minimapShocase = consMinimapInd;
             pps.consPosID = pos_Holder;
             if (pState != PlayState.inBoss)
             {
@@ -2187,7 +2191,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             }
             yield return null;
         }
-        SceneManager.LoadScene("MainScene");
 
     }
 
