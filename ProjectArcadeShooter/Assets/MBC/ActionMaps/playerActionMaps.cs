@@ -252,6 +252,15 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MeleeAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""e002f06a-ff29-499e-82c7-ff686acfe89f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -342,6 +351,17 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
                     ""action"": ""Laser"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""19b8d09a-d618-4ea9-b284-21b94ea09498"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MeleeAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -429,6 +449,7 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
         m_handMap_Scroll = m_handMap.FindAction("Scroll", throwIfNotFound: true);
         m_handMap_ChangeSkill = m_handMap.FindAction("ChangeSkill", throwIfNotFound: true);
         m_handMap_Laser = m_handMap.FindAction("Laser", throwIfNotFound: true);
+        m_handMap_MeleeAttack = m_handMap.FindAction("MeleeAttack", throwIfNotFound: true);
         // GameControllerMap
         m_GameControllerMap = asset.FindActionMap("GameControllerMap", throwIfNotFound: true);
         m_GameControllerMap_backSpace = m_GameControllerMap.FindAction("backSpace", throwIfNotFound: true);
@@ -586,6 +607,7 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
     private readonly InputAction m_handMap_Scroll;
     private readonly InputAction m_handMap_ChangeSkill;
     private readonly InputAction m_handMap_Laser;
+    private readonly InputAction m_handMap_MeleeAttack;
     public struct HandMapActions
     {
         private @PlayerActionMaps m_Wrapper;
@@ -596,6 +618,7 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
         public InputAction @Scroll => m_Wrapper.m_handMap_Scroll;
         public InputAction @ChangeSkill => m_Wrapper.m_handMap_ChangeSkill;
         public InputAction @Laser => m_Wrapper.m_handMap_Laser;
+        public InputAction @MeleeAttack => m_Wrapper.m_handMap_MeleeAttack;
         public InputActionMap Get() { return m_Wrapper.m_handMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -623,6 +646,9 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
             @Laser.started += instance.OnLaser;
             @Laser.performed += instance.OnLaser;
             @Laser.canceled += instance.OnLaser;
+            @MeleeAttack.started += instance.OnMeleeAttack;
+            @MeleeAttack.performed += instance.OnMeleeAttack;
+            @MeleeAttack.canceled += instance.OnMeleeAttack;
         }
 
         private void UnregisterCallbacks(IHandMapActions instance)
@@ -645,6 +671,9 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
             @Laser.started -= instance.OnLaser;
             @Laser.performed -= instance.OnLaser;
             @Laser.canceled -= instance.OnLaser;
+            @MeleeAttack.started -= instance.OnMeleeAttack;
+            @MeleeAttack.performed -= instance.OnMeleeAttack;
+            @MeleeAttack.canceled -= instance.OnMeleeAttack;
         }
 
         public void RemoveCallbacks(IHandMapActions instance)
@@ -742,6 +771,7 @@ public partial class @PlayerActionMaps: IInputActionCollection2, IDisposable
         void OnScroll(InputAction.CallbackContext context);
         void OnChangeSkill(InputAction.CallbackContext context);
         void OnLaser(InputAction.CallbackContext context);
+        void OnMeleeAttack(InputAction.CallbackContext context);
     }
     public interface IGameControllerMapActions
     {

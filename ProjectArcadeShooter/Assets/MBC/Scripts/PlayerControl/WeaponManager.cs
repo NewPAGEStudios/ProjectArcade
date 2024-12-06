@@ -14,7 +14,11 @@ public class WeaponManager : MonoBehaviour
     public Animator hand_Animator;
     public RayLine rl;
 
-
+    [Header("Melee Attack Configiration")]
+    public float meleeDmg;
+    public float meleeForce;
+    public float meleeCooldown;
+    private bool power = false;
     [Header("Laser Settings")]
     public float laserDropRate;
     public float laserCharge = 0;
@@ -92,6 +96,8 @@ public class WeaponManager : MonoBehaviour
     public InputManager IManager;
     private PController player;
 
+
+    private Coroutine meleeRoutine;
     //ActionStates
     private enum ActionStateOFHands
     {
@@ -99,6 +105,7 @@ public class WeaponManager : MonoBehaviour
         inFire,
         onChange,
         inReload,
+        inMelee,
     }
     ActionStateOFHands handStates;
     private bool onSkillUsage;
@@ -157,7 +164,6 @@ public class WeaponManager : MonoBehaviour
         {
             if (currWeaponID == -1)
             {
-//                Debug.Log("Kod");
                 return;
             }
             if (handStates == ActionStateOFHands.idle)
@@ -230,6 +236,15 @@ public class WeaponManager : MonoBehaviour
                 }
             }
         }
+        //MeleeAttack
+        if (IManager.getMeleePressed())
+        {
+            if(meleeRoutine == null)
+            {
+                meleeRoutine = StartCoroutine(meleeAnimSync());
+            }
+        }
+        //skillMenu
         if (IManager.skillMenu)
         {
             if (ot_event_skillMenuOpen)
@@ -715,6 +730,64 @@ public class WeaponManager : MonoBehaviour
     public void ConpositePositionRotation()
     {
         sb_apllier.transform.SetLocalPositionAndRotation(Vector3.Lerp(sb_apllier.transform.localPosition, swayPos + bobPos, Time.deltaTime*smooth), Quaternion.Slerp(sb_apllier.transform.localRotation, Quaternion.Euler(swayEulorRot) * Quaternion.Euler(bobEulorRot), Time.deltaTime*smoothRot));
+    }
+
+    IEnumerator meleeAnimSync()
+    {
+        StartCoroutine(attackRoutine());
+        handStates = ActionStateOFHands.inMelee;
+        hand_Animator.SetTrigger("melee");
+        while(true)
+        {
+            if (hand_Animator.GetCurrentAnimatorStateInfo(1).IsName("MeleeEnd"))
+            {
+                break;
+            }
+            yield return null;
+        }
+        MeleeAttack();
+        handStates = ActionStateOFHands.idle;
+        meleeRoutine = null;
+    }
+    //MeleAttack
+    public void MeleeAttack()
+    {
+        if (power)
+        {
+
+        }
+        else
+        {
+            Ray ray = new Ray();
+            ray.direction = firePos.transform.forward;
+            ray.origin = firePos.transform.position;
+            Debug.DrawRay(ray.origin,ray.direction * 1.5f,Color.red,10);
+            if(Physics.Raycast(ray,out RaycastHit hit, 1.5f, ~0 ,QueryTriggerInteraction.Ignore))
+            {
+                if (hit.transform.CompareTag("Enemy"))
+                {
+                    //GetComponent<ColliderParenter>().targetOBJ.transform.parent
+                    hit.transform.GetComponent<Enemy>().blow(firePos.transform.forward + new Vector3(0,1,0), meleeForce);   
+                    hit.transform.GetComponent<EnemyHealth>().EnemyHealthUpdate(-meleeDmg, gameObject);
+                }
+            }
+        }
+    }
+
+    IEnumerator attackRoutine()
+    {
+        Time.timeScale = 0.6f;
+        yield return new WaitForSecondsRealtime(0.2f);
+        while (true)
+        {
+            Time.timeScale += 0.1f;
+            if(Time.timeScale >= 1f)
+            {
+                Time.timeScale = 1;
+                break;
+            }
+            yield return null;
+        }
     }
 
     //weapon nonFunctional events

@@ -30,7 +30,7 @@ public class stunInstanSkill : MonoBehaviour
             if (!affectedGOs.Contains(other.gameObject))
             {
                 affectedGOs.Add(other.gameObject);
-                other.GetComponent<ColliderParenter>().targetOBJ.transform.parent.GetComponent<Enemy>().Stun(0.5f);
+                other.GetComponent<ColliderParenter>().targetOBJ.transform.parent.GetComponent<Enemy>().Stun(1.5f);
             }
         }
     }

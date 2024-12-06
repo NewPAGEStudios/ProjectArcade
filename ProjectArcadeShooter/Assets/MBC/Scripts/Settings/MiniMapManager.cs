@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MiniMapManager : MonoBehaviour
 {
-    public Camera mainMiniMap;
     public Camera outlineMiniMap;
     public bool smooth;
     private GameController gc;
@@ -30,7 +29,6 @@ public class MiniMapManager : MonoBehaviour
     }
     public void ChangeSize(float size)
     {
-        mainMiniMap.orthographicSize = size;
         outlineMiniMap.orthographicSize = size;
     }
     public void teleportMM()

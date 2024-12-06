@@ -625,6 +625,10 @@ public class PController : MonoBehaviour
 
         //0ön 1ön sağ 2 sağ 3 arka sağ 4 arka 5 arka sol 6sol 7 sol ön
         //DamageVisualzie
+        if(currentHP < 0)
+        {
+            currentHP = 0;
+        }
         gc.changeHPOfPlayer(maxHP, currentHP);
 
 

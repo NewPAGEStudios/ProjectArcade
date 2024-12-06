@@ -128,7 +128,10 @@ public class InputManager : MonoBehaviour
     {
         return inputActions.handMap.WeaponReload.triggered;
     }
-
+    public bool getMeleePressed()
+    {
+        return inputActions.handMap.MeleeAttack.triggered;
+    }
     public bool getFirePressed()
     {
         return inputActions.handMap.FireSemi.triggered;

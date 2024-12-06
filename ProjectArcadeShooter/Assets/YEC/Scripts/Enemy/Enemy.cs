@@ -44,7 +44,14 @@ public class Enemy : MonoBehaviour
     public Animator animator;
     public float currentBaseOffeset;
     public GameObject meleeObj;
-    
+
+    private Rigidbody rb;
+    private bool blown = false;
+
+
+    private Coroutine blowRoutine;
+
+
     public enum enemyState
     {
         alive,
@@ -110,7 +117,16 @@ public class Enemy : MonoBehaviour
         System.Type scriptMB = System.Type.GetType(e_type.agentFunction + ",Assembly-CSharp");
         gameObject.AddComponent(scriptMB);
 
-        
+        rb = gameObject.AddComponent<Rigidbody>();
+        rb.freezeRotation = true;
+        rb.isKinematic = true;
+        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+
+        BoxCollider col = gameObject.AddComponent<BoxCollider>();
+        col.isTrigger = true;
+        col.providesContacts = true;
+        col.center = new Vector3(0, 1f, 0);
+        col.size = new Vector3(0.75f, 1.75f, 1);
         player = GameObject.FindGameObjectWithTag("Player");
 
 
@@ -119,6 +135,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+//        Debug.Log("State = " + state + " eState = " + eState);
         if (state == ccState.stun || eState == enemyState.dead)
         {
             return;//Updateyi patlat
@@ -239,5 +256,63 @@ public class Enemy : MonoBehaviour
         state = ccState.normal;
     }
 
+    public void blow(Vector3 forceDirection, float power)
+    {
+        if(agent == null)
+        {
+            return;
+        }
+        agent.enabled = false;
+        state = ccState.stun;
+        rb.isKinematic = false;
+        if(e_type.EnemyTypeID==0 || e_type.EnemyTypeID==1)
+        {
+            animator.SetTrigger("GetMelee");
+        }
+
+        rb.AddForce(forceDirection * power, ForceMode.VelocityChange);
+
+        blown = true;
+        if (blowRoutine != null)
+        {
+            StopCoroutine(blowRoutine);
+        }
+        blowRoutine = StartCoroutine(blownHitRoutine());
+    }
+    IEnumerator blownHitRoutine()
+    {
+        yield return new WaitForSeconds(0.3f);
+        while (true)
+        {
+            if (blown)
+            {
+                if (Physics.Raycast(gameObject.transform.position, Vector3.down, 1.5f))
+                {
+                    blown = false;
+                    break;
+                }
+            }
+            yield return new WaitForFixedUpdate();
+        }
+        yield return null;
+        while (true)
+        {
+            yield return null;
+
+            if (e_type.EnemyTypeID == 2|| e_type.EnemyTypeID == 3 || e_type.EnemyTypeID == 4)
+            {
+                break;
+            }
+
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("meleedmgTakenWait"))
+            {
+                animator.SetTrigger("EndMelee");
+                break;
+            }
+        }
+        rb.isKinematic = true;
+        agent.enabled = true;
+        state = ccState.normal;
+    }
     //crowd controll effect
 }

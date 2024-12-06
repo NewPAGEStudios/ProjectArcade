@@ -120,6 +120,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public InputManager IManager;
     public AudioMixer audioM;
     public GameObject Minimap;
+    public GameObject shopUI_Cam;
 
 
     public int waveNumber;
@@ -715,6 +716,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     }
     private void toWave()
     {
+        shopUI_Cam.SetActive(false);
         waveNumber += 1;
         if (waveNumber % bossTimePerWave == bossTimePerWaveLoop)
         {
@@ -768,7 +770,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     private void toWait()
     {
         SaveElements();
-
+        shopUI_Cam.SetActive(true);
         UpdateMostCombo(true);
         mostComboCount = 0;
         UpdateEnemyCount(true);
