@@ -28,7 +28,7 @@ public class WalkerMelee : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (enemy.eState == Enemy.enemyState.dead || enemy.state == Enemy.ccState.stun)
+        if (enemy.eState == Enemy.enemyState.dead || enemy.state == Enemy.ccState.stun || enemy.state == Enemy.ccState.blown)
         {
             return;
         }

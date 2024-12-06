@@ -7,13 +7,14 @@ public class GetMoney : MonoBehaviour
 {
     GameController gc;
     public float money;
-    private void Start()
+    private void Awake()
     {
-        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+
         if (other.gameObject.CompareTag("PlayerColl"))
         {
             gc.AddMainCurrency(money);

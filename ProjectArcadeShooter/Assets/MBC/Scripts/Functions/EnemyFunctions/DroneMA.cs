@@ -25,7 +25,7 @@ public class DroneMA : MonoBehaviour
     }
     private void Update()
     {
-        if (enemy.eState == Enemy.enemyState.dead || enemy.state == Enemy.ccState.stun)
+        if (enemy.eState == Enemy.enemyState.dead || enemy.state == Enemy.ccState.stun || enemy.state == Enemy.ccState.blown)
         {
             return;
         }
@@ -77,7 +77,7 @@ public class DroneMA : MonoBehaviour
             {
                 break;
             }
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }
     }
 }

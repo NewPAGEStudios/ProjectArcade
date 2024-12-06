@@ -580,12 +580,12 @@ public class WeaponManager : MonoBehaviour
     {
         currentWeaponGO.transform.Find("Particle System").GetComponent<ParticleSystem>().Play();
         hand_Animator.SetBool("fired", true);
-        yield return new WaitForSeconds(0.01f);
+        yield return null;
         hand_Animator.SetBool("fired", false);
         
         while (true) 
         {
-            yield return new WaitForEndOfFrame();
+            yield return null;
             if (hand_Animator.GetCurrentAnimatorStateInfo(0).IsName("idle_weap" + currWeaponID))
             {
                 break;
@@ -617,7 +617,7 @@ public class WeaponManager : MonoBehaviour
             hand_Animator.SetBool("reload", true);
             while (true)
             {
-                yield return new WaitForEndOfFrame();
+                yield return null;
                 if (hand_Animator.GetCurrentAnimatorStateInfo(0).IsName("reload1_weap" + currWeaponID))
                 {
                     break;
@@ -627,7 +627,7 @@ public class WeaponManager : MonoBehaviour
             ReloadFucntion();
             while (true)
             {
-                yield return new WaitForEndOfFrame();
+                yield return null;
                 if (hand_Animator.GetCurrentAnimatorStateInfo(0).IsName("idle_weap" + currWeaponID))
                 {
                     break;
@@ -640,11 +640,11 @@ public class WeaponManager : MonoBehaviour
         {
             hand_Animator.SetBool("reload", true);
             activeWeapon.transform.GetChild(0).GetComponent<Animator>().SetTrigger("reload");
-            yield return new WaitForSeconds(0.01f);
+            yield return null;
             hand_Animator.SetBool("reload", false);
             while (true)
             {
-                yield return new WaitForEndOfFrame();
+                yield return null;
                 if (hand_Animator.GetCurrentAnimatorStateInfo(0).IsName("idle_weap" + currWeaponID))
                 {
                     break;

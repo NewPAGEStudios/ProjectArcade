@@ -62,6 +62,7 @@ public class Enemy : MonoBehaviour
     {
         normal,
         stun,
+        blown,
     }
     public ccState state;
 
@@ -135,8 +136,8 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-//        Debug.Log("State = " + state + " eState = " + eState);
-        if (state == ccState.stun || eState == enemyState.dead)
+        //        Debug.Log("State = " + state + " eState = " + eState);
+        if (state == ccState.stun || eState == enemyState.dead || state == ccState.blown)
         {
             return;//Updateyi patlat
         }
@@ -240,6 +241,13 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+    public void endCC()
+    {
+        if(blowRoutine == null && ehp.stunRoutine == null)
+        {
+            state = ccState.normal;
+        }
+    }
     //crowd controll
     public void Stun(float dur)
     {
@@ -253,7 +261,7 @@ public class Enemy : MonoBehaviour
         Debug.Log("kbmm");
         agent.speed = e_type.moveSpeed;
         animator.enabled = true;
-        state = ccState.normal;
+        endCC();
     }
 
     public void blow(Vector3 forceDirection, float power)
@@ -263,7 +271,7 @@ public class Enemy : MonoBehaviour
             return;
         }
         agent.enabled = false;
-        state = ccState.stun;
+        state = ccState.blown;
         rb.isKinematic = false;
         if(e_type.EnemyTypeID==0 || e_type.EnemyTypeID==1)
         {
@@ -295,9 +303,16 @@ public class Enemy : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         yield return null;
+
+
         while (true)
         {
             yield return null;
+
+            if (animator == null)
+            {
+                break;
+            }
 
             if (e_type.EnemyTypeID == 2|| e_type.EnemyTypeID == 3 || e_type.EnemyTypeID == 4)
             {
@@ -312,7 +327,7 @@ public class Enemy : MonoBehaviour
         }
         rb.isKinematic = true;
         agent.enabled = true;
-        state = ccState.normal;
+        endCC();
     }
     //crowd controll effect
 }

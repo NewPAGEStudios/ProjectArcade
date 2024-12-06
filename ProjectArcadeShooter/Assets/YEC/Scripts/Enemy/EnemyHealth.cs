@@ -19,7 +19,7 @@ public class EnemyHealth : MonoBehaviour
     private GameController gc;
 
     private Coroutine dmgtakenRoutine;
-    private Coroutine stunRoutine;
+    public Coroutine stunRoutine;
 
     private Renderer[] enemyObjectRenderer;
 
@@ -61,21 +61,21 @@ public class EnemyHealth : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        tmpEnemyIndicator.transform.parent.LookAt(GetComponent<Enemy>().Player.transform);
+        //tmpEnemyIndicator.transform.parent.LookAt(GetComponent<Enemy>().Player.transform);
 
 
-        if (currentHealth != 0)
-        {
-            MaterialPropertyBlock mpb = new MaterialPropertyBlock();
+        //if (currentHealth != 0)
+        //{
+        //    MaterialPropertyBlock mpb = new MaterialPropertyBlock();
 
-            currentHealthOverride = Mathf.MoveTowards(currentHealthOverride, currentHealth, Time.deltaTime * 30f);
+        //    currentHealthOverride = Mathf.MoveTowards(currentHealthOverride, currentHealth, Time.deltaTime * 30f);
 
-            tmpEnemyIndicator.text = Mathf.Floor(currentHealthOverride).ToString();
+        //    tmpEnemyIndicator.text = Mathf.Floor(currentHealthOverride).ToString();
 
-            mpb.SetFloat("_alpha", currentHealthOverride / maxHealth);
-            hpBar.GetComponent<Renderer>().SetPropertyBlock(mpb);
+        //    mpb.SetFloat("_alpha", currentHealthOverride / maxHealth);
+        //    hpBar.GetComponent<Renderer>().SetPropertyBlock(mpb);
 
-        }
+        //}
     }
 
     public void EnemyHealthUpdate(float amount,GameObject damagedBy)
@@ -293,7 +293,7 @@ public class EnemyHealth : MonoBehaviour
         }
 
 
-
+        stunRoutine = null;
         GetComponent<Enemy>().StunEnd();
     }
 
