@@ -84,6 +84,14 @@ MonoBehaviour:
       anzuziehen."
     m_Metadata:
       m_Items: []
+  - m_Id: 34833285231480832
+    m_Localized: "Erh\xF6ht den Nahkampfschaden und die Kraft."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34833281817317376
+    m_Localized: "Ultra-Aufw\xE4rtshaken"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

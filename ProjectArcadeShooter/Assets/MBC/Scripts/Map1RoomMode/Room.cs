@@ -13,9 +13,19 @@ public class Room : MonoBehaviour
     public bool roomStatus;
     private int openKZ;
     private int closeKZ;
+    private bool dn = false;
     private void Awake()
     {
         roomManager = transform.parent.GetComponent<RoomManager>();
+    }
+
+    private void Update()
+    {
+        if (dn)
+        {
+            dn = false;
+            roomManager.navme();
+        }
     }
     public void CloseRoom()
     {
@@ -99,7 +109,7 @@ public class Room : MonoBehaviour
         closeKZ--;
         if (closeKZ <= 0)
         {
-            roomManager.navme();
+            dn = true;
         }
     }
 
@@ -118,7 +128,7 @@ public class Room : MonoBehaviour
         openKZ--;
         if(openKZ <= 0)
         {
-            roomManager.navme();
+            dn = true;
         }
     }
     IEnumerator closeKZoneFT(GameObject door)

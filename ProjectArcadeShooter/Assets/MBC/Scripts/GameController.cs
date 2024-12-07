@@ -71,8 +71,14 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public GameObject mainCam;
     public GameObject UIOverlayCam;
     public GameObject HandOverlayCam;
+
     [Header("SoundRef")]
     public AudioSource cinematicBoomAS;
+    public AudioSource endGame;
+    public AudioSource endGameK;
+    public AudioSource endGameCz;
+
+
     //UI Ref
     [Header(header: "UIReference")]
     public GameObject playerPanel;
@@ -187,6 +193,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     private float roomTimer;
     //PostProcessing Settings
     AmbientOcclusion ao;
+    //SoundEffects
 
 
     private void confirmSettings()
@@ -665,15 +672,19 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 {
                     spawnTimer -= Time.deltaTime;
                 }
-                if (roomTimer <= 0f)
+                if (Input.GetKeyDown(KeyCode.H))
                 {
                     roomManager.startRoutineOfRoom(roomCloseTime);
-                    roomTimer = roomRoutineRate;
                 }
-                else
-                {
-                    roomTimer -= Time.deltaTime;
-                }
+                //if (roomTimer <= 0f)
+                //{
+                //    roomManager.startRoutineOfRoom(roomCloseTime);
+                //    roomTimer = roomRoutineRate;
+                //}
+                //else
+                //{
+                //    roomTimer -= Time.deltaTime;
+                //}
                 if (enemyCount == 0)
                 {
                     makeMoneyWithMostCombo();
@@ -2047,6 +2058,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         mainCam.GetComponent<Camera>().nearClipPlane = 0.3f;
         HandOverlayCam.GetComponent<Camera>().nearClipPlane = 0.3f;
 
+        endGame.Play();
+
         mainCam.GetComponent<Camera>().fieldOfView = 60f;
         float vectorizer = 1.5f;
 
@@ -2140,6 +2153,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
         globalProfile.profile = noiseEffect;
 
+        endGameK.Play();
+
         float a = 0f;
         for (int c = 0; c < tempText.Length;)
         {
@@ -2160,6 +2175,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
         gamePanel.transform.GetChild(8).GetChild(0).GetChild(0).gameObject.SetActive(false);
 
+
         while (true)
         {
             gamePanel.transform.GetChild(8).GetChild(0).gameObject.SetActive(!gamePanel.transform.GetChild(8).GetChild(0).gameObject.activeSelf);
@@ -2170,6 +2186,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 break;
             }
         }
+        endGameCz.Play();
         gamePanel.transform.GetChild(8).GetChild(0).gameObject.SetActive(false);
 
         for (int i = 1; i < gamePanel.transform.GetChild(8).childCount; i++)

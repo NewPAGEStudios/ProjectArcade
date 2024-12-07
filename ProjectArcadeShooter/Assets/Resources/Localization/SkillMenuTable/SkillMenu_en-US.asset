@@ -82,6 +82,14 @@ MonoBehaviour:
     m_Localized: Uses a gravity field that's center is you to pull coins.
     m_Metadata:
       m_Items: []
+  - m_Id: 34833281817317376
+    m_Localized: Ultra Uppurcut
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34833285231480832
+    m_Localized: Increases melee damage and force.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

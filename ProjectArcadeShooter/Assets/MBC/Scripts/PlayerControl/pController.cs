@@ -675,6 +675,7 @@ public class PController : MonoBehaviour
 
         if (currentHP <= 0)
         {
+            Debug.Log("bmda");
             gc.EndGame();
         }
     }

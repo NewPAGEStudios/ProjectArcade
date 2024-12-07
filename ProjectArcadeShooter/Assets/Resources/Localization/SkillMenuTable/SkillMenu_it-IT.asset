@@ -85,6 +85,14 @@ MonoBehaviour:
       monete.
     m_Metadata:
       m_Items: []
+  - m_Id: 34833285231480832
+    m_Localized: Aumenta il danno e la forza del corpo a corpo.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34833281817317376
+    m_Localized: Ultra Montante
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

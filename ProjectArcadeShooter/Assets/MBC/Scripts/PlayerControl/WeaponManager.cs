@@ -95,7 +95,8 @@ public class WeaponManager : MonoBehaviour
     [HideInInspector]
     public InputManager IManager;
     private PController player;
-
+    [Header("VFX")]
+    public GameObject handPower;
 
     private Coroutine meleeRoutine;
     //ActionStates
@@ -289,8 +290,9 @@ public class WeaponManager : MonoBehaviour
             }//HandState Control
 
         }
-        if (Physics.Raycast(firePos.transform.parent.position, firePos.transform.forward, out RaycastHit hitInfo ,2f,lMaskOFInteraction))
+        if (Physics.Raycast(firePos.transform.parent.position, firePos.transform.forward, out RaycastHit hitInfo ,2f,lMaskOFInteraction,QueryTriggerInteraction.Collide))
         {
+            Debug.Log("kbmqweqwewqeqwe");
             if (Input.GetKeyDown(KeyCode.E))
             {
                 if(hitInfo.transform.TryGetComponent<Shop>(out Shop sh))
@@ -299,7 +301,6 @@ public class WeaponManager : MonoBehaviour
                 }
             }
             gc.DisplayInstruction(true,0);
-            Debug.DrawRay(firePos.transform.position, firePos.transform.forward, Color.red);
         }
         else
         {
@@ -318,6 +319,12 @@ public class WeaponManager : MonoBehaviour
         }
 
     }
+    public void startPowerfullAttack()
+    {
+        handPower.GetComponent<ColliderParenter>().targetOBJ.GetComponent<ParticleSystem>().Play();
+        power = true;
+    }
+
     public void addLaser(float amount)
     {
         if (laserFinished)
@@ -752,22 +759,23 @@ public class WeaponManager : MonoBehaviour
     //MeleAttack
     public void MeleeAttack()
     {
-        if (power)
+        Ray ray = new Ray();
+        ray.direction = firePos.transform.forward;
+        ray.origin = firePos.transform.position;
+        if (Physics.Raycast(ray, out RaycastHit hit, 1.5f, ~0, QueryTriggerInteraction.Ignore))
         {
-
-        }
-        else
-        {
-            Ray ray = new Ray();
-            ray.direction = firePos.transform.forward;
-            ray.origin = firePos.transform.position;
-            Debug.DrawRay(ray.origin,ray.direction * 1.5f,Color.red,10);
-            if(Physics.Raycast(ray,out RaycastHit hit, 1.5f, ~0 ,QueryTriggerInteraction.Ignore))
+            if (hit.transform.CompareTag("Enemy"))
             {
-                if (hit.transform.CompareTag("Enemy"))
+                if (power)
                 {
                     //GetComponent<ColliderParenter>().targetOBJ.transform.parent
-                    hit.transform.GetComponent<Enemy>().blow(firePos.transform.forward + new Vector3(0,1,0), meleeForce);   
+                    hit.transform.GetComponent<Enemy>().blow(firePos.transform.forward + new Vector3(0, 1, 0), meleeForce*10);
+                    hit.transform.GetComponent<EnemyHealth>().EnemyHealthUpdate(-meleeDmg * 2, gameObject);
+                }
+                else
+                {
+                    //GetComponent<ColliderParenter>().targetOBJ.transform.parent
+                    hit.transform.GetComponent<Enemy>().blow(firePos.transform.forward + new Vector3(0, 1, 0), meleeForce);
                     hit.transform.GetComponent<EnemyHealth>().EnemyHealthUpdate(-meleeDmg, gameObject);
                 }
             }
