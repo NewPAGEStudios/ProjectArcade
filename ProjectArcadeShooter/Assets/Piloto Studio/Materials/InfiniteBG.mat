@@ -25,25 +25,39 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: InfiniteBG
   m_Shader: {fileID: 4800000, guid: cda243e0bc6ebe54b862d28e5eeed200, type: 3}
+<<<<<<< Updated upstream
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _CONSERVATIVE_DEPTH_OFFSET
   - _DISABLE_SSR_TRANSPARENT
+=======
+  m_ValidKeywords:
+  - _DISABLE_SSR_TRANSPARENT
+  m_InvalidKeywords:
+  - _CONSERVATIVE_DEPTH_OFFSET
+>>>>>>> Stashed changes
   - _DOUBLESIDED_ON
   - _NORMALMAP_TANGENT_SPACE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
+<<<<<<< Updated upstream
   m_CustomRenderQueue: 2000
+=======
+  m_CustomRenderQueue: 2225
+>>>>>>> Stashed changes
   stringTagMap:
     MotionVector: User
   disabledShaderPasses:
   - DistortionVectors
   - MOTIONVECTORS
   - TransparentBackface
+<<<<<<< Updated upstream
   m_LockedProperties: 
+=======
+>>>>>>> Stashed changes
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -55,10 +69,13 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+<<<<<<< Updated upstream
     - _BaseColor:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+=======
+>>>>>>> Stashed changes
     - _BaseColorMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -183,7 +200,10 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _AdditiveMaskEdge: 1
     - _AlbedoAffectEmissive: 0
+<<<<<<< Updated upstream
     - _AlphaClipping: 1
+=======
+>>>>>>> Stashed changes
     - _AlphaCutoff: 0.5
     - _AlphaCutoffEnable: 0
     - _AlphaCutoffPostpass: 0.5
@@ -239,7 +259,10 @@ Material:
     - _EnableFogOnTransparent: 1
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
+<<<<<<< Updated upstream
     - _EnvironmentReflections: 1
+=======
+>>>>>>> Stashed changes
     - _ExposureWeight: 0
     - _Fresnel: 0
     - _FresnelPower: 1
@@ -276,10 +299,14 @@ Material:
     - _PPDPrimitiveLength: 1
     - _PPDPrimitiveWidth: 1
     - _PanningNoiseStrenght: 0.5
+<<<<<<< Updated upstream
     - _QueueControl: 0
     - _QueueOffset: 0
     - _RayTracing: 0
     - _ReceiveShadows: 1
+=======
+    - _RayTracing: 0
+>>>>>>> Stashed changes
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
     - _RefractionModel: 0
@@ -293,7 +320,10 @@ Material:
     - _SourceBlendRGB: 10
     - _SpecularAAScreenSpaceVariance: 0.1
     - _SpecularAAThreshold: 0.2
+<<<<<<< Updated upstream
     - _SpecularHighlights: 1
+=======
+>>>>>>> Stashed changes
     - _SpecularOcclusionMode: 1
     - _SrcBlend: 1
     - _StencilRef: 0
@@ -334,7 +364,10 @@ Material:
     - _ZTestModeDistortion: 4
     - _ZTestTransparent: 4
     - _ZWrite: 1
+<<<<<<< Updated upstream
     - __dirty: 1
+=======
+>>>>>>> Stashed changes
     m_Colors:
     - _AlphaOverrideChannel: {r: 0, g: 0, b: 0, a: 1}
     - _AlphaOverridePanning: {r: 0, g: 0, b: 0, a: 0}
