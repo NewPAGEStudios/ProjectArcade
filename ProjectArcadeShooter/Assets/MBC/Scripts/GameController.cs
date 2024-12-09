@@ -194,6 +194,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     //PostProcessing Settings
     AmbientOcclusion ao;
     //SoundEffects
+    [HideInInspector]
+    public bool tutOpened;
 
 
     private void confirmSettings()
@@ -346,9 +348,42 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     private void Start()
     {
         confirmSettings();
+        GetComponent<CheckMusicVolume>().UpdateVolume();
+        if (tutOpened)
+        {
+            state = GameState.inGame;
+            pState = PlayState.inStart;
+
+            //startLevel
+            currentLevel = startMap;
+            changeMap(currentLevel);
+
+            player.transform.position = playerTeleportPoint.transform.position;
+            player.GetComponent<PController>().HealDMG(1, gameObject);
+
+            SpawnCons(0, 0, 0, -1);
+            waveVisualzie("Get the weapon");
+            waveNumber = 0;
+
+            waitTimeVisualize(-1);
+
+            //UI INIT
+            ChangeAmmoText(-1, -1, false);
+
+            ComboBG(0);
+            ComboVisualize();
+
+
+            //Money Handling
+            money = 0;
+            MoneyDisplay();
+
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            return;
+        }
         //optionInitializition;
 //        gamePanel.transform.GetChild(4).GetChild(1).GetComponent<InGameSettings>().initValues();
-        GetComponent<CheckMusicVolume>().UpdateVolume();
 
         if (newGame)
         {
@@ -637,6 +672,10 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         }
         if(state == GameState.inGame)
         {
+            if (tutOpened)
+            {
+                return;
+            }
             if (pState == PlayState.inStart)
             {
                 return;
@@ -2156,12 +2195,19 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         endGameK.Play();
 
         float a = 0f;
+        bool onetime = true;
+
         for (int c = 0; c < tempText.Length;)
         {
             gamePanel.transform.GetChild(8).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text += tempText[c];
             c += 1;
             if (tempText.Length - c < 100)
             {
+                if (onetime)
+                {
+                    onetime = false;
+                    endGameCz.Play();
+                }
                 a += 0.005f;
                 if (a >= 0.065f)
                 {
@@ -2176,6 +2222,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         gamePanel.transform.GetChild(8).GetChild(0).GetChild(0).gameObject.SetActive(false);
 
 
+        endGameCz.Play();
+
         while (true)
         {
             gamePanel.transform.GetChild(8).GetChild(0).gameObject.SetActive(!gamePanel.transform.GetChild(8).GetChild(0).gameObject.activeSelf);
@@ -2186,7 +2234,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 break;
             }
         }
-        endGameCz.Play();
         gamePanel.transform.GetChild(8).GetChild(0).gameObject.SetActive(false);
 
         for (int i = 1; i < gamePanel.transform.GetChild(8).childCount; i++)
@@ -2194,12 +2241,15 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             gamePanel.transform.GetChild(8).GetChild(i).gameObject.SetActive(true);
         }
 
-        Time.timeScale = 1f;
-        Time.fixedDeltaTime = baseFixedUpdate;
+//        Time.timeScale = 1f;
+//        Time.fixedDeltaTime = baseFixedUpdate;
     }
 
     public void StartAgain()
     {
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
+
         PlayerPrefs.SetInt("newGame", 1);
         StartCoroutine(startAgainLoadingRoutine());
     }

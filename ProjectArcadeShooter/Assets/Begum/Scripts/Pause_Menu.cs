@@ -34,13 +34,13 @@ public class Pause_Menu : MonoBehaviour
     }
     public void LoadMenu(bool deleteSave)
     {
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
         if (deleteSave)
         {
             string path = Application.persistentDataPath + "/player.newp";
             File.Delete(path);
         }
-        Time.timeScale = 1f;
-        Time.fixedDeltaTime = 0.02f;
         SceneManager.LoadScene(0);
     }
 

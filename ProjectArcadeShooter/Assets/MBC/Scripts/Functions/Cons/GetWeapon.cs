@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GetWeapon : MonoBehaviour
@@ -53,6 +54,11 @@ public class GetWeapon : MonoBehaviour
 
     private void apply(GameObject player)
     {
+        if (gc.tutOpened)
+        {
+            TutorialManager tutMan = GameObject.FindAnyObjectByType(typeof(TutorialManager)).GetComponent<TutorialManager>();
+            //tutorial exception
+        }
         if (gc.pState == GameController.PlayState.inStart)
         {
             player.GetComponent<PController>().HealDMG(100, gameObject);
