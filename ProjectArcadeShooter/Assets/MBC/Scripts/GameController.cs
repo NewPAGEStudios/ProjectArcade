@@ -4,8 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.Mathematics;
 using Unity.VisualScripting;
+using UnityEditor.Localization.Editor;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.EventSystems;
@@ -86,6 +87,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public GameObject bossPanel;
     public GameObject shopPanel;
     public GameObject damagePanel;
+    public GameObject settingPanel;
 
     [Header(header: "MapReference")]
     public GameObject startMap;
@@ -130,7 +132,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
 
     public int waveNumber;
-    private int enemyCount;
 
     private int comboCount;
     private int mostComboCount = 0;
@@ -144,6 +145,13 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     private float waitTimer;
     public float comboDuration;
     private float comboDurationTimer;
+
+    public int EnemyCountInonetime;
+    private int[] enemyIDcounts;
+    private int enemyCountNow;
+    private int enemyCount;
+    public float enemySpawnTime;
+    private float enemySpawnTimeTimer;
 
     public float fadeSpeedDMGVisualizetion;
     public float cameraShakeIntensity;
@@ -161,6 +169,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public GameObject enemiesIndicator;
     public GameObject consSkillIndicator;
     public GameObject consAmmoIndicator;
+    public List<Sprite> crossSprites = new();
+
     [Header(header: "UI Prefab Referances Notifications")]
     public GameObject notfsaved;
     public GameObject notfMoneyAdd;
@@ -197,7 +207,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     [HideInInspector]
     public bool tutOpened;
 
-
     private void confirmSettings()
     {
         player.GetComponent<PController>().ChangeSens(PlayerPrefs.GetFloat("YSensitivity", 10f), PlayerPrefs.GetFloat("XSensitivity", 10));
@@ -206,6 +215,9 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
         Minimap.GetComponent<MiniMapManager>().ChangeSize(50 - PlayerPrefs.GetFloat("MinimapSize", 0f));
         Minimap.GetComponent<MiniMapManager>().smooth = PlayerPrefs.GetInt("MinimapSmoothness") == 1f ? true : false;
+
+        Debug.Log(PlayerPrefs.GetInt("crossID", 0));
+        playerPanel.transform.GetChild(1).GetChild(0).GetComponent<Image>().sprite = crossSprites[PlayerPrefs.GetInt("crossID", 0)];
 
         Resolution resolution = Screen.currentResolution;
 
@@ -240,6 +252,9 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         boss = Resources.LoadAll<Boss>("Boss");
         perks = Resources.LoadAll<Perk>("Perks");
         waveEnemyDatas = Resources.LoadAll<WaveEnemyData>("WaveEnemyData");
+
+        enemyIDcounts = new int[enemies.Length];
+
 
         for (int i = 0; i < weapons.Length; i++)
         {
@@ -609,7 +624,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public void SpawnEnemy(int enemyID)
     {
         GameObject enemy = new();
-        enemyCount += 1;
+        enemyCountNow += 1;
         UpdateEnemyCount(false);
         int indexOfID = 0;
 
@@ -711,9 +726,28 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 {
                     spawnTimer -= Time.deltaTime;
                 }
+                //EnemySpawn
+                if(enemySpawnTimeTimer <= 0f && enemyCountNow < EnemyCountInonetime && enemyCountNow < enemyCount)
+                {
+                    List<int> list = new List<int>();
+                    for(int i = 0; i < enemies.Length; i++)
+                    {
+                        if (enemyIDcounts[i] > 0)
+                        {
+                            list.Add(i);//add avaible ids to list
+                        }
+                    }
+                    SpawnEnemy(list[Random.Range(0, list.Count)]);
+                    enemySpawnTimeTimer = enemySpawnTime;
+                }
+                else
+                {
+                    enemySpawnTimeTimer -= Time.deltaTime;
+                }
+
                 if (Input.GetKeyDown(KeyCode.H))
                 {
-                    roomManager.startRoutineOfRoom(roomCloseTime);
+                    roomManager.startRoutineOfRoom(roomCloseTime, 0);
                 }
                 //if (roomTimer <= 0f)
                 //{
@@ -803,7 +837,9 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 {
                     for(int k = 0; k < wed.enemyTypes[c].enemyPiece; k++)//Indexing EnemyCounts
                     {
-                        SpawnEnemy(wed.enemyTypes[c].enemyId);
+                        enemyIDcounts[wed.enemyTypes[c].enemyId]++;
+                        enemyCount += 1;
+//                        SpawnEnemy(wed.enemyTypes[c].enemyId);
                     }
                 }
                 //ConsSpawn
@@ -1574,6 +1610,14 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             }
         }
     }
+    public void laserIndicationCross(bool isOpen = true)
+    {
+        playerPanel.transform.GetChild(6).gameObject.SetActive(isOpen);
+        if (isOpen)
+        {
+            playerPanel.transform.GetChild(6).localEulerAngles = new Vector3(0, 0, playerPanel.transform.GetChild(6).localEulerAngles.z + 10f);
+        }
+    }
 
 
     public void DashIndicator(float dashMeter)
@@ -1939,10 +1983,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         notification(1, amount, null, null);
         MoneyDisplay();
     }
-    public void InstuctionIndicator(int consID, int? weaponID = -1, int? skillID = -1)
-    {
-
-    }
 
     public void weaponButtonPressed(string nameOFWeaponName)
     {
@@ -1981,6 +2021,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         shopPanel.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "";
         shopPanel.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>().text = "";
         shopPanel.transform.GetChild(0).GetChild(3).GetComponent<TextMeshProUGUI>().text = "";
+        shopPanel.transform.GetChild(0).GetChild(9).GetComponent<TextMeshProUGUI>().text = "";
     }
     public void skillButtonPressed(string nameOFSkillName)
     {
@@ -2023,9 +2064,44 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         shopPanel.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>().text = skills[i].toBuyMoney.ToString();
         shopPanel.transform.GetChild(0).GetChild(3).GetComponent<TextMeshProUGUI>().text = localizer_scp.applySkill(skills[i], "Desc");
     }
+    public void InventorInspectorer(int id,int idOfObject)
+    {//9
+        shopPanel.transform.GetChild(0).GetChild(9).GetChild(0).gameObject.SetActive(false);
+        shopPanel.transform.GetChild(0).GetChild(9).GetChild(1).gameObject.SetActive(false);
+        if (id == 0)//weapon
+        {
+            shopPanel.transform.GetChild(0).GetChild(9).GetChild(0).gameObject.SetActive(true);
+
+            int count = 0;
+            foreach(WeaponRuntimeHolder wrholder in player.GetComponent<WeaponManager>().holder)
+            {
+                if(wrholder.weaponTypeID == idOfObject)
+                {
+                    break;
+                }
+                count++;
+            }
+            shopPanel.transform.GetChild(0).GetChild(9).GetChild(0).GetComponent<LocalizeStringEvent>().StringReference.Arguments[0] = (player.GetComponent<WeaponManager>().holder[count].inWeapon_ammoAmount + player.GetComponent<WeaponManager>().holder[count].sum_ammoAmount).ToString();
+        }
+        else//skill
+        {
+            shopPanel.transform.GetChild(0).GetChild(9).GetChild(1).gameObject.SetActive(true);
+            int count = 0;
+            foreach (SkillRuntimeHolder ssholder in player.GetComponent<WeaponManager>().stocked_Skills)
+            {
+                if (ssholder.skill.skillTypeID == idOfObject)
+                {
+                    break;
+                }
+                count++;
+            }
+            shopPanel.transform.GetChild(0).GetChild(9).GetChild(0).GetComponent<LocalizeStringEvent>().StringReference.Arguments[0] = player.GetComponent<WeaponManager>().stocked_Skills[count].count.ToString();
+        }
+    }
     public void decreseEnemyCount(GameObject deletedOBJ)
     {
         enemyCount -= 1;
+        enemyCountNow -= 1;
     }
     public void ComboVombo(int comboTime)
     {
@@ -2277,6 +2353,11 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
         PlayerPrefs.SetInt("EndBeta", 1);
         SceneManager.LoadScene(0);
+    }
+    //option
+    public void DestroyOnTime(GameObject g,float t)
+    {
+        Destroy(g, t);
     }
 }
 

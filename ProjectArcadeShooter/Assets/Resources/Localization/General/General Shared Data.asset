@@ -59,6 +59,14 @@ MonoBehaviour:
     m_Key: cancelSkill_txt
     m_Metadata:
       m_Items: []
+  - m_Id: 8994333685780480
+    m_Key: ShopInventory_weapon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8994532902637568
+    m_Key: ShopInventory_skill
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

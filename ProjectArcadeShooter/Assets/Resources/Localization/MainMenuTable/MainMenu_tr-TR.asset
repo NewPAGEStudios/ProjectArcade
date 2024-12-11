@@ -212,6 +212,10 @@ MonoBehaviour:
     m_Localized: "Bu s\xFCr\xFCm, demo s\xFCr\xFCm\xFCd\xFCr"
     m_Metadata:
       m_Items: []
+  - m_Id: 44531884882202624
+    m_Localized: "Ni\u015Fang\xE2h T\xFCr\xFC"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

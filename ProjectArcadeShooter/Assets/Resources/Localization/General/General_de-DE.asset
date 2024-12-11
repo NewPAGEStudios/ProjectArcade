@@ -16,7 +16,8 @@ MonoBehaviour:
     m_Code: de-DE
   m_SharedData: {fileID: 11400000, guid: 954e92223f6ec544fa7e6b906d666de4, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6555627211731501072
   m_TableData:
   - m_Id: 9216266240
     m_Localized: Eingabe wird erwartet
@@ -62,6 +63,20 @@ MonoBehaviour:
     m_Localized: "Dr\xFCcke C, um die F\xE4higkeit abzubrechen"
     m_Metadata:
       m_Items: []
+  - m_Id: 8994532902637568
+    m_Localized: "Du hast {skillCount} von dieser F\xE4higkeit."
+    m_Metadata:
+      m_Items:
+      - rid: 6555627211731501072
+  - m_Id: 8994333685780480
+    m_Localized: Du hast {weaponCount} Munitionen.
+    m_Metadata:
+      m_Items:
+      - rid: 6555627211731501072
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6555627211731501072
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 001095e27af41f00001055804cf41f00

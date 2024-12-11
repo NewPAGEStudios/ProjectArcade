@@ -1,6 +1,7 @@
 using SlimUI.ModernMenu;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
@@ -51,6 +52,8 @@ public class InGameSettings : MonoBehaviour
     public GameObject swayBobtext;
     public GameObject damageVibrationtext;
 
+    public GameObject crossGrid;
+
     [Header("Slider Options")]
     public GameObject miniMapSizeSlider;
     [Header("Music")]
@@ -71,8 +74,8 @@ public class InGameSettings : MonoBehaviour
     //Resolution
     private Resolution[] res;
     private List<Resolution> resList = new();
-
-
+    [Header("GameController")]
+    public GameController gc;
 
     private void Awake()
     {
@@ -83,6 +86,24 @@ public class InGameSettings : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        foreach(Sprite sprite in gc.crossSprites)
+        {
+            GameObject ima = new();
+            ima.transform.parent = crossGrid.transform;
+
+            ima.transform.localPosition = Vector3.zero;
+            ima.transform.localEulerAngles = Vector3.zero;
+            ima.transform.localScale = Vector3.one;
+
+            ima.name = sprite.name;
+
+            ima.AddComponent<Image>();
+            ima.GetComponent<Image>().sprite = sprite;
+        }
+        crossGrid.GetComponent<GridLayoutGroup>().padding.left = gc.crossSprites.Count * (int)(crossGrid.GetComponent<GridLayoutGroup>().cellSize.x + crossGrid.GetComponent<GridLayoutGroup>().spacing.x);
+
+        Debug.Log(PlayerPrefs.GetInt("crossID", 0));
+        crossGrid.transform.localPosition = new Vector3( - 50 - ((gc.crossSprites.Count - 1 - PlayerPrefs.GetInt("crossID", 0)) * 100), 0, 0);
 
         //resolution init
         res = Screen.resolutions;
@@ -355,6 +376,25 @@ public class InGameSettings : MonoBehaviour
 
         }
     }
+    public void crossChange(int change)
+    {
+        if (PlayerPrefs.GetInt("crossID") + change < 0)
+        {
+            PlayerPrefs.SetInt("crossID", gc.crossSprites.Count - 1);
+        }
+        else if (PlayerPrefs.GetInt("crossID") + change >= gc.crossSprites.Count)
+        {
+            PlayerPrefs.SetInt("crossID", 0);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("crossID", PlayerPrefs.GetInt("crossID", 0) + change);
+        }
+        crossGrid.transform.localPosition = new Vector3(-50 - ((gc.crossSprites.Count - 1 - PlayerPrefs.GetInt("crossID", 0)) * 100), 0, 0);
+        gc.playerPanel.transform.GetChild(1).GetChild(0).GetComponent<Image>().sprite = gc.crossSprites[PlayerPrefs.GetInt("crossID", 0)];
+    }
+
+
     public void ResDropdownUpdateValues()
     {
         resDropdown.ClearOptions();

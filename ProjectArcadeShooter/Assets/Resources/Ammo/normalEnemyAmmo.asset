@@ -15,7 +15,7 @@ MonoBehaviour:
   AmmoTypeID: 3
   functionName: NormalBulletFunction
   modelGO: {fileID: 1798151617511852330, guid: f4b08809d6a29dc4d94d1172927ad002, type: 3}
-  trail: {fileID: 0}
+  trail: {fileID: 11400000, guid: 53a276a24c5a0bd41ba814318a3809af, type: 2}
   trail3D: {fileID: 0}
   materials: []
   bulletSpeed: 75
@@ -24,3 +24,4 @@ MonoBehaviour:
   lmask:
     serializedVersion: 2
     m_Bits: 0
+  wallTrace: {fileID: 0}

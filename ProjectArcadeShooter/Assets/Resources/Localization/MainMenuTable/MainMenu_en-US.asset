@@ -212,6 +212,10 @@ MonoBehaviour:
     m_Localized: This version is demo version.
     m_Metadata:
       m_Items: []
+  - m_Id: 44531884882202624
+    m_Localized: Crosshair Type
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9e563cc28447d144ac35c6ca24abd40, type: 3}
   m_Name: FuzeTrail
   m_EditorClassIdentifier: 
-  trailID: 0
+  trailID: 1
   gradient:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
