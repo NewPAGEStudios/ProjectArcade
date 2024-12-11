@@ -95,9 +95,10 @@ GameObject:
   - component: {fileID: 3192252104913078014}
   - component: {fileID: 840448175365337652}
   - component: {fileID: 4536050883297077908}
+  - component: {fileID: 2286233792575954924}
   m_Layer: 0
   m_Name: Drone
-  m_TagString: Untagged
+  m_TagString: EnemyColl
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -146,7 +147,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -8082698556081058493, guid: 993ebb735bbb6ac4db52c2dbacddf9f7, type: 3}
+  - {fileID: 2100000, guid: f1696fdab18feb74f885166c450d059a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -189,6 +190,19 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1.1313423
   m_Center: {x: -0.011961284, y: 0.065671206, z: 0.00000011920932}
+--- !u!114 &2286233792575954924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1200529643353478113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd1a56cedc8484745babfd08d6b3caf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetOBJ: {fileID: 1672027476823096463}
 --- !u!1 &1258337587463320394
 GameObject:
   m_ObjectHideFlags: 0

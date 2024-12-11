@@ -56,6 +56,7 @@ public class InGameSettings : MonoBehaviour
 
     [Header("Slider Options")]
     public GameObject miniMapSizeSlider;
+    public GameObject crossSizeSlider;
     [Header("Music")]
     public GameObject masterSlider;
     public GameObject musicSlider;
@@ -66,6 +67,7 @@ public class InGameSettings : MonoBehaviour
     public GameObject sensitivityYSlider;
     [Header("")]
     private float sliderValueMinimapSize = 0.0f;
+    private float sliderValueCrossSize = 0.0f;
 
     private float sliderValueXSensitivity = 0.0f;
     private float sliderValueYSensitivity = 0.0f;
@@ -102,7 +104,6 @@ public class InGameSettings : MonoBehaviour
         }
         crossGrid.GetComponent<GridLayoutGroup>().padding.left = gc.crossSprites.Count * (int)(crossGrid.GetComponent<GridLayoutGroup>().cellSize.x + crossGrid.GetComponent<GridLayoutGroup>().spacing.x);
 
-        Debug.Log(PlayerPrefs.GetInt("crossID", 0));
         crossGrid.transform.localPosition = new Vector3( - 50 - ((gc.crossSprites.Count - 1 - PlayerPrefs.GetInt("crossID", 0)) * 100), 0, 0);
 
         //resolution init
@@ -113,6 +114,7 @@ public class InGameSettings : MonoBehaviour
 
 
         miniMapSizeSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MinimapSize");
+        crossSizeSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("CrossSize");
 
         masterSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MasterVolume");
         musicSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MusicVolume");
@@ -279,6 +281,15 @@ public class InGameSettings : MonoBehaviour
         PlayerPrefs.SetFloat("MinimapSize", sliderValueMinimapSize);
         miniMapManager.ChangeSize(50 - sliderValueMinimapSize);
     }
+
+    public void sizeOfCross()
+    {
+        sliderValueCrossSize = crossSizeSlider.GetComponent<Slider>().value;
+        PlayerPrefs.SetFloat("CrossSize", sliderValueCrossSize);
+        gc.changeSizeOfCross(sliderValueCrossSize * 10);
+        gc.changeSizeOfLaserIndication(sliderValueCrossSize * 15);
+    }
+
 
     public void SensitivityXSlider()
     {

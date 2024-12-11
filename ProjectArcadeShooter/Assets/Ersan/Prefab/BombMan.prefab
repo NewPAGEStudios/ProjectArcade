@@ -7246,7 +7246,7 @@ GameObject:
   - component: {fileID: 9160935355996811705}
   m_Layer: 0
   m_Name: Kemik
-  m_TagString: Untagged
+  m_TagString: EnemyColl
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

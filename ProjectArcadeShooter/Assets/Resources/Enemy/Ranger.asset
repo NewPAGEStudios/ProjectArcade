@@ -18,7 +18,7 @@ MonoBehaviour:
   ammo: {fileID: 11400000, guid: 613712c60d3a40645a8eb734129c6ed7, type: 2}
   agentName: EnemyWALKER
   firePos: {x: -0.22, y: 4.4, z: 5.37}
-  mainMat: {fileID: 2100000, guid: f2601df4fbcb6df49953a5e9f7963f45, type: 2}
+  mainMat: {fileID: 2100000, guid: f98e8a31373d7e243b82bc63fce110ca, type: 2}
   getDmgMat: {fileID: 2100000, guid: 7d2499e575ecc084299b8105dbdb7a7e, type: 2}
   deathMat: {fileID: 2100000, guid: c247b988d50dec8448cb5b642c740654, type: 2}
   agentFunction: WalkerRanged

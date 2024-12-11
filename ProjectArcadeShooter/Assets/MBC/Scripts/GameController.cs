@@ -219,6 +219,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         Debug.Log(PlayerPrefs.GetInt("crossID", 0));
         playerPanel.transform.GetChild(1).GetChild(0).GetComponent<Image>().sprite = crossSprites[PlayerPrefs.GetInt("crossID", 0)];
 
+        changeSizeOfCross(PlayerPrefs.GetFloat("CrossSize", 10) * 10);
+        changeSizeOfLaserIndication(PlayerPrefs.GetFloat("CrossSize", 10) * 15);
         Resolution resolution = Screen.currentResolution;
 
     }
@@ -625,6 +627,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     {
         GameObject enemy = new();
         enemyCountNow += 1;
+        enemyIDcounts[enemyID]--;
         int indexOfID = 0;
 
         for(int i = 0; i < enemies.Length; i++)
@@ -835,6 +838,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             {
                 for(int c = 0; c < wed.enemyTypes.Length; c++)//searching Enemy Typs
                 {
+
                     for(int k = 0; k < wed.enemyTypes[c].enemyPiece; k++)//Indexing EnemyCounts
                     {
                         enemyIDcounts[wed.enemyTypes[c].enemyId]++;
@@ -1557,6 +1561,15 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
 
     //player based UI Events
+    public void changeSizeOfCross(float size)
+    {
+        playerPanel.transform.GetChild(1).GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(size,size);
+    }
+    public void changeSizeOfLaserIndication(float size)
+    {
+        playerPanel.transform.GetChild(6).GetComponent<RectTransform>().sizeDelta = new Vector2(size, size);
+    }
+
 
     public void changeHPOfPlayer(float maxH, float currentH)
     {

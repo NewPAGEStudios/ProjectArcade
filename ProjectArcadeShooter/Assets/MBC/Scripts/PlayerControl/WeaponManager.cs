@@ -34,9 +34,6 @@ public class WeaponManager : MonoBehaviour
     private int magmax = -1;
 
 
-    //ObjectWeaponRuntime
-    [HideInInspector]
-    public WeaponRuntimeHolder[] holder;
 
     [Header("Sway N Bobbing")]
     [SerializeField]
@@ -84,6 +81,8 @@ public class WeaponManager : MonoBehaviour
     public List<SkillRuntimeHolder> stocked_Skills = new();
     [HideInInspector]
     public bool ot_event_skillMenuOpen = true;
+    //ObjectWeaponRuntime
+    public WeaponRuntimeHolder[] holder;
 
 
     private bool skill_usageCooldown;
@@ -1101,6 +1100,7 @@ public class WeaponManager : MonoBehaviour
 
     }
 }
+[System.Serializable]
 public class WeaponRuntimeHolder
 {
     public int weaponTypeID;

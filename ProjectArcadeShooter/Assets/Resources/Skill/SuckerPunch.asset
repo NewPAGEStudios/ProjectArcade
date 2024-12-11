@@ -21,6 +21,6 @@ MonoBehaviour:
   functionName: SuckerPunch
   indicator: {fileID: 0}
   modelPrefab: {fileID: 0}
-  modelShow: {fileID: 6628529266698186890, guid: de1cae9d975ea4840b49c22388927192,
+  modelShow: {fileID: 8836331004003157492, guid: e0bad83d03a536443847ad4f86b92241,
     type: 3}
   toBuyMoney: 75

@@ -9,6 +9,8 @@ public class stunInstanSkill : MonoBehaviour
     GameController gc;
 
     List <GameObject> affectedGOs = new List <GameObject>();
+    bool close = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,12 +21,17 @@ public class stunInstanSkill : MonoBehaviour
     }
     IEnumerator endEffect()
     {
+        yield return new WaitForSeconds(Time.deltaTime * 10);
+        close = true;
         yield return new WaitForSeconds(0.5f);
         Destroy(gameObject);
     }
     private void OnTriggerEnter(Collider other)
     {
-
+        if(close)
+        {
+            return;
+        }
         if (other.gameObject.CompareTag("EnemyColl"))
         {
             if (!affectedGOs.Contains(other.gameObject))

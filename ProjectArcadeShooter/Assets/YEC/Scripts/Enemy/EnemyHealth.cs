@@ -46,10 +46,10 @@ public class EnemyHealth : MonoBehaviour
         }
         deathMat = gameObject.GetComponent<Enemy>().e_type.deathMat;
 
-        foreach (Renderer r in enemyObjectRenderer)
-        {
-            r.sharedMaterial = mainMat;
-        }
+        //foreach (Renderer r in enemyObjectRenderer)
+        //{
+        //    r.sharedMaterial = mainMat;
+        //}
 
         mainMPB = new MaterialPropertyBlock();
         baseColor = mainMat.color;

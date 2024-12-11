@@ -25,6 +25,6 @@ MonoBehaviour:
     type: 3}
   modelPrefab: {fileID: 6726647790736306412, guid: cf000de6ac7435b40987291a5c045a78,
     type: 3}
-  modelShow: {fileID: 6726647790736306412, guid: cf000de6ac7435b40987291a5c045a78,
+  modelShow: {fileID: 5779041929132413932, guid: 66c2b3e3c8ab166438f3b28244e1df75,
     type: 3}
   toBuyMoney: 125
