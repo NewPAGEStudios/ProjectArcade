@@ -625,7 +625,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     {
         GameObject enemy = new();
         enemyCountNow += 1;
-        UpdateEnemyCount(false);
         int indexOfID = 0;
 
         for(int i = 0; i < enemies.Length; i++)
@@ -825,6 +824,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
         //WaveConfigiration
         //EnemySpawn
+        UpdateEnemyCount(true);
         if (waveEnemyDatas.Length < waveNumber)
         {
             EndBeta();
@@ -848,6 +848,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 break;
             }
         }
+        UpdateEnemyCount(false);
     }
     public void callToWait()
     {
@@ -2102,6 +2103,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     {
         enemyCount -= 1;
         enemyCountNow -= 1;
+        UpdateEnemyCount(false);
     }
     public void ComboVombo(int comboTime)
     {
