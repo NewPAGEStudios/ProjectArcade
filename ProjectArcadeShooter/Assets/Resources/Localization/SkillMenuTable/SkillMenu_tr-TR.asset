@@ -93,6 +93,15 @@ MonoBehaviour:
       art\u0131r\u0131r."
     m_Metadata:
       m_Items: []
+  - m_Id: 38500052379885568
+    m_Localized: "Kartal G\xF6z"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38500074211237888
+    m_Localized: "D\xFC\u015Fmanlar\u0131 duvarlar\u0131n arkas\u0131ndan g\xF6rmenize
+      yard\u0131mc\u0131 olur."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -323,7 +323,7 @@ public class WeaponManager : MonoBehaviour
         handPower.GetComponent<ColliderParenter>().targetOBJ.SetActive(true);
         power = true;
     }
-
+    //laser
     public void addLaser(float amount)
     {
         if (laserFinished)
@@ -406,6 +406,7 @@ public class WeaponManager : MonoBehaviour
         gc.LaserIndicator(maxLaserCharge, laserCharge);
     }
 
+    //Acquire weapon R ammo
     public void GetWeaponR(int weaponID)
     {
         if (weaponID >= gc.weapons.Length)//wil be deleted
@@ -521,6 +522,7 @@ public class WeaponManager : MonoBehaviour
         currWeaponID = weaponID;
     }
 
+    //Fire
     private void Fire()
     {
         Weapon w = FindWeapon(currWeaponID);
@@ -606,7 +608,7 @@ public class WeaponManager : MonoBehaviour
         handStates = ActionStateOFHands.idle;
         yield return null;
     }
-
+    //Reload
     private void ReloadCheck()
     {
         if (currWeapon_inWeapon_ammoAmount == magmax)
@@ -744,6 +746,7 @@ public class WeaponManager : MonoBehaviour
         sb_apllier.transform.SetLocalPositionAndRotation(Vector3.Lerp(sb_apllier.transform.localPosition, swayPos + bobPos, Time.deltaTime*smooth), Quaternion.Slerp(sb_apllier.transform.localRotation, Quaternion.Euler(swayEulorRot) * Quaternion.Euler(bobEulorRot), Time.deltaTime*smoothRot));
     }
 
+    //MeleAttack
     IEnumerator meleeAnimSync()
     {
         StartCoroutine(attackRoutine());
@@ -761,7 +764,6 @@ public class WeaponManager : MonoBehaviour
         handStates = ActionStateOFHands.idle;
         meleeRoutine = null;
     }
-    //MeleAttack
     public void MeleeAttack()
     {
         Ray ray = new Ray();
@@ -1061,7 +1063,36 @@ public class WeaponManager : MonoBehaviour
     {
         hand_Animator.SetInteger("Interaction_id", -1);
     }
+    //WallHack Skill
+    private Coroutine eagleEyeRoutine = null;
+    public void openEagleEye()
+    {
+        if(eagleEyeRoutine != null)
+        {
+            StopCoroutine(eagleEyeRoutine);
+        }
+        eagleEyeRoutine = StartCoroutine(eagleEye());
+    }
+    IEnumerator eagleEye()
+    {
+        gc.changeStateOfWallhackSkill(true);
+        float timer = 5f;
+        while (true)
+        {
+            yield return null;
 
+            if (gc.state == GameController.GameState.inGame || gc.pState!=GameController.PlayState.inCinematic)
+            {
+                continue;
+            }
+            timer -= Time.deltaTime;
+            if (timer <= 0)
+            {
+                break;
+            }
+        }
+        gc.changeStateOfWallhackSkill(false);
+    }
 
     IEnumerator CancelSkillAnim(int id)
     {

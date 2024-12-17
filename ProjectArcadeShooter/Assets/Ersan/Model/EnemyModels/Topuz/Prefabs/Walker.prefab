@@ -834,7 +834,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6716746612882018617}
   - component: {fileID: 8431146040259715722}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Sphere.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2464,6 +2464,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915560a4db817e64bbf2ed4e730cac59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lifetimeTimer: 0
+  lifetime: 1
+  open: 0
 --- !u!1001 &1707343132433548292
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2633,6 +2636,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915560a4db817e64bbf2ed4e730cac59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lifetimeTimer: 0
+  lifetime: 1
+  open: 0
 --- !u!1001 &4809137558925374271
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2796,6 +2802,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915560a4db817e64bbf2ed4e730cac59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lifetimeTimer: 0
+  lifetime: 1
+  open: 0
 --- !u!224 &4734926209141877676 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 218613069489297555, guid: 0a45f4744a7f6c74c9b4a539f4842dcf,
@@ -2965,6 +2974,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915560a4db817e64bbf2ed4e730cac59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lifetimeTimer: 0
+  lifetime: 1
+  open: 0
 --- !u!224 &4981884056214826984 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 218613069489297555, guid: 0a45f4744a7f6c74c9b4a539f4842dcf,
@@ -3134,6 +3146,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915560a4db817e64bbf2ed4e730cac59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lifetimeTimer: 0
+  lifetime: 1
+  open: 0
 --- !u!224 &8010837353608248271 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 218613069489297555, guid: 0a45f4744a7f6c74c9b4a539f4842dcf,

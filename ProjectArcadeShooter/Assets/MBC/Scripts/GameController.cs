@@ -19,6 +19,9 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour//TODO: Compass add cons
 {
+    public ScriptableRendererFeature seeThrougWallHigh;
+    public ScriptableRendererFeature seeThrougWallBal;
+    public ScriptableRendererFeature seeThrougWallPer;
     //Game Main Init
     public enum GameState
     {
@@ -364,6 +367,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
     private void Start()
     {
+        changeStateOfWallhackSkill(false);
+
         confirmSettings();
         GetComponent<CheckMusicVolume>().UpdateVolume();
         if (tutOpened)
@@ -444,7 +449,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
             Invoke(nameof(LoadElements), Time.deltaTime);
         }
-
 
         //Cursor Handling
         Cursor.visible = false;
@@ -1288,7 +1292,13 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         shopCloserfunc();
     }
 
-
+    //Graph Options
+    public void changeStateOfWallhackSkill(bool acitve)
+    {
+        seeThrougWallHigh.SetActive(!acitve);
+        seeThrougWallBal.SetActive(!acitve);
+        seeThrougWallPer.SetActive(!acitve);
+    }
 
     //UI Events
     //GameBasedUI Evvents

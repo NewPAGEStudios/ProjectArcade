@@ -93,6 +93,14 @@ MonoBehaviour:
     m_Localized: Ultra Montante
     m_Metadata:
       m_Items: []
+  - m_Id: 38500052379885568
+    m_Localized: Vista dell'Aquila
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38500074211237888
+    m_Localized: Ti aiuta a vedere i nemici attraverso i muri.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
