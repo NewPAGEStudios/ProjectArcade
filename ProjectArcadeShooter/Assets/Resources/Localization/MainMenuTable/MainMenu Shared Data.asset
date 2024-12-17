@@ -211,6 +211,10 @@ MonoBehaviour:
     m_Key: Crosshair_txt
     m_Metadata:
       m_Items: []
+  - m_Id: 45169390875119616
+    m_Key: CrosshairSize
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

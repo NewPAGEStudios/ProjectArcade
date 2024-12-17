@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
 using System.Collections.Generic;
+using System;
 
 namespace SlimUI.ModernMenu{
 	public class UISettingsManager : MonoBehaviour {
@@ -23,6 +24,7 @@ namespace SlimUI.ModernMenu{
 		public GameObject swayBobtext;
         public GameObject damageVibrationtext;
 		public GameObject minimapSmoothnestext;
+		public GameObject crossGrid;
 
         // sliders
         [Header("SLIDER SETTINGS")]
@@ -35,17 +37,21 @@ namespace SlimUI.ModernMenu{
 
         public GameObject sensitivityXSlider;
 		public GameObject sensitivityYSlider;
+		public GameObject crossSizeSlider;
 
 		private float sliderValueMinimapSize = 0.0f;
         private float sliderValueXSensitivity = 0.0f;
 		private float sliderValueYSensitivity = 0.0f;
 		private float sliderValueSmoothing = 0.0f;
+		private float sliderValueCrossSize = 0.0f;
 
 		private int currentResolutionIndex = 0;
 		//Resolution
 		private Resolution[] res;
 		private List<Resolution> resList = new();
 		private float scaleRatio;
+		public List<Sprite> crossSprites = new List<Sprite>();
+
         public void initValues()
         {
             PlayerPrefs.SetFloat("MinimapSize", PlayerPrefs.GetFloat("MinimapSize", 0));
@@ -56,6 +62,10 @@ namespace SlimUI.ModernMenu{
             PlayerPrefs.SetInt("SwayNBobbing", PlayerPrefs.GetInt("SwayNBobbing", 1));
             PlayerPrefs.SetInt("DMGVibration", PlayerPrefs.GetInt("DMGVibration", 1));
             PlayerPrefs.SetInt("MinimapSmoothness", PlayerPrefs.GetInt("MinimapSmoothness", 1));
+
+            PlayerPrefs.SetInt("crossID", PlayerPrefs.GetInt("crossID", 0));
+            PlayerPrefs.SetFloat("CrossSize", PlayerPrefs.GetFloat("CrossSize",10));
+
 
             PlayerPrefs.SetFloat("MasterVolume", PlayerPrefs.GetFloat("MasterVolume", 10f));
             PlayerPrefs.SetFloat("MusicVolume", PlayerPrefs.GetFloat("MusicVolume", 10f));
@@ -68,8 +78,12 @@ namespace SlimUI.ModernMenu{
         {
 			PlayerPrefs.DeleteAll();
 			PlayerPrefs.SetFloat("MinimapSize", 0f);
-			
-			PlayerPrefs.SetFloat("YSensitivity", 10f);
+
+			PlayerPrefs.SetInt("crossID", 0);
+            PlayerPrefs.SetFloat("CrossSize", 10f);
+
+
+            PlayerPrefs.SetFloat("YSensitivity", 10f);
             PlayerPrefs.SetFloat("XSensitivity", 10f);
 
             PlayerPrefs.SetInt("SwayNBobbing", 1);
@@ -131,8 +145,30 @@ namespace SlimUI.ModernMenu{
             texturehightextLINE.gameObject.SetActive(false);
         }
 
-        public void  Start (){
+        public void  Start () 
+		{
+
             initValues();
+
+
+            foreach (Sprite sprite in crossSprites)
+            {
+                GameObject ima = new();
+                ima.transform.parent = crossGrid.transform;
+
+                ima.transform.localPosition = Vector3.zero;
+                ima.transform.localEulerAngles = Vector3.zero;
+                ima.transform.localScale = Vector3.one;
+
+                ima.name = sprite.name;
+
+                ima.AddComponent<Image>();
+                ima.GetComponent<Image>().sprite = sprite;
+            }
+            crossGrid.GetComponent<GridLayoutGroup>().padding.left = crossSprites.Count * (int)(crossGrid.GetComponent<GridLayoutGroup>().cellSize.x + crossGrid.GetComponent<GridLayoutGroup>().spacing.x);
+
+            crossGrid.transform.localPosition = new Vector3(-50 - ((crossSprites.Count - 1 - PlayerPrefs.GetInt("crossID", 0)) * 100), 0, 0);
+
 
             //resolution init
             res = Screen.resolutions;
@@ -250,8 +286,9 @@ namespace SlimUI.ModernMenu{
 
 		public void Update (){
 			sliderValueMinimapSize = miniMapSizeSlider.GetComponent<Slider>().value;
+            sliderValueCrossSize = crossSizeSlider.GetComponent<Slider>().value;
 
-			sliderValueXSensitivity = sensitivityXSlider.GetComponent<Slider>().value;
+            sliderValueXSensitivity = sensitivityXSlider.GetComponent<Slider>().value;
 			sliderValueYSensitivity = sensitivityYSlider.GetComponent<Slider>().value;
 		}
 
@@ -455,7 +492,32 @@ namespace SlimUI.ModernMenu{
 			texturemedtextLINE.gameObject.SetActive(false);
 			texturehightextLINE.gameObject.SetActive(true);
 		}
-		public void ResDropdownUpdateValues()
+
+        public void sizeOfCross()
+        {
+            sliderValueCrossSize = crossSizeSlider.GetComponent<Slider>().value;
+            PlayerPrefs.SetFloat("CrossSize", sliderValueCrossSize);
+        }
+        public void crossChange(int change)
+        {
+            if (PlayerPrefs.GetInt("crossID") + change < 0)
+            {
+                PlayerPrefs.SetInt("crossID", crossSprites.Count - 1);
+            }
+            else if (PlayerPrefs.GetInt("crossID") + change >= crossSprites.Count)
+            {
+                PlayerPrefs.SetInt("crossID", 0);
+            }
+            else
+            {
+                PlayerPrefs.SetInt("crossID", PlayerPrefs.GetInt("crossID", 0) + change);
+            }
+            crossGrid.transform.localPosition = new Vector3(-50 - ((crossSprites.Count - 1 - PlayerPrefs.GetInt("crossID", 0)) * 100), 0, 0);
+        }
+
+
+
+        public void ResDropdownUpdateValues()
 		{
 			resDropdown.ClearOptions();
 			resList.Clear();

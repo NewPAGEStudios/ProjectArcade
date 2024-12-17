@@ -216,6 +216,10 @@ MonoBehaviour:
     m_Localized: Crosshair Type
     m_Metadata:
       m_Items: []
+  - m_Id: 45169390875119616
+    m_Localized: Crosshair Size
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

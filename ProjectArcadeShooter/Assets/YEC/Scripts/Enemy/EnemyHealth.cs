@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
@@ -13,6 +15,7 @@ public class EnemyHealth : MonoBehaviour
     public float level;
     public Text txtLevel;
     public TextMeshPro tmpEnemyIndicator;
+    public GameObject DMGTxtEnemyParent;
     public GameObject hpBar;
     public Animator animator;
 
@@ -32,8 +35,23 @@ public class EnemyHealth : MonoBehaviour
     private Coroutine deathRoutine;
 
     private bool dieStarted=false;
+    private List<ColliderParenter> colliderObjects = new();
     void Start()
     {
+        colliderObjects = transform.GetComponentsInChildren<ColliderParenter>().ToList<ColliderParenter>();
+        for (int i = 0; i < colliderObjects.Count; i++)
+        {
+            if(colliderObjects[i].TryGetComponent<Collider>(out Collider col))
+            {
+
+            }
+            else
+            {
+                colliderObjects.RemoveAt(i);
+            }
+        }
+
+
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         level = 0;
 
@@ -56,12 +74,17 @@ public class EnemyHealth : MonoBehaviour
 
         currentHealth = maxHealth;
         currentHealthOverride = currentHealth;
+
+        for (int i = 0; i < DMGTxtEnemyParent.transform.childCount; i++)
+        {
+            DMGTxtEnemyParent.transform.GetChild(i).gameObject.SetActive(false);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        //tmpEnemyIndicator.transform.parent.LookAt(GetComponent<Enemy>().Player.transform);
+        tmpEnemyIndicator.transform.parent.LookAt(GetComponent<Enemy>().Player.transform);
 
 
         //if (currentHealth != 0)
@@ -82,8 +105,10 @@ public class EnemyHealth : MonoBehaviour
     {
         
         currentHealth += amount;
+        EnemyTxtDmgRoutine(amount.ToString());
 
-        Debug.Log("CurrentHealth: "+ currentHealth);
+        //Debug.Log("CurrentHealth: "+ currentHealth);
+        tmpEnemyIndicator.GetComponent<TextMeshPro>().text = currentHealth.ToString();
 
         if (currentHealth <= 0)
         {
@@ -146,6 +171,33 @@ public class EnemyHealth : MonoBehaviour
             dmgtakenRoutine = StartCoroutine(EnemyDMGTakeRoutine());
         }
     }
+    void EnemyTxtDmgRoutine(string amount)
+    {
+        GameObject selectedTXT = DMGTxtEnemyParent.transform.GetChild(0).gameObject;
+        bool firstPartSelected = false;
+        for (int i = 0; i < DMGTxtEnemyParent.transform.childCount; i++)
+        {
+            if (DMGTxtEnemyParent.transform.GetChild(i).GetComponent<dmgTxt>().open)
+            {
+                selectedTXT = DMGTxtEnemyParent.transform.GetChild(i).gameObject;
+                firstPartSelected = true;
+                break;
+            }
+        }
+        if (!firstPartSelected)
+        {
+            selectedTXT = DMGTxtEnemyParent.transform.GetChild(0).gameObject;
+            for (int i = 0; i < DMGTxtEnemyParent.transform.childCount - 1; i++)
+            {
+                if(DMGTxtEnemyParent.transform.GetChild(i).GetComponent<dmgTxt>().lifetimeTimer < DMGTxtEnemyParent.transform.GetChild(i + 1).GetComponent<dmgTxt>().lifetimeTimer)
+                {
+                    selectedTXT = DMGTxtEnemyParent.transform.GetChild(i + 1).gameObject;
+                    break;
+                }
+            }
+        }
+        selectedTXT.GetComponent<dmgTxt>().startThis(amount);
+    }
     IEnumerator EnemyDMGTakeRoutine()
     {
         mainMPB = new MaterialPropertyBlock();
@@ -153,22 +205,6 @@ public class EnemyHealth : MonoBehaviour
         {
             ren.sharedMaterial = damageMat;
         }
-        //while (true)
-        //{
-        //    r = Mathf.MoveTowards(r, baseColor.r*255, Time.deltaTime * 100f);
-        //    g = Mathf.MoveTowards(g, baseColor.g*255, Time.deltaTime * 100f);
-        //    b = Mathf.MoveTowards(b, baseColor.b*255, Time.deltaTime * 100f);
-
-        //    mainMPB.SetColor("_BaseColor", new Color(r/255, g/255, b/255, 1));
-        //    mainMPB.SetColor("_EmissionColor",)
-        //    enemyObjectRenderer.SetPropertyBlock(mainMPB);
-
-        //    yield return new WaitForEndOfFrame();
-        //    if (r == baseColor.b * 255 && g == baseColor.b * 255 && b == baseColor.b * 255)
-        //    {
-        //        break;
-        //    }
-        //}
         yield return new WaitForSeconds(0.5f);
         foreach (Renderer rende in enemyObjectRenderer)
         {
@@ -182,7 +218,13 @@ public class EnemyHealth : MonoBehaviour
         {
             return;
         }
-        dieStarted = true;
+
+
+        foreach (ColliderParenter go in colliderObjects)
+        {
+            go.GetComponent<Collider>().enabled = false;
+        }
+
 
 
         GetComponent<Enemy>().eState = Enemy.enemyState.dead;

@@ -95,7 +95,7 @@ public class PController : MonoBehaviour
     //Coroutines
     private Coroutine speedEfect;
     //Timer
-    private float moveTimerSound=0.5f;
+    private float moveSoundTimer = 0.5f;
 
     public enum ActionStateDependecyToPlayer
     {
@@ -400,14 +400,14 @@ public class PController : MonoBehaviour
 
         if (actiontg != ActionStateDependecyToGround.onAir)
         {
-            if (moveTimerSound <= 0)
+            if (moveSoundTimer <= 0)
             {
                 soundParent.transform.Find("Footsteps").GetComponent<AudioSource>().Play();
-                moveTimerSound = 0.5f;
+                moveSoundTimer = 0.5f;
             }
             else
             {
-                moveTimerSound -= Time.fixedDeltaTime;
+                moveSoundTimer -= Time.fixedDeltaTime;
             }
         }
         if(actiontg == ActionStateDependecyToGround.onAir)

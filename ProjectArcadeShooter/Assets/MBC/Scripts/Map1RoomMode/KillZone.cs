@@ -8,13 +8,19 @@ public class KillZone : MonoBehaviour
     public bool work;
     public bool alertSound;
     private RoomManager roomManager;
+    private GameObject minimap_OBJ;
     private void Start()
     {
+        minimap_OBJ = transform.GetChild(0).gameObject;
+        minimap_OBJ.SetActive(false);
         roomManager = transform.parent.parent.GetChild(0).GetComponent<RoomManager>();
     }
     private void Update()
     {
-        
+        if(alertSound || work)
+        {
+            minimap_OBJ.SetActive(true);
+        }
     }
     private void OnTriggerEnter(Collider other)
     {

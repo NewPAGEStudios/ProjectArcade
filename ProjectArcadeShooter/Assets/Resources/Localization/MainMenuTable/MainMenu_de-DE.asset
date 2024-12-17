@@ -221,6 +221,10 @@ MonoBehaviour:
     m_Localized: Fadenkreuz-Typ
     m_Metadata:
       m_Items: []
+  - m_Id: 45169390875119616
+    m_Localized: "Fadenkreuz-Gr\xF6\xDFe"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

@@ -100,6 +100,8 @@ public class Enemy : MonoBehaviour
         meleeDmg = e_type.attackDMG;
 
         ehp.tmpEnemyIndicator = model.transform.Find("EnemyHPIndicator").GetChild(0).GetComponent<TextMeshPro>();
+        ehp.DMGTxtEnemyParent = model.transform.Find("EnemyHPIndicator").GetChild(2).gameObject;
+
         ehp.hpBar = model.transform.Find("EnemyHPIndicator").GetChild(1).GetComponent<ColliderParenter>().targetOBJ;
 
         soundController = gameObject.AddComponent<EnemySoundController>();
@@ -245,6 +247,7 @@ public class Enemy : MonoBehaviour
     {
         if(blowRoutine == null && ehp.stunRoutine == null)
         {
+            Debug.Log("Kurt");
             state = ccState.normal;
         }
     }
@@ -327,6 +330,7 @@ public class Enemy : MonoBehaviour
         }
         rb.isKinematic = true;
         agent.enabled = true;
+        blowRoutine = null;
         endCC();
     }
     //crowd controll effect

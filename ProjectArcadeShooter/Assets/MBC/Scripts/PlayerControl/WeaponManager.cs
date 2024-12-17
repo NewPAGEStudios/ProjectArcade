@@ -320,7 +320,7 @@ public class WeaponManager : MonoBehaviour
     }
     public void startPowerfullAttack()
     {
-        handPower.GetComponent<ColliderParenter>().targetOBJ.GetComponent<ParticleSystem>().Play();
+        handPower.GetComponent<ColliderParenter>().targetOBJ.SetActive(true);
         power = true;
     }
 
@@ -774,7 +774,10 @@ public class WeaponManager : MonoBehaviour
                 if (power)
                 {
                     //GetComponent<ColliderParenter>().targetOBJ.transform.parent
-                    hit.transform.GetComponent<Enemy>().blow(firePos.transform.forward + new Vector3(0, 1, 0), meleeForce*10);
+                    power = false;
+
+                    handPower.GetComponent<ColliderParenter>().targetOBJ.SetActive(false);
+                    hit.transform.GetComponent<Enemy>().blow(firePos.transform.forward + new Vector3(0, 1, 0), meleeForce * 10);
                     hit.transform.GetComponent<EnemyHealth>().EnemyHealthUpdate(-meleeDmg * 2, gameObject);
                 }
                 else
@@ -950,7 +953,8 @@ public class WeaponManager : MonoBehaviour
         gc.DisplayInstruction(false, 1);
         if (skill_canbePerformed)
         {
-            if(active_Skill.st == Skill.skillType.passive)
+            skillDisplay.SetActive(false);
+            if (active_Skill.st == Skill.skillType.passive)
             {
                 System.Type script = System.Type.GetType(active_Skill.functionName + ",Assembly-CSharp");
                 skillDisplay.AddComponent(script);
@@ -977,6 +981,10 @@ public class WeaponManager : MonoBehaviour
                 else if (skillDisplay.TryGetComponent<gravityPull>(out gravityPull gp))
                 {
                     gp.doFunctionWoutObject();
+                }
+                else if(skillDisplay.TryGetComponent<SuckerPunch>(out SuckerPunch sp))
+                {
+                    sp.doFunctionWoutObject();
                 }
                 StartCoroutine(PerformSkillAnim(0));
             }

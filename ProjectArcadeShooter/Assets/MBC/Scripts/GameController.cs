@@ -667,9 +667,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         enemy.name = "enemy";
         enemy.tag = "Enemy";
     }
-
-
-
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
