@@ -207,6 +207,9 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     //PostProcessing Settings
     AmbientOcclusion ao;
     //SoundEffects
+
+    //Tutorials
+    public GameObject TutMan;
     [HideInInspector]
     public bool tutOpened;
 
@@ -229,6 +232,118 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     }
     private void Awake()
     {
+        if(TutMan != null)
+        {
+            tutOpened = true;
+            //update base
+            baseFixedUpdate = Time.fixedDeltaTime;
+
+            ammos = Resources.LoadAll<Ammo>("Ammo");
+            weapons = Resources.LoadAll<Weapon>("Weapon");
+            enemies = Resources.LoadAll<EnemyType>("Enemy");
+            consumables = Resources.LoadAll<Consumable>("Consumable");
+            skills = Resources.LoadAll<Skill>("Skill");
+            boss = Resources.LoadAll<Boss>("Boss");
+            perks = Resources.LoadAll<Perk>("Perks");
+            waveEnemyDatas = Resources.LoadAll<WaveEnemyData>("WaveEnemyData");
+
+            playerPanel.SetActive(false);
+            bossPanel.SetActive(false);
+            damagePanel.SetActive(false);
+            gamePanel.SetActive(false);
+
+
+            for (int i = 0; i < weapons.Length; i++)
+            {
+                //weapon GO �nstantiate
+                GameObject weaponGO = Instantiate(weapons[i].modelGameObject, inActiveWeapon.transform);
+                weaponGO.name = weapons[i].WeaponName;
+                weaponGO.SetActive(false);
+
+                //UI Instanttiate
+                GameObject imaj = Instantiate(shopButton, shopPanel.transform.GetChild(0).GetChild(0).GetChild(0));
+                imaj.AddComponent<Image>();
+                imaj.GetComponent<Image>().sprite = weapons[i].UIRef;
+                imaj.name = weapons[i].WeaponName + "Shop";
+                imaj.GetComponent<RectTransform>().sizeDelta = new Vector2(150, 150);
+                //button click event
+                Button but = imaj.AddComponent<Button>();
+                but.targetGraphic = imaj.GetComponent<Image>();
+
+                but.onClick.AddListener(() => weaponButtonPressed(but.gameObject.name));
+                //button hover event
+                EventTrigger evtrigger = but.AddComponent<EventTrigger>();
+                EventTrigger.Entry hoverEvent = new()
+                {
+                    eventID = EventTriggerType.PointerEnter
+                };
+                hoverEvent.callback.AddListener((functionIwant) => { weaponButtonHover(but.gameObject.name); });
+                evtrigger.triggers.Add(hoverEvent);
+                //button hover out event
+                EventTrigger evtrigger1 = but.AddComponent<EventTrigger>();
+                EventTrigger.Entry hoveroutEvent = new()
+                {
+                    eventID = EventTriggerType.PointerExit
+                };
+                hoveroutEvent.callback.AddListener((functionIwant) => { shopNameReset(); });
+                evtrigger1.triggers.Add(hoverEvent);
+
+
+                GameObject imajChild = Instantiate(shopTXT, imaj.transform);
+            }
+            for (int i = 0; i < skills.Length; i++)
+            {
+                if (skills[i].st == Skill.skillType.active)
+                {
+                    activeSkills.Add(skills[i]);
+                }
+                else if (skills[i].st == Skill.skillType.passive)
+                {
+                    passiveSkills.Add(skills[i]);
+
+                }
+                //UI Instanttiate
+                GameObject imaj = Instantiate(shopButton, shopPanel.transform.GetChild(0).GetChild(0).GetChild(1));
+                imaj.AddComponent<Image>();
+                imaj.GetComponent<Image>().sprite = skills[i].sprite_HUD;
+                imaj.name = "id_" + skills[i].skillTypeID + "Shop";
+                imaj.GetComponent<RectTransform>().sizeDelta = new Vector2(150, 150);
+                //button click event
+                Button but = imaj.AddComponent<Button>();
+                but.targetGraphic = imaj.GetComponent<Image>();
+
+                but.onClick.AddListener(() => skillButtonPressed(but.gameObject.name));
+                //button hover event
+                EventTrigger evtrigger = but.AddComponent<EventTrigger>();
+                EventTrigger.Entry hoverEvent = new()
+                {
+                    eventID = EventTriggerType.PointerEnter
+                };
+                hoverEvent.callback.AddListener((functionIwant) => { skillButtonHover(but.gameObject.name); });
+                evtrigger.triggers.Add(hoverEvent);
+                //button hover out event
+                EventTrigger evtrigger1 = but.AddComponent<EventTrigger>();
+                EventTrigger.Entry hoveroutEvent = new()
+                {
+                    eventID = EventTriggerType.PointerExit
+                };
+                hoveroutEvent.callback.AddListener((functionIwant) => { shopNameReset(); });
+                evtrigger1.triggers.Add(hoveroutEvent);
+
+                GameObject imajChild = Instantiate(shopTXT, imaj.transform);
+            }
+
+            ShopGridChange(0);
+            //Runtime Infor holder Init
+            player.GetComponent<WeaponManager>().holder = new WeaponRuntimeHolder[weapons.Length];
+
+            for (int i = 0; i < player.GetComponent<WeaponManager>().holder.Length; i++)
+            {
+                player.GetComponent<WeaponManager>().holder[i] = new WeaponRuntimeHolder(weapons[i].WeaponTypeID, weapons[i].magSize);
+            }
+
+            return;
+        }
 
         globalProfile.profile = mainEffect;
 
@@ -259,7 +374,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         waveEnemyDatas = Resources.LoadAll<WaveEnemyData>("WaveEnemyData");
 
         enemyIDcounts = new int[enemies.Length];
-
 
         for (int i = 0; i < weapons.Length; i++)
         {
@@ -1295,9 +1409,9 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     //Graph Options
     public void changeStateOfWallhackSkill(bool acitve)
     {
-        seeThrougWallHigh.SetActive(!acitve);
-        seeThrougWallBal.SetActive(!acitve);
-        seeThrougWallPer.SetActive(!acitve);
+        seeThrougWallHigh.SetActive(acitve);
+        seeThrougWallBal.SetActive(acitve);
+        seeThrougWallPer.SetActive(acitve);
     }
 
     //UI Events
