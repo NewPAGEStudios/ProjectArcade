@@ -95,10 +95,11 @@ namespace SlimUI.ModernMenu{
 
 		public GameObject betaWarning;
 
-
+		public GameObject versionText;
 
         void Start()
 		{
+			versionText.GetComponent<TextMeshPro>().text = Application.version;
             betaWarning.SetActive(false);
             if (PlayerPrefs.GetInt("EndBeta", 0) == 1)
 			{

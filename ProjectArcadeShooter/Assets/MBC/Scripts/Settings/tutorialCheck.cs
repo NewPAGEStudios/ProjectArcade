@@ -6,6 +6,7 @@ public class tutorialCheck : MonoBehaviour
 {
     public Camera mainCam;
     public GameObject panelTutorial;
+    public bool ready;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +20,10 @@ public class tutorialCheck : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (!ready)
+        {
+            return;
+        }
         Ray mouseRay = mainCam.ScreenPointToRay(Input.mousePosition);
         if(Physics.Raycast(mouseRay,out RaycastHit hit, 10))
         {
