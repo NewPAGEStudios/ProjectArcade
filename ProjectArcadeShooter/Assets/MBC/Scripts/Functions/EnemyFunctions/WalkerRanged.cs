@@ -15,6 +15,7 @@ public class WalkerRanged : MonoBehaviour
 
     public Enemy enemy;
 
+    private Coroutine Aroutine;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,7 +35,7 @@ public class WalkerRanged : MonoBehaviour
         shotTimer += Time.deltaTime;
 
         Debug.DrawRay(enemy.gunBarrel[0].transform.position, (enemy.Player.transform.position - enemy.gunBarrel[0].transform.position) * (Vector3.Distance(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position) + 2f));
-        if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.e_type.rangeDistance || Physics.Raycast(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position - enemy.gunBarrel[0].transform.position, Vector3.Distance(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position) + 2f, enemy.e_type.LMask))
+        if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.e_type.rangeDistance || Physics.Raycast(enemy.transform.position+new Vector3(0,4,0), enemy.Player.transform.position - enemy.gunBarrel[0].transform.position, Vector3.Distance(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position) + 2f, enemy.e_type.LMask))
         {
             enemy.Agent.SetDestination(enemy.Player.transform.position);
             lookPlayer();
@@ -76,7 +77,11 @@ public class WalkerRanged : MonoBehaviour
 
         for (int c = 0; c < gunbarrel.Length; c++)
         {
-            StartCoroutine(waitforAnimEnd(gunbarrel[c]));
+            if (Aroutine != null)
+            {
+                StopCoroutine(Aroutine);
+            }
+            Aroutine = StartCoroutine(waitforAnimEnd(gunbarrel[c]));
         }
 
 
@@ -91,8 +96,13 @@ public class WalkerRanged : MonoBehaviour
         {
             if (enemy.animator == null)
             {
-                StopAllCoroutines();
+                StopCoroutine(Aroutine);
                 break;
+            }
+
+            if(Physics.Raycast(enemy.transform.position + new Vector3(0, 4, 0), enemy.Player.transform.position - enemy.gunBarrel[0].transform.position, Vector3.Distance(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position) + 2f, enemy.e_type.LMask))
+            {
+                StopCoroutine(Aroutine);
             }
 
             if (enemy.animator.GetCurrentAnimatorStateInfo(1).IsName("Shoot"))
@@ -106,10 +116,16 @@ public class WalkerRanged : MonoBehaviour
         ori.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
         while (true)
         {
+
             if (enemy.animator == null)
             {
                 StopAllCoroutines();
                 break;
+            }
+
+            if (Physics.Raycast(enemy.transform.position + new Vector3(0, 4, 0), enemy.Player.transform.position - enemy.gunBarrel[0].transform.position, Vector3.Distance(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position) + 2f, enemy.e_type.LMask))
+            {
+                StopCoroutine(Aroutine);
             }
 
             ori.transform.LookAt(enemy.Player.transform);
@@ -121,6 +137,7 @@ public class WalkerRanged : MonoBehaviour
                 enemy.soundController.PlaySound("ShootSound", 0f);
                 break;
             }
+
             yield return null;
         }
         spawnAmmo(gunbarrel);

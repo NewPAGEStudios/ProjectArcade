@@ -36,6 +36,7 @@ public class Pause_Menu : MonoBehaviour
     {
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
+        gc.statisticManager.saveDatas();
         if (deleteSave)
         {
             string path = Application.persistentDataPath + "/player.newp";

@@ -9,10 +9,13 @@ public class KillZone : MonoBehaviour
     public bool alertSound;
     private RoomManager roomManager;
     private GameObject minimap_OBJ;
+    private GameObject collide_OBJ;
     private void Start()
     {
         minimap_OBJ = transform.GetChild(0).gameObject;
+        collide_OBJ = transform.GetChild(1).gameObject;
         minimap_OBJ.SetActive(false);
+        collide_OBJ.SetActive(false);
         roomManager = transform.parent.parent.GetChild(0).GetComponent<RoomManager>();
     }
     private void Update()
@@ -20,6 +23,7 @@ public class KillZone : MonoBehaviour
         if(alertSound || work)
         {
             minimap_OBJ.SetActive(true);
+            collide_OBJ.SetActive(true);
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -66,7 +70,6 @@ public class KillZone : MonoBehaviour
                 GetComponent<AudioSource>().volume = 0f;
             }
         }
-
     }
 }
 

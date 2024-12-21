@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: efd77661eb35f04488c41e3a09d3e5fa, type: 3}
-  m_Name: 3
+  m_Name: 8
   m_EditorClassIdentifier: 
-  waveNumber: 3
+  waveNumber: 6
   enemyTypes:
   - enemyId: 0
-    enemyPiece: 6
+    enemyPiece: 15
   - enemyId: 1
-    enemyPiece: 3
+    enemyPiece: 6
   - enemyId: 2
-    enemyPiece: 0
+    enemyPiece: 1
   - enemyId: 3
     enemyPiece: 0
   - enemyId: 4
-    enemyPiece: 0
+    enemyPiece: 5
   enemyStatMultiplier: 1
   maxConsSpawn: 12
   maxAmmoSpawn: 3

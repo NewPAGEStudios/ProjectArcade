@@ -170,45 +170,7 @@ public class ReflectBulletFunctions : MonoBehaviour
             w.decreaseHitNumber();
         }
     }
-    //private void OnCollisionEnter(Collision collision)
-    //{
 
-    //    if (collision.transform.CompareTag("EnemyColl"))
-    //    {
-    //        collision.transform.parent.parent.GetComponent<EnemyHealth>().EnemyHealthUpdate(-dmg);
-    //        gc.ComboVombo(numberOfCollisionHit);
-    //        startDesttroyObject();
-    //    }
-    //    else if (collision.gameObject.layer == 9)//bossCollider
-    //    {
-    //        //Manuel Adding
-    //        if (collision.transform.parent.parent.TryGetComponent<DummyMummyFunc>(out DummyMummyFunc dmf))
-    //        {
-    //            dmf.GetDamage(dmg);
-    //        }
-    //        gc.ComboVombo(numberOfCollisionHit);
-    //        gc.HandleDmgGiven();
-    //        startDesttroyObject();
-    //    }
-    //    else if (numberOfCollisionHit >= mostHitCanBeDone)
-    //    {
-    //        startDesttroyObject();
-    //    }
-    //    else
-    //    {
-    //        m_PropertyBlock.SetFloat("_fresnalPow", m_PropertyBlock.GetFloat("_fresnalPow") + 2);
-    //        modelRender.SetPropertyBlock(m_PropertyBlock);
-
-    //        //GetComponent<Rigidbody>().AddForce(reflectionVecs[numberOfCollisionHit] * bulletSpeed, ForceMode.VelocityChange);
-    //        dmg += 50;
-    //        numberOfCollisionHit += 1;
-    //    }
-    //    //if (collisionRoutine != null)
-    //    //{
-    //    //    StopCoroutine(collisionRoutine);
-    //    //}
-    //    //collisionRoutine = StartCoroutine(collRotine(collision));
-    //}
 
 
     private void startDesttroyObject()
@@ -239,8 +201,5 @@ public class ReflectBulletFunctions : MonoBehaviour
     }
 
 
-    //private void OnDestroy()
-    //{
-    //    trail.transform.parent = null;
-    //}
+
 }

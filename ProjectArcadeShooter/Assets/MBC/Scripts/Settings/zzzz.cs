@@ -28,11 +28,14 @@ public class zzzz : MonoBehaviour
         Ray mouseRay = mainCam.ScreenPointToRay(Input.mousePosition);
 
         RaycastHit hit;
-        if(Physics.Raycast(mouseRay,out hit, distance, RaycastMask, QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(mouseRay, out hit, distance, RaycastMask, QueryTriggerInteraction.Ignore))
         {
-            if (hit.collider.gameObject != gameObject) return;
+            if (hit.collider.gameObject != gameObject) 
+            {
+                return;
+            }
             OnCursorInput.Invoke(hit.textureCoord);
-//            Debug.Log(hit.textureCoord);
+            Debug.Log(hit.textureCoord);
         }
     }
     public void open()

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3059113544533137875}
   - component: {fileID: 1471231449596439338}
   - component: {fileID: 8830239421542145273}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: MoneyOBJ
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 8709416098578790453}
   - component: {fileID: 3825896675315261129}
   - component: {fileID: 9163522984814484122}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Cash
   m_TagString: Untagged
   m_Icon: {fileID: 0}

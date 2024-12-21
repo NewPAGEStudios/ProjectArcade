@@ -291,7 +291,6 @@ public class WeaponManager : MonoBehaviour
         }
         if (Physics.Raycast(firePos.transform.parent.position, firePos.transform.forward, out RaycastHit hitInfo ,2f,lMaskOFInteraction,QueryTriggerInteraction.Collide))
         {
-            Debug.Log("kbmqweqwewqeqwe");
             if (Input.GetKeyDown(KeyCode.E))
             {
                 if(hitInfo.transform.TryGetComponent<Shop>(out Shop sh))
@@ -548,6 +547,11 @@ public class WeaponManager : MonoBehaviour
         }
         soundWeapon.transform.Find(currWeaponID.ToString()).GetComponent<AudioSource>().Play();
 
+
+        if (!gc.tutOpened)
+        {
+            gc.statisticManager.incnumberOfFire();
+        }
         //spawnBullet()
         GameObject ammo = new();
         ammo.transform.SetPositionAndRotation(firePos.transform.position, firePos.transform.rotation);

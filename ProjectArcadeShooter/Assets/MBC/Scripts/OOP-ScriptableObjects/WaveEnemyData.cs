@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 [CreateAssetMenu( menuName = "SCPObjects/waveEnemyData")]
 public class WaveEnemyData : ScriptableObject
@@ -14,3 +15,15 @@ public class WaveEnemyData : ScriptableObject
     public int maxConsSpawn;
     public int maxAmmoSpawn;
 }
+public class WaveEnemyType
+{
+    [System.Serializable]
+    public struct waveEnemyType
+    {
+        public int enemyId;
+        public string enemyName;
+        public int enemyPiece;
+    }
+
+}
+

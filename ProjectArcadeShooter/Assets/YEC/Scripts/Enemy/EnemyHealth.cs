@@ -126,6 +126,9 @@ public class EnemyHealth : MonoBehaviour
 
             currentHealth = 0;
             gc.comboTimerReset();
+
+            gc.statisticManager.incKilledEnemy();
+
             Die();
             return;
         }

@@ -126,6 +126,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public GameObject player;
     private LccalApplierToScriptable localizer_scp;
     [HideInInspector]
+    public StatisticManager statisticManager;
+    [HideInInspector]
     public InputManager IManager;
     public AudioMixer audioM;
     public GameObject Minimap;
@@ -196,6 +198,9 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     private Coroutine dmgDeal;
     private Coroutine comboVisualizeRoutine;
     private Coroutine notfWaitRoutine;
+
+
+
     [Header("MapSpecifications")]
     [Header("Map1")]
     public RoomManager roomManager;
@@ -472,6 +477,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             player.GetComponent<WeaponManager>().holder[i] = new WeaponRuntimeHolder(weapons[i].WeaponTypeID, weapons[i].magSize);
         }
 
+        statisticManager = GetComponent<StatisticManager>();
 
         newGame = PlayerPrefs.GetInt("newGame", 1) == 1 ? true : false;
 
@@ -917,6 +923,11 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     {
         shopUI_Cam.SetActive(false);
         waveNumber += 1;
+        statisticManager.increaseWaveNumber();
+        if (waveEnemyDatas.Length < waveNumber)
+        {
+            EndBeta();
+        }
         if (waveNumber % bossTimePerWave == bossTimePerWaveLoop)
         {
             toBoss(0);
@@ -941,10 +952,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         //WaveConfigiration
         //EnemySpawn
         UpdateEnemyCount(true);
-        if (waveEnemyDatas.Length < waveNumber)
-        {
-            EndBeta();
-        }
         foreach (WaveEnemyData wed in waveEnemyDatas)
         {
             if (wed.waveNumber == waveNumber)
@@ -976,6 +983,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         SaveElements();
         shopUI_Cam.SetActive(true);
         UpdateMostCombo(true);
+        statisticManager.updateMostCombo(mostComboCount);
         mostComboCount = 0;
         UpdateEnemyCount(true);
 
@@ -1151,6 +1159,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     }
     public void EndGame()
     {
+        statisticManager.saveDatas();
         Time.timeScale = 0;
         Time.fixedDeltaTime *= Time.timeScale;
         
@@ -2148,6 +2157,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         shopPanel.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = localizer_scp.applyWeapon(weapons[i], "Name");
         shopPanel.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>().text = weapons[i].toBuyMoney.ToString();
         shopPanel.transform.GetChild(0).GetChild(3).GetComponent<TextMeshProUGUI>().text = "";
+        InventorInspectorer(0, i);
     }
     public void shopNameReset()
     {
@@ -2196,6 +2206,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         shopPanel.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = localizer_scp.applySkill(skills[i], "Name");
         shopPanel.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>().text = skills[i].toBuyMoney.ToString();
         shopPanel.transform.GetChild(0).GetChild(3).GetComponent<TextMeshProUGUI>().text = localizer_scp.applySkill(skills[i], "Desc");
+        InventorInspectorer(1,i);
     }
     public void InventorInspectorer(int id,int idOfObject)
     {//9
@@ -2240,6 +2251,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public void ComboVombo(int comboTime)
     {
         comboCount += comboTime;
+        statisticManager.incSumOfCombo(comboTime);
         if (mostComboCount < comboCount)
         {
             mostComboCount = comboCount;
@@ -2457,6 +2469,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
     public void StartAgain()
     {
+        statisticManager.saveDatas();
+
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
 
