@@ -15,15 +15,20 @@ MonoBehaviour:
   waveNumber: 4
   enemyTypes:
   - enemyId: 0
-    enemyPiece: 10
+    enemyName: Walker
+    enemyPiece: 11
   - enemyId: 1
-    enemyPiece: 3
+    enemyName: Ranged
+    enemyPiece: 2
   - enemyId: 2
+    enemyName: Bombman
     enemyPiece: 0
   - enemyId: 3
+    enemyName: FuzeMan
     enemyPiece: 0
   - enemyId: 4
-    enemyPiece: 2
+    enemyName: Fly
+    enemyPiece: 0
   enemyStatMultiplier: 1
   maxConsSpawn: 12
   maxAmmoSpawn: 3

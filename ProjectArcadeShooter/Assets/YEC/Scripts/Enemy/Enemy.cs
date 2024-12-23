@@ -132,6 +132,7 @@ public class Enemy : MonoBehaviour
         col.size = new Vector3(0.75f, 1.75f, 1);
         player = GameObject.FindGameObjectWithTag("Player");
 
+        Debug.Log(Player.name);
 
     }
 

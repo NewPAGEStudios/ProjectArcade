@@ -15,7 +15,7 @@ public class WalkerRanged : MonoBehaviour
 
     public Enemy enemy;
 
-    private Coroutine Aroutine;
+    private IEnumerator Aroutine;
     // Start is called before the first frame update
     void Start()
     {
@@ -50,13 +50,16 @@ public class WalkerRanged : MonoBehaviour
             enemy.soundController.StopSound("Footsteps", 0f);
         }
         //Shoot
-        if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) < enemy.e_type.rangeDistance && !Physics.Raycast(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position - enemy.gunBarrel[0].transform.position, Vector3.Distance(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position) + 2f, enemy.e_type.LMask))
+        if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) < enemy.e_type.rangeDistance && Physics.Raycast(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position - enemy.gunBarrel[0].transform.position,out RaycastHit hit,Vector3.Distance(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position) + 2f, enemy.e_type.LMask))
         {
-            if(shotTimer >= enemy.e_type.attackRatio)
+            if (hit.transform.CompareTag("Player"))
             {
-                Shoot();
-                shotTimer = 0;
+                if (shotTimer >= enemy.e_type.attackRatio)
+                {
+                    Shoot();
+                }
             }
+
         }
 
     }
@@ -79,15 +82,19 @@ public class WalkerRanged : MonoBehaviour
         {
             if (Aroutine != null)
             {
-                StopCoroutine(Aroutine);
+                return;
             }
-            Aroutine = StartCoroutine(waitforAnimEnd(gunbarrel[c]));
+
+            shotTimer = 0;
+            Aroutine = waitforAnimEnd(gunbarrel[c]);
+            StartCoroutine(Aroutine);
         }
 
 
     }
     IEnumerator waitforAnimEnd(Transform gunbarrel)
     {
+
         if (enemy.e_type.EnemyTypeID != 3)
         {
             enemy.animator.SetTrigger("shoot");
@@ -100,10 +107,6 @@ public class WalkerRanged : MonoBehaviour
                 break;
             }
 
-            if(Physics.Raycast(enemy.transform.position + new Vector3(0, 4, 0), enemy.Player.transform.position - enemy.gunBarrel[0].transform.position, Vector3.Distance(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position) + 2f, enemy.e_type.LMask))
-            {
-                StopCoroutine(Aroutine);
-            }
 
             if (enemy.animator.GetCurrentAnimatorStateInfo(1).IsName("Shoot"))
             {
@@ -119,17 +122,16 @@ public class WalkerRanged : MonoBehaviour
 
             if (enemy.animator == null)
             {
-                StopAllCoroutines();
+                StopCoroutine(Aroutine);
                 break;
             }
 
-            if (Physics.Raycast(enemy.transform.position + new Vector3(0, 4, 0), enemy.Player.transform.position - enemy.gunBarrel[0].transform.position, Vector3.Distance(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position) + 2f, enemy.e_type.LMask))
-            {
-                StopCoroutine(Aroutine);
-            }
-
             ori.transform.LookAt(enemy.Player.transform);
-            yRota = Mathf.MoveTowards(yRota, ori.transform.eulerAngles.y, Time.deltaTime * 150);
+            if (ori.transform.eulerAngles.y > 180)
+            {
+                ori.transform.eulerAngles = new Vector3(ori.transform.eulerAngles.x, ori.transform.eulerAngles.y - 360, ori.transform.eulerAngles.z);
+            }
+            yRota = Mathf.MoveTowards(yRota, ori.transform.eulerAngles.y, Time.deltaTime * 270);
             transform.eulerAngles = new Vector3(0, yRota, 0);
 
             if (enemy.animator.GetCurrentAnimatorStateInfo(1).IsName("ShootEnd"))
@@ -140,6 +142,7 @@ public class WalkerRanged : MonoBehaviour
 
             yield return null;
         }
+        Aroutine = null;
         spawnAmmo(gunbarrel);
     }
 

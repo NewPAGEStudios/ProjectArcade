@@ -580,6 +580,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
          
          
          */
+        closeSpriteOfActiveSkill(null);
     }
 
     //spawners
@@ -1416,6 +1417,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     //Graph Options
     public void changeStateOfWallhackSkill(bool acitve)
     {
+        Debug.Log(acitve);
         seeThrougWallHigh.SetActive(acitve);
         seeThrougWallBal.SetActive(acitve);
         seeThrougWallPer.SetActive(acitve);
@@ -2499,6 +2501,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
+        PlayerPrefs.SetInt("newGame", 1);
         PlayerPrefs.SetInt("EndBeta", 1);
         SceneManager.LoadScene(0);
     }

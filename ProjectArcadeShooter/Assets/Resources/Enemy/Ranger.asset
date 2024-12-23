@@ -28,7 +28,7 @@ MonoBehaviour:
   isRanged: 1
   LMask:
     serializedVersion: 2
-    m_Bits: 16384
+    m_Bits: 16448
   isFlyable: 0
   rangeDistance: 25
   attackDMG: 20

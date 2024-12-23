@@ -992,6 +992,10 @@ public class WeaponManager : MonoBehaviour
                 {
                     sp.doFunctionWoutObject();
                 }
+                else if(skillDisplay.TryGetComponent<laserEye>(out laserEye le))
+                {
+                    le.doFunctionWoutObject();
+                }
                 StartCoroutine(PerformSkillAnim(0));
             }
             else
@@ -1071,6 +1075,7 @@ public class WeaponManager : MonoBehaviour
     private Coroutine eagleEyeRoutine = null;
     public void openEagleEye()
     {
+        Debug.Log("kmb");
         if(eagleEyeRoutine != null)
         {
             StopCoroutine(eagleEyeRoutine);
@@ -1085,7 +1090,7 @@ public class WeaponManager : MonoBehaviour
         {
             yield return null;
 
-            if (gc.state == GameController.GameState.inGame || gc.pState!=GameController.PlayState.inCinematic)
+            if (gc.state != GameController.GameState.inGame || gc.pState!=GameController.PlayState.inCinematic)
             {
                 continue;
             }

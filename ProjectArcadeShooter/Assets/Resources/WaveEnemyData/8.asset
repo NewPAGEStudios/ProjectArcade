@@ -12,18 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efd77661eb35f04488c41e3a09d3e5fa, type: 3}
   m_Name: 8
   m_EditorClassIdentifier: 
-  waveNumber: 6
+  waveNumber: 8
   enemyTypes:
   - enemyId: 0
-    enemyPiece: 15
+    enemyName: Walker
+    enemyPiece: 0
   - enemyId: 1
-    enemyPiece: 6
+    enemyName: Ranged
+    enemyPiece: 0
   - enemyId: 2
-    enemyPiece: 1
+    enemyName: Bombman
+    enemyPiece: 4
   - enemyId: 3
+    enemyName: FuzeMan
     enemyPiece: 0
   - enemyId: 4
-    enemyPiece: 5
+    enemyName: Fly
+    enemyPiece: 0
   enemyStatMultiplier: 1
   maxConsSpawn: 12
   maxAmmoSpawn: 3
