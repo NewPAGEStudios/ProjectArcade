@@ -18,7 +18,8 @@ public class PerformPassiveSkill : MonoBehaviour
 
         go = Instantiate(thisSkill.modelShow, gameObject.transform);
         go.transform.localScale = go.transform.localScale / 4;
-
+        go.gameObject.layer = 8;
+        
         MaterialPropertyBlock mpb = new MaterialPropertyBlock();
         mpb.SetTexture("_BTexture", thisSkill.sprite_HUD.texture);
         minimapShocase.GetComponent<Renderer>().SetPropertyBlock(mpb);

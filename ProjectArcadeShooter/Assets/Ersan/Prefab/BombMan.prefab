@@ -97,7 +97,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1151251754255442964}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -482,7 +482,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8317805587070179178}
   - component: {fileID: 3358513138882345633}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: targetElement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -526,7 +526,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4135237475440187105}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: EnemyHPIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -648,7 +648,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 228278290276076623}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Sounds
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1298,7 +1298,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2577005604805688083}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Kemik.002_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1419,7 +1419,7 @@ GameObject:
   - component: {fileID: 2803957258424658855}
   - component: {fileID: 3534474036290887741}
   - component: {fileID: 3726043585566711716}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1589,7 +1589,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4162876118104498198}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Vfxs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1621,7 +1621,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6661717060126807566}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GetReadyToExplode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1655,7 +1655,7 @@ GameObject:
   - component: {fileID: 6661794550994331862}
   - component: {fileID: 6825234070258181398}
   - component: {fileID: 6826868710440762220}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FX_Blizzard_Cloud_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6407,7 +6407,7 @@ GameObject:
   - component: {fileID: 200248025198402118}
   - component: {fileID: 3110265762608944507}
   - component: {fileID: 5244288490300369260}
-  m_Layer: 17
+  m_Layer: 10
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6490,7 +6490,7 @@ GameObject:
   - component: {fileID: 6004620649964565540}
   - component: {fileID: 6357745453466995117}
   - component: {fileID: 3464148832102116172}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Kemik.001
   m_TagString: EnemyColl
   m_Icon: {fileID: 0}
@@ -6557,7 +6557,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1888562803895739174}
   - component: {fileID: 5723146111874471602}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ExplodeGettingReady
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6685,7 +6685,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2906236985017238054}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: DmgTxtParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6805,7 +6805,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5775665672015710519}
   - component: {fileID: 91573560974371352}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Footsteps
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6934,7 +6934,7 @@ GameObject:
   m_Component:
   - component: {fileID: 844088160042085473}
   - component: {fileID: 2463239956092279988}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: "Armat\xFCr.002"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6993,7 +6993,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1513335661225847682}
   - component: {fileID: 3941308742376879241}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BombMan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7135,7 +7135,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1781811568053817144}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: TargetModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7182,7 +7182,7 @@ GameObject:
   - component: {fileID: 7211322625326330507}
   - component: {fileID: 8372568013207607826}
   - component: {fileID: 6703704910559122776}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Kemik.002
   m_TagString: EnemyColl
   m_Icon: {fileID: 0}
@@ -7248,7 +7248,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8380368214542899283}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Kemik.001_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7281,7 +7281,7 @@ GameObject:
   - component: {fileID: 3954740440063157105}
   - component: {fileID: 8969675893731776226}
   - component: {fileID: 9160935355996811705}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Kemik
   m_TagString: EnemyColl
   m_Icon: {fileID: 0}
@@ -7349,7 +7349,7 @@ GameObject:
   m_Component:
   - component: {fileID: 316766890692599759}
   - component: {fileID: 8381156648858392547}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7614,6 +7614,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: DamageReceibedTXT_NotUI (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 6168523174324351679, guid: 0a45f4744a7f6c74c9b4a539f4842dcf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7795,6 +7800,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DamageReceibedTXT_NotUI (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6168523174324351679, guid: 0a45f4744a7f6c74c9b4a539f4842dcf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7978,6 +7988,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: DamageReceibedTXT_NotUI (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6168523174324351679, guid: 0a45f4744a7f6c74c9b4a539f4842dcf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8160,6 +8175,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: DamageReceibedTXT_NotUI
       objectReference: {fileID: 0}
+    - target: {fileID: 6168523174324351679, guid: 0a45f4744a7f6c74c9b4a539f4842dcf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8341,6 +8361,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DamageReceibedTXT_NotUI (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6168523174324351679, guid: 0a45f4744a7f6c74c9b4a539f4842dcf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

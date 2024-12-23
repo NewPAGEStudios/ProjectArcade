@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 7748378947448439984}
   - component: {fileID: 3892519419126810113}
   - component: {fileID: 2279870200468098206}
-  m_Layer: 17
-  m_Name: Cylinder (1)
+  m_Layer: 10
+  m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -214,7 +214,7 @@ GameObject:
   - component: {fileID: 4650128867159344988}
   - component: {fileID: 1257254636221841765}
   - component: {fileID: 6718367322073785344}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -280,7 +280,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7423347620837106169}
   - component: {fileID: 5790567558330986701}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FlyObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -421,7 +421,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6771284379369992727}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: TargetModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -538,7 +538,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2917693410005876457}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Vfxs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -570,7 +570,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8537413368151366148}
   - component: {fileID: 7288318930762266959}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Ding
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -698,7 +698,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1426135661984403494}
   - component: {fileID: 2953085724459003058}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: targetElement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -743,7 +743,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3375186842945547173}
   - component: {fileID: 5316943606987210053}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -889,7 +889,7 @@ GameObject:
   - component: {fileID: 5064752088814606653}
   - component: {fileID: 2588145839950547396}
   - component: {fileID: 4828683211872054048}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1059,7 +1059,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1050910903036404088}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: DmgTxtParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1095,7 +1095,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 294850078518275176}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: EnemyHPIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1129,7 +1129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4164017223100075795}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Sounds
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1297,6 +1297,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DamageReceibedTXT_NotUI (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6168523174324351679, guid: 0a45f4744a7f6c74c9b4a539f4842dcf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1480,6 +1485,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: DamageReceibedTXT_NotUI (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 6168523174324351679, guid: 0a45f4744a7f6c74c9b4a539f4842dcf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1661,6 +1671,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DamageReceibedTXT_NotUI (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6168523174324351679, guid: 0a45f4744a7f6c74c9b4a539f4842dcf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1844,6 +1859,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: DamageReceibedTXT_NotUI
       objectReference: {fileID: 0}
+    - target: {fileID: 6168523174324351679, guid: 0a45f4744a7f6c74c9b4a539f4842dcf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2025,6 +2045,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DamageReceibedTXT_NotUI (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6168523174324351679, guid: 0a45f4744a7f6c74c9b4a539f4842dcf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

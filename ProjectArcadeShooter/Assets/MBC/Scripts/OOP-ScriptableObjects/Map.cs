@@ -9,4 +9,5 @@ public class Map : MonoBehaviour
     public GameObject ConsSpawnPointParent;
     public Transform playerTeleportPos;
     public GameObject enemySpawnPointParent;
+    public float minimapOBJ_Ypos;
 }

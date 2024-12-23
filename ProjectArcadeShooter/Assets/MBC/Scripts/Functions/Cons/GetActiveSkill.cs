@@ -32,6 +32,7 @@ public class GetActiveSkill : MonoBehaviour
 
 
         go = Instantiate(gc.skills[i].modelShow,gameObject.transform);
+        go.gameObject.layer = 8;
         go.transform.localScale = go.transform.localScale/4;
 
         player = GameObject.FindGameObjectWithTag("Player");

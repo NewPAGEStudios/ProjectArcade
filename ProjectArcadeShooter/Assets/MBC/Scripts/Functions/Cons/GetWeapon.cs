@@ -19,15 +19,12 @@ public class GetWeapon : MonoBehaviour
         {
             if(weaponID == gc.weapons[i].WeaponTypeID)
             {
-//                MaterialPropertyBlock mpb = new MaterialPropertyBlock();
-                //                mpb.set
-                //                minimapShocase.GetComponent<Renderer>()
                 minimapShocase.transform.position = new Vector3(transform.position.x, 30, transform.position.z);
                 break;
             }
         }
         GameObject go = Instantiate(gc.weapons[i].modelGameObject, gameObject.transform);
-        go.layer = 0;
+        go.layer = 8;
         for(int z = 0; z < go.transform.childCount; z++)
         {
             go.transform.GetChild(z).gameObject.layer = 0;

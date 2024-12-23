@@ -255,7 +255,32 @@ public class InGameSettings : MonoBehaviour
     }
 
 
+    public void TexturesLow()
+    {
+        PlayerPrefs.SetInt("Textures", 0);
+        QualitySettings.SetQualityLevel(0);
+        texturelowtextLINE.gameObject.SetActive(true);
+        texturemedtextLINE.gameObject.SetActive(false);
+        texturehightextLINE.gameObject.SetActive(false);
+    }
 
+    public void TexturesMed()
+    {
+        PlayerPrefs.SetInt("Textures", 1);
+        QualitySettings.SetQualityLevel(1);
+        texturelowtextLINE.gameObject.SetActive(false);
+        texturemedtextLINE.gameObject.SetActive(true);
+        texturehightextLINE.gameObject.SetActive(false);
+    }
+
+    public void TexturesHigh()
+    {
+        PlayerPrefs.SetInt("Textures", 2);
+        QualitySettings.SetQualityLevel(2);
+        texturelowtextLINE.gameObject.SetActive(false);
+        texturemedtextLINE.gameObject.SetActive(false);
+        texturehightextLINE.gameObject.SetActive(true);
+    }
 
 
     public void MasterSlider()

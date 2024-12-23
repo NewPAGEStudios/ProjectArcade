@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -19,6 +20,7 @@ public class Enemy : MonoBehaviour
     public GameObject Player {get=> player;}
     public Vector3 LastKnowPos { get => lastKnowPos; set => lastKnowPos = value; }
 
+    public GameObject minimapCyl;
 
     [HideInInspector]
     public float meleeDmg;
@@ -51,7 +53,7 @@ public class Enemy : MonoBehaviour
 
     private Coroutine blowRoutine;
 
-
+    private GameController gc;
     public enum enemyState
     {
         alive,
@@ -66,7 +68,10 @@ public class Enemy : MonoBehaviour
     }
     public ccState state;
 
-
+    private void Awake()
+    {
+        gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -81,6 +86,7 @@ public class Enemy : MonoBehaviour
 
         model.transform.GetChild(0).gameObject.layer = 10;
 
+        minimapCyl = model.transform.Find("Cylinder").gameObject;
 
         if (e_type.isRanged)
         {
@@ -144,6 +150,7 @@ public class Enemy : MonoBehaviour
         {
             return;//Updateyi patlat
         }
+        minimapCyl.transform.position = new Vector3(gameObject.transform.position.x, gc.mainLevel.GetComponent<Map>().minimapOBJ_Ypos + 5f, gameObject.transform.position.z);
     }
     //public bool CanSeePlayer()
     //{
