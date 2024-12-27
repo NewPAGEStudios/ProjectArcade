@@ -1090,7 +1090,7 @@ public class WeaponManager : MonoBehaviour
         {
             yield return null;
 
-            if (gc.state != GameController.GameState.inGame || gc.pState!=GameController.PlayState.inCinematic)
+            if (gc.state != GameController.GameState.inGame || gc.pState == GameController.PlayState.inCinematic)
             {
                 continue;
             }

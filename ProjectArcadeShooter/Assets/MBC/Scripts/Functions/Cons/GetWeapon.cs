@@ -11,6 +11,7 @@ public class GetWeapon : MonoBehaviour
 
     public int consPosID;
 
+    public bool cameInBoss;
     private void Start()
     {
         gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
@@ -24,12 +25,15 @@ public class GetWeapon : MonoBehaviour
             }
         }
         GameObject go = Instantiate(gc.weapons[i].modelGameObject, gameObject.transform);
-        go.layer = 8;
+        go.layer = 17;
         for(int z = 0; z < go.transform.childCount; z++)
         {
             go.transform.GetChild(z).gameObject.layer = 0;
         }
         go.transform.localScale = gc.transform.localScale / 2;
+
+        minimapShocase.transform.position = new Vector3(gameObject.transform.position.x, gc.currentLevel.GetComponent<Map>().minimapOBJ_Ypos + 4f, gameObject.transform.position.z);
+        minimapShocase.gameObject.layer = 17;
     }
     private void Update()
     {
@@ -53,13 +57,14 @@ public class GetWeapon : MonoBehaviour
     {
         if (gc.tutOpened)
         {
-            TutorialManager tutMan = GameObject.FindAnyObjectByType(typeof(TutorialManager)).GetComponent<TutorialManager>();
+            gc.TutMan.GetComponent<TutorialManager>().startTutorial();
             //tutorial exception
         }
         if (gc.pState == GameController.PlayState.inStart)
         {
             player.GetComponent<PController>().HealDMG(100, gameObject);
             gc.escapeStart();
+            Destroy(gameObject.transform.parent.gameObject);
         }
         player.GetComponent<WeaponManager>().GetWeaponR(weaponID);
         gameObject.transform.parent.parent = gc.consumableSpawnPointParent.transform;
@@ -74,7 +79,20 @@ public class GetWeapon : MonoBehaviour
         Destroy(gameObject);
         return;
     }
+    public void closeCons()
+    {
+        gameObject.transform.parent.parent = gc.consumableSpawnPointParent.transform;
+        int id = gc.activeCons.IndexOf(consPosID);
+        if (gc.pState != GameController.PlayState.inBoss)
+        {
+            gc.activeCons.RemoveAt(id);
+            gc.activeConsID.RemoveAt(id);
+            gc.activeConsSkill.RemoveAt(id);
+            gc.activeConsWeapID.RemoveAt(id);
+        }
+        Destroy(gameObject);
 
+    }
     public static void perform_WOUTObjected(GameObject player, GameController gc, int weaponID)
     {
         player.GetComponent<WeaponManager>().GetWeaponR(weaponID);

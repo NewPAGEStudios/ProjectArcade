@@ -14711,7 +14711,7 @@ GameObject:
   - component: {fileID: 4383073119021152}
   - component: {fileID: 198421718005146008}
   - component: {fileID: 199008005603230072}
-  m_Layer: 1
+  m_Layer: 0
   m_Name: FX_Pickup_Health_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

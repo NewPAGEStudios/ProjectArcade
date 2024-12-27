@@ -26,4 +26,8 @@ public class LccalApplierToScriptable : MonoBehaviour
     {
         return LocalizationSettings.StringDatabase.GetLocalizedString("General", keyName);
     }
+    public string applySubtitle(string keyName)
+    {
+        return LocalizationSettings.StringDatabase.GetLocalizedString("Subtitle", keyName);
+    }
 }

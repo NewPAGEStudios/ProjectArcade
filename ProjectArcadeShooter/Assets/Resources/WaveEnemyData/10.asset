@@ -16,13 +16,13 @@ MonoBehaviour:
   enemyTypes:
   - enemyId: 0
     enemyName: Walker
-    enemyPiece: 21
+    enemyPiece: 1
   - enemyId: 1
     enemyName: Ranged
-    enemyPiece: 8
+    enemyPiece: 0
   - enemyId: 2
     enemyName: Bombman
-    enemyPiece: 5
+    enemyPiece: 0
   - enemyId: 3
     enemyName: FuzeMan
     enemyPiece: 0

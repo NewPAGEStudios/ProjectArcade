@@ -11,6 +11,9 @@ public class PerformPassiveSkill : MonoBehaviour
     private GameObject player;
     GameController gc;
     public int consPosID;
+
+    public bool cameInBoss;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,7 +21,7 @@ public class PerformPassiveSkill : MonoBehaviour
 
         go = Instantiate(thisSkill.modelShow, gameObject.transform);
         go.transform.localScale = go.transform.localScale / 4;
-        go.gameObject.layer = 8;
+        go.gameObject.layer = 17;
         
         MaterialPropertyBlock mpb = new MaterialPropertyBlock();
         mpb.SetTexture("_BTexture", thisSkill.sprite_HUD.texture);
@@ -27,6 +30,8 @@ public class PerformPassiveSkill : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player");
 
+        minimapShocase.transform.position = new Vector3(gameObject.transform.position.x, gc.currentLevel.GetComponent<Map>().minimapOBJ_Ypos + 4f, gameObject.transform.position.z);
+        minimapShocase.gameObject.layer = 17;
     }
 
     // Update is called once per frame
@@ -55,6 +60,20 @@ public class PerformPassiveSkill : MonoBehaviour
         }
 
         gameObject.transform.parent.parent = gc.consumableSpawnPointParent.transform;
+        Destroy(gameObject);
+
+    }
+    public void closeCons()
+    {
+        gameObject.transform.parent.parent = gc.consumableSpawnPointParent.transform;
+        int id = gc.activeCons.IndexOf(consPosID);
+        if (gc.pState != GameController.PlayState.inBoss)
+        {
+            gc.activeCons.RemoveAt(id);
+            gc.activeConsID.RemoveAt(id);
+            gc.activeConsSkill.RemoveAt(id);
+            gc.activeConsWeapID.RemoveAt(id);
+        }
         Destroy(gameObject);
 
     }

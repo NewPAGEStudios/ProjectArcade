@@ -35,7 +35,6 @@ public class zzzz : MonoBehaviour
                 return;
             }
             OnCursorInput.Invoke(hit.textureCoord);
-            Debug.Log(hit.textureCoord);
         }
     }
     public void open()

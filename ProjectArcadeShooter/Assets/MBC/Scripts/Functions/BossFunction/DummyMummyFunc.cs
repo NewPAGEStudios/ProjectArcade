@@ -106,9 +106,10 @@ public class DummyMummyFunc : MonoBehaviour
         gc.BossHPChange(currentHP / maxHP);
         if (currentHP <= 0)
         {
+            bossState = BossState.inDeath;
+            StopAllCoroutines();
             NormalEverything();
             gc.endBoss(gameObject);
-            bossState = BossState.inDeath;
 
         }
     }
@@ -234,7 +235,7 @@ public class DummyMummyFunc : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
         }
-        gc.SpawnCons(findClosestYTNKZZMN(), 2, -1, 4);
+        gc.SpawnCons(findClosestYTNKZZMN(), 2, -1, 4, true);
 
         targetPos = new Vector3(targetPos.x, middle.y, targetPos.z);
         gameObject.transform.LookAt(targetPos);
@@ -297,7 +298,7 @@ public class DummyMummyFunc : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        gc.SpawnCons(findClosestYTNKZZMN(), 2, -1, 4);
+        gc.SpawnCons(findClosestYTNKZZMN(), 2, -1, 4,true);
 
         float timeRemainingTOAttack = Random.Range(1, 4);
 
@@ -468,7 +469,7 @@ public class DummyMummyFunc : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        gc.SpawnCons(findClosestYTNKZZMN(), 2, -1, 4);
+        gc.SpawnCons(findClosestYTNKZZMN(), 2, -1, 4,true);
 
         while (true)
         {
@@ -608,7 +609,30 @@ public class DummyMummyFunc : MonoBehaviour
         GameObject indicator = gameObject.transform.Find("CylinderIndicator").gameObject;
         indicator.SetActive(false);
 
-
+        for (int i = 0; i < gc.ConsParents.transform.childCount; i++)
+        {
+            if (gc.ConsParents.transform.GetChild(i).GetChild(0).TryGetComponent<GetWeapon>(out GetWeapon gw))
+            {
+                if (gw.cameInBoss)
+                {
+                    gw.closeCons();
+                }
+            }
+            else if (gc.ConsParents.transform.GetChild(i).GetChild(0).TryGetComponent<GetActiveSkill>(out GetActiveSkill gas))
+            {
+                if (gas.cameInBoss)
+                {
+                    gas.closeCons();
+                }
+            }
+            else if (gc.ConsParents.transform.GetChild(i).GetChild(0).TryGetComponent<PerformPassiveSkill>(out PerformPassiveSkill pps))
+            {
+                if (pps.cameInBoss)
+                {
+                    pps.closeCons();
+                }
+            }
+        }
     }
     private int findClosestYTNKZZMN()
     {

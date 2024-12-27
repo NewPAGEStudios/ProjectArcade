@@ -8,7 +8,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.EventSystems;
+using UnityEngine.Localization;
 using UnityEngine.Localization.Components;
+using UnityEngine.Localization.SmartFormat.PersistentVariables;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Rendering.Universal;
@@ -94,14 +96,11 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public GameObject startMap;
     public GameObject mainLevel;
     public GameObject mapParentM;
-    private GameObject currentLevel;
+    public GameObject currentLevel;
     public GameObject tracesParent;
     //spawnPoint Variables
-    [HideInInspector]
     public GameObject consumableSpawnPointParent;
-    [HideInInspector]
     public GameObject enemySpawnPointParent;
-    [HideInInspector]
     public GameObject playerTeleportPoint;
     [HideInInspector]
     public Shop[] shops;
@@ -187,6 +186,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     public GameObject moneyOBJ_Parent;
     public GameObject moneyOBJ;
     public GameObject ConsMiniMapIndicator;
+    public GameObject ConsParents;
     //IEnumerators
     private Coroutine comboDisplayRoutine;
     private Coroutine[] fWayDMGVisualize = new Coroutine[4];
@@ -198,7 +198,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     private Coroutine dmgDeal;
     private Coroutine comboVisualizeRoutine;
     private Coroutine notfWaitRoutine;
-
+    private Coroutine subroutine;
 
 
     [Header("MapSpecifications")]
@@ -225,7 +225,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         Minimap.GetComponent<MiniMapManager>().ChangeSize(50 - PlayerPrefs.GetFloat("MinimapSize", 0f));
         Minimap.GetComponent<MiniMapManager>().smooth = PlayerPrefs.GetInt("MinimapSmoothness") == 1f ? true : false;
 
-        Debug.Log(PlayerPrefs.GetInt("crossID", 0));
         playerPanel.transform.GetChild(1).GetChild(0).GetComponent<Image>().sprite = crossSprites[PlayerPrefs.GetInt("crossID", 0)];
 
         changeSizeOfCross(PlayerPrefs.GetFloat("CrossSize", 10) * 10);
@@ -480,7 +479,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         statisticManager = GetComponent<StatisticManager>();
 
         newGame = PlayerPrefs.GetInt("newGame", 1) == 1 ? true : false;
-
     }
 
     private void Start()
@@ -492,7 +490,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         if (tutOpened)
         {
             state = GameState.inGame;
-            pState = PlayState.inStart;
+            pState = PlayState.inPlayerInterrupt;
 
             //startLevel
             currentLevel = startMap;
@@ -584,7 +582,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     }
 
     //spawners
-    public void SpawnCons(int pos_childID,int consID,int weaponID,int skillID)
+    public void SpawnCons(int pos_childID,int consID,int weaponID,int skillID,bool cameinBoss = false)
     {
         if (consumableSpawnPointParent.transform.childCount == 0)
         {
@@ -671,11 +669,12 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             }
             gw.minimapShocase = consMinimapInd;
             gw.consPosID = pos_Holder;
-            if (pState != PlayState.inBoss)
+            if (!cameinBoss)
             {
                 activeConsWeapID.Add(gw.weaponID);
                 activeConsSkill.Add(-1);
             }
+            gw.cameInBoss = cameinBoss;
         }
         //skills
         else if(consumableobject.TryGetComponent<GetActiveSkill>(out GetActiveSkill gas))
@@ -690,11 +689,12 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             }
             gas.minimapShocase = consMinimapInd;
             gas.consPosID = pos_Holder;
-            if (pState != PlayState.inBoss)
+            if (!cameinBoss)
             {
                 activeConsWeapID.Add(-1);
                 activeConsSkill.Add(gas.skillId);
             }
+            gas.cameInBoss = cameinBoss;
         }
         else if(consumableobject.TryGetComponent<PerformPassiveSkill>(out PerformPassiveSkill pps))
         {
@@ -714,15 +714,16 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             }
             pps.minimapShocase = consMinimapInd;
             pps.consPosID = pos_Holder;
-            if (pState != PlayState.inBoss)
+            if (!cameinBoss)
             {
                 activeConsWeapID.Add(-1);
                 activeConsSkill.Add(pps.thisSkill.skillTypeID);
             }
+            pps.cameInBoss = cameinBoss;
         }
         else
         {
-            Debug.Log("Bomba");
+            Debug.Log("Cons Spawn Cons type couldn't find");
         }
 
 
@@ -743,7 +744,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         //add indicator for location guide
 
 
-        consumableSpawnPointParent.transform.GetChild(r).parent = null;
+        consumableSpawnPointParent.transform.GetChild(r).parent = ConsParents.transform;
         return;
     }
     public void SpawnEnemy(int enemyID)
@@ -900,7 +901,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
             }
             else if(pState == PlayState.inBoss)
             {
-
             }
             else if(pState == PlayState.inCinematic)
             {
@@ -991,7 +991,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         waitTimer = waitTime;
         pState = PlayState.inWaiting;
 
-        Debug.Log(currentLevel);
         
         for (int i = 0; i < currentLevel.GetComponent<Map>().shops.Length; i++)
         {
@@ -1414,10 +1413,38 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         shopCloserfunc();
     }
 
+    //
+    public void changeSub(string stringID,float duration)
+    {
+        gamePanel.transform.GetChild(10).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = localizer_scp.applySubtitle(stringID);
+        gamePanel.transform.GetChild(10).GetChild(0).gameObject.SetActive(true);
+        if (subroutine != null)
+        {
+            StopCoroutine(subroutine);
+        }
+        subroutine = StartCoroutine(SubRoutine(duration));
+    }
+    IEnumerator SubRoutine(float timer)
+    {
+        while (true)
+        {
+            if (state != GameState.inGame)
+            {
+                continue;
+            }
+            if (timer <= 0)
+            {
+                break;
+            }
+            yield return null;
+            timer -= Time.deltaTime;
+        }
+        gamePanel.transform.GetChild(10).GetChild(0).gameObject.SetActive(false);
+    }
+
     //Graph Options
     public void changeStateOfWallhackSkill(bool acitve)
     {
-        Debug.Log(acitve);
         seeThrougWallHigh.SetActive(acitve);
         seeThrougWallBal.SetActive(acitve);
         seeThrougWallPer.SetActive(acitve);
@@ -2095,7 +2122,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         player.GetComponent<WeaponManager>().doubleHandAnimationStop();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        Debug.Log(pState + " " + state);
         ShopCloser();
     }
     public void DeductMainCurrency(float amount)
@@ -2170,7 +2196,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     }
     public void skillButtonPressed(string nameOFSkillName)
     {
-        Debug.Log(nameOFSkillName);
         int i;
         for (i = 0; i < skills.Length; i++)
         {
@@ -2212,6 +2237,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     }
     public void InventorInspectorer(int id,int idOfObject)
     {//9
+        StringVariable stringVar = new StringVariable();
         shopPanel.transform.GetChild(0).GetChild(9).GetChild(0).gameObject.SetActive(false);
         shopPanel.transform.GetChild(0).GetChild(9).GetChild(1).gameObject.SetActive(false);
         if (id == 0)//weapon
@@ -2227,7 +2253,9 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                 }
                 count++;
             }
-            shopPanel.transform.GetChild(0).GetChild(9).GetChild(0).GetComponent<LocalizeStringEvent>().StringReference.Arguments[0] = (player.GetComponent<WeaponManager>().holder[count].inWeapon_ammoAmount + player.GetComponent<WeaponManager>().holder[count].sum_ammoAmount).ToString();
+            LocalizedString localizedString = shopPanel.transform.GetChild(0).GetChild(9).GetChild(0).GetComponent<LocalizeStringEvent>().StringReference;
+            stringVar.Value = (player.GetComponent<WeaponManager>().holder[count].inWeapon_ammoAmount + player.GetComponent<WeaponManager>().holder[count].sum_ammoAmount).ToString();
+            localizedString.Add("weaponCount", stringVar);
         }
         else//skill
         {
@@ -2495,7 +2523,22 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
     }
 
+    #region bestShoot savingBestShoot
 
+    public void saveShoot()
+    {
+
+    }
+
+
+
+
+
+
+
+
+
+    #endregion
     private void EndBeta()
     {
         Cursor.visible = true;

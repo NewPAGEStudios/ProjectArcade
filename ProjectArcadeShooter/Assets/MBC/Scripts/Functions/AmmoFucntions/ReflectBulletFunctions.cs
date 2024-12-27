@@ -86,7 +86,7 @@ public class ReflectBulletFunctions : MonoBehaviour
 
         for (int i = 0; i < mostHitCanBeDone; i++)
         {
-            if (Physics.Raycast(ray.origin, ray.direction, out RaycastHit hit, 100, layerMask, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(ray.origin, ray.direction, out RaycastHit hit, 200, layerMask, QueryTriggerInteraction.Ignore))
             {
                 Vector3 vec = Vector3.Reflect(ray.direction, hit.normal);
                 ray = new Ray(hit.point, vec);

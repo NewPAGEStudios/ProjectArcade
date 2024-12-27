@@ -12,6 +12,8 @@ public class GetActiveSkill : MonoBehaviour
     GameObject go;
 
     public int consPosID;
+
+    public bool cameInBoss;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,10 +34,12 @@ public class GetActiveSkill : MonoBehaviour
 
 
         go = Instantiate(gc.skills[i].modelShow,gameObject.transform);
-        go.gameObject.layer = 8;
         go.transform.localScale = go.transform.localScale/4;
 
         player = GameObject.FindGameObjectWithTag("Player");
+
+        minimapShocase.transform.position = new Vector3(gameObject.transform.position.x, gc.currentLevel.GetComponent<Map>().minimapOBJ_Ypos + 4f, gameObject.transform.position.z);
+        minimapShocase.gameObject.layer = 17;
     }
     private void Update()
     {
@@ -67,6 +71,25 @@ public class GetActiveSkill : MonoBehaviour
         }
         Destroy(gameObject);
         return;
+    }
+    public void closeCons()
+    {
+        if (cameInBoss)
+        {
+
+        }
+
+        gameObject.transform.parent.parent = gc.consumableSpawnPointParent.transform;
+        int id = gc.activeCons.IndexOf(consPosID);
+        if (gc.pState != GameController.PlayState.inBoss)
+        {
+            gc.activeCons.RemoveAt(id);
+            gc.activeConsID.RemoveAt(id);
+            gc.activeConsSkill.RemoveAt(id);
+            gc.activeConsWeapID.RemoveAt(id);
+        }
+        Destroy(gameObject);
+
     }
     public static void perform_WOUTObjected(GameObject player, GameController gc, int skillIndex)
     {
