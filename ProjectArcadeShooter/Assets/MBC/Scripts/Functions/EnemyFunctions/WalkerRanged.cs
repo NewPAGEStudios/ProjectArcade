@@ -35,7 +35,7 @@ public class WalkerRanged : MonoBehaviour
         shotTimer += Time.deltaTime;
 
         Debug.DrawRay(enemy.gunBarrel[0].transform.position, (enemy.Player.transform.position - enemy.gunBarrel[0].transform.position) * (Vector3.Distance(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position) + 2f));
-        if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.e_type.rangeDistance || Physics.Raycast(enemy.transform.position+new Vector3(0,4,0), enemy.Player.transform.position - enemy.gunBarrel[0].transform.position, Vector3.Distance(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position) + 2f, enemy.e_type.LMask))
+        if (Vector3.Distance(enemy.Player.transform.position, enemy.transform.position) > enemy.e_type.rangeDistance || Physics.Raycast(enemy.transform.position + new Vector3(0,4,0), enemy.Player.transform.position - enemy.gunBarrel[0].transform.position, Vector3.Distance(enemy.gunBarrel[0].transform.position, enemy.Player.transform.position) + 2f, enemy.e_type.LMask))
         {
             enemy.Agent.SetDestination(enemy.Player.transform.position);
             lookPlayer();

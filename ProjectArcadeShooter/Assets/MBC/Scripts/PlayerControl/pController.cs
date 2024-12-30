@@ -412,9 +412,12 @@ public class PController : MonoBehaviour
         }
         if(actiontg == ActionStateDependecyToGround.onAir)
         {
-            if(speedTemp > maxSpeed)
+            temp = new Vector3((float)rb.velocity.x, 0, (float)rb.velocity.z);
+            speedTemp = temp.magnitude;
+            Vector3 liimitedVec = temp.normalized * maxSpeed;
+            if (speedTemp > maxSpeed)
             {
-
+                rb.velocity = new Vector3(liimitedVec.x, rb.velocity.y, liimitedVec.z);
             }
         }
 

@@ -109,7 +109,6 @@ public class InputManager : MonoBehaviour
 
     public bool getJumpedPressed()
     {
-        Debug.Log("Jump");
         return inputActions.playerMap.Jump.triggered;
     }
 
@@ -119,7 +118,6 @@ public class InputManager : MonoBehaviour
     }
     public bool getDashPressed()
     {
-        Debug.Log("Dash");
         return inputActions.playerMap.Dash.triggered;
     }
 
@@ -127,17 +125,14 @@ public class InputManager : MonoBehaviour
 
     public bool getReloadPressed()
     {
-        Debug.Log("Reload");
         return inputActions.handMap.WeaponReload.triggered;
     }
     public bool getMeleePressed()
     {
-        Debug.Log("Melee");
         return inputActions.handMap.MeleeAttack.triggered;
     }
     public bool getFirePressed()
     {
-        Debug.Log("Fire");
         return inputActions.handMap.FireSemi.triggered;
     }
     public float getMouseScroll()

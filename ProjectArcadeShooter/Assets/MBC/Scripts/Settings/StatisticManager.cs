@@ -10,6 +10,8 @@ public class StatisticManager : MonoBehaviour
     [HideInInspector]
     public int waveNumber;
 
+    public int numberofKilled;
+
     public string killedBy_GameOver = "";
 
     public int[] killedEnemy;
@@ -22,6 +24,7 @@ public class StatisticManager : MonoBehaviour
     private void Awake()
     {
         gc = GetComponent<GameController>();
+        numberofKilled = PlayerPrefs.GetInt("statistical_killedTime", 0);
     }
 
 
@@ -57,6 +60,11 @@ public class StatisticManager : MonoBehaviour
     }
 
 
+    public void playerDies()
+    {
+        numberofKilled += PlayerPrefs.GetInt("statistical_killedTime", 0) + 1;
+        PlayerPrefs.SetInt("statistical_killedTime", PlayerPrefs.GetInt("statistical_killedTime", 0) + 1);
+    }
 
 
 
@@ -68,6 +76,7 @@ public class StatisticManager : MonoBehaviour
         string data = "";
         data += "ComputerName : " + Environment.MachineName + "\n\n\n";
         //PlayerDied
+        data += "Player died " + numberofKilled + " times \n";
         if(killedBy_GameOver != "")
         {
             data += "Player Eliminated by : " + killedBy_GameOver + "\n";

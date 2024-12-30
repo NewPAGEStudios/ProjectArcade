@@ -868,19 +868,15 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
                     enemySpawnTimeTimer -= Time.deltaTime;
                 }
 
-                if (Input.GetKeyDown(KeyCode.H))
+                if (roomTimer <= 0f)
                 {
-                    roomManager.startRoutineOfRoom(roomCloseTime, 0);
+                    roomManager.startRoutineOfRoom(roomCloseTime);
+                    roomTimer = roomRoutineRate;
                 }
-                //if (roomTimer <= 0f)
-                //{
-                //    roomManager.startRoutineOfRoom(roomCloseTime);
-                //    roomTimer = roomRoutineRate;
-                //}
-                //else
-                //{
-                //    roomTimer -= Time.deltaTime;
-                //}
+                else
+                {
+                    roomTimer -= Time.deltaTime;
+                }
                 if (enemyCount == 0)
                 {
                     makeMoneyWithMostCombo();
@@ -1159,6 +1155,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     }
     public void EndGame()
     {
+        statisticManager.playerDies();
         statisticManager.saveDatas();
         Time.timeScale = 0;
         Time.fixedDeltaTime *= Time.timeScale;
