@@ -10,7 +10,6 @@ public class Ammo : ScriptableObject
     public string functionName;
     public GameObject modelGO;
     public TrailType trail;
-    public Trail3D trail3D;
     [Tooltip("0:MainMat 1+:effects")]
     public Material[] materials;
     [Header(header: "ObjectProperties")]

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2a6166bb0aa51f43b6be1395d2b4fac, type: 3}
+  m_Name: FastBullet
+  m_EditorClassIdentifier: 
+  AmmoTypeID: 4
+  functionName: FastAmmoBulletFunction
+  modelGO: {fileID: 866542443902192392, guid: 83729ca9f6afaaa4bb8f75b5125fe886, type: 3}
+  trail: {fileID: 11400000, guid: a445664d00b2ea44ba056d01d6495318, type: 2}
+  materials:
+  - {fileID: 2100000, guid: 0b68180e4a4139c4fb79d861793029e8, type: 2}
+  - {fileID: 2100000, guid: 67d06aebc8875f44ba16dbe0a723b468, type: 2}
+  bulletSpeed: 250
+  dmg: 10
+  maxReflectionTime: 3
+  lmask:
+    serializedVersion: 2
+    m_Bits: 31159
+  wallTrace: {fileID: 21299647934069206, guid: 0077c60851286de4cb583b7796b3556d, type: 3}

@@ -199,7 +199,15 @@ public class WeaponManager : MonoBehaviour
                 {
                     if (handStates == ActionStateOFHands.idle)
                     {
-                        Fire();
+                        if (FindWeapon(currWeaponID).isMelee)
+                        {
+                            Attack();
+
+                        }
+                        else 
+                        {
+                            Fire();
+                        }
                     }
                     else
                     {
@@ -522,6 +530,43 @@ public class WeaponManager : MonoBehaviour
     }
 
     //Fire
+    private void Attack()
+    {
+        Weapon w = FindWeapon(currWeaponID);
+        if (currWeapon_inWeapon_ammoAmount <= 0)
+        {
+            //soundManager.noAmmoFX.Play()
+            return;
+        }
+        handStates = ActionStateOFHands.inFire;
+
+        currWeapon_inWeapon_ammoAmount -= w.usingAmmoPerAttack;
+
+        gc.ChangeAmmoText(currWeapon_inWeapon_ammoAmount, currWeapon_sum_ammoAmount);
+
+        if (soundWeapon.transform.Find(currWeaponID.ToString()).GetComponent<AudioSource>().isPlaying)
+        {
+            soundWeapon.transform.Find(currWeaponID.ToString()).GetComponent<AudioSource>().Stop();
+        }
+        soundWeapon.transform.Find(currWeaponID.ToString()).GetComponent<AudioSource>().Play();
+
+        if (!gc.tutOpened)
+        {
+            gc.statisticManager.incnumberOfFire();
+        }
+
+        //manuel Adding
+        if(activeWeapon.transform.GetChild(0).TryGetComponent<SwordSlash>(out SwordSlash ss))
+        {
+            ss.handAnimator = hand_Animator;
+            ss.weaponManager = this;
+            ss.Attack();
+        }
+    }
+    public void AttackEnded()
+    {
+        handStates = ActionStateOFHands.idle;
+    }
     private void Fire()
     {
         Weapon w = FindWeapon(currWeaponID);
@@ -574,7 +619,6 @@ public class WeaponManager : MonoBehaviour
             rbf.dmg = w.usedAmmo.dmg;
 
             rbf.trailType = w.usedAmmo.trail;
-            rbf.trail3D = w.usedAmmo.trail3D;
 
             rbf.layerMask = w.usedAmmo.lmask;
 
@@ -582,6 +626,28 @@ public class WeaponManager : MonoBehaviour
 
             GameObject go = Instantiate(w.usedAmmo.modelGO, ammo.transform);
             go.layer = 7;
+        }
+        else if(ammo.TryGetComponent<FastAmmoBulletFunction>(out FastAmmoBulletFunction fabf))
+        {
+            fabf.modelMat = w.usedAmmo.materials;
+            fabf.bulletSpeed = w.usedAmmo.bulletSpeed;
+            fabf.mostHitCanBeDone = w.usedAmmo.maxReflectionTime;
+
+            fabf.calcvec = firePos.transform.GetChild(0).transform.position;
+
+            fabf.firedBy = gameObject;
+
+            fabf.dmg = w.usedAmmo.dmg;
+
+            fabf.trailType = w.usedAmmo.trail;
+
+            fabf.layerMask = w.usedAmmo.lmask;
+
+            fabf.trace = w.usedAmmo.wallTrace;
+
+            GameObject go = Instantiate(w.usedAmmo.modelGO, ammo.transform);
+            go.layer = 7;
+
         }
         else
         {
@@ -612,9 +678,15 @@ public class WeaponManager : MonoBehaviour
         handStates = ActionStateOFHands.idle;
         yield return null;
     }
+    
     //Reload
     private void ReloadCheck()
     {
+        if (!FindWeapon(currWeaponID).reload)
+        {
+            return;
+        }
+
         if (currWeapon_inWeapon_ammoAmount == magmax)
         {
 //            Debug.Log("Full Ammo");

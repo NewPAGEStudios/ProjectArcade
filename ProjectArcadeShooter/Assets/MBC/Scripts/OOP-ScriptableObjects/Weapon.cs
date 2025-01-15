@@ -18,12 +18,14 @@ public class Weapon : ScriptableObject
     [Header(header: "Referances")]
     public GameObject modelGameObject;
     public Ammo usedAmmo;
+    public bool isMelee;
+    public bool reload;
     public bool twoStateReload;
 //    public AudioClip soundOfWeaponOnFire;
     [Header(header: "ShopSettings")]
     public Sprite UIRef;
     public float toBuyMoney;
-    [Header(header: "EnemyObjectProperties")]
+    [Header(header: "WeaponObjectProperties")]
     public WeaponType type;
     public int magSize;
     public int usingAmmoPerAttack;

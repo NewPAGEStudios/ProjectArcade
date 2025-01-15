@@ -37,7 +37,8 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         inWaiting,
         inBoss,
         inCinematic,
-        inPlayerInterrupt
+        inPlayerInterrupt,
+        inTutorial
     }
 
     public GameState state;
@@ -234,119 +235,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
     }
     private void Awake()
     {
-        if(TutMan != null)
-        {
-            tutOpened = true;
-            //update base
-            baseFixedUpdate = Time.fixedDeltaTime;
-
-            ammos = Resources.LoadAll<Ammo>("Ammo");
-            weapons = Resources.LoadAll<Weapon>("Weapon");
-            enemies = Resources.LoadAll<EnemyType>("Enemy");
-            consumables = Resources.LoadAll<Consumable>("Consumable");
-            skills = Resources.LoadAll<Skill>("Skill");
-            boss = Resources.LoadAll<Boss>("Boss");
-            perks = Resources.LoadAll<Perk>("Perks");
-            waveEnemyDatas = Resources.LoadAll<WaveEnemyData>("WaveEnemyData");
-
-            playerPanel.SetActive(false);
-            bossPanel.SetActive(false);
-            damagePanel.SetActive(false);
-            gamePanel.SetActive(false);
-
-
-            for (int i = 0; i < weapons.Length; i++)
-            {
-                //weapon GO �nstantiate
-                GameObject weaponGO = Instantiate(weapons[i].modelGameObject, inActiveWeapon.transform);
-                weaponGO.name = weapons[i].WeaponName;
-                weaponGO.SetActive(false);
-
-                //UI Instanttiate
-                GameObject imaj = Instantiate(shopButton, shopPanel.transform.GetChild(0).GetChild(0).GetChild(0));
-                imaj.AddComponent<Image>();
-                imaj.GetComponent<Image>().sprite = weapons[i].UIRef;
-                imaj.name = weapons[i].WeaponName + "Shop";
-                imaj.GetComponent<RectTransform>().sizeDelta = new Vector2(150, 150);
-                //button click event
-                Button but = imaj.AddComponent<Button>();
-                but.targetGraphic = imaj.GetComponent<Image>();
-
-                but.onClick.AddListener(() => weaponButtonPressed(but.gameObject.name));
-                //button hover event
-                EventTrigger evtrigger = but.AddComponent<EventTrigger>();
-                EventTrigger.Entry hoverEvent = new()
-                {
-                    eventID = EventTriggerType.PointerEnter
-                };
-                hoverEvent.callback.AddListener((functionIwant) => { weaponButtonHover(but.gameObject.name); });
-                evtrigger.triggers.Add(hoverEvent);
-                //button hover out event
-                EventTrigger evtrigger1 = but.AddComponent<EventTrigger>();
-                EventTrigger.Entry hoveroutEvent = new()
-                {
-                    eventID = EventTriggerType.PointerExit
-                };
-                hoveroutEvent.callback.AddListener((functionIwant) => { shopNameReset(); });
-                evtrigger1.triggers.Add(hoverEvent);
-
-
-                GameObject imajChild = Instantiate(shopTXT, imaj.transform);
-            }
-            for (int i = 0; i < skills.Length; i++)
-            {
-                if (skills[i].st == Skill.skillType.active)
-                {
-                    activeSkills.Add(skills[i]);
-                }
-                else if (skills[i].st == Skill.skillType.passive)
-                {
-                    passiveSkills.Add(skills[i]);
-
-                }
-                //UI Instanttiate
-                GameObject imaj = Instantiate(shopButton, shopPanel.transform.GetChild(0).GetChild(0).GetChild(1));
-                imaj.AddComponent<Image>();
-                imaj.GetComponent<Image>().sprite = skills[i].sprite_HUD;
-                imaj.name = "id_" + skills[i].skillTypeID + "Shop";
-                imaj.GetComponent<RectTransform>().sizeDelta = new Vector2(150, 150);
-                //button click event
-                Button but = imaj.AddComponent<Button>();
-                but.targetGraphic = imaj.GetComponent<Image>();
-
-                but.onClick.AddListener(() => skillButtonPressed(but.gameObject.name));
-                //button hover event
-                EventTrigger evtrigger = but.AddComponent<EventTrigger>();
-                EventTrigger.Entry hoverEvent = new()
-                {
-                    eventID = EventTriggerType.PointerEnter
-                };
-                hoverEvent.callback.AddListener((functionIwant) => { skillButtonHover(but.gameObject.name); });
-                evtrigger.triggers.Add(hoverEvent);
-                //button hover out event
-                EventTrigger evtrigger1 = but.AddComponent<EventTrigger>();
-                EventTrigger.Entry hoveroutEvent = new()
-                {
-                    eventID = EventTriggerType.PointerExit
-                };
-                hoveroutEvent.callback.AddListener((functionIwant) => { shopNameReset(); });
-                evtrigger1.triggers.Add(hoveroutEvent);
-
-                GameObject imajChild = Instantiate(shopTXT, imaj.transform);
-            }
-
-            ShopGridChange(0);
-            //Runtime Infor holder Init
-            player.GetComponent<WeaponManager>().holder = new WeaponRuntimeHolder[weapons.Length];
-
-            for (int i = 0; i < player.GetComponent<WeaponManager>().holder.Length; i++)
-            {
-                player.GetComponent<WeaponManager>().holder[i] = new WeaponRuntimeHolder(weapons[i].WeaponTypeID, weapons[i].magSize);
-            }
-
-            return;
-        }
-
         globalProfile.profile = mainEffect;
 
         //update base
@@ -518,6 +406,9 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
 
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+
+            StartCoroutine(Scene_startRoutine(PlayState.inPlayerInterrupt));
+
             return;
         }
         //optionInitializition;
@@ -526,7 +417,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         if (newGame)
         {
             state = GameState.inGame;
-            pState = PlayState.inStart;
 
             //startLevel
             currentLevel = startMap;
@@ -555,7 +445,6 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         else
         {
             state = GameState.inGame;
-            pState = PlayState.inStart;
     
             currentLevel = startMap;
             DefaultMap();
@@ -569,6 +458,9 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         //Cursor Handling
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+
+        StartCoroutine(Scene_startRoutine(PlayState.inStart));
+
         roomTimer = roomRoutineRate;
         confirmSettings();
         /* Save on waitState
@@ -581,6 +473,33 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         closeSpriteOfActiveSkill(null);
     }
 
+
+    IEnumerator Scene_startRoutine(PlayState After_stateOfPlayer)
+    {
+        pState = PlayState.inPlayerInterrupt;
+        mainCam.GetComponent<Camera>().farClipPlane = 0.31f;
+        HandOverlayCam.GetComponent<Camera>().farClipPlane = 0.31f;
+
+        while (true)
+        {
+            mainCam.GetComponent<Camera>().farClipPlane += 1;
+            HandOverlayCam.GetComponent<Camera>().farClipPlane += 1;
+            if (mainCam.GetComponent<Camera>().farClipPlane >= 90 && HandOverlayCam.GetComponent<Camera>().farClipPlane >= 90)
+            {
+                mainCam.GetComponent<Camera>().farClipPlane += 2;
+                HandOverlayCam.GetComponent<Camera>().farClipPlane += 2;
+            }
+            if (mainCam.GetComponent<Camera>().farClipPlane >= 1000 && HandOverlayCam.GetComponent<Camera>().farClipPlane >= 1000)
+            {
+                mainCam.GetComponent<Camera>().farClipPlane = 1000f;
+                HandOverlayCam.GetComponent<Camera>().farClipPlane = 1000f;
+                break;
+            }
+            yield return null;
+        }
+        pState = After_stateOfPlayer;
+        Debug.Log("sinek beni ısırdı ve bu masaya kustu.");
+    }
     //spawners
     public void SpawnCons(int pos_childID,int consID,int weaponID,int skillID,bool cameinBoss = false)
     {

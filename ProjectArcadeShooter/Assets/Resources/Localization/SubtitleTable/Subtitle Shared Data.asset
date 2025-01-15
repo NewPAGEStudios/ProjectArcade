@@ -19,6 +19,18 @@ MonoBehaviour:
     m_Key: Tutorial_start
     m_Metadata:
       m_Items: []
+  - m_Id: 2610579593564160
+    m_Key: Tutorial_start01
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2612987426050048
+    m_Key: Tutorial_Dash
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2620573034549248
+    m_Key: Tutorial_Crouch
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

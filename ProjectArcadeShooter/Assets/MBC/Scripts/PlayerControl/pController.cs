@@ -203,7 +203,7 @@ public class PController : MonoBehaviour
         CamRotation();
 
         weaponManager.laserOpen();
-
+        Debug.Log("Velocity magn = " + rb.velocity.magnitude);
     }
     private void CamRotation()//tmmland�
     {
@@ -248,7 +248,7 @@ public class PController : MonoBehaviour
                     break;
                 default:break;
             }
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
         }
     }
     //EğilmeBaşla
@@ -550,7 +550,7 @@ public class PController : MonoBehaviour
             checkGroundVector = -slopePlaneNormal.normalized;
         }
         Debug.DrawRay(gameObject.transform.position, checkGroundVector * (offsetScale + 0.75f), Color.red, Time.deltaTime);
-        if (Physics.Raycast(gameObject.transform.position, checkGroundVector,out RaycastHit hit,offsetScale + 0.75f))
+        if (Physics.Raycast(gameObject.transform.position, checkGroundVector,out RaycastHit hit,offsetScale + 0.8f))
         {
             float angleOfPlane = Vector3.Angle(Vector3.up, hit.normal);
 

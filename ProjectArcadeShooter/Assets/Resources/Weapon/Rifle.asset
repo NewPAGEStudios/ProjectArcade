@@ -16,11 +16,11 @@ MonoBehaviour:
   WeaponName: Rifle
   modelGameObject: {fileID: 10031008200060683, guid: 994afc0cb110305458e81e2aa423ca02,
     type: 3}
-  usedAmmo: {fileID: 11400000, guid: 11a3b18b96a292d4ca57c0107bb46267, type: 2}
+  usedAmmo: {fileID: 11400000, guid: f60d2355ab8df774e8292e313c6e4893, type: 2}
+  reload: 1
   twoStateReload: 1
-  soundOfWeaponOnFire: {fileID: 8300000, guid: 88ccce6315840454f88d049b0534ad30, type: 3}
   UIRef: {fileID: 21300000, guid: 083cdc2aedad3874e8591e491ab86da3, type: 3}
-  toBuyMoney: 150
+  toBuyMoney: 200
   type: 1
-  magSize: 20
+  magSize: 10
   usingAmmoPerAttack: 1
