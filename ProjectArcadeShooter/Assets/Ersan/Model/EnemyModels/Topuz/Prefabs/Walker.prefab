@@ -1962,7 +1962,6 @@ GameObject:
   - component: {fileID: 4143967347102757126}
   - component: {fileID: 8100182987006905006}
   - component: {fileID: 5401078272732078391}
-  - component: {fileID: 7630096551062775705}
   m_Layer: 10
   m_Name: mixamorig:RightForeArm
   m_TagString: EnemyColl
@@ -2020,19 +2019,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetOBJ: {fileID: 1643923128525388287}
---- !u!114 &7630096551062775705
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7054333233921702737}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd1a56cedc8484745babfd08d6b3caf4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetOBJ: {fileID: 0}
 --- !u!1 &7438481876424468649
 GameObject:
   m_ObjectHideFlags: 0

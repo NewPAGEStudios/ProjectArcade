@@ -116,7 +116,6 @@ public class RoomManager : MonoBehaviour
     }
     public void navme()
     {
-        Debug.Log("bomba");
         navMeshFly.BuildNavMesh();
         navMeshWalk.BuildNavMesh();
     }

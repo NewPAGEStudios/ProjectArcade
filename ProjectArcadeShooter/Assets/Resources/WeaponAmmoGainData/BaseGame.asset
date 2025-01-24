@@ -17,3 +17,5 @@ MonoBehaviour:
     weaponAmmoCount: 18
   - weaponID: 1
     weaponAmmoCount: 40
+  - weaponID: 2
+    weaponAmmoCount: 20

@@ -203,7 +203,6 @@ public class PController : MonoBehaviour
         CamRotation();
 
         weaponManager.laserOpen();
-        Debug.Log("Velocity magn = " + rb.velocity.magnitude);
     }
     private void CamRotation()//tmmland�
     {

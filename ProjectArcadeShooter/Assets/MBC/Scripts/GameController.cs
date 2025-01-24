@@ -580,7 +580,7 @@ public class GameController : MonoBehaviour//TODO: Compass add cons
         {
             if (weaponID == -1)
             {
-                gw.weaponID = UnityEngine.Random.Range(0, weapons.Length);
+                gw.weaponID = Random.Range(0, weapons.Length);
             }
             else
             {

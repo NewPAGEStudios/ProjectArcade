@@ -166,15 +166,23 @@ public class WeaponManager : MonoBehaviour
             {
                 return;
             }
-            if (handStates == ActionStateOFHands.idle)
+            if (!FindWeapon(currWeaponID).reload)
             {
-                if (!onSkillUsage)
-                {
-                    ReloadCheck();
-                }
+                currWeapon_inWeapon_ammoAmount = currWeapon_sum_ammoAmount;
             }
             else
             {
+                if (handStates == ActionStateOFHands.idle)
+                {
+                    if (!onSkillUsage)
+                    {
+                        ReloadCheck();
+                    }
+                }
+                else
+                {
+                }
+
             }
         }
         //fire
@@ -184,9 +192,18 @@ public class WeaponManager : MonoBehaviour
             {
                 if (IManager.getFirePressed())
                 {
+                    Debug.Log("HandState: " + handStates);
                     if (handStates == ActionStateOFHands.idle)
                     {
-                        Fire();
+                        if (FindWeapon(currWeaponID).isMelee)
+                        {
+                            Attack();
+
+                        }
+                        else
+                        {
+                            Fire();
+                        }
                     }
                     else
                     {
@@ -541,14 +558,15 @@ public class WeaponManager : MonoBehaviour
         handStates = ActionStateOFHands.inFire;
 
         currWeapon_inWeapon_ammoAmount -= w.usingAmmoPerAttack;
+        currWeapon_sum_ammoAmount = currWeapon_inWeapon_ammoAmount;
 
         gc.ChangeAmmoText(currWeapon_inWeapon_ammoAmount, currWeapon_sum_ammoAmount);
 
-        if (soundWeapon.transform.Find(currWeaponID.ToString()).GetComponent<AudioSource>().isPlaying)
-        {
-            soundWeapon.transform.Find(currWeaponID.ToString()).GetComponent<AudioSource>().Stop();
-        }
-        soundWeapon.transform.Find(currWeaponID.ToString()).GetComponent<AudioSource>().Play();
+        //if (soundWeapon.transform.Find(currWeaponID.ToString()).GetComponent<AudioSource>().isPlaying)
+        //{
+        //    soundWeapon.transform.Find(currWeaponID.ToString()).GetComponent<AudioSource>().Stop();
+        //}
+        //soundWeapon.transform.Find(currWeaponID.ToString()).GetComponent<AudioSource>().Play();
 
         if (!gc.tutOpened)
         {
@@ -560,6 +578,7 @@ public class WeaponManager : MonoBehaviour
         {
             ss.handAnimator = hand_Animator;
             ss.weaponManager = this;
+            Debug.Log("kþmn");
             ss.Attack();
         }
     }
